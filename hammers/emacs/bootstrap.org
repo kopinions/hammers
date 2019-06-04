@@ -21,7 +21,7 @@
    #+END_SRC
 
 ** 版本配置
-
+   配置文件使用了一些特性，这些特性在太久的版本上会出现不兼容。对比版本给出相应的提示信息。
 
   #+BEGIN_SRC elisp
   (let ((minver "24.4"))
@@ -31,6 +31,35 @@
     (message "Your Emacs is old, and some functionality in this config will be disabled. Please upgrade if possible."))
 
   #+END_SRC
+
+** 包管理配置
+   Emacs 通过插件机制来提高可扩展性，我们可以通过安装插件来灵活的扩展 Emacs 的功能。 插件被封装成适用于 Emacs 的安装包，被存放在插件仓库（软件包仓库）中，以便与用户下载安装。
+   Emacs 通过包管理器来管理插件的：安装、配置、装载、升级。
+*** 包管理器配置
+    Emacs 的包管理器名为：[[http://tromey.com/elpa/][package]]. 但是 package 默认配置插件仓库包含的插件相对较少，我们需要添加一些常用的第三方插件仓库，以便与搜索与安装插件。
+
+    #+BEGIN_SRC elisp
+    (require 'package)
+
+    (setq package-archives '(("org"       . "http://orgmode.org/elpa/")
+                             ("gnu"       . "http://elpa.gnu.org/packages/")
+                             ("melpa"     . "http://melpa.org/packages/")
+                             ("marmalade" . "http://marmalade-repo.org/packages/")))
+
+    (package-initialize)
+    (package-refresh-contents)
+    #+END_SRC
+*** use package
+    Emacs 常见的配置管理都是先使用包管理器安装对应的包，然后再进行配置。安装包和配置是割裂开的。对于使用多个包的情况，安装包配置会分散到各个地方，安装包相关的配置会变得难以维护。
+    [[https://github.com/jwiegley/use-package][use-package]] 提供了一个非常干净简洁的安装包配置的方式。use-package 可以将安装包的配置隔离开，使得 Emacs 配置文件干净简洁。
+
+    #+BEGIN_SRC elisp
+    (unless (package-installed-p 'use-package)
+      (package-refresh-contents)
+      (package-install 'use-package))
+
+    (require 'use-package)
+    #+END_SRC
 
 ** 配置导出
   将当前文件作为一个名为 bootstrap 的 elisp 包提供出来。
