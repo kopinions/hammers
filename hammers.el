@@ -64,10 +64,10 @@
 (defun m/path (path &rest extra)
   "Return path according the PATH & EXTRA arguments."
   (let ((parts (cons (m/resolve path) extra)))
-    (concat "/" (mapconcat '(lambda (p) (cond ((and (string-prefix-p "/" p) (string-suffix-p "/" p)) (substring p 1 -1))
-                                         ((string-prefix-p "/" p) (substring p 1))
-                                         ((string-suffix-p "/" p) (substring p 0 -1))
-                                         (t p)))
+    (concat "/" (mapconcat #'(lambda (p) (cond ((and (string-prefix-p "/" p) (string-suffix-p "/" p)) (substring p 1 -1))
+                                          ((string-prefix-p "/" p) (substring p 1))
+                                          ((string-suffix-p "/" p) (substring p 0 -1))
+                                          (t p)))
                            parts "/"))))
 
 (defconst m/root (if load-file-name

@@ -32,6 +32,16 @@
 
   #+END_SRC
 
+** 系统配置
+
+  #+BEGIN_SRC elisp
+  (defconst m/os
+    (let ((os (symbol-name system-type)))
+      (cond ((string= os "darwin") 'macos)
+            ((string-prefix-p  os "gnu") 'linux)
+            ((or (string-prefix-p os "ms") (string-prefix-p os "windows")) 'windows))))
+  #+END_SRC
+
 ** 包管理配置
    Emacs 通过插件机制来提高可扩展性，我们可以通过安装插件来灵活的扩展 Emacs 的功能。 插件被封装成适用于 Emacs 的安装包，被存放在插件仓库（软件包仓库）中，以便与用户下载安装。
    Emacs 通过包管理器来管理插件的：安装、配置、装载、升级。
@@ -60,7 +70,16 @@
 
     (require 'use-package)
     #+END_SRC
+*** 包加载路径配置
+    所有的自定义的配置文件都在 emacs 配置文件夹下的 lisp 目录下。所以我们需要将 lisp 目录添加到加载路径中
+    #+BEGIN_SRC
+    (add-to-list 'load-path (expand-file-name "mlisp" user-emacs-directory))
+    #+END_SRC
 
+** 自定义配置聚合
+   #+BEGIN_SRC
+   (use-package init-org)
+   #+END_SRC
 ** 配置导出
   将当前文件作为一个名为 bootstrap 的 elisp 包提供出来。
   #+BEGIN_SRC elisp
