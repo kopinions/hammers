@@ -21,5 +21,31 @@
 
     #+BEGIN_SRC elisp
     (use-package grab-mac-link
-      :if (string= m/os "macos"))
+      :if (eq m/os 'macos))
+    #+END_SRC
+
+*** 剪切板创建链接
+    当我们通过 Ctrl/Cmd - C 复制到链接的时候，可以通过剪切板直接在 org-mode 文件中插入链接
+
+    #+BEGIN_SRC elisp
+    (use-package org-cliplink)
+    #+END_SRC
+
+*** org-mode 配置
+
+    #+BEGIN_SRC elisp
+    (use-package org
+      :bind (("C-c l" . org-store-link)
+             ("C-c a" . org-agenda)
+             ("C-c b" . org-switchb))
+      :init
+      (setq org-log-done 'time)
+      )
+    #+END_SRC
+
+
+*** 导出当前配置
+
+    #+BEGIN_SRC elisp
+    (provide 'init-org)
     #+END_SRC

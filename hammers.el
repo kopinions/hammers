@@ -71,8 +71,8 @@
                            parts "/"))))
 
 (defconst m/root (if load-file-name
-                             (file-name-directory load-file-name)
-                           (file-name-directory (buffer-file-name))))
+                     (file-name-directory load-file-name)
+                   (file-name-directory (buffer-file-name))))
 
 (m/tangles "${m/root}/hammers/emacs/*.org")
 

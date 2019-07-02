@@ -70,16 +70,20 @@
 
     (require 'use-package)
     #+END_SRC
+
 *** 包加载路径配置
     所有的自定义的配置文件都在 emacs 配置文件夹下的 lisp 目录下。所以我们需要将 lisp 目录添加到加载路径中
-    #+BEGIN_SRC
+    #+BEGIN_SRC elisp
     (add-to-list 'load-path (expand-file-name "mlisp" user-emacs-directory))
     #+END_SRC
 
 ** 自定义配置聚合
-   #+BEGIN_SRC
-   (use-package init-org)
+
+   #+BEGIN_SRC elisp
+   (use-package init-org
+    :load-path (lambda () (expand-file-name "mlisp" user-emacs-directory)))
    #+END_SRC
+
 ** 配置导出
   将当前文件作为一个名为 bootstrap 的 elisp 包提供出来。
   #+BEGIN_SRC elisp
