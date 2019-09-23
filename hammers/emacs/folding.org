@@ -1,0 +1,23 @@
+#+TITLE: Folding Specific
+#+AUTHOR: 孙建康（rising.lambda）
+#+EMAIL:  rising.lambda@gmail.com
+
+#+DESCRIPTION: Emacs config for folding options
+#+PROPERTY:    header-args        :results silent   :eval no-export   :comments org
+#+PROPERTY:    header-args        :mkdirp yes
+#+PROPERTY:    header-args:elisp  :tangle "~/.emacs.d/mlisp/init-folding.el"
+#+PROPERTY:    header-args:shell  :tangle no
+#+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil
+#+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
+#+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+
+* 折叠
+  #+BEGIN_SRC elisp
+  (use-package origami
+  :ensure t
+  :bind (("C-c f" . origami-recursively-toggle-node)
+         ("C-c F" . origami-toggle-all-nodes))
+  :hook (after-init . global-origami-mode))
+
+  (provide 'init-folding)
+  #+END_SRC
