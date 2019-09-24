@@ -77,7 +77,7 @@
 (m/tangles "${m/root}/hammers/emacs/*.org")
 
 (message "Finished building hammers. Resetting Emacs...")
-(require 'bootstrap (m/path "${user-emacs-directory}" "bootstrap.el"))
+(require 'init (m/path "${user-emacs-directory}" "init.el"))
 
 (provide 'm/hammers)
 
