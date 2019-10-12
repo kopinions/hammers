@@ -5,7 +5,7 @@
 #+DESCRIPTION: A literate programming version of my Emacs Initialization script, loaded by the .emacs file.
 #+PROPERTY:    header-args        :results silent   :eval no-export   :comments org
 #+PROPERTY:    header-args        :mkdirp yes
-#+PROPERTY:    header-args:elisp  :tangle "~/.emacs.d/init-lsp.el"
+#+PROPERTY:    header-args:elisp  :tangle "~/.emacs.d/lisp/init-lsp.el"
 #+PROPERTY:    header-args:shell  :tangle no
 #+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil
 #+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
@@ -13,8 +13,8 @@
 
 ** lsp-mode
 
-   #+BEGIN_SRC elisp
-   (use-package lsp-mode
+#+BEGIN_SRC elisp
+(use-package lsp-mode
   :ensure t
   :custom
   ;; debug
@@ -25,12 +25,12 @@
   (lsp-auto-guess-root t)
   (lsp-document-sync-method 'incremental) ;; none, full, incremental, or nil
   (lsp-response-timeout 10)
-  (lsp-prefer-flymake t) ;; t(flymake), nil(lsp-ui), or :none
+  (lsp-prefer-flymake nil) ;; t(flymake), nil(lsp-ui), or :none
   ;; go-client
   (lsp-clients-go-server-args '("--cache-style=always" "--diagnostics-style=onsave" "--format-style=goimports"))
   (lsp-clients-clangd-args '("-j=4" "-background-index" "-log=error"))
   :hook
-  (prog-mode . lsp-deferred)
+  ((c-mode c++-mode) . lsp-deferred)
   :bind
   (:map lsp-mode-map
         ("C-c r"   . lsp-rename))
@@ -39,6 +39,14 @@
     :ensure t
     :commands lsp-treemacs-errors-list
     )
+  ;; cc-mode
+  (use-packabge cc-mode
+    :bind (:map c-mode-base-map
+           ("C-c c" . compile))
+    :hook (c-mode-common . (lambda ()
+                            (c-set-style "bsd")
+                            (setq tab-width 4)
+                            (setq c-base-offset 4))))
   ;; LSP UI tools
   (use-package lsp-ui
     :ensure t
@@ -71,7 +79,7 @@
     (lsp-ui-peek-list-width 50)
     (lsp-ui-peek-fontify 'on-demand) ;; never, on-demand, or always
     :preface
-    (defun ladicle/toggle-lsp-ui-doc ()
+    (defun m/toggle-lsp-ui-doc ()
       (interactive)
       (if lsp-ui-doc-mode
           (progn
@@ -81,11 +89,11 @@
     :bind
     (:map lsp-mode-map
           ("C-c C-r" . lsp-ui-peek-find-references)
-          ("C-c C-j" . lsp-ui-peek-find-definitions)
-          ("C-c i"   . lsp-ui-peek-find-implementation)
+          ("C-c C-d" . lsp-ui-peek-find-definitions)
+          ("C-c C-i" . lsp-ui-peek-find-implementation)
           ("C-c m"   . lsp-ui-imenu)
           ("C-c s"   . lsp-ui-sideline-mode)
-          ("C-c d"   . ladicle/toggle-lsp-ui-doc))
+          ("C-c d"   . m/toggle-lsp-ui-doc))
     :hook
     (lsp-mode . lsp-ui-mode)))
    #+END_SRC
@@ -94,28 +102,44 @@
 ** company lsp
 
 #+BEGIN_SRC elisp
-(use-package company-lsp
-  :ensure t
-  :custom
-  (company-lsp-cache-candidates t) ;; auto, t(always using a cache), or nil
-  (company-lsp-async t)
-  (company-lsp-enable-snippet t)
-  (company-lsp-enable-recompletion t))
-#+END_SRC
+(use-package lsp-ivy
+  :load-path (lambda () (expand-file-name "lisp" user-emacs-directory))
+  :requires lsp-mode
+  :config
+  (defun m/lsp-ivy-workspace-symbol-at-point ()
+    (interactive)
+    (let ((current-prefix-arg t))
+      (call-interactively #'lsp-ivy-workspace-symbol)))
 
-** yasnippet
+  (defun m/lsp-ivy-global-workspace-symbol-at-point ()
+    (interactive)
+    (let ((current-prefix-arg t))
+      (call-interactively #'lsp-ivy-global-workspace-symbol)))
+  :bind
+  (:map lsp-mode-map
+        ("C-c C-s" . m/lsp-ivy-workspace-symbol-at-point)
+        ("C-c C-p" . m/lsp-ivy-global-workspace-symbol-at-point)))
+#+END_SRC
 
 #+BEGIN_SRC elisp
-(use-package yasnippet
-  :ensure t
-  :diminish yas-minor-mode
-  :custom (yas-snippet-dirs '("~/.emacs.d/snippets"))
-  :hook (after-init . yas-global-mode))
+(use-package company-lsp
+  :requires (company yasnippet)
+  :after (company yasnippet)
+  :custom
+  (push 'company-lsp company-backends)
+  (company-lsp-cache-candidates nil)
+  (company-lsp-async t))
 
-(use-package yasnippet-snippets
-  :ensure t
-  :requires yasnippet)
+(use-package cc-mode
+:bind (:map c-mode-base-map
+       ("C-c c" . compile))
+:hook (c-mode-common . (lambda ()
+                          (c-set-style "bsd")
+                          (setq tab-width 4)
+                          (setq c-base-offset 4))))
 #+END_SRC
+
+
 
 #+BEGIN_SRC elisp
 

@@ -1,0 +1,63 @@
+#+TITLE:  版本管理
+#+AUTHOR: 孙建康（rising.lambda）
+#+EMAIL:  rising.lambda@gmail.com
+
+#+DESCRIPTION: A literate programming version of my Emacs Initialization script, loaded by the .emacs file.
+#+PROPERTY:    header-args        :results silent   :eval no-export   :comments org
+#+PROPERTY:    header-args        :mkdirp yes
+#+PROPERTY:    header-args:elisp  :tangle "~/.emacs.d/lisp/init-vcs.el"
+#+PROPERTY:    header-args:shell  :tangle no
+#+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil
+#+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
+#+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+
+*** git
+ #+BEGIN_SRC elisp
+ (use-package gitignore-mode)
+ (use-package gitconfig-mode)
+ (use-package gitattributes-mode)
+ #+END_SRC
+
+*** magit
+ #+BEGIN_SRC elisp
+ (use-package magit
+   :after (fullframe)
+   :custom
+   (magit-diff-refine-hunk t)
+   :bind
+   (("C-x g" . magit-status))
+   :config
+   (use-package fullframe
+     :config
+     (fullframe magit-status magit-mode-quit-window)))
+
+ (use-package magit-todos)
+ #+END_SRC
+
+*** other
+#+BEGIN_SRC elisp
+(use-package git-messenger
+  :bind ("C-x v p" . git-messenger:popup-message)
+  :config
+  (setq git-messenger:show-detail t))
+
+(use-package git-timemachine
+  :config
+  (defalias 'tm 'git-timemachine))
+
+#+END_SRC
+
+
+#+BEGIN_SRC elisp
+(provide 'init-vcs)
+#+END_SRC
+*** github
+#+BEGIN_SRC elisp
+(use-package yagist)
+(use-package bug-reference-github
+  :hook
+  (prog-mode . bug-reference-prog-mode))
+(use-package github-clone)
+(use-package forge)
+(use-package github-review)
+#+END_SRC

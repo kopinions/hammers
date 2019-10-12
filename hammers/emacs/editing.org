@@ -1,0 +1,308 @@
+#+TITLE:  基础编辑配置
+#+AUTHOR: 孙建康（rising.lambda）
+#+EMAIL:  rising.lambda@gmail.com
+
+#+DESCRIPTION: A literate programming version of my Emacs Initialization script, loaded by the .emacs file.
+#+PROPERTY:    header-args        :results silent   :eval no-export   :comments org
+#+PROPERTY:    header-args        :mkdirp yes
+#+PROPERTY:    header-args:elisp  :tangle "~/.emacs.d/lisp/init-editing.el"
+#+PROPERTY:    header-args:shell  :tangle no
+#+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil
+#+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
+#+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+
+** 基础设置
+
+*** 光标位置
+#+BEGIN_SRC elisp
+(use-package beacon
+  :config
+  (setq beacon-blink-delay 0.1
+        beacon-blink-duration 1
+        beacon-color "#b1d631")
+
+  (defun backward-paragraph-blink ()
+    (interactive)
+    (backward-paragraph)
+    (beacon-blink))
+
+  (defun forward-paragraph-blink ()
+    (interactive)
+    (forward-paragraph)
+    (beacon-blink))
+
+  (global-set-key (kbd "M-p") 'backward-paragraph-blink)
+  (global-set-key (kbd "M-n") 'forward-paragraph-blink)
+
+  (beacon-mode 1))
+#+END_SRC
+
+*** 智能移动行首
+
+#+BEGIN_SRC elisp
+
+#+END_SRC
+
+*** 短时间敲击序列映射
+#+BEGIN_SRC elisp
+(use-package key-chord
+  :config
+  (setq key-chord-two-keys-delay 0.2)
+
+  (key-chord-define-global "qq" 'kill-this-buffer)
+  (key-chord-define-global "''" "`'\C-b")
+  (key-chord-define-global ",," 'indent-for-comment-and-indent)
+  (key-chord-mode 1))
+#+END_SRC
+
+*** 折叠
+
+#+BEGIN_SRC elisp
+(use-package origami
+:bind (("C-c f" . origami-recursively-toggle-node)
+       ("C-c F" . origami-toggle-all-nodes))
+:config
+(global-origami-mode t))
+#+END_SRC
+
+*** 回滚记录
+
+#+BEGIN_SRC elisp
+(use-package undo-tree
+  :ensure t
+  :config
+  ;; autosave the undo-tree history
+  (setq undo-tree-history-directory-alist
+        `((".*" . ,temporary-file-directory)))
+  (setq undo-tree-auto-save-history t))
+#+END_SRC
+
+*** file-paragraph & file-region & unfill-region & unfile-paragraph
+[fill & unfill][https://www.emacswiki.org/emacs/FillParagraph]
+#+BEGIN_SRC elisp
+
+(use-package unfill
+  :config
+  (global-set-key (kbd "M-q") 'unfill-toggle))
+
+#+END_SRC
+
+*** 上次修改的地方
+
+#+BEGIN_SRC elisp
+(use-package goto-last-change
+  :bind ("C-x /" . goto-last-change))
+#+END_SRC
+
+*** 括号配对显示
+#+BEGIN_SRC elisp
+(use-package paren	
+  :custom
+  (show-paren-style 'mixed)
+  (show-paren-when-point-inside-paren t)
+  (show-paren-when-point-inside-periphery t)
+  :config
+  (show-paren-mode 1))
+#+END_SRC
+*** 括号自动匹配
+#+BEGIN_SRC elisp
+(use-package elec-pair
+  :config
+  (electric-pair-mode 1))
+#+END_SRC
+*** 括号中内容显示
+#+BEGIN_SRC elisp
+(use-package rainbow-delimiters
+  :hook
+  ((prog-mode . rainbow-delimiters-mode)))
+#+END_SRC
+*** 扩充选定区域
+
+#+BEGIN_SRC elisp
+(use-package expand-region
+  :bind
+  (("C-=" . er/expand-region)))
+#+END_SRC
+
+*** 动态多光标
+
+#+BEGIN_SRC elisp
+
+(use-package multiple-cursors
+  :bind (
+  ("C-<" . mc/mark-previous-like-this)
+  ("C->" . mc/mark-next-like-this)
+  ("C-+" . mc/mark-next-like-this)
+  ("C-c C-<" . mc/mark-all-like-this)
+  ("C-c m r" . set-rectangular-region-anchor)
+  ("C-c m c" . mc/edit-lines)
+  ("C-c m e" . mc/edit-ends-of-lines)
+  ("C-c m a" . mc/edit-beginnings-of-lines))
+)
+
+(global-unset-key [M-left])
+(global-unset-key [M-right])
+#+END_SRC
+
+*** 智能删除
+#+BEGIN_SRC elisp
+(defun kill-back-to-indentation ()
+  "Kill from point back to the first non-whitespace character on the line."
+  (interactive)
+  (let ((prev-pos (point)))
+    (back-to-indentation)
+    (kill-region (point) prev-pos)))
+
+(global-set-key (kbd "C-M-<backspace>") 'kill-back-to-indentation)
+#+END_SRC
+
+*** 移动或者复制行
+
+#+BEGIN_SRC elisp
+(use-package move-dup
+  :bind (("M-<up>" . md-move-lines-up)
+  ("M-<down>" . md-move-lines-down)
+  ("M-S-<up>" . md-duplicate-up)
+  ("M-S-<down>" . md-duplicate-down)
+  ("C-c d" . md-duplicate-down)
+  ("C-c u" . md-duplicate-up)))
+#+END_SRC
+
+*** vim 中 vi" C-M-u C-M-space
+
+#+BEGIN_SRC elisp
+
+(defun m/backward-up-sexp (arg)
+  "Jump up to the start of the ARG'th enclosing sexp."
+  (interactive "p")
+  (let ((ppss (syntax-ppss)))
+    (cond ((elt ppss 3)
+           (goto-char (elt ppss 8))
+           (m/backward-up-sexp (1- arg)))
+          ((backward-up-list arg)))))
+
+(global-set-key [remap backward-up-list] 'm/backward-up-sexp) ; C-M-u, C-M-up
+
+#+END_SRC
+
+*** 复制或剪切当前行
+#+BEGIN_SRC elisp
+(use-package whole-line-or-region
+  :config
+  (whole-line-or-region-global-mode t))
+
+(use-package whole-line-or-region
+  :no-require t
+  :config
+  (diminish 'whole-line-or-region-local-mode))
+#+END_SRC
+
+*** 高亮转义字符
+#+BEGIN_SRC elisp
+(use-package highlight-escape-sequences
+  :config
+  (hes-mode t))
+#+END_SRC
+
+*** 智能扩展 hippie-expand
+#+BEGIN_SRC elisp
+(global-set-key (kbd "M-/") 'hippie-expand)
+
+(setq hippie-expand-try-functions-list
+      '(try-complete-file-name-partially
+        try-complete-file-name
+        try-expand-dabbrev
+        try-expand-dabbrev-all-buffers
+        try-expand-dabbrev-from-kill))
+#+END_SRC
+
+*** 搜索
+#+BEGIN_SRC elisp
+(use-package anzu
+  :config
+  (setq anzu-mode-lighter "")
+  (global-anzu-mode t)
+  :bind
+  (([remap query-replace-regexp] . anzu-query-replace-regexp)
+   ([remap query-replace] . anzu-query-replace)))
+#+END_SRC
+
+*** 高亮显示标示符
+#+BEGIN_SRC elisp
+(use-package symbol-overlay
+  :hook
+  ((prog-mode . symbol-overlay-mode)
+   (html-mode . symbol-overlay-mode)
+   (yaml-mode . symbol-overlay-mode)
+   (conf-mode . symbol-overlay-mode))
+  :bind
+  (:map symbol-overlay-mode-map 
+    ("M-i" . symbol-overlay-put)
+    ("M-I" . symbol-overlay-remove-all)
+    ("M-n" . symbol-overlay-jump-next)
+    ("M-p" . symbol-overlay-jump-prev))
+  :config
+  (diminish 'symbol-overlay-mode))
+#+END_SRC
+*** mode line 警告
+#+BEGIN_SRC elisp
+(use-package mode-line-bell
+  :init
+  (add-hook 'after-init-hook 'mode-line-bell-mode))
+#+END_SRC
+*** 回车
+#+BEGIN_SRC elisp
+(global-set-key (kbd "RET") 'newline-and-indent)
+(defun m/newline-at-end-of-line ()
+  "Move to end of line, enter a newline, and reindent."
+  (interactive)
+  (move-end-of-line 1)
+  (newline-and-indent))
+
+(global-set-key (kbd "S-<return>") 'm/newline-at-end-of-line)
+#+END_SRC
+*** 驼峰或者下划线分字
+#+BEGIN_SRC elisp
+(use-package subword
+:config
+(global-subword-mode))
+#+END_SRC
+*** 位置之间向前切换或者向后切换
+#+BEGIN_SRC elisp
+(use-package backward-forward
+  :bind
+  ("C-," . backward-forward-previous-location)
+  ("C-." . backward-forward-next-location)
+  :custom
+  (mark-ring-max 60)
+  (set-mark-command-repeat-pop t)
+  :config
+  (backward-forward-mode t))
+#+END_SRC
+*** 显示行号
+#+BEGIN_SRC elisp
+(use-package display-line-numbers
+  :custom
+  (display-line-numbers-width 3)
+  :hook
+  ((prog-mode yaml-mode systemd-mode) . display-line-numbers-mode))
+#+END_SRC
+*** 其他
+#+BEGIN_SRC elisp
+(use-package goto-line-preview
+  :after display-line-numbers
+  :bind
+  (([remap goto-line] . goto-line-preview))
+  :config
+  (defun m/with-display-line-numbers (f &rest args)
+    (let ((display-line-numbers t))
+      (apply f args)))
+  (advice-add 'goto-line-preview :around #'m/with-display-line-numbers))
+
+(when (fboundp 'global-prettify-symbols-mode)
+  (add-hook 'after-init-hook 'global-prettify-symbols-mode))
+#+END_SRC
+*** provide
+#+BEGIN_SRC elisp
+(provide 'init-editing)
+#+END_SRC

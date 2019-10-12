@@ -1,0 +1,245 @@
+#+TITLE:  版本管理
+#+AUTHOR: 孙建康（rising.lambda）
+#+EMAIL:  rising.lambda@gmail.com
+
+#+DESCRIPTION: A literate programming version of my Emacs Initialization script, loaded by the .emacs file.
+#+PROPERTY:    header-args        :results silent   :eval no-export   :comments org
+#+PROPERTY:    header-args        :mkdirp yes
+#+PROPERTY:    header-args:elisp  :tangle "~/.emacs.d/lisp/init-ui.el"
+#+PROPERTY:    header-args:shell  :tangle no
+#+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil
+#+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
+#+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+
+*** 界面配置
+#+BEGIN_SRC elisp
+(setq use-file-dialog nil)
+(setq use-dialog-box nil)
+(setq inhibit-startup-screen t)
+
+(when (fboundp 'tool-bar-mode)
+  (tool-bar-mode -1))
+(when (fboundp 'set-scroll-bar-mode)
+  (set-scroll-bar-mode nil))
+(if (eq m/os 'macos)
+    (add-hook 'after-make-frame-functions
+              (lambda (frame)
+                (set-frame-parameter frame 'menu-bar-lines
+                                     (if (display-graphic-p frame)
+                                         1 0))))
+  (when (fboundp 'menu-bar-mode)
+    (menu-bar-mode -1)))
+
+(let ((no-border '(internal-border-width . 0))
+      (fullscreen '(fullscreen . maximized)))
+  (add-to-list 'default-frame-alist no-border)
+  (add-to-list 'initial-frame-alist no-border)
+  (add-to-list 'initial-frame-alist fullscreen))
+
+(when (and (eq m/os 'macos) (fboundp 'toggle-frame-fullscreen))
+  ;; Command-Option-f to toggle fullscreen mode
+  ;; Hint: Customize `ns-use-native-fullscreen'
+  (global-set-key (kbd "M-ƒ") 'toggle-frame-fullscreen))
+
+(setq frame-title-format
+      '((:eval (if (buffer-file-name)
+                   (abbreviate-file-name (buffer-file-name))
+                 "%b"))))
+(add-hook 'term-mode-hook
+          (lambda ()
+            (setq line-spacing 0)))
+#+END_SRC
+
+*** 禁用鼠标
+#+BEGIN_SRC elisp
+(use-package disable-mouse
+  :config
+  (global-disable-mouse-mode)
+)
+#+END_SRC
+
+*** yes-no -> y-n
+#+BEGIN_SRC elisp
+(defalias 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+*** macos 不显示 title bar
+#+BEGIN_SRC elisp
+(use-package ns-auto-titlebar
+  :if (eq m/os 'macos)
+  :config
+  (ns-auto-titlebar-mode))
+#+END_SRC
+
+*** 安装主题
+#+BEGIN_SRC elisp
+(use-package color-theme-sanityinc-tomorrow
+  :config
+  (setq custom-safe-themes t)
+  (color-theme-sanityinc-tomorrow-night))
+#+END_SRC
+
+*** 安装图标库
+#+BEGIN_SRC elisp
+(use-package all-the-icons
+  :config
+  (unless (member "all-the-icons" (font-family-list))
+    (all-the-icons-install-fonts t)))
+#+END_SRC
+
+*** 快速切换窗口
+ #+BEGIN_SRC elisp
+ (use-package ace-window
+   :ensure t
+   :config
+   (global-set-key (kbd "s-w") 'ace-window)
+   (global-set-key [remap other-window] 'ace-window))
+ #+END_SRC
+
+*** 分页
+#+BEGIN_SRC elisp
+(use-package page-break-lines
+  :config
+  (global-page-break-lines-mode))
+
+(use-package page-break-lines
+  :no-require t
+  :config
+  (diminish 'page-break-lines-mode))
+#+END_SRC
+*** 自动提示可选命令
+#+BEGIN_SRC elisp
+(use-package which-key
+  :config
+  (which-key-mode t))
+
+#+END_SRC
+*** ivy
+ #+BEGIN_SRC elisp
+ (use-package ivy
+   :bind
+   (("C-c C-r" . ivy-resume)
+    ("<f6>" . ivy-resume))
+   :config
+   (ivy-mode 1)
+   (setq ivy-use-virtual-buffers t)
+   (setq enable-recursive-minibuffers t)
+   (setq ivy-virtual-abbreviate 'fullpath)
+   (setq ivy-count-format "")
+   (setq ivy-magic-tilde nil)
+   (setq ivy-dynamic-exhibit-delay-ms 150)
+   (setq ivy-use-selectable-prompt t)
+   (setq projectile-completion-system 'ivy)
+   (use-package all-the-icons-ivy
+     :after all-the-icons
+     :config
+     (all-the-icons-ivy-setup)))
+ #+END_SRC
+
+*** counsel
+ #+BEGIN_SRC elisp
+ (use-package counsel  
+   :bind
+   (("C-c C-r" . ivy-resume)
+    ("C-c s" . (lambda () (interactive) (counsel-rg (format "%s" (let ((sym (thing-at-point 'symbol))) (if sym sym ""))))))
+    ("C-x b" . counsel-switch-buffer)
+    ("C-x f" . counsel-recentf)
+    ("C-x C-b" . ivy-switch-buffer)
+    ("C-x C-f" . counsel-find-file)
+    ("C-h f" . counsel-describe-function)
+    ("C-h v" . counsel-describe-variable)
+    ("C-c y" . counsel-yank-pop))
+   
+   :config
+   ;; Default setting is not suitable for GuixSD.
+   (setq counsel-linux-app-format-function
+         #'counsel-linux-app-format-function-name-only))
+ #+END_SRC
+
+*** ivy-xref
+#+BEGIN_SRC elisp
+(use-package ivy-xref
+  :after (ivy)
+  :init (if (< emacs-major-version 27)
+            (setq xref-show-xrefs-function #'ivy-xref-show-xrefs)
+          (setq xref-show-definitions-function #'ivy-xref-show-defs)))
+#+END_SRC
+
+*** swipper
+ #+BEGIN_SRC elisp
+ (use-package swiper
+   :demand t
+   :bind (
+          :map ivy-minibuffer-map
+          ;; I use "C-x C-f" to open file, so bind "C-f" to
+          ;; `ivy-immediate-done' is very useful.
+          ("C-f" . ivy-immediate-done)
+          ("S-<return>" . ivy-immediate-done)
+	  ("C-s" . (lambda () (interactive) (swiper (format "%s" (let ((sym (thing-at-point 'symbol))) (if sym sym ""))))))
+          ([mouse-1] . ignore)
+          ([mouse-3] . ignore)
+          ([mouse-4] . ivy-next-line)
+          ([mouse-5] . ivy-previous-line))
+   :config
+   (ivy-mode 1)
+   (setq ivy-count-format ""
+         ivy-use-virtual-buffers t
+         ivy-format-functions-alist
+         '((t . ivy-format-function-arrow))
+         ivy-display-style 'fancy
+         ivy-use-selectable-prompt t)
+
+   (setq ivy-initial-inputs-alist
+         '((org-refile . "")
+           (org-agenda-refile . "")
+           (org-capture-refile . "")
+           (counsel-M-x . "")
+           (counsel-describe-function . "")
+           (counsel-describe-variable . "")
+           (counsel-org-capture . "")
+           (Man-completion-table . "")
+           (woman . ""))))
+
+ (use-package ivy-hydra
+   :after counsel
+   :demand t)
+
+ #+END_SRC 
+*** diminish
+
+ 在 mode line 中不显示某些 mode
+ #+BEGIN_SRC elisp
+ ;; Remove or rename mode line values.
+ (use-package diminish
+   :config
+   (eval-after-load "company"
+     '(diminish 'company-mode "c"))
+
+   (eval-after-load "yasnippet"
+     '(diminish 'yas-minor-mode "y"))
+
+   (eval-after-load "ace-isearch"
+     '(diminish 'ace-isearch-mode))
+
+   (eval-after-load "beacon"
+     '(diminish 'beacon-mode)))
+ #+END_SRC
+
+
+ #+BEGIN_SRC elisp
+ (provide 'init-ui)
+ #+END_SRC
+*** dashboard
+#+BEGIN_SRC elisp
+(use-package dashboard
+   :config
+   (setq dashboard-startup-banner 'logo
+         dashboard-banner-logo-title "Welcome to Emacs. Happy Hacking!"
+         dashboard-items '((recents  . 5)
+                        (bookmarks . 5)
+                        (projects . 5)
+                        (agenda . 5)
+                        (registers . 5))
+         dashboard-set-footer nil)
+  :hook
+  (after-init . dashboard-setup-startup-hook))
+#+END_SRC

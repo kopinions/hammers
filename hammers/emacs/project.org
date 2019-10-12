@@ -1,0 +1,40 @@
+#+TITLE: 项目相关配置
+#+AUTHOR: 孙建康（rising.lambda）
+#+EMAIL:  rising.lambda@gmail.com
+
+#+DESCRIPTION: A literate programming version of my Emacs Initialization script, loaded by the .emacs file.
+#+PROPERTY:    header-args        :results silent   :eval no-export   :comments org
+#+PROPERTY:    header-args        :mkdirp yes
+#+PROPERTY:    header-args:elisp  :tangle "~/.emacs.d/lisp/init-project.el"
+#+PROPERTY:    header-args:shell  :tangle no
+#+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil
+#+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
+#+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+
+*** projectile 
+#+BEGIN_SRC elisp
+(use-package projectile
+  :after counsel
+  :bind
+  (("C-c p p" . counsel-projectile-switch-project)
+   ("C-c p f" . counsel-projectile-find-file))
+  :config
+  (setq projectile-enable-caching t)
+  (setq projectile-mode-line-prefix "ρ")
+  (use-package ibuffer-projectile
+    :after (ibuffer))
+  (use-package counsel-projectile
+    :after (counsel))
+  (projectile-mode))
+#+END_SRC
+
+*** ibuffer
+#+BEGIN_SRC elisp
+(use-package ibuffer
+  :bind ("C-x C-b" . ibuffer))
+#+END_SRC
+
+*** export
+#+BEGIN_SRC elisp
+(provide 'init-project)
+#+END_SRC
