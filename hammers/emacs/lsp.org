@@ -90,7 +90,19 @@
     (lsp-mode . lsp-ui-mode)))
    #+END_SRC
 
-
+** emacs debug adaptor protocol
+#+BEGIN_SRC elisp
+(use-package dap-mode
+  :after lsp-mode
+  :config
+    (dap-mode 1)
+    (require 'dap-hydra)
+    (require 'dap-gdb-lldb)	
+    (require 'dap-go)
+    (use-package dap-ui
+      :config
+      (dap-ui-mode 1)))
+#+END_SRC
 ** company lsp
 
 #+BEGIN_SRC elisp
@@ -132,11 +144,7 @@
                           (setq tab-width 4)
                           (setq c-base-offset 4))))
 #+END_SRC
-
-
-
+** provide
 #+BEGIN_SRC elisp
-
 (provide 'init-lsp)
-
 #+END_SRC

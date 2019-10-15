@@ -1,4 +1,4 @@
-#+TITLE:  语言培植
+#+TITLE:  语言配置
 #+AUTHOR: 孙建康（rising.lambda）
 #+EMAIL:  rising.lambda@gmail.com
 
