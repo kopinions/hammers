@@ -40,7 +40,10 @@
 *** 智能移动行首
 
 #+BEGIN_SRC elisp
-
+(use-package mwim
+  :bind
+  ("C-a" . mwim-beginning-of-code-or-line)
+  ("C-e" . mwim-end-of-code-or-line))
 #+END_SRC
 
 *** 短时间敲击序列映射
