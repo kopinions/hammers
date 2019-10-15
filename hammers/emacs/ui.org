@@ -99,12 +99,9 @@
 #+BEGIN_SRC elisp
 (use-package page-break-lines
   :config
-  (global-page-break-lines-mode))
-
-(use-package page-break-lines
-  :no-require t
-  :config
-  (diminish 'page-break-lines-mode))
+  (global-page-break-lines-mode)
+  :hook
+  (after-init . (lambda() (diminish 'page-break-lines-mode))))
 #+END_SRC
 *** 自动提示可选命令
 #+BEGIN_SRC elisp

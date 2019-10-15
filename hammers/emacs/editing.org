@@ -94,6 +94,7 @@
   :bind ("C-x /" . goto-last-change))
 #+END_SRC
 
+** 括号设置
 *** 括号配对显示
 #+BEGIN_SRC elisp
 (use-package paren	
@@ -116,7 +117,29 @@
   :hook
   ((prog-mode . rainbow-delimiters-mode)))
 #+END_SRC
-*** 扩充选定区域
+*** 智能括号替换
+#+BEGIN_SRC elisp
+(use-package smartparens
+  :hook
+  ((after-init . smartparens-global-mode)
+  ((prog-mode markdown-mode) . turn-on-smartparens-strict-mode))
+  :config
+  (use-package smartparens-config
+  :ensure smartparens
+  :config (progn (show-smartparens-global-mode t)))
+  (sp-pair "=" "=" :actions '(wrap))
+  (sp-pair "+" "+" :actions '(wrap))
+  (sp-pair "<" ">" :actions '(wrap))
+  (sp-pair "$" "$" :actions '(wrap)))
+#+END_SRC
+** 清除到指定地方
+#+BEGIN_SRC elisp
+(use-package avy-zap
+  :bind
+  ("M-z" . avy-zap-to-char-dwim)
+  ("M-z" . avy-zap-up-to-char-dwim))
+#+END_SRC
+** 扩充选定区域
 
 #+BEGIN_SRC elisp
 (use-package expand-region
@@ -124,7 +147,7 @@
   (("C-=" . er/expand-region)))
 #+END_SRC
 
-*** 动态多光标
+** 动态多光标
 
 #+BEGIN_SRC elisp
 
@@ -144,7 +167,7 @@
 (global-unset-key [M-right])
 #+END_SRC
 
-*** 智能删除
+** 智能删除
 #+BEGIN_SRC elisp
 (defun kill-back-to-indentation ()
   "Kill from point back to the first non-whitespace character on the line."
@@ -156,7 +179,7 @@
 (global-set-key (kbd "C-M-<backspace>") 'kill-back-to-indentation)
 #+END_SRC
 
-*** 移动或者复制行
+** 移动或者复制行
 
 #+BEGIN_SRC elisp
 (use-package move-dup
@@ -168,7 +191,7 @@
   ("C-c u" . md-duplicate-up)))
 #+END_SRC
 
-*** vim 中 vi" C-M-u C-M-space
+** vim 中 vi" C-M-u C-M-space
 
 #+BEGIN_SRC elisp
 
@@ -185,7 +208,7 @@
 
 #+END_SRC
 
-*** 复制或剪切当前行
+** 复制或剪切当前行
 #+BEGIN_SRC elisp
 (use-package whole-line-or-region
   :config
@@ -197,14 +220,14 @@
   (diminish 'whole-line-or-region-local-mode))
 #+END_SRC
 
-*** 高亮转义字符
+** 高亮转义字符
 #+BEGIN_SRC elisp
 (use-package highlight-escape-sequences
   :config
   (hes-mode t))
 #+END_SRC
 
-*** 智能扩展 hippie-expand
+** 智能扩展 hippie-expand
 #+BEGIN_SRC elisp
 (global-set-key (kbd "M-/") 'hippie-expand)
 
@@ -216,7 +239,7 @@
         try-expand-dabbrev-from-kill))
 #+END_SRC
 
-*** 搜索
+** 搜索
 #+BEGIN_SRC elisp
 (use-package anzu
   :config
@@ -227,7 +250,16 @@
    ([remap query-replace] . anzu-query-replace)))
 #+END_SRC
 
-*** 高亮显示标示符
+** 编辑搜索结果
+#+BEGIN_SRC elisp
+(use-package wgrep
+  :defer t
+  :custom
+  (wgrep-enable-key "e")
+  (wgrep-auto-save-buffer t)
+  (wgrep-change-readonly-file t))
+#+END_SRC
+** 高亮显示标示符
 #+BEGIN_SRC elisp
 (use-package symbol-overlay
   :hook
@@ -244,13 +276,13 @@
   :config
   (diminish 'symbol-overlay-mode))
 #+END_SRC
-*** mode line 警告
+** mode line 警告
 #+BEGIN_SRC elisp
 (use-package mode-line-bell
   :init
   (add-hook 'after-init-hook 'mode-line-bell-mode))
 #+END_SRC
-*** 回车
+** 回车
 #+BEGIN_SRC elisp
 (global-set-key (kbd "RET") 'newline-and-indent)
 (defun m/newline-at-end-of-line ()
@@ -261,13 +293,13 @@
 
 (global-set-key (kbd "S-<return>") 'm/newline-at-end-of-line)
 #+END_SRC
-*** 驼峰或者下划线分字
+** 驼峰或者下划线分字
 #+BEGIN_SRC elisp
 (use-package subword
 :config
 (global-subword-mode))
 #+END_SRC
-*** 位置之间向前切换或者向后切换
+** 位置之间向前切换或者向后切换
 #+BEGIN_SRC elisp
 (use-package backward-forward
   :bind
@@ -279,7 +311,7 @@
   :config
   (backward-forward-mode t))
 #+END_SRC
-*** 显示行号
+** 显示行号
 #+BEGIN_SRC elisp
 (use-package display-line-numbers
   :custom
@@ -287,7 +319,7 @@
   :hook
   ((prog-mode yaml-mode systemd-mode) . display-line-numbers-mode))
 #+END_SRC
-*** 其他
+** 其他
 #+BEGIN_SRC elisp
 (use-package goto-line-preview
   :after display-line-numbers

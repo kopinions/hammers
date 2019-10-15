@@ -39,14 +39,6 @@
     :ensure t
     :commands lsp-treemacs-errors-list
     )
-  ;; cc-mode
-  (use-packabge cc-mode
-    :bind (:map c-mode-base-map
-           ("C-c c" . compile))
-    :hook (c-mode-common . (lambda ()
-                            (c-set-style "bsd")
-                            (setq tab-width 4)
-                            (setq c-base-offset 4))))
   ;; LSP UI tools
   (use-package lsp-ui
     :ensure t
@@ -131,9 +123,11 @@
   (company-lsp-async t))
 
 (use-package cc-mode
-:bind (:map c-mode-base-map
+  :bind 
+    (:map c-mode-base-map
        ("C-c c" . compile))
-:hook (c-mode-common . (lambda ()
+  :hook 
+  (c-mode-common . (lambda ()
                           (c-set-style "bsd")
                           (setq tab-width 4)
                           (setq c-base-offset 4))))

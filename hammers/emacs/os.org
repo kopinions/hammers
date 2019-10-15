@@ -12,32 +12,42 @@
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
 ** macos
-
-   #+BEGIN_SRC elisp
-   (when (eq m/os 'macos)
-     (setq mac-command-modifier 'meta)
-     (setq mac-option-modifier 'super))
-   #+END_SRC
-
+*** 键位设置
+#+BEGIN_SRC elisp
+(when (eq m/os 'macos)
+  (setq mac-command-modifier 'meta)
+  (setq mac-option-modifier 'super))
+#+END_SRC
+*** 剪切板管理
+#+BEGIN_SRC elisp
+(use-package pbcopy
+:if (eq m/os 'macos)
+:hook (dashboard-mode . (turn-on-pbcopy)))
+#+END_SRC
 ** linux
+*** 键位设置
+ #+BEGIN_SRC elisp
+(when (eq m/os 'linux)
+   (setq x-super-keysym 'meta))
 
-   #+BEGIN_SRC elisp
-   (when (eq m/os 'linux)
-     (setq x-super-keysym 'meta))
-
-   (if (eq window-system 'x)
-    (set-default-font "-misc-fixed-medium-r-normal--13-120-75-75-c-70-iso8859-15"))
-   #+END_SRC
-
-** 环境变量
-   #+BEGIN_SRC elisp
-   (use-package exec-path-from-shell
-    :config
-    (when (memq window-system '(mac ns x))
-      (exec-path-from-shell-initialize)))
-   #+END_SRC
-
-
-  #+BEGIN_SRC elisp
-  (provide 'init-os)
-  #+END_SRC
+(if (eq window-system 'x)
+  (set-default-font "-misc-fixed-medium-r-normal--13-120-75-75-c-70-iso8859-15"))
+ #+END_SRC
+*** 剪切板管理
+#+BEGIN_SRC elisp
+(use-package xclip
+  :if (eq m/os 'linux)
+  :config
+  (xclip-mode 1))
+#+END_SRC
+*** 环境变量
+#+BEGIN_SRC elisp
+(use-package exec-path-from-shell
+ :config
+ (when (memq window-system '(mac ns x))
+   (exec-path-from-shell-initialize)))
+#+END_SRC
+** 导出
+ #+BEGIN_SRC elisp
+ (provide 'init-os)
+ #+END_SRC
