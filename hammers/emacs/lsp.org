@@ -95,13 +95,12 @@
 (use-package dap-mode
   :after lsp-mode
   :config
-    (dap-mode 1)
     (require 'dap-hydra)
     (require 'dap-gdb-lldb)	
     (require 'dap-go)
-    (use-package dap-ui
-      :config
-      (dap-ui-mode 1)))
+    (require 'dap-ui)
+    (dap-mode 1)
+    (dap-ui-mode 1))
 #+END_SRC
 ** company lsp
 
