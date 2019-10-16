@@ -135,6 +135,62 @@
   (sp-pair "<" ">" :actions '(wrap))
   (sp-pair "$" "$" :actions '(wrap)))
 #+END_SRC
+
+** 搜索设置
+*** 在另外的 buffer 动态显示结果
+#+BEGIN_SRC elisp
+ (use-package swiper
+  :demand t
+  :bind 
+     (("M-s" . swiper-thing-at-point)
+     ("C-s" . swiper)
+     :map ivy-minibuffer-map
+     ;; I use "C-x C-f" to open file, so bind "C-f" to
+     ;; `ivy-immediate-done' is very useful.
+     ("C-f" . ivy-immediate-done)
+     ("S-<return>" . ivy-immediate-done)
+     ([mouse-1] . ignore)
+     ([mouse-3] . ignore)
+     ([mouse-4] . ivy-next-line)
+     ([mouse-5] . ivy-previous-line))
+  :config
+  (ivy-mode 1)
+  (setq ivy-count-format ""
+        ivy-use-virtual-buffers t
+        ivy-format-functions-alist
+        '((t . ivy-format-function-arrow))
+        ivy-display-style 'fancy
+        ivy-use-selectable-prompt t)
+  (setq ivy-initial-inputs-alist
+        '((org-refile . "")
+          (org-agenda-refile . "")
+          (org-capture-refile . "")
+          (counsel-M-x . "")
+          (counsel-describe-function . "")
+          (counsel-describe-variable . "")
+          (counsel-org-capture . "")
+          (Man-completion-table . "")
+          (woman . ""))))
+#+END_SRC
+*** 替换
+#+BEGIN_SRC elisp
+(use-package anzu
+  :config
+  (setq anzu-mode-lighter "")
+  (global-anzu-mode t)
+  :bind
+  (([remap query-replace-regexp] . anzu-query-replace-regexp)
+   ([remap query-replace] . anzu-query-replace)))
+#+END_SRC
+*** 编辑搜索结果
+#+BEGIN_SRC elisp
+(use-package wgrep
+   :custom
+   (wgrep-enable-key "e")
+   (wgrep-auto-save-buffer t)
+   (wgrep-change-readonly-file t))
+#+END_SRC
+
 ** 清除到指定地方
 #+BEGIN_SRC elisp
 (use-package avy-zap
@@ -242,26 +298,6 @@
         try-expand-dabbrev-from-kill))
 #+END_SRC
 
-** 搜索
-#+BEGIN_SRC elisp
-(use-package anzu
-  :config
-  (setq anzu-mode-lighter "")
-  (global-anzu-mode t)
-  :bind
-  (([remap query-replace-regexp] . anzu-query-replace-regexp)
-   ([remap query-replace] . anzu-query-replace)))
-#+END_SRC
-
-** 编辑搜索结果
-#+BEGIN_SRC elisp
-(use-package wgrep
-  :defer t
-  :custom
-  (wgrep-enable-key "e")
-  (wgrep-auto-save-buffer t)
-  (wgrep-change-readonly-file t))
-#+END_SRC
 ** 高亮显示标示符
 #+BEGIN_SRC elisp
 (use-package symbol-overlay

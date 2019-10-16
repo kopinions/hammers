@@ -163,39 +163,6 @@
 
 *** swipper
  #+BEGIN_SRC elisp
- (use-package swiper
-   :demand t
-   :bind (
-          :map ivy-minibuffer-map
-          ;; I use "C-x C-f" to open file, so bind "C-f" to
-          ;; `ivy-immediate-done' is very useful.
-          ("C-f" . ivy-immediate-done)
-          ("S-<return>" . ivy-immediate-done)
-	  ("C-s" . (lambda () (interactive) (swiper (format "%s" (let ((sym (thing-at-point 'symbol))) (if sym sym ""))))))
-          ([mouse-1] . ignore)
-          ([mouse-3] . ignore)
-          ([mouse-4] . ivy-next-line)
-          ([mouse-5] . ivy-previous-line))
-   :config
-   (ivy-mode 1)
-   (setq ivy-count-format ""
-         ivy-use-virtual-buffers t
-         ivy-format-functions-alist
-         '((t . ivy-format-function-arrow))
-         ivy-display-style 'fancy
-         ivy-use-selectable-prompt t)
-
-   (setq ivy-initial-inputs-alist
-         '((org-refile . "")
-           (org-agenda-refile . "")
-           (org-capture-refile . "")
-           (counsel-M-x . "")
-           (counsel-describe-function . "")
-           (counsel-describe-variable . "")
-           (counsel-org-capture . "")
-           (Man-completion-table . "")
-           (woman . ""))))
-
  (use-package ivy-hydra
    :after counsel
    :demand t)
