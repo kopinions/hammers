@@ -1,0 +1,30 @@
+#+TITLE:  纠错设置
+#+AUTHOR: 孙建康（rising.lambda）
+#+EMAIL:  rising.lambda@gmail.com
+
+#+DESCRIPTION: A literate programming version of my Emacs Initialization script, loaded by the .emacs file.
+#+PROPERTY:    header-args        :results silent   :eval no-export   :comments org
+#+PROPERTY:    header-args        :mkdirp yes
+#+PROPERTY:    header-args:elisp  :tangle "~/.emacs.d/lisp/init-correction.el"
+#+PROPERTY:    header-args:shell  :tangle no
+#+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil
+#+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
+#+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+
+** flycheck
+
+#+BEGIN_SRC elisp
+(use-package flycheck
+  :custom
+  (flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list)
+  :hook
+  (after-init . global-flycheck-mode))
+(use-package flycheck-color-mode-line
+  :hook
+  (flycheck-mode . flycheck-color-mode-line-mode))
+#+END_SRC
+
+** provide
+#+BEGIN_SRC elisp
+(provide 'init-correction)
+#+END_SRC

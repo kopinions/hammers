@@ -114,6 +114,8 @@
     :load-path (lambda () (expand-file-name "lisp" user-emacs-directory)))
    (use-package init-completion
     :load-path (lambda () (expand-file-name "lisp" user-emacs-directory)))
+   (use-package init-correction
+    :load-path (lambda () (expand-file-name "lisp" user-emacs-directory)))
    (use-package init-project
     :load-path (lambda () (expand-file-name "lisp" user-emacs-directory)))
    (use-package init-literate
