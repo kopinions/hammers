@@ -16,15 +16,19 @@
 (use-package projectile
   :after counsel
   :bind
-  (("C-c p p" . counsel-projectile-switch-project)
-   ("C-c p f" . counsel-projectile-find-file))
+  (
+   ("C-c p b" . counsel-projectile-switch-to-buffer)
+   ("C-c p p" . counsel-projectile-switch-project)
+   ("C-c p f" . counsel-projectile-find-file)
+   ("C-c p s" . projectile-save-project-buffers)
+   ("C-c p r" . counsel-projectile-rg))
   :config
   (setq projectile-enable-caching t)
   (setq projectile-mode-line-prefix "ρ")
   (use-package ibuffer-projectile
-    :after (ibuffer))
+    :after ibuffer)
   (use-package counsel-projectile
-    :after (counsel))
+    :after counsel)
   (projectile-mode))
 #+END_SRC
 
