@@ -364,7 +364,7 @@ same directory as the org-buffer and insert a link to this file."
 	      :type "POST"
        	      :data (json-encode `(("type" . "UNFOCUSED")
        	              ("title" . "Have a rest")
-       		      ("duration" . ,(if (or (equal :short-break org-pomodoro-state) (equal :none org-pomodoro-state))
+       		      ("duration" . ,(if (not (eq :long-break org-pomodoro-state))
        		                         org-pomodoro-short-break-length
        				         org-pomodoro-long-break-length))))
               :headers '(("Content-Type" . "application/json"))))))
