@@ -12,7 +12,15 @@
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
 ** 基础设置
-
+*** 基础设置
+#+BEGIN_SRC elisp
+(put 'narrow-to-region 'disabled nil)
+(put 'narrow-to-page 'disabled nil)
+(put 'narrow-to-defun 'disabled nil)
+(put 'upcase-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
+(cua-selection-mode t)
+#+END_SRC
 *** 光标位置
 #+BEGIN_SRC elisp
 (use-package beacon
@@ -97,6 +105,20 @@
   :bind ("C-x /" . goto-last-change))
 #+END_SRC
 
+** 剪切设置
+*** 浏览剪切历史
+#+BEGIN_SRC elisp
+(use-package browse-kill-ring
+  :custom
+  (browse-kill-ring-separator "\f")
+  :bind
+  (("M-Y" . browse-kill-ring)
+   :map browse-kill-ring-mode-map
+   ("C-g" . browse-kill-ring-quit)
+   ("M-n" . browse-kill-ring-forward)
+   ("M-p" . browse-kill-ring-previous)
+  ))
+#+END_SRC
 ** 括号设置
 *** 括号配对显示
 #+BEGIN_SRC elisp
