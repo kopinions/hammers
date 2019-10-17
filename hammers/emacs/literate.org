@@ -295,6 +295,8 @@ same directory as the org-buffer and insert a link to this file."
       (advice-add 'org-refile :after (lambda (&rest _) (org-save-all-org-buffers)))
       (advice-add 'org-deadline       :after (lambda (&rest _rest)  (org-save-all-org-buffers)))
       (advice-add 'org-schedule       :after (lambda (&rest _rest)  (org-save-all-org-buffers)))
+      (advice-add 'org-agenda-schedule       :after (lambda (&rest _rest)  (org-save-all-org-buffers)))
+      (advice-add 'org-agenda-capture       :after (lambda (&rest _rest)  (org-save-all-org-buffers)))
       (advice-add 'org-store-log-note :after (lambda (&rest _rest)  (org-save-all-org-buffers)))
       (advice-add 'org-todo           :after (lambda (&rest _rest)  (org-save-all-org-buffers)))
 
