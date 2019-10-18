@@ -36,8 +36,8 @@
   (defconst m/os
     (let ((os (symbol-name system-type)))
       (cond ((string= os "darwin") 'macos)
-            ((string-prefix-p  os "gnu") 'linux)
-            ((or (string-prefix-p os "ms") (string-prefix-p os "windows")) 'windows))))
+            ((string-prefix-p "gnu" os) 'linux)
+            ((or (string-prefix-p "ms" os) (string-prefix-p "windows" os)) 'windows))))
   #+END_SRC
 
 ** 包管理配置
