@@ -401,6 +401,8 @@ same directory as the org-buffer and insert a link to this file."
 
 
 #+END_SRC
+
+** provide
 #+BEGIN_SRC elisp
 (provide 'init-literate)
 #+END_SRC

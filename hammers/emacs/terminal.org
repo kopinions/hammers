@@ -1,0 +1,44 @@
+#+TITLE:  终端设置
+#+AUTHOR: 孙建康（rising.lambda）
+#+EMAIL:  rising.lambda@gmail.com
+
+#+DESCRIPTION: A literate programming version of my Emacs Initialization script, loaded by the .emacs file.
+#+PROPERTY:    header-args        :results silent   :eval no-export   :comments org
+#+PROPERTY:    header-args        :mkdirp yes
+#+PROPERTY:    header-args:elisp  :tangle "~/.emacs.d/lisp/init-terminal.el"
+#+PROPERTY:    header-args:shell  :tangle no
+#+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil
+#+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
+#+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+
+** eshell
+
+*** 环境变量
+#+BEGIN_SRC elisp
+(setenv "PAGER" "cat")
+#+END_SRC   
+*** 配置选项
+#+BEGIN_SRC elisp
+(use-package eshell
+  :init
+  (defvar eshell-mode-map nil)
+  :custom
+  (eshell-scroll-to-bottom-on-input 'all)
+  (eshell-error-if-no-glob t)
+  (eshell-hist-ignoredups t)
+  (eshell-save-history-on-exit t)
+  (eshell-prefer-lisp-functions nil)
+  (eshell-destroy-buffer-when-process-dies t)
+  :bind
+  (:map eshell-mode-map
+  ("C-c c" . eshell-interrupt-process))
+  :hook
+  ((eshell-mode . (lambda() (add-to-list 'eshell-visual-commands "ssh")
+                           (add-to-list 'eshell-visual-commands "tail")
+			   (add-to-list 'eshell-visual-commands "top")
+			   (setq-local eshell-mode-map (make-sparse-keymap))))))
+#+END_SRC
+** provide
+#+BEGIN_SRC elisp
+(provide 'init-terminal)
+#+END_SRC

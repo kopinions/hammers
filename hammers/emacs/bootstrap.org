@@ -130,6 +130,8 @@
     :load-path (lambda () (expand-file-name "lisp" user-emacs-directory)))
    (use-package init-languages
     :load-path (lambda () (expand-file-name "lisp" user-emacs-directory)))
+   (use-package init-terminal
+    :load-path (lambda () (expand-file-name "lisp" user-emacs-directory)))
    #+END_SRC
 
 
