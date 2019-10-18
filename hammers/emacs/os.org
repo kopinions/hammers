@@ -18,11 +18,6 @@
   (setq mac-command-modifier 'meta)
   (setq mac-option-modifier 'super))
 #+END_SRC
-*** 剪切板管理
-#+BEGIN_SRC elisp
-(use-package pbcopy
-:if (eq m/os 'macos)
-:hook (dashboard-mode . (turn-on-pbcopy)))
 #+END_SRC
 ** linux
 *** 键位设置
