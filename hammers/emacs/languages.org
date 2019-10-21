@@ -58,6 +58,11 @@
   :hook
   (emacs-lisp-mode . rainbow-mode))
 #+END_SRC
+
+*** verilog mode
+#+BEGIN_SRC elisp
+(use-package verilog-mode)
+#+END_SRC
 *** provide
 #+BEGIN_SRC elisp
 (provide 'init-languages)
