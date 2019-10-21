@@ -67,9 +67,16 @@
     (lsp-ui-imenu-kind-position 'top)
     ;; lsp-ui-peek
     (lsp-ui-peek-enable t)
-    (lsp-ui-peek-peek-height 20)
-    (lsp-ui-peek-list-width 50)
+    (lsp-ui-peek-peek-height 80)
+    (lsp-ui-peek-list-width 150)
     (lsp-ui-peek-fontify 'on-demand) ;; never, on-demand, or always
+    :config
+    (set-face-attribute 'lsp-ui-peek-list nil :background (face-attribute 'hl-line :background))
+    (set-face-attribute 'lsp-ui-peek-peek nil :background (face-attribute 'hl-line :background))
+    (set-face-attribute 'lsp-ui-peek-selection nil :background (face-attribute 'highlight :background) :foreground (face-attribute 'default :foreground))
+    (set-face-attribute 'lsp-ui-peek-filename nil :foreground (face-attribute 'font-lock-constant-face :foreground))
+    (set-face-attribute 'lsp-ui-peek-highlight nil :background (face-attribute 'highlight :background) :foreground (face-attribute 'highlight :foreground) :distant-foreground (face-attribute 'highlight :foreground))
+    (set-face-attribute 'lsp-ui-peek-header nil :background (face-attribute 'highlight :background) :foreground (face-attribute 'default :foreground))
     :preface
     (defun m/toggle-lsp-ui-doc ()
       (interactive)
@@ -80,8 +87,8 @@
         (lsp-ui-doc-mode 1)))
     :bind
     (:map lsp-mode-map
-          ("C-c C-r" . lsp-ui-peek-find-references)
-          ("C-c C-d" . lsp-ui-peek-find-definitions)
+          ("M-?" . lsp-ui-peek-find-references)
+          ("M-." . lsp-ui-peek-find-definitions)
           ("C-c C-i" . lsp-ui-peek-find-implementation)
           ("C-c m"   . lsp-ui-imenu)
           ("C-c s"   . lsp-ui-sideline-mode)
