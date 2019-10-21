@@ -21,7 +21,7 @@
 #+BEGIN_SRC elisp
 (use-package eshell
   :init
-  (defvar eshell-mode-map nil)
+  (defvar eshell-mode-map (make-sparse-keymap))
   :custom
   (eshell-scroll-to-bottom-on-input 'all)
   (eshell-error-if-no-glob t)
