@@ -129,6 +129,9 @@ same directory as the org-buffer and insert a link to this file."
 	      ("t" "general task." entry
 	       (file ,(expand-file-name "inbox.org" private-directory))
 	       "* NEXT %?\n%U\n" :clock-resume 1)
+	      ("n" "notes." entry
+	       (file ,(expand-file-name "notes.org" private-directory))
+	       "* %? :NOTE:\n%U\n%a\n" :clock-resume t)
 	      ("r" "retrospective note" plain (file+olp+datetree "~/datas/nuts/1si/orgs/notes/retrospect.org")
 		 "%[~/datas/nuts/1si/orgs/templates/retrospect.org]"
 	      :tree-type week)
