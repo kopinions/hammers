@@ -43,6 +43,13 @@
   (global-set-key (kbd "M-n") 'forward-paragraph-blink)
 
   (beacon-mode 1))
+
+(use-package hl-line
+  :ensure nil
+  :custom-face
+  (hl-line ((t (:background "#008b8b"))))
+  :hook
+  (after-init . global-hl-line-mode))
 #+END_SRC
 
 *** 智能移动行首
@@ -145,6 +152,30 @@
 *** 智能括号替换
 #+BEGIN_SRC elisp
 (use-package smartparens
+  :bind
+  (([remap backward-up-list] . sp-backward-up-sexp)
+   ("C-M-a" . sp-beginning-of-sexp)
+   ("C-M-e" . sp-end-of-sexp)
+   ("C-M-f" . sp-forward-sexp)
+   ("C-M-b" . sp-backward-sexp)
+   ("C-M-n" . sp-next-sexp)
+   ("C-M-p" . sp-previous-sexp)
+   ("C-S-f" . sp-forward-symbol)
+   ("C-S-b" . sp-backward-symbol)
+   ("C-M-w" . sp-copy-sexp)
+   ("C-M-d" . delete-sexp)
+   ("M-<backspace>" . backward-kill-word)
+   ("C-<backspace>" . sp-backward-kill-word)
+   ([remap sp-backward-kill-word] . backward-kill-word)
+   ("C-c ("  . wrap-with-parens)
+   ("C-c ["  . wrap-with-brackets)
+   ("C-c {"  . wrap-with-braces)
+   ("C-c '"  . wrap-with-single-quotes)
+   ("C-c \"" . wrap-with-double-quotes)
+   ("C-c _"  . wrap-with-underscores)
+   ("C-c `"  . wrap-with-back-quotes)
+   ("M-[" . sp-backward-unwrap-sexp)
+   ("M-]" . sp-unwrap-sexp))
   :hook
   ((after-init . smartparens-global-mode)
   ((prog-mode markdown-mode) . turn-on-smartparens-strict-mode))
@@ -156,6 +187,7 @@
   (sp-pair "+" "+" :actions '(wrap))
   (sp-pair "<" ">" :actions '(wrap))
   (sp-pair "$" "$" :actions '(wrap)))
+
 #+END_SRC
 
 ** 搜索设置
@@ -248,20 +280,7 @@
 (global-unset-key [M-right])
 #+END_SRC
 
-** 智能删除
-#+BEGIN_SRC elisp
-(defun kill-back-to-indentation ()
-  "Kill from point back to the first non-whitespace character on the line."
-  (interactive)
-  (let ((prev-pos (point)))
-    (back-to-indentation)
-    (kill-region (point) prev-pos)))
-
-(global-set-key (kbd "C-M-<backspace>") 'kill-back-to-indentation)
-#+END_SRC
-
 ** 移动或者复制行
-
 #+BEGIN_SRC elisp
 (use-package move-dup
   :bind (("M-<up>" . md-move-lines-up)
@@ -270,23 +289,6 @@
   ("M-S-<down>" . md-duplicate-down)
   ("C-c d" . md-duplicate-down)
   ("C-c u" . md-duplicate-up)))
-#+END_SRC
-
-** vim 中 vi" C-M-u C-M-space
-
-#+BEGIN_SRC elisp
-
-(defun m/backward-up-sexp (arg)
-  "Jump up to the start of the ARG'th enclosing sexp."
-  (interactive "p")
-  (let ((ppss (syntax-ppss)))
-    (cond ((elt ppss 3)
-           (goto-char (elt ppss 8))
-           (m/backward-up-sexp (1- arg)))
-          ((backward-up-list arg)))))
-
-(global-set-key [remap backward-up-list] 'm/backward-up-sexp) ; C-M-u, C-M-up
-
 #+END_SRC
 
 ** 复制或剪切当前行
