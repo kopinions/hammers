@@ -18,10 +18,16 @@
  (use-package gitattributes-mode)
  #+END_SRC
 
+*** git highlight mode
+#+BEGIN_SRC elisp
+(use-package diff-hl
+  :hook
+  (after-init . global-diff-hl-mode))
+#+END_SRC
 *** magit
  #+BEGIN_SRC elisp
  (use-package magit
-   :after (fullframe)
+   :after (fullframe diff-hl)
    :custom
    (magit-diff-refine-hunk t)
    :bind
@@ -29,7 +35,11 @@
    :config
    (use-package fullframe
      :config
-     (fullframe magit-status magit-mode-quit-window)))
+     (fullframe magit-status magit-mode-quit-window))
+   :hook
+   (magit-post-refresh . diff-hl-magit-post-refresh))
+
+
 
  (use-package magit-todos)
  #+END_SRC
