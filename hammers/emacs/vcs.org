@@ -20,9 +20,21 @@
 
 *** git highlight mode
 #+BEGIN_SRC elisp
-(use-package diff-hl
-  :hook
-  (after-init . global-diff-hl-mode))
+(use-package git-gutter
+    :custom
+    (git-gutter:modified-sign "~")
+    (git-gutter:added-sign    "+")
+    (git-gutter:deleted-sign  "-")
+    :custom-face
+    (git-gutter:modified ((t (:foreground "#f1fa8c" :background "#f1fa8c"))))
+    (git-gutter:added    ((t (:foreground "#50fa7b" :background "#50fa7b"))))
+    (git-gutter:deleted  ((t (:foreground "#ff79c6" :background "#ff79c6"))))
+    :config
+    (global-git-gutter-mode +1)
+    :hook
+    (magit-post-refresh . git-gutter:update-all-windows)
+    (magit-post-commit . git-gutter:update-all-windows)
+    (magit-refresh-buffer . git-gutter:update-all-windows))
 #+END_SRC
 *** magit
  #+BEGIN_SRC elisp
@@ -35,12 +47,7 @@
    :config
    (use-package fullframe
      :config
-     (fullframe magit-status magit-mode-quit-window))
-   :hook
-   (magit-post-refresh . diff-hl-magit-post-refresh))
-
-
-
+     (fullframe magit-status magit-mode-quit-window)))	
  (use-package magit-todos)
  #+END_SRC
 
