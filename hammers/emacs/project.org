@@ -14,7 +14,10 @@
 *** projectile 
 #+BEGIN_SRC elisp
 (use-package projectile
+  :diminish
   :after counsel
+  :custom
+  (projectile-sort-order 'recently-active)
   :bind
   (
    ("C-c p b" . counsel-projectile-switch-to-buffer)
