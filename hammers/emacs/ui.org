@@ -110,50 +110,88 @@
   (which-key-mode t))
 
 #+END_SRC
-*** ivy
- #+BEGIN_SRC elisp
- (use-package ivy
-   :bind
-   (("C-c C-r" . ivy-resume)
-    ("<f6>" . ivy-resume))
-   :config
-   (ivy-mode 1)
-   (setq ivy-use-virtual-buffers t)
-   (setq enable-recursive-minibuffers t)
-   (setq ivy-virtual-abbreviate 'fullpath)
-   (setq ivy-count-format "")
-   (setq ivy-magic-tilde nil)
-   (setq ivy-dynamic-exhibit-delay-ms 150)
-   (setq ivy-use-selectable-prompt t)
-   (setq projectile-completion-system 'ivy)
-   (use-package all-the-icons-ivy
-     :after all-the-icons
-     :config
-     (all-the-icons-ivy-setup))
-   (use-package ivy-rich
-     :config
-     (ivy-rich-mode 1)
-     (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)))
- #+END_SRC
-
 *** counsel
- #+BEGIN_SRC elisp
- (use-package counsel  
-   :bind
-   (("C-c C-r" . ivy-resume)
-    ("C-c s" . (lambda () (interactive) (counsel-rg (format "%s" (let ((sym (thing-at-point 'symbol))) (if sym sym ""))))))
-    ("C-x b" . counsel-switch-buffer)
-    ("C-x f" . counsel-recentf)
-    ("C-x C-b" . ivy-switch-buffer)
-    ("C-x C-f" . counsel-find-file)
-    ("C-h f" . counsel-describe-function)
-    ("C-h v" . counsel-describe-variable)
-    ("C-c y" . counsel-yank-pop))
-   
-   :config
-   ;; Default setting is not suitable for GuixSD.
-   (setq counsel-linux-app-format-function
-         #'counsel-linux-app-format-function-name-only))
+#+BEGIN_SRC elisp
+(use-package counsel
+  :custom
+  (counsel-yank-pop-height 15)
+  (enable-recursive-minibuffers t)
+  (ivy-use-selectable-prompt t)
+  (ivy-use-virtual-buffers t)
+  (ivy-on-del-error-function nil)
+  (swiper-action-recenter t)
+  :diminish ivy-mode counsel-mode  
+  :defines
+  (projectile-completion-system magit-completing-read-function)
+  :bind
+  (("C-c C-r" . ivy-resume)
+   ("C-x b" . counsel-switch-buffer)
+   ("C-x f" . counsel-recentf)
+   ("C-x C-b" . ivy-switch-buffer)
+   ("C-x C-f" . counsel-fzf)
+   ("C-h f" . counsel-describe-function)
+   ("C-h v" . counsel-describe-variable)
+   ("C-c y" . counsel-yank-pop))
+  :preface
+    (defun ivy-format-function-pretty (cands)
+      "Transform CANDS into a string for minibuffer."
+      (ivy--format-function-generic
+       (lambda (str)
+         (concat
+             (all-the-icons-faicon "hand-o-right" :height .85 :v-adjust .05 :face 'font-lock-constant-face)
+             (ivy--add-face str 'ivy-current-match)))
+       (lambda (str)
+         (concat "  " str))
+       cands
+       "\n"))
+  :config
+  ;; Default setting is not suitable for GuixSD.
+  (setq counsel-linux-app-format-function
+        #'counsel-linux-app-format-function-name-only)
+  (setq ivy-re-builders-alist
+      '((ivy-switch-buffer . ivy--regex-plus)
+        (t . ivy--regex-fuzzy)))
+  (setq ivy-initial-inputs-alist nil)
+  (with-eval-after-load 'projectile
+      (setq projectile-completion-system 'ivy))
+  (with-eval-after-load 'magit
+      (setq magit-completing-read-function 'ivy-completing-read))
+  (use-package flx)
+  (use-package amx)
+  (use-package counsel-projectile
+    :config (counsel-projectile-mode 1))
+  (use-package ivy-posframe
+    :custom
+    (ivy-display-function #'ivy-posframe-display-at-frame-center)
+    ;; (ivy-posframe-width 130)
+    ;; (ivy-posframe-height 11)
+    (ivy-posframe-parameters
+      '((left-fringe . 5)
+        (right-fringe . 5)))
+    :custom-face
+    (ivy-posframe ((t (:background "#282a36"))))
+    (ivy-posframe-border ((t (:background "#6272a4"))))
+    (ivy-posframe-cursor ((t (:background "#61bfff"))))
+    :hook
+    (ivy-mode . ivy-posframe-enable))
+  (use-package ivy-rich
+    :defines
+    (all-the-icons-dir-icon-alist bookmark-alist)
+    :functions
+    (all-the-icons-icon-family
+      all-the-icons-match-to-alist
+      all-the-icons-auto-mode-match?
+      all-the-icons-octicon
+      all-the-icons-dir-is-submodule)
+    :hook 
+    (ivy-rich-mode . (lambda ()
+                              (setq ivy-virtual-abbreviate
+                              (or (and ivy-rich-mode 'abbreviate)))))
+    :config
+    (ivy-rich-mode))
+  :hook
+  (after-init . ivy-mode)
+  (ivy-mode . counsel-mode))
  #+END_SRC
 
 *** ivy-xref
@@ -165,11 +203,6 @@
           (setq xref-show-definitions-function #'ivy-xref-show-defs)))
 #+END_SRC
 
-*** swipper
- #+BEGIN_SRC elisp
- (use-package ivy-hydra
-   :after counsel
-   :demand t)
 
  #+END_SRC 
 *** diminish
