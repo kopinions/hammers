@@ -30,7 +30,7 @@
   (lsp-clients-go-server-args '("--cache-style=always" "--diagnostics-style=onsave" "--format-style=goimports"))
   (lsp-clients-clangd-args '("-j=4" "-background-index" "-log=error"))
   :hook
-  ((c-mode c++-mode) . lsp-deferred)
+  (c-mode-common . lsp)
   :bind
   (:map lsp-mode-map
         ("C-c r"   . lsp-rename))
@@ -70,13 +70,6 @@
     (lsp-ui-peek-peek-height 80)
     (lsp-ui-peek-list-width 150)
     (lsp-ui-peek-fontify 'on-demand) ;; never, on-demand, or always
-    :config
-    (set-face-attribute 'lsp-ui-peek-list nil :background (face-attribute 'hl-line :background))
-    (set-face-attribute 'lsp-ui-peek-peek nil :background (face-attribute 'hl-line :background))
-    (set-face-attribute 'lsp-ui-peek-selection nil :background (face-attribute 'highlight :background) :foreground (face-attribute 'default :foreground))
-    (set-face-attribute 'lsp-ui-peek-filename nil :foreground (face-attribute 'font-lock-constant-face :foreground))
-    (set-face-attribute 'lsp-ui-peek-highlight nil :background (face-attribute 'highlight :background) :foreground (face-attribute 'highlight :foreground) :distant-foreground (face-attribute 'highlight :foreground))
-    (set-face-attribute 'lsp-ui-peek-header nil :background (face-attribute 'highlight :background) :foreground (face-attribute 'default :foreground))
     :preface
     (defun m/toggle-lsp-ui-doc ()
       (interactive)
@@ -140,15 +133,15 @@
   (company-lsp-cache-candidates nil)
   (company-lsp-async t))
 
+(use-package google-c-style
+  :hook
+  ((c-mode-common c++-mode-common) . (lambda ()
+                          (google-set-c-style)
+                          (google-make-newline-indent))))
 (use-package cc-mode
   :bind 
     (:map c-mode-base-map
-       ("C-c c" . compile))
-  :hook 
-  (c-mode-common . (lambda ()
-                          (c-set-style "bsd")
-                          (setq tab-width 4)
-                          (setq c-base-offset 4))))
+       ("C-c c" . compile)))
 #+END_SRC
 ** provide
 #+BEGIN_SRC elisp
