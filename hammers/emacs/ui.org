@@ -128,6 +128,7 @@
    ("C-x b" . counsel-switch-buffer)
    ("C-x f" . counsel-recentf)
    ("C-x C-b" . ivy-switch-buffer)
+   ("C-x M-f" . counsel-find-file)
    ("C-x C-f" . counsel-fzf)
    ("C-h f" . counsel-describe-function)
    ("C-h v" . counsel-describe-variable)
