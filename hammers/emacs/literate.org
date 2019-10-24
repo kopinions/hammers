@@ -90,7 +90,7 @@ same directory as the org-buffer and insert a link to this file."
 
       ;; Targets start with the file name - allows creating level 1 tasks
       ;;(setq org-refile-use-outline-path (quote file))
-      (org-refile-use-outline-pnath t)
+      (org-refile-use-outline-path t)
       (org-outline-path-complete-in-steps nil)
 
       ;; Allow refile to create parent tasks with confirmation
@@ -292,8 +292,8 @@ same directory as the org-buffer and insert a link to this file."
 		       (effort-h (truncate effort-in-minutes 60))
 		       (effort-m (truncate (mod effort-in-minutes 60)))
 		       (effort-str (format "%d:%02d" effort-h effort-m)))
-		  (format "%s/%s" work-done-str effort-str))
-	      (format "%s" work-done-str))))
+		  (format "%s/%s" work-done-str effort-str))
+	      (format "%s" work-done-str))))
       :config
       (advice-add 'org-refile :after (lambda (&rest _) (org-save-all-org-buffers)))
       (advice-add 'org-deadline       :after (lambda (&rest _rest)  (org-save-all-org-buffers)))
