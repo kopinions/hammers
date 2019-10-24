@@ -28,11 +28,10 @@
 ** 输入法配置
 
 #+BEGIN_SRC elisp
-(use-package posframe
-  :ensure t)
+(use-package posframe)
 
 (use-package pyim
-  :ensure t
+  :diminish
   :demand t
   :requires posframe
   :config
@@ -75,9 +74,25 @@
   :bind
   (("M-j" . pyim-convert-string-at-point) ;与 pyim-probe-dynamic-english 配合
    ("C-;" . pyim-delete-word-from-personal-buffer))
-  :hook ((emacs-startup . pyim-restart)))
+  :hook 
+  ((emacs-startup . pyim-restart)))
 #+END_SRC
 
+** rime 输入法配置
+#+BEGIN_SRC elisp
+(use-package liberime											   
+    :load-path (lambda () (expand-file-name "rime" user-emacs-directory))					   
+    :custom													   
+    (rime_share_data_dir "/Library/Input Methods/Squirrel.app/Contents/SharedSupport")
+    (rime_user_data_dir (expand-file-name "rime" user-emacs-directory))					   
+    :hook													   
+    (pyim-load . (lambda () 											   
+      (interactive)												   
+      (liberime-start rime_share_data_dir rime_user_data_dir)						   
+      (liberime-select-schema "luna_pinyin_simp")								   
+      (setq pyim-default-scheme 'rime-quanpin)								   
+    )))													   
+#+END_SRC
 
 #+BEGIN_SRC elisp
 
