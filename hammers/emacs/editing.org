@@ -21,6 +21,30 @@
 (put 'downcase-region 'disabled nil)
 (cua-selection-mode t)
 #+END_SRC
+不生成 #filename# 临时文件
+#+BEGIN_SRC elisp
+(setq auto-save-default nil)
+#+END_SRC
+禁止备份文件
+#+BEGIN_SRC elisp
+(setq make-backup-files nil)
+#+END_SRC
+#+BEGIN_SRC elisp
+(setq delete-by-moving-to-trash t) 
+#+END_SRC
+保持光标在行尾
+#+BEGIN_SRC elisp
+(setq track-eol t)
+(setq line-move-visual nil)
+#+END_SRC
+默认整行删除，包括 \n
+#+BEGIN_SRC elisp
+(setq-default kill-whole-line t)
+#+END_SRC
+
+#+BEGIN_SRC elisp
+(setq set-mark-command-repeat-pop t)
+#+END_SRC
 *** 光标位置
 #+BEGIN_SRC elisp
 (use-package beacon
@@ -46,12 +70,9 @@
 
 (use-package hl-line
   :ensure nil
-  :custom-face
-  (hl-line ((t (:background "#008b8b"))))
   :hook
   (after-init . global-hl-line-mode))
 #+END_SRC
-
 *** 智能移动行首
 
 #+BEGIN_SRC elisp
