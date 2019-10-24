@@ -84,7 +84,7 @@
     :load-path (lambda () (expand-file-name "rime" user-emacs-directory))					   
     :custom													   
     (rime_share_data_dir "/Library/Input Methods/Squirrel.app/Contents/SharedSupport")
-    (rime_user_data_dir (expand-file-name "rime" user-emacs-directory))					   
+    (rime_user_data_dir (expand-file-name "rime" user-emacs-directory))
     :hook													   
     (pyim-load . (lambda () 											   
       (interactive)												   
@@ -92,6 +92,13 @@
       (liberime-select-schema "luna_pinyin_simp")								   
       (setq pyim-default-scheme 'rime-quanpin)								   
     )))													   
+#+END_SRC
+
+#+BEGIN_SRC yaml tangle "~/.emacs.d/rime/default.custom.yaml" :noweb yes
+patch:
+  "menu/page_size": 100
+  "speller/auto_select": false
+  "speller/auto_select_unique_candidate": false
 #+END_SRC
 
 #+BEGIN_SRC elisp
