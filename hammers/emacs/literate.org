@@ -3,7 +3,7 @@
 #+EMAIL:  rising.lambda@gmail.com
 
 #+DESCRIPTION: 使用文学编程书写的，orgmode 的配置文件
-#+PROPERTY:    header-args        :results silent   :eval no-export   :comments org
+#+PROPERTY:    header-args        :results silent   :eval no-export   :comments both
 #+PROPERTY:    header-args        :mkdirp yes
 #+PROPERTY:    header-args:elisp  :tangle "~/.emacs.d/lisp/init-literate.el"
 #+PROPERTY:    header-args:shell  :tangle no
@@ -63,7 +63,7 @@ same directory as the org-buffer and insert a link to this file."
       :custom
       (org-src-fontify-natively t)
       (org-special-ctrl-a/e t)
-      (private-directory "~/datas/boxes/agendas")
+      (private-directory "~/agendas")
       (org-directory private-directory)
       (org-ditaa-jar-path "~/.emacs.d/ditaa.jar")
       (org-plantuml-jar-path "~/.emacs.d/plantuml.jar")
@@ -132,8 +132,8 @@ same directory as the org-buffer and insert a link to this file."
 	      ("n" "notes." entry
 	       (file ,(expand-file-name "notes.org" private-directory))
 	       "* %? :NOTE:\n%U\n%a\n" :clock-resume t)
-	      ("r" "retrospective note" plain (file+olp+datetree "~/datas/nuts/1si/orgs/notes/retrospect.org")
-		 "%[~/datas/nuts/1si/orgs/templates/retrospect.org]"
+	      ("r" "retrospective note" plain (file+olp+datetree ,(expand-file-name "retrospect.org" private-directory))
+		 ,(concat "%[" (expand-file-name "retrospect.tmpl" private-directory) "]")
 	      :tree-type week)
 	      ("i" "interrupt task" entry
 	       (file ,(expand-file-name "inbox.org" private-directory))
@@ -336,7 +336,7 @@ same directory as the org-buffer and insert a link to this file."
 	     (sql . t)
 	     (sqlite . t))))
 #+END_SRC
-
+*** org-mode 番茄工作法
 #+BEGIN_SRC elisp
 ;; Pomodoro
 (use-package org-pomodoro
@@ -375,6 +375,7 @@ same directory as the org-buffer and insert a link to this file."
               :headers '(("Content-Type" . "application/json"))))))
 #+END_SRC
 
+*** org mode 可以拖拽下载
 #+BEGIN_SRC elisp
 ;; Download Drag&Drop images
 (use-package org-download
@@ -382,6 +383,7 @@ same directory as the org-buffer and insert a link to this file."
 
 #+END_SRC
 
+*** org mode 图标设置
 #+BEGIN_SRC elisp
 ;; Pretty bullets
 (use-package org-bullets
@@ -405,6 +407,32 @@ same directory as the org-buffer and insert a link to this file."
 
 #+END_SRC
 
+*** org-mode retrospect temlate
+#+BEGIN_SRC org :tangle "~/agendas/retrospect.tmpl" :noweb yes :mkdirp yes
+|----------------------------+---|
+| 昨天学到什么？             |   |
+|----------------------------+---|
+| 昨天得到什么教训？         |   |
+|----------------------------+---|
+| 昨天做了哪些换位思考？     |   |
+|----------------------------+---|
+| 昨天做了哪些倒推思维训练？ |   |
+|----------------------------+---|
+| 昨天发生的事情             |   |
+| 我能提出什么问题           |   |
+|----------------------------+---|
+| 接下来有什么计划？         |   |
+|                            |   |
+|                            |   |
+|                            |   |
+|----------------------------+---|
+#+END_SRC
+
+*** org-mode gtd files
+#+BEGIN_SRC org :tangle no :noweb yes :mkdirp yes
+#+CATEGORY: Inbox
+#+FILETAGS: INBOX
+#+END_SRC
 ** provide
 #+BEGIN_SRC elisp
 (provide 'init-literate)
