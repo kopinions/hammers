@@ -127,8 +127,7 @@
    ("C-x b" . counsel-switch-buffer)
    ("C-x f" . counsel-recentf)
    ("C-x C-b" . ivy-switch-buffer)
-   ("C-x M-f" . counsel-find-file)
-   ("C-x C-f" . counsel-fzf)
+   ("C-x C-f" . counsel-find-file)
    ("C-h f" . counsel-describe-function)
    ("C-h v" . counsel-describe-variable)
    ("C-c y" . counsel-yank-pop))
@@ -149,8 +148,11 @@
   (setq counsel-linux-app-format-function
         #'counsel-linux-app-format-function-name-only)
   (setq ivy-re-builders-alist
-      '((ivy-switch-buffer . ivy--regex-plus)
-        (t . ivy--regex-fuzzy)))
+    '((swiper . ivy--regex-plus)
+     (ivy-switch-buffer . ivy--regex-plus)
+     (counsel-projectile-rg . ivy--regex-plus)
+     (counsel-rg . ivy--regex-plus)
+     (t . ivy--regex-fuzzy)))
   (setq ivy-initial-inputs-alist nil)
   (with-eval-after-load 'projectile
       (setq projectile-completion-system 'ivy))
@@ -160,20 +162,6 @@
   (use-package amx)
   (use-package counsel-projectile
     :config (counsel-projectile-mode 1))
-  (use-package ivy-posframe
-    :custom
-    (ivy-display-function #'ivy-posframe-display-at-frame-center)
-    ;; (ivy-posframe-width 130)
-    ;; (ivy-posframe-height 11)
-    (ivy-posframe-parameters
-      '((left-fringe . 5)
-        (right-fringe . 5)))
-    :custom-face
-    (ivy-posframe ((t (:background "#282a36"))))
-    (ivy-posframe-border ((t (:background "#6272a4"))))
-    (ivy-posframe-cursor ((t (:background "#61bfff"))))
-    :hook
-    (ivy-mode . ivy-posframe-enable))
   (use-package ivy-rich
     :defines
     (all-the-icons-dir-icon-alist bookmark-alist)
