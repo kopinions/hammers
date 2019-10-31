@@ -48,6 +48,7 @@
 *** 光标位置
 #+BEGIN_SRC elisp
 (use-package beacon
+  :diminish beacon-mode
   :config
   (setq beacon-blink-delay 0.1
         beacon-blink-duration 1
@@ -315,13 +316,9 @@
 ** 复制或剪切当前行
 #+BEGIN_SRC elisp
 (use-package whole-line-or-region
+  :diminish whole-line-or-region-local-mode
   :config
   (whole-line-or-region-global-mode t))
-
-(use-package whole-line-or-region
-  :no-require t
-  :config
-  (diminish 'whole-line-or-region-local-mode))
 #+END_SRC
 
 ** 高亮转义字符
@@ -346,6 +343,7 @@
 ** 高亮显示标示符
 #+BEGIN_SRC elisp
 (use-package symbol-overlay
+  :diminish symbol-overlay-mode
   :hook
   ((prog-mode . symbol-overlay-mode)
    (html-mode . symbol-overlay-mode)
@@ -356,9 +354,7 @@
     ("M-i" . symbol-overlay-put)
     ("M-I" . symbol-overlay-remove-all)
     ("M-n" . symbol-overlay-jump-next)
-    ("M-p" . symbol-overlay-jump-prev))
-  :config
-  (diminish 'symbol-overlay-mode))
+    ("M-p" . symbol-overlay-jump-prev)))
 #+END_SRC
 ** mode line 警告
 #+BEGIN_SRC elisp

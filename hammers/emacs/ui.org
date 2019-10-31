@@ -98,10 +98,9 @@
 *** 分页
 #+BEGIN_SRC elisp
 (use-package page-break-lines
+  :diminish page-break-lines-mode
   :config
-  (global-page-break-lines-mode)
-  :hook
-  (after-init . (lambda() (diminish 'page-break-lines-mode))))
+  (global-page-break-lines-mode))
 #+END_SRC
 *** 自动提示可选命令
 #+BEGIN_SRC elisp
@@ -113,6 +112,7 @@
 *** counsel
 #+BEGIN_SRC elisp
 (use-package counsel
+  :diminish ivy-mode counsel-mode  
   :custom
   (counsel-yank-pop-height 15)
   (enable-recursive-minibuffers t)
@@ -120,7 +120,6 @@
   (ivy-use-virtual-buffers t)
   (ivy-on-del-error-function nil)
   (swiper-action-recenter t)
-  :diminish ivy-mode counsel-mode  
   :defines
   (projectile-completion-system magit-completing-read-function)
   :bind
@@ -206,33 +205,10 @@
 
 
  #+END_SRC 
-*** diminish
-
- 在 mode line 中不显示某些 mode
- #+BEGIN_SRC elisp
- ;; Remove or rename mode line values.
- (use-package diminish
-   :config
-   (eval-after-load "company"
-     '(diminish 'company-mode "c"))
-
-   (eval-after-load "yasnippet"
-     '(diminish 'yas-minor-mode "y"))
-
-   (eval-after-load "ace-isearch"
-     '(diminish 'ace-isearch-mode))
-
-   (eval-after-load "beacon"
-     '(diminish 'beacon-mode)))
- #+END_SRC
-
-
- #+BEGIN_SRC elisp
- (provide 'init-ui)
- #+END_SRC
 *** dashboard
 #+BEGIN_SRC elisp
 (use-package dashboard
+   :diminish dashboard-mode
    :config
    (setq dashboard-startup-banner 'logo
          dashboard-banner-logo-title "Welcome to Emacs. Happy Hacking!"
@@ -244,4 +220,8 @@
          dashboard-set-footer nil)
   :hook
   (after-init . dashboard-setup-startup-hook))
+#+END_SRC
+*** provide
+#+BEGIN_SRC elisp
+(provide 'init-ui)
 #+END_SRC
