@@ -63,6 +63,8 @@ same directory as the org-buffer and insert a link to this file."
       :custom
       (org-src-fontify-natively t)
       (org-special-ctrl-a/e t)
+      (org-use-sub-superscripts '{})
+      (org-export-with-sub-superscripts '{})
       (private-directory "~/agendas")
       (org-directory private-directory)
       (org-ditaa-jar-path "~/.emacs.d/ditaa.jar")
