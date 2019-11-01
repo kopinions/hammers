@@ -82,7 +82,7 @@
 #+BEGIN_SRC elisp
 (use-package all-the-icons
   :config
-  (unless (member "all-the-icons" (font-family-list))
+  (unless (or (member "all-the-icons" (font-family-list)) m/offline)
     (all-the-icons-install-fonts t)))
 #+END_SRC
 

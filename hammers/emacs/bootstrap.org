@@ -41,6 +41,11 @@
 (setq gc-cons-threshold 100000000)
 #+END_SRC
 
+** 是否开启离线模式
+#+BEGIN_SRC elisp
+(defconst m/offline 
+  (file-directory-p (expand-file-name "offline" user-emacs-directory)))
+#+END_SRC
 ** 包管理配置
    Emacs 通过插件机制来提高可扩展性，我们可以通过安装插件来灵活的扩展 Emacs 的功能。 插件被封装成适用于 Emacs 的安装包，被存放在插件仓库（软件包仓库）中，以便与用户下载安装。
    Emacs 通过包管理器来管理插件的：安装、配置、装载、升级。
@@ -55,7 +60,7 @@
                          user-emacs-directory)))
   (setq package-user-dir versioned-package-dir))
 
-(if (file-directory-p (expand-file-name "offline" user-emacs-directory))
+(if m/offline
     (setq package-archives `(("gnu" . ,(expand-file-name "offline/gnu" user-emacs-directory))
 			     ("melpa" . ,(expand-file-name "offline/melpa" user-emacs-directory))))
   (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
