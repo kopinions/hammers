@@ -42,6 +42,10 @@
  (when (memq m/os '(macos linux))
    (exec-path-from-shell-initialize)))
 #+END_SRC
+** http
+#+BEGIN_SRC elisp
+(use-package request)
+#+END_SRC
 ** 导出
  #+BEGIN_SRC elisp
  (provide 'init-os)
