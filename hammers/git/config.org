@@ -1,0 +1,132 @@
+#+TITLE:  git 相关配置
+#+AUTHOR: 孙建康（rising.lambda）
+#+EMAIL:  rising.lambda@gmail.com
+
+#+DESCRIPTION: git config
+#+PROPERTY:    header-args        :results silent   :eval no-export   :comments org
+#+PROPERTY:    header-args        :mkdirp yes
+#+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil
+#+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
+#+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+
+#+BEGIN_SRC conf :tangle "~/.gitconfig"
+[user]
+	name = rising.lambda
+	email = rising.lambda@gmail.com
+[alias]
+	ignore = "!gi() { curl -L -s https://www.gitignore.io/api/$@ ;}; gi"
+[core]
+	ignorecase = false
+	quotepath = false
+	pager = less -F -X
+	excludesfile = ~/.gitignore
+[color]
+	ui = true
+[push]
+	default = simple
+[github]
+	user = sjkyspa
+[credential]
+	helper = store
+#+END_SRC
+
+#+BEGIN_SRC conf :tangle "~/.gitignore"
+### Emacs ###
+# -*- mode: gitignore; -*-
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# Org-mode
+.org-id-locations
+*_archive
+
+# flymake-mode
+*_flymake.*
+
+# eshell files
+/eshell/history
+/eshell/lastdir
+
+# elpa packages
+/elpa/
+
+# reftex files
+*.rel
+
+# AUCTeX auto folder
+/auto/
+
+# cask packages
+.cask/
+dist/
+
+# Flycheck
+flycheck_*.el
+
+# server auth directory
+/server/
+
+# projectiles files
+.projectile
+
+# directory configuration
+.dir-locals.el
+
+# network security
+/network-security.data
+
+
+# End of https://www.gitignore.io/api/emacs
+
+# Created by https://www.gitignore.io/api/vim
+# Edit at https://www.gitignore.io/?templates=vim
+
+### Vim ###
+# Swap
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+
+# Session
+Session.vim
+
+# Temporary
+.netrwhist
+*~
+# Auto-generated tag files
+tags
+# Persistent undo
+[._]*.un~
+
+# End of https://www.gitignore.io/api/vim
+
+# Created by https://www.gitignore.io/api/cmake
+# Edit at https://www.gitignore.io/?templates=cmake
+
+### CMake ###
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps
+
+### CMake Patch ###
+# External projects
+*-prefix/
+
+# End of https://www.gitignore.io/api/cmake
+#+END_SRC
