@@ -1,0 +1,18 @@
+#+TITLE:  ssh 链接相关配置
+#+AUTHOR: 孙建康（rising.lambda）
+#+EMAIL:  rising.lambda@gmail.com
+
+#+DESCRIPTION: ssh 链接配置文件
+#+PROPERTY:    header-args        :results silent   :eval no-export   :comments org
+#+PROPERTY:    header-args        :mkdirp yes
+#+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil
+#+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
+#+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+*** VPN 设置
+#+BEGIN_SRC conf :tangle "~/.ssh/config" :results silent
+Host vpn.seoul
+HostName 8.8.8.8
+User ec2-user
+Port 22
+IdentityFile ~/.ssh/keys/vpn.seoul.pem
+#+END_SRC
