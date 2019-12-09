@@ -62,6 +62,7 @@ same directory as the org-buffer and insert a link to this file."
   (use-package org
     :custom
     (org-src-fontify-natively t)
+    (org-descriptive-links nil)
     (org-special-ctrl-a/e t)
     (org-use-sub-superscripts '{})
     (org-export-with-sub-superscripts '{})
