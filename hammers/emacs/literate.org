@@ -395,8 +395,9 @@ same directory as the org-buffer and insert a link to this file."
   (setq org-bullets-bullet-list '("✙" "♱" "♰" "☥" "✞" "✟" "✝" "†" "✠" "✚" "✜" "✛" "✢" "✣" "✤" "✥")))
 #+END_SRC
 
-
+*** org-mode 博客
 #+BEGIN_SRC elisp
+(use-package ox-gfm)
 (use-package ox-hugo
       :after (ox org)
       :custom
