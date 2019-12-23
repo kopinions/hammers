@@ -9,140 +9,174 @@
 #+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
-
-#+BEGIN_SRC shell :tangle "~/.zshrc"
-# Path to your oh-my-zsh installation.
-export ZSH=~/.oh-my-zsh
-
-# Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme each
-# time that oh-my-zsh is loaded.
-ZSH_THEME="robbyrussell"
-
-# Uncomment the following line to use case-sensitive completion.
-CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion. Case
-# sensitive completion must be off. _ and - will be interchangeable.
-HYPHEN_INSENSITIVE="true"
-
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-ENABLE_CORRECTION="false"
-unsetopt correct_all
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(git gradle brew docker tmux tmuxinator kubectl autojump fzf gitignore cp iterm2 git-prompt git-remote-granch tig)
-
-source $ZSH/oh-my-zsh.sh
-export LANG=en_US.UTF-8
-if [[ -n $SSH_CONNECTION ]]; then
-   export EDITOR='vim'
- else
-   export EDITOR='vim'
-fi
-export ZPLUG_HOME=/usr/local/opt/zplug
-source $ZPLUG_HOME/init.zsh
-zplug "lib/clipboard", from:oh-my-zsh
-zplug "lib/history", from:oh-my-zsh
-zplug "Tarrasch/zsh-autoenv"
-
+#+BEGIN_SRC shell :tangle ~/.zshenv
+  export LANG=en_US.UTF-8
+  export ZPLUG_HOME=/usr/local/opt/zplug
+  export SHELL=/usr/local/bin/zsh
+  export GOPATH=~/workspace/envs/golang
+  # add go path
+  # add brew path
+  export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
+  export PATH="$PATH:$GOPATH/bin"
+  export PATH="/usr/local/opt/gettext/bin:$PATH"
+  export PATH="/workspace/envs/flutter/bin:$PATH"
+  export PATH="/usr/local/opt/binutils/bin:$PATH"
+  export PATH="/usr/local/opt/node@6/bin:$PATH"
+  export PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
+  export PATH="/usr/local/opt/openssl/bin:$PATH"
+  export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+  export PATH="/usr/local/opt/llvm/bin:$PATH"
+  export PATH="$PATH:$HOME/.rvm/bin"
+  export PATH="/opt/xtensa-esp32-elf/bin:/usr/local/opt/mysql-client/bin:$PATH"
+  export RIME_PATH="~/.oh-my-env/06-emacs.d/librime"
+  # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+  export PATH="$PATH:$HOME/.rvm/bin"
 #+END_SRC
 
-
 #+BEGIN_SRC shell :tangle "~/.zshrc"
-if [[ $- == *i* ]]; then
-    # CTRL-T - Paste the selected file path(s) into the command line
-    __fsel() {
-      local cmd="${FZF_CTRL_T_COMMAND:-"command find -L . \\( -path '*/\\.*' -o -fstype 'dev' -o -fstype 'proc' \\) -prune \
-        -o -type f -print \
-        -o -type d -print \
-        -o -type l -print 2> /dev/null | sed 1d | cut -b3-"}"
-      setopt localoptions pipefail 2> /dev/null
-      eval "$cmd | $(__fzfcmd) -m $FZF_CTRL_T_OPTS" | while read item; do
-        echo -n "${(q)item} "
-      done
-      local ret=$?
-      echo
-      return $ret
-    }
+  for file in ~/zsh/init/*.zsh; do
+      source "${file}"
+  done
 
-    __fzfcmd() {
-      [ ${FZF_TMUX:-1} -eq 1 ] && echo "fzf-tmux -d${FZF_TMUX_HEIGHT:-40%}" || echo "fzf"
-    }
+  export ZPLUG_LOADFILE="$HOME/zsh/zplugs.zsh"
+  source ${ZPLUG_HOME}/init.zsh
+  zplug load
+  zplug install
 
-    fzf-file-widget() {
-      LBUFFER="${LBUFFER}$(__fsel)"
-      local ret=$?
-      zle redisplay
-      typeset -f zle-line-init >/dev/null && zle zle-line-init
-      return $ret
-    }
-    zle     -N   fzf-file-widget
-    bindkey '^T' fzf-file-widget
+  for file in ~/zsh/post/*.zsh; do
+      source "${file}"
+  done
+#+END_SRC
 
-    # ALT-C - cd into the selected directory
-    fzf-cd-widget() {
-      local cmd="${FZF_ALT_C_COMMAND:-"command find -L . \\( -path '*/\\.*' -o -fstype 'dev' -o -fstype 'proc' \\) -prune \
-        -o -type d -print 2> /dev/null | sed 1d | cut -b3-"}"
-      setopt localoptions pipefail 2> /dev/null
-      cd "${$(eval "$cmd | $(__fzfcmd) +m $FZF_ALT_C_OPTS"):-.}"
-      local ret=$?
-      zle reset-prompt
-      typeset -f zle-line-init >/dev/null && zle zle-line-init
-      return $ret
-    }
-    zle     -N    fzf-cd-widget
-    bindkey '\ec' fzf-cd-widget
-
-    # CTRL-R - Paste the selected command from history into the command line
-    fzf-history-widget() {
-      local selected num
-      setopt localoptions noglobsubst pipefail 2> /dev/null
-      selected=( $(fc -l 1 | sort -k2 | uniq -f1|sort -k1 | eval "$(__fzfcmd) +s --tac +m -n2..,.. --tiebreak=index --toggle-sort=ctrl-r $FZF_CTRL_R_OPTS -q ${(q)LBUFFER}") )
-      local ret=$?
-      if [ -n "$selected" ]; then
-        num=$selected[1]
-        if [ -n "$num" ]; then
-          zle vi-fetch-history -n $num
-        fi
+#+BEGIN_SRC shell :tangle "~/zsh/init/init.zsh"
+  if [ ! "$PATH_LOADED" = "true" ]; then
+      # Add go binaries
+      if [ -d "$GOPATH" ]; then
+	  export PATH="$GOPATH/bin:$PATH"
+      elif [[ $commands[go] ]]; then
+	  export PATH="$(go env GOPATH)/bin:$PATH"
+	  export GOPATH="$(go env GOPATH)"
       fi
-      zle redisplay
-      typeset -f zle-line-init >/dev/null && zle zle-line-init
-      return $ret
-    }
 
-    zle     -N   fzf-history-widget
-    bindkey '^R' fzf-history-widget
-fi
+      if [[ $commands[javac] ]]; then
+	  export JAVA_HOME="$(dirname $(dirname $(realpath $(which javac))))"
+      fi
+
+      # Add yarn global binaries
+      if [[ $commands[yarn] ]]; then export PATH="$(yarn global bin):$PATH"; fi
+
+      # Add ruby gems
+      if [[ $commands[ruby] ]]; then export PATH="$(ruby -e 'puts Gem.user_dir')/bin:$PATH"; fi
+
+      # Add custom bin files
+      if [ -d "$HOME/bin" ]; then export PATH="$HOME/bin:$PATH"; fi
+      if [ -d "$HOME/.local/bin" ]; then export PATH="$HOME/.local/bin:$PATH"; fi
+
+      export PATH_LOADED="true"
+  fi
+#+END_SRC
+
+#+BEGIN_SRC shell :tangle "~/zsh/zplugs.zsh"
+  #!/usr/bin/env zsh
+  # this allows zplug to update itself on `zplug update`
+  zplug 'zplug/zplug', hook-build:'zplug --self-manage'
+
+  #zplug "ohmyzsh/ohmyzsh", use:"lib/{clipboard,completion,directories,history,termsupport,key-bindings}.zsh"
+  zplug "robbyrussell/oh-my-zsh", use:"lib/{clipboard,completion,directories,history,termsupport,key-bindings}.zsh"
+  zplug "plugins/extract", from:oh-my-zsh
+
+  for plugin in docker docker-compose git tmux tmuxinator autojump fzf gitignore cp; do
+      echo "$plugin"
+      zplug "plugins/$plugin", from:oh-my-zsh
+  done
+
+  #### ZSH MAGIC
+  zplug "zsh-users/zsh-autosuggestions"
+  zplug "zsh-users/zsh-completions"
+  zplug "zsh-users/zsh-syntax-highlighting", defer:2
+  zplug "zsh-users/zsh-history-substring-search", defer:3
+
+  zplug "denysdovhan/spaceship-prompt", use:spaceship.zsh, from:github, as:theme
+  SPACESHIP_TIME_SHOW="true"
+  SPACESHIP_BATTERY_THRESHOLD="80"
+  SPACESHIP_EXIT_CODE_SHOW="true"
+  SPACESHIP_EXIT_CODE_SYMBOL="✘"
+  return 0 # in case zplug adds plugs ignore them
+#+END_SRC
+
+#+BEGIN_SRC shell :tangle "~/zsh/post/bindings.zsh"
+  if [[ $- == *i* ]]; then
+      # CTRL-T - Paste the selected file path(s) into the command line
+      __fsel() {
+	local cmd="${FZF_CTRL_T_COMMAND:-"command find -L . \\( -path '*/\\.*' -o -fstype 'dev' -o -fstype 'proc' \\) -prune \
+	  -o -type f -print \
+	  -o -type d -print \
+	  -o -type l -print 2> /dev/null | sed 1d | cut -b3-"}"
+	setopt localoptions pipefail 2> /dev/null
+	eval "$cmd | $(__fzfcmd) -m $FZF_CTRL_T_OPTS" | while read item; do
+	  echo -n "${(q)item} "
+	done
+	local ret=$?
+	echo
+	return $ret
+      }
+
+      __fzfcmd() {
+	[ ${FZF_TMUX:-1} -eq 1 ] && echo "fzf-tmux -d${FZF_TMUX_HEIGHT:-40%}" || echo "fzf"
+      }
+
+      fzf-file-widget() {
+	LBUFFER="${LBUFFER}$(__fsel)"
+	local ret=$?
+	zle redisplay
+	typeset -f zle-line-init >/dev/null && zle zle-line-init
+	return $ret
+      }
+      zle     -N   fzf-file-widget
+      bindkey '^T' fzf-file-widget
+
+      # ALT-C - cd into the selected directory
+      fzf-cd-widget() {
+	local cmd="${FZF_ALT_C_COMMAND:-"command find -L . \\( -path '*/\\.*' -o -fstype 'dev' -o -fstype 'proc' \\) -prune \
+	  -o -type d -print 2> /dev/null | sed 1d | cut -b3-"}"
+	setopt localoptions pipefail 2> /dev/null
+	cd "${$(eval "$cmd | $(__fzfcmd) +m $FZF_ALT_C_OPTS"):-.}"
+	local ret=$?
+	zle reset-prompt
+	typeset -f zle-line-init >/dev/null && zle zle-line-init
+	return $ret
+      }
+      zle     -N    fzf-cd-bindkey
+      bindkey '\ec' fzf-cd-widget
+
+      # CTRL-R - Paste the selected command from history into the command line
+      fzf-history-widget() {
+	local selected num
+	setopt localoptions noglobsubst pipefail 2> /dev/null
+	selected=( $(fc -l 1 | sort -k2 | uniq -f1|sort -k1 | eval "$(__fzfcmd) +s --tac +m -n2..,.. --tiebreak=index --toggle-sort=ctrl-r $FZF_CTRL_R_OPTS -q ${(q)LBUFFER}") )
+	local ret=$?
+	if [ -n "$selected" ]; then
+	  num=$selected[1]
+	  if [ -n "$num" ]; then
+	    zle vi-fetch-history -n $num
+	  fi
+	fi
+	zle redisplay
+	typeset -f zle-line-init >/dev/null && zle zle-line-init
+	return $ret
+      }
+
+      zle     -N   fzf-history-widget
+      bindkey '^R' fzf-history-widget
+  fi
+#+END_SRC
+
+#+BEGIN_SRC shell :tangle "~/zsh/post/loads.zsh"
+  if [ -d "${HOME}/google-cloud-sdk" ]; then
+      . $HOME/google-cloud-sdk/completion.zsh.inc
+      . $HOME/google-cloud-sdk/path.zsh.inc
+  elif [ -d "/opt/google-cloud-sdk" ]; then
+      . /opt/google-cloud-sdk/completion.zsh.inc
+      . /opt/google-cloud-sdk/path.zsh.inc
+  fi
 #+END_SRC
