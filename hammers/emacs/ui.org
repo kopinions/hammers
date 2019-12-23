@@ -80,10 +80,10 @@
 
 *** 安装图标库
 #+BEGIN_SRC elisp
-(use-package all-the-icons
-  :config
-  (unless (or (member "all-the-icons" (font-family-list)) m/offline)
-    (all-the-icons-install-fonts t)))
+  (use-package all-the-icons
+    :config
+    (unless (or (member "all-the-icons" (font-family-list)) m/offline)
+      (ignore-errors (all-the-icons-install-fonts t))))
 #+END_SRC
 
 *** 快速切换窗口
