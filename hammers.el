@@ -75,9 +75,11 @@
                    (file-name-directory (buffer-file-name))))
 
 (m/tangles "${m/root}/hammers/emacs/*.org")
+(m/tangles "${m/root}/hammers/zsh/*.org")
+(m/tangles "${m/root}/hammers/git/*.org")
+(m/tangles "${m/root}/hammers/ssh/*.org")
 
-(message "Finished building hammers. Resetting Emacs...")
-(require 'init (m/path "${user-emacs-directory}" "init.el"))
+(message "Finished building hammers. Please Restart Emacs.")
 
 (provide 'm/hammers)
 
