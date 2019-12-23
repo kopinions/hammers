@@ -28,7 +28,7 @@
   (lsp-prefer-flymake nil) ;; t(flymake), nil(lsp-ui), or :none
   ;; go-client
   (lsp-clients-go-server-args '("--cache-style=always" "--diagnostics-style=onsave" "--format-style=goimports"))
-  (lsp-clients-clangd-args '("-j=4" "-background-index" "-log=error"))
+  (lsp-clients-clangd-args '("-j=8" "--pch-storage=memory" "-background-index" "-log=error" "--compile-commands-dir=build" "--clang-tidy" "--completion-style=detailed"))
   :hook
   (c-mode-common . lsp)
   :bind
