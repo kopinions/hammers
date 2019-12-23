@@ -1,6 +1,14 @@
 * Hammers
 ** 这是什么？
+通过文本编程，管理所有在开发环境中用到的各种各样的工具的配置，以便与用户下载安装。
+当前包含的工具配置有
+
+- git(ingore&config)
+- ssh(config)
+- zshrc & env
+- emacs
+
 ** 如何使用
-   #+BEGIN_SRC shell
-   emacs --load "./hammers.el"
-   #+END_SRC
+#+BEGIN_SRC shell
+  emacs --script "./hammers.el"
+#+END_SRC
