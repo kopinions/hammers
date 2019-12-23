@@ -86,7 +86,6 @@
   zplug "plugins/extract", from:oh-my-zsh
 
   for plugin in docker docker-compose git tmux tmuxinator autojump fzf gitignore cp; do
-      echo "$plugin"
       zplug "plugins/$plugin", from:oh-my-zsh
   done
 
@@ -96,7 +95,9 @@
   zplug "zsh-users/zsh-syntax-highlighting", defer:2
   zplug "zsh-users/zsh-history-substring-search", defer:3
 
-  zplug "denysdovhan/spaceship-prompt", use:spaceship.zsh, from:github, as:theme
+  zplug mafredri/zsh-async, from:github
+  zplug sindresorhus/pure, use:pure.zsh, from:github, as:theme
+
   SPACESHIP_TIME_SHOW="true"
   SPACESHIP_BATTERY_THRESHOLD="80"
   SPACESHIP_EXIT_CODE_SHOW="true"
