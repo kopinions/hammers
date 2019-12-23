@@ -13,48 +13,48 @@
 
 
 *** 从系统软件中获取链接
-    当系统为 macos 时，我们可以通过安装 [[https://github.com/xuchunyang/grab-mac-link.el][grab-mac-link]] 插件来获取 chrome/firefox/safia 中的链接，并且可以选择
-    plain/markdown/orgmode 的形式来插入到当前编辑的文件中。
+当系统为 macos 时，我们可以通过安装 [[https://github.com/xuchunyang/grab-mac-link.el][grab-mac-link]] 插件来获取 chrome/firefox/safia 中的链接，并且可以选择
+plain/markdown/orgmode 的形式来插入到当前编辑的文件中。
 
-    #+BEGIN_SRC elisp
-    (use-package grab-mac-link
-      :if (eq m/os 'macos))
-    #+END_SRC
+#+BEGIN_SRC elisp
+  (use-package grab-mac-link
+    :if (eq m/os 'macos))
+#+END_SRC
 
 *** org-mode 代码块异步执行配置
 #+BEGIN_SRC elisp
-(use-package ob-async
-  :config
-  (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images)
-  (add-hook 'ob-async-pre-execute-src-block-hook
-      '(lambda ()
-         (setq org-plantuml-jar-path "~/.emacs.d/plantuml.jar"))))
+  (use-package ob-async
+    :config
+    (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images)
+    (add-hook 'ob-async-pre-execute-src-block-hook
+	      '(lambda ()
+		 (setq org-plantuml-jar-path "~/.emacs.d/plantuml.jar"))))
 #+END_SRC
 
 *** 截屏配置
 
 #+BEGIN_SRC elisp
-(defun m/org-screenshot ()
-  "Take a screenshot into a time stamped unique-named file in the
-same directory as the org-buffer and insert a link to this file."
-  (interactive)
-  (org-display-inline-images)
-  (setq filename
-        (concat
-         (make-temp-name
-          (concat (file-name-nondirectory (buffer-file-name))
-                  "_imgs/"
-                  (format-time-string "%Y%m%d_%H%M%S_")) ) ".png"))
-  (unless (file-exists-p (file-name-directory filename))
-    (make-directory (file-name-directory filename)))
-  ; take screenshot
-  (if (eq system-type 'darwin)
-      (call-process "screencapture" nil nil nil "-i" filename))
-  (if (eq system-type 'gnu/linux)
-      (call-process "import" nil nil nil filename))
-  ; insert into file if correctly taken
-  (if (file-exists-p filename)
-    (insert (concat "[[file:" filename "]]"))))
+  (defun m/org-screenshot ()
+    "Take a screenshot into a time stamped unique-named file in the
+  same directory as the org-buffer and insert a link to this file."
+    (interactive)
+    (org-display-inline-images)
+    (setq filename
+	  (concat
+	   (make-temp-name
+	    (concat (file-name-nondirectory (buffer-file-name))
+		    "_imgs/"
+		    (format-time-string "%Y%m%d_%H%M%S_")) ) ".png"))
+    (unless (file-exists-p (file-name-directory filename))
+      (make-directory (file-name-directory filename)))
+					  ; take screenshot
+    (if (eq system-type 'darwin)
+	(call-process "screencapture" nil nil nil "-i" filename))
+    (if (eq system-type 'gnu/linux)
+	(call-process "import" nil nil nil filename))
+					  ; insert into file if correctly taken
+    (if (file-exists-p filename)
+	(insert (concat "[[file:" filename "]]"))))
 #+END_SRC
 
 *** org-mode 配置
@@ -67,6 +67,7 @@ same directory as the org-buffer and insert a link to this file."
     (org-use-sub-superscripts '{})
     (org-export-with-sub-superscripts '{})
     (private-directory "~/agendas")
+    (m/pomodoro 45)
     (org-directory private-directory)
     (org-ditaa-jar-path "~/.emacs.d/ditaa.jar")
     (org-plantuml-jar-path "~/.emacs.d/plantuml.jar")
@@ -101,7 +102,7 @@ same directory as the org-buffer and insert a link to this file."
     (org-refile-allow-creating-parent-nodes 'confirm)
     (org-refile-targets '((nil :maxlevel . 5) (org-agenda-files :maxlevel . 5)))
     (org-archive-mark-done nil)
-	;;; Agenda views
+	  ;;; Agenda views
     (org-agenda-clockreport-parameter-plist '(:link t :maxlevel 3))
     (org-archive-location "%s_archive::* Archive")
     ;; (org-agenda-current-time-string "------------NOW------------")
@@ -271,25 +272,39 @@ same directory as the org-buffer and insert a link to this file."
 		    (run-at-time 0 60 '(lambda ()
 					 (setq org-mode-line-string (m/task-clocked-time))
 					 (force-mode-line-update)))
-		    (force-mode-line-update)
-		    (request "http://127.0.0.1:13140"
-			     :type "POST"
-			     :data (json-encode `(("type" . "FOCUSED")
-						  ("title" . ,(or org-clock-current-task "interrupt task"))
-						  ("duration" . 45)))
-			     :headers '(("Content-Type" . "application/json")))))
-    (org-clock-out . (lambda () (request "http://127.0.0.1:13140"
-		:type "POST"
-		:data (json-encode `(("type" . "UNFOCUSED")
-			("title" . "Have a rest")
-			("duration" . 5)))
-		:headers '(("Content-Type" . "application/json")))))
-    (org-clock-in-last . (lambda () (request "http://127.0.0.1:13140"
-		:type "POST"
-		:data (json-encode `(("type" . "FOCUSED")
-			("title" . ,(or org-clock-current-task "interrupt task"))
-			("duration" . 45)))
-		:headers '(("Content-Type" . "application/json")))))
+		    (run-at-time (* m/pomodoro 60) nil (lambda() (org-clock-out)))
+		    (ignore-errors (request "http://127.0.0.1:13140"
+					    :type "POST"
+					    :data (json-encode `(("type" . "FOCUSED")
+								 ("title" . ,(or org-clock-current-task "interrupt task"))
+								 ("duration" . 45)))
+					    :headers '(("Content-Type" . "application/json"))))))
+    (org-clock-out . (lambda ()
+		       (run-at-time (* m/pomodoro 60) nil (lambda()
+							    (ignore-errors
+							      (request "http://127.0.0.1:13140"
+								       :type "POST"
+								       :data (json-encode `(("type" . "FOCUS")
+											    ("title" . "Ready to work")
+											    ("duration" . 5)))
+								       :headers '(("Content-Type" . "application/json"))))))
+		       (ignore-errors
+			 (request "http://127.0.0.1:13140"
+				  :type "POST"
+				  :data (json-encode `(("type" . "UNFOCUSED")
+						       ("title" . "Have a rest")
+						       ("duration" . 5)))
+				  :headers '(("Content-Type" . "application/json"))))))
+    (org-clock-in-last . (lambda ()
+			   (run-at-time (* m/pomodoro 60) nil (lambda() (org-clock-out)))
+
+			   (ignore-errors
+			     (request "http://127.0.0.1:13140"
+				      :type "POST"
+				      :data (json-encode `(("type" . "FOCUSED")
+							   ("title" . ,(or org-clock-current-task "interrupt task"))
+							   ("duration" . 45)))
+				      :headers '(("Content-Type" . "application/json"))))))
     (org-agenda-after-show . org-show-entry)
     (org-agenda-mode . hl-line-mode)
     (org-mode . (lambda ()
