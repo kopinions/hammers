@@ -181,3 +181,46 @@
       . /opt/google-cloud-sdk/path.zsh.inc
   fi
 #+END_SRC
+
+#+BEGIN_SRC shell :tangle "~/zsh/post/config.zsh"
+# auto menu complete
+setopt auto_menu
+
+# auto change directory
+setopt auto_cd
+
+#### HISTORY SEARCH
+autoload history-search-end
+HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND="bg=cyan,fg=white,bold"
+HIST_STAMPS="dd.mm.yyyy" ## OH-MY-ZSH
+setopt hist_ignore_dups  # ignore duplication command history list
+setopt hist_ignore_space # ignore when commands starts with space
+
+# use brace
+setopt brace_ccl
+
+# auto directory pushd that you can get dirs list by cd -[tab]
+setopt auto_pushd
+setopt pushd_ignore_dups        # no duplicates in dir stack
+setopt pushd_silent             # no dir stack after pushd or popd
+setopt pushd_to_home            # `pushd` = `pushd $HOME`
+
+# compacked complete list display
+setopt list_packed
+
+# multi redirect (e.x. echo "hello" > hoge1.txt > hoge2.txt)
+setopt multios
+
+setopt auto_remove_slash        # self explicit
+setopt chase_links              # resolve symlinks
+setopt correct                  # try to correct spelling of commands
+#+END_SRC
+
+#+BEGIN_SRC shell :tangle "~/zsh/post/functions.zsh"
+#!/bin/zsh
+function gitroot {
+    local root
+    root=$(git rev-parse --show-toplevel)
+    eval $root
+}
+#+END_SRC
