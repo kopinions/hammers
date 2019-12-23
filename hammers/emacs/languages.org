@@ -63,6 +63,11 @@
 #+BEGIN_SRC elisp
 (use-package verilog-mode)
 #+END_SRC
+
+*** lua mode
+#+BEGIN_SRC elisp
+  (use-package lua-mode)
+#+END_SRC
 *** provide
 #+BEGIN_SRC elisp
 (provide 'init-languages)
