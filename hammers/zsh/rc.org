@@ -53,20 +53,20 @@
       # Add go binaries
       if [ -d "$GOPATH" ]; then
 	  export PATH="$GOPATH/bin:$PATH"
-      elif [[ $commands[go] ]]; then
+      elif [ $commands[go] ]; then
 	  export PATH="$(go env GOPATH)/bin:$PATH"
 	  export GOPATH="$(go env GOPATH)"
       fi
 
-      if [[ $commands[javac] ]]; then
+      if [ $commands[javac] ]; then
 	  export JAVA_HOME="$(dirname $(dirname $(realpath $(which javac))))"
       fi
 
       # Add yarn global binaries
-      if [[ $commands[yarn] ]]; then export PATH="$(yarn global bin):$PATH"; fi
+      if [ $commands[yarn] ]; then export PATH="$(yarn global bin):$PATH"; fi
 
       # Add ruby gems
-      if [[ $commands[ruby] ]]; then export PATH="$(ruby -e 'puts Gem.user_dir')/bin:$PATH"; fi
+      if [ $commands[ruby] ]; then export PATH="$(ruby -e 'puts Gem.user_dir')/bin:$PATH"; fi
 
       # Add custom bin files
       if [ -d "$HOME/bin" ]; then export PATH="$HOME/bin:$PATH"; fi
