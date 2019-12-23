@@ -10,24 +10,48 @@
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
 #+BEGIN_SRC conf :tangle "~/.gitconfig"
-[user]
-	name = rising.lambda
-	email = rising.lambda@gmail.com
-[alias]
-	ignore = "!gi() { curl -L -s https://www.gitignore.io/api/$@ ;}; gi"
-[core]
-	ignorecase = false
-	quotepath = false
-	pager = less -F -X
-	excludesfile = ~/.gitignore
-[color]
-	ui = true
-[push]
-	default = simple
-[github]
-	user = sjkyspa
-[credential]
-	helper = store
+  [user]
+	  name = rising.lambda
+	  email = rising.lambda@gmail.com
+  [alias]
+	  ignore = "!gi() { curl -L -s https://www.gitignore.io/api/$@ ;}; gi"
+  [log]
+	  abbrevCommit = true
+  [tag]
+	  # Sort tags as version numbers whenever applicable, so 1.10.2 is AFTER 1.2.0.
+	  sort = version:refname
+  [core]
+	  ignorecase = false
+	  quotepath = false
+	  pager = less -F -X
+	  excludesfile = ~/.gitignore
+	  whitespace = -trailing-space
+  [color]
+	  ui = auto
+	
+  [color "branch"]
+	  current = yellow reverse
+	  local = yellow
+	  remote = green
+  [color "diff"]
+	  meta = yellow bold
+	  frag = magenta bold
+	  old = red bold
+	  new = green bold
+  [color "status"]
+	  added = yellow
+	  changed = green
+	  untracked = cyan
+	
+  [pull]
+	  rebase = true
+  [push]
+	  default = simple
+	  followTags = true
+  [github]
+	  user = sjkyspa
+  [credential]
+	  helper = store
 #+END_SRC
 
 #+BEGIN_SRC conf :tangle "~/.gitignore"
