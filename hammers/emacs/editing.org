@@ -23,11 +23,19 @@
 #+END_SRC
 不生成 #filename# 临时文件
 #+BEGIN_SRC elisp
-(setq auto-save-default nil)
+  (auto-save-visited-mode)
+  (make-directory (expand-file-name "backups" user-emacs-directory) t)
+  (setq auto-save-file-name-transforms
+	`((".*" ,(expand-file-name "backups/" user-emacs-directory) t)))
+  (setq auto-save-list-file-prefix
+	(expand-file-name "backups/" user-emacs-directory))
 #+END_SRC
 禁止备份文件
 #+BEGIN_SRC elisp
-(setq make-backup-files nil)
+  (setq make-backup-files nil)
+  ; stop to create the lock files
+  ; lock files is used to prevent concurrent edit of a file
+  (setq create-lockfiles nil)
 #+END_SRC
 #+BEGIN_SRC elisp
 (setq delete-by-moving-to-trash t) 
