@@ -24,11 +24,8 @@ plain/markdown/orgmode 的形式来插入到当前编辑的文件中。
 *** org-mode 代码块异步执行配置
 #+BEGIN_SRC elisp
   (use-package ob-async
-    :config
-    (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images)
-    (add-hook 'ob-async-pre-execute-src-block-hook
-	      '(lambda ()
-		 (setq org-plantuml-jar-path "~/.emacs.d/plantuml.jar"))))
+    :hook
+    (org-babel-after-execute . org-redisplay-inline-images))
 #+END_SRC
 
 *** 截屏配置
@@ -371,6 +368,17 @@ plain/markdown/orgmode 的形式来插入到当前编辑的文件中。
        (shell . t)
        (sql . t)
        (sqlite . t))))
+#+END_SRC
+
+*** org-mode 流程图配置
+#+BEGIN_SRC elisp
+  (use-package plantuml-mode
+    :after org
+    :config
+    (add-to-list
+     'org-src-lang-modes '("plantuml" . plantuml))
+    (setq plantuml-jar-path org-plantuml-jar-path)
+    (setq plantuml-default-exec-mode 'jar))
 #+END_SRC
 *** org-mode 番茄工作法
 #+BEGIN_SRC elisp
