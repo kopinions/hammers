@@ -11,10 +11,11 @@
 
 #+BEGIN_SRC conf :tangle "~/.gitconfig"
   [user]
-	  name = rising.lambda
-	  email = rising.lambda@gmail.com
+	  name = sjkyspa
+	  email = sjkyspa@gmail.com
   [alias]
 	  ignore = "!gi() { curl -L -s https://www.gitignore.io/api/$@ ;}; gi"
+	  root = "rev-parse --show-toplevel"
   [log]
 	  abbrevCommit = true
   [tag]
@@ -39,8 +40,8 @@
 	  old = red bold
 	  new = green bold
   [color "status"]
-	  added = yellow
-	  changed = green
+	  added = green
+	  changed = red
 	  untracked = cyan
 	
   [pull]
