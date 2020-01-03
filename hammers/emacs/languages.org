@@ -61,7 +61,10 @@
 
 *** verilog mode
 #+BEGIN_SRC elisp
-(use-package verilog-mode)
+  (use-package verilog-mode
+    :config
+    (autoload 'verilog-mode "verilog-mode" "Verilog mode" t )
+    (add-to-list 'auto-mode-alist '("\\.[ds]?vh?\\'" . verilog-mode)))
 #+END_SRC
 
 *** lua mode
