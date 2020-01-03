@@ -181,42 +181,41 @@
 #+END_SRC
 *** 智能括号替换
 #+BEGIN_SRC elisp
-(use-package smartparens
-  :bind
-  (([remap backward-up-list] . sp-backward-up-sexp)
-   ("C-M-a" . sp-beginning-of-sexp)
-   ("C-M-e" . sp-end-of-sexp)
-   ("C-M-f" . sp-forward-sexp)
-   ("C-M-b" . sp-backward-sexp)
-   ("C-M-n" . sp-next-sexp)
-   ("C-M-p" . sp-previous-sexp)
-   ("M-F" . sp-forward-symbol)
-   ("M-B" . sp-backward-symbol)
-   ("C-M-w" . sp-copy-sexp)
-   ("C-M-d" . sp-kill-sexp)
-   ("M-<backspace>" . backward-kill-word)
-   ("C-<backspace>" . sp-backward-kill-word)
-   ([remap sp-backward-kill-word] . backward-kill-word)
-   ("C-c ("  . wrap-with-parens)
-   ("C-c ["  . wrap-with-brackets)
-   ("C-c {"  . wrap-with-braces)
-   ("C-c '"  . wrap-with-single-quotes)
-   ("C-c \"" . wrap-with-double-quotes)
-   ("C-c _"  . wrap-with-underscores)
-   ("C-c `"  . wrap-with-back-quotes)
-   ("M-[" . sp-backward-unwrap-sexp)
-   ("M-]" . sp-unwrap-sexp))
-  :hook
-  ((after-init . smartparens-global-mode)
-  ((prog-mode markdown-mode) . turn-on-smartparens-strict-mode))
-  :config
-  (use-package smartparens-config
-  :ensure smartparens
-  :config (progn (show-smartparens-global-mode t)))
-  (sp-pair "=" "=" :actions '(wrap))
-  (sp-pair "+" "+" :actions '(wrap))
-  (sp-pair "<" ">" :actions '(wrap))
-  (sp-pair "$" "$" :actions '(wrap)))
+  (use-package smartparens
+    :bind
+    (([remap backward-up-list] . sp-backward-up-sexp)
+     ("C-M-a" . sp-beginning-of-sexp)
+     ("C-M-e" . sp-end-of-sexp)
+     ("C-M-f" . sp-forward-sexp)
+     ("C-M-b" . sp-backward-sexp)
+     ("C-M-n" . sp-next-sexp)
+     ("C-M-p" . sp-previous-sexp)
+     ("M-F" . sp-forward-symbol)
+     ("M-B" . sp-backward-symbol)
+     ("C-M-w" . sp-copy-sexp)
+     ("C-M-d" . sp-kill-sexp)
+     ("M-<backspace>" . backward-kill-word)
+     ("C-<backspace>" . sp-backward-kill-word)
+     ([remap sp-backward-kill-word] . backward-kill-word)
+     ("C-c ("  . wrap-with-parens)
+     ("C-c ["  . wrap-with-brackets)
+     ("C-c {"  . wrap-with-braces)
+     ("C-c '"  . wrap-with-single-quotes)
+     ("C-c \"" . wrap-with-double-quotes)
+     ("C-c _"  . wrap-with-underscores)
+     ("C-c `"  . wrap-with-back-quotes)
+     ("M-[" . sp-backward-unwrap-sexp)
+     ("M-]" . sp-unwrap-sexp))
+    :hook
+    ((after-init . smartparens-global-mode))
+    :config
+    (use-package smartparens-config
+    :ensure smartparens
+    :config (progn (show-smartparens-global-mode t)))
+    (sp-pair "=" "=" :actions '(wrap))
+    (sp-pair "+" "+" :actions '(wrap))
+    (sp-pair "<" ">" :actions '(wrap))
+    (sp-pair "$" "$" :actions '(wrap)))
 
 #+END_SRC
 
