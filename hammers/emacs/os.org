@@ -25,8 +25,6 @@
 (when (eq m/os 'linux)
    (setq x-super-keysym 'meta))
 
-(if (eq m/os 'linux)
-  (set-default-font "-WQYF-WenQuanYi Micro Hei Mono-normal-normal-normal-*-15-*-*-*-*-0-iso10646-1"))
  #+END_SRC
 *** 剪切板管理
 #+BEGIN_SRC elisp
