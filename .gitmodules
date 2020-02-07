@@ -1,0 +1,3 @@
+[submodule "hammers/tmux/plugins/tpm"]
+	path = hammers/tmux/plugins/tpm
+	url = https://github.com/tmux-plugins/tpm

@@ -70,14 +70,20 @@
                                           (t p)))
                            parts "/"))))
 
+(defun m/ln (src dest)
+  "Link the SRC to the DEST."
+  (shell-command (concat "mkdir -p $(dirname " (m/envsubst dest) ")"))
+  (shell-command (concat "ln -Ffs '" (m/envsubst src) "' '" (m/envsubst dest) "'")))
+
 (defconst m/root (if load-file-name
                      (file-name-directory load-file-name)
                    (file-name-directory (buffer-file-name))))
-
 (m/tangles "${m/root}/hammers/emacs/*.org")
 (m/tangles "${m/root}/hammers/zsh/*.org")
 (m/tangles "${m/root}/hammers/git/*.org")
 (m/tangles "${m/root}/hammers/ssh/*.org")
+(m/tangles "${m/root}/hammers/tmux/*.org")
+(m/ln "${m/root}/hammers/tmux/plugins" "~/.tmux/plugins")
 
 (message "Finished building hammers. Please Restart Emacs.")
 

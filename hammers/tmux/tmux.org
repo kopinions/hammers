@@ -1,0 +1,43 @@
+#+TITLE:  tmux 相关配置
+#+AUTHOR: 孙建康（rising.lambda）
+#+EMAIL:  rising.lambda@gmail.com
+
+#+DESCRIPTION: tmux 相关配置文件
+#+PROPERTY:    header-args        :results silent   :eval no-export   :comments org
+#+PROPERTY:    header-args        :mkdirp yes
+#+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil
+#+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
+#+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+*** tmux 配置
+#+BEGIN_SRC conf :tangle "~/.tmux.conf" :results silent
+# use ctrl-a to as prefix
+set -g prefix C-x
+unbind-key C-b
+# move to the last used window
+bind a last-window
+# emacs 类似快捷键
+set -gw mode-keys emacs
+
+# set color of active pane
+set -g status-keys emacs
+set -g status off
+set -g renumber-windows on
+
+set -g @copy_mode_yank "M-w"
+set -g @yank_line "M-w"
+set -g @copy_mode_put "C-y"
+set -g @yank_with_mouse on
+set -g @yank_selection_mouse 'clipboard'
+
+
+set -g @plugin 'tmux-plugins/tpm'
+# A set of tmux options that should be acceptable to everyone
+set -g @plugin 'tmux-plugins/tmux-sensible'
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+set -g @plugin 'tmux-plugins/tmux-copycat'
+set -g @plugin 'tmux-plugins/tmux-open'
+set -g @plugin 'tmux-plugins/tmux-urlview'
+# copy to system clipboard in tmux
+set -g @plugin 'tmux-plugins/tmux-yank'
+run '~/.tmux/plugins/tpm/tpm'
+#+END_SRC
