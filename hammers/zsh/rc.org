@@ -12,7 +12,6 @@
 #+BEGIN_SRC shell :tangle ~/.zshenv
   export LANG=en_US.UTF-8
   export ZPLUG_HOME=~/.zsh/zplug
-  export SHELL=/usr/bin/zsh
   export GOPATH=~/workspace/envs/golang
   # add go path
   # add brew path
@@ -40,8 +39,8 @@
 
   export ZPLUG_LOADFILE="$HOME/.zsh/zplugs.zsh"
   source ${ZPLUG_HOME}/init.zsh
-  zplug load
   zplug install
+  zplug load
 
   for file in ~/.zsh/post/*.zsh; do
       source "${file}"
