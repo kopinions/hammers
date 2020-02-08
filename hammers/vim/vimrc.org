@@ -1,0 +1,377 @@
+#+TITLE:  vim 配置
+#+AUTHOR: 孙建康（rising.lambda）
+#+EMAIL:  rising.lambda@gmail.com
+
+#+DESCRIPTION: vim 配置文件
+#+PROPERTY:    header-args        :results silent   :eval no-export   :comments org
+#+PROPERTY:    header-args        :mkdirp yes
+#+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil
+#+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
+#+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+
+#+BEGIN_SRC conf :tangle ~/.vimrc
+let mapleader=";"
+
+" #################vundel config start #####################
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'ctrlp.vim'
+"Plugin 'Valloric/YouCompleteMe'
+Plugin 'dyng/ctrlsf.vim'
+Plugin 'terryma/vim-multiple-cursors'
+Plugin 'junegunn/vim-easy-align'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'easymotion/vim-easymotion'
+Plugin 'haya14busa/incsearch.vim'
+Plugin 'haya14busa/incsearch-fuzzy.vim'
+Plugin 'haya14busa/incsearch-easymotion.vim'
+Plugin 'mileszs/ack.vim'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'Raimondi/delimitMate'
+Plugin 'myusuf3/numbers.vim'
+
+Plugin 'Chiel92/vim-autoformat'
+Plugin 'fatih/vim-go'
+Plugin 'skywind3000/asyncrun.vim'
+"Plugin 'vim-syntastic/syntastic'
+Plugin 'pangloss/vim-javascript'
+Plugin 'Emmet.vim'
+Plugin 'mxw/vim-jsx'
+Plugin 'vim-json-bundle'
+Plugin 'The-NERD-Commenter'
+Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'tpope/vim-obsession'
+Plugin 'mustache/vim-mustache-handlebars'
+Plugin 'surround.vim'
+call vundle#end()  
+" #################vundel config end #####################
+
+" disable vi campatible mode
+set nocompatible
+" disable the filetype detect
+filetype off 
+" enable syntax highlight
+syntax off
+" highlighted the line which cursor now in
+""set cursorline
+" a smart way to ingore letter case when in search 
+set ignorecase smartcase
+" no wrap search
+set wrapscan
+" disable the error bell
+set noerrorbells
+" show match when insert bracket and the match time would be 10
+set showmatch
+set matchtime=10
+" when use the distinguished, the terminal is required to be 256 color
+set t_Co=256
+set guifont=Inconsolata:h15
+" use in regular expression, you do not need to add \ when use $ . * ^ 
+set magic
+" set key to delete character
+set backspace=indent,eol,start
+" command line height
+set cmdheight=1
+" set status line height
+set laststatus=2
+" set the style of the status line
+"set statusline=\ %<%F[%1*%M%*%n%R%H]%=\ %y\ %0(%{&fileformat}\ %{&encoding}\ %c:%l/%L%)\
+" set display cmd
+set showcmd
+" show the line number for each line
+set number
+" show the autoclose selection in a pretty menu
+set wildmenu
+" show the ruler in bottom"
+set ruler
+" set tab width to 4"
+set shiftwidth=4 st=4 tabstop=4 softtabstop=4
+" reload files when changed on disk"
+set autoread
+" highlight current line
+set cursorline
+" highlight current column
+set cursorcolumn
+
+" allow the buffers to be hidden if have modified a buffer
+set hidden
+
+" double-width characters enabled
+set ambiwidth=double
+" disable the default mode indicator
+set noshowmode
+set ttimeoutlen=10
+set encoding=utf-8
+" use enter to select the autocomplete
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+set wildignore+=.DS_Store,.git,.hg,.svn
+set wildignore+=*~,*.swp,*.tmp,*.swo
+
+hi CursorColumn ctermfg=White ctermbg=234 cterm=none guifg=white guibg=yellow gui=bold
+
+" To open a new empty buffer
+" This replaces :tabnew which I used to bind to this mapping
+nmap <leader>T :enew<cr>
+" Move to the next buffer
+nmap <leader>l :bnext<CR>
+" Move to the previous buffer
+nmap <leader>h :bprevious<CR>
+" Close the current buffer and move to the previous one
+" This replicates the idea of closing a tab
+nmap <leader>bq :bp <BAR> bd #<CR>
+" Show all open buffers and their status
+nmap <leader>bl :ls<CR>
+"################### basic config end #######################
+
+
+" ###################### add nerd commenter config start ##################
+" ###################### add nerd commenter config end ##################
+
+
+" ################################ set the airline start ###################
+"let g:airline#extensions#tabline#enabled = 1
+"let g:airline#extensions#tabline#fnamemod = ':t'
+"let g:bufferline_echo = 0
+"let g:airline_theme='bubblegum'
+"let g:airline_section_error = airline#section#create_left(['%{g:asyncrun_status}'])
+"let g:airline#extensions#ctrlp#color_template = 'normal'
+"let g:airline#extensions#whitespace#checks = [ 'indent', 'trailing', 'long', 'mixed-indent-file' ]
+"let g:airline#extensions#syntastic#enabled = 1
+" ################################ set the airline end ###################
+
+
+" ################################ set the async run start ###################
+"let g:asyncrun_mode = 0
+augroup QuickfixStatus
+    au! BufWinEnter quickfix setlocal 
+        \ statusline=%t\ [%{g:asyncrun_status}]\ %{exists('w:quickfix_title')?\ '\ '.w:quickfix_title\ :\ ''}\ %=%-15(%l,%c%V%)\ %P
+augroup END
+noremap <leader>x :AsyncRun 
+augroup vimrc
+    autocmd QuickFixCmdPost * call asyncrun#quickfix_toggle(8, 1)
+augroup END
+" ################################ set the async run end ###################
+
+
+" #################### auto set the filetype start #####################
+au! BufRead,BufNewFile *.json set filetype=json 
+au! BufRead,BufNewFile *.js set filetype=javascript
+au! BufRead,BufNewFile *.html set filetype=html 
+au! BufRead,BufNewFile *.raml set filetype=yaml
+au! BufRead,BufNewFile *.coffee set filetype=coffee
+au! BufRead,BufNewFile *.md set filetype=markdown
+" #################### auto set the filetype end #####################
+
+
+" #################javascript config start ###############################
+autocmd FileType javascript setlocal shiftwidth=4 st=4 tabstop=4 softtabstop=4
+autocmd FileType javascript setlocal et
+" set the fold method is by syntax, alternate 'manual','indent','normal'
+autocmd FileType javascript setlocal foldmethod=syntax
+" default the there is no fold in file
+autocmd FileType javascript setlocal nofoldenable
+autocmd FileType javascript setlocal foldlevel=1
+" enable html/css highlighting in javascript file if =1 
+let javascript_enable_domhtmlcss=1
+" enable javascript folding = 1
+let b:javascript_fold=1
+" the function is replace by f if =1
+let g:javascript_conceal=0 
+" Disable javascript comment highlighting if =1 
+let javascript_ignore_javaScriptdoc=0 
+" #################javascript config start ###############################
+
+" ################# yaml config start ###############################
+autocmd FileType yaml setlocal shiftwidth=2 st=2 tabstop=2 softtabstop=2
+autocmd FileType yaml setlocal et
+" set the fold method is by syntax, alternate 'manual','indent','normal'
+autocmd FileType yaml setlocal foldmethod=syntax
+" default the there is no fold in file
+autocmd FileType yaml setlocal nofoldenable
+autocmd FileType yaml setlocal foldlevel=1
+" ################# yaml config start ###############################
+
+
+" ########################### YouCompleteMe start ########################
+let g:ycm_confirm_extra_conf = 0
+let g:ycm_autoclose_preview_window_after_completion=1
+let g:ycm_add_preview_to_completeopt = 1
+let g:ycm_collect_identifiers_from_comments_and_strings=1
+let g:ycm_autoclose_preview_window_after_insertion = 1
+nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
+" ########################### YouCompleteMe end ########################
+
+
+"#################### coffeescript start ####################
+"# 打开 ~/.vimrc 加下面一行,可以实现保存时候自动编译成js文件
+"autocmd BufWritePost *.coffee silent CoffeeMake! -b | cwindow
+"# 我写成这样保存时可以实时看到编译结果
+" autocmd BufWritePost *.coffee silent CoffeeCompile | CoffeeMake! -b | cwindow
+autocmd FileType coffee setlocal et sta sw=2 sts=2 st=2 
+"#################### coffeescript end####################
+
+
+"#################### autosave start ####################
+let g:auto_save = 1
+"#################### autosave end####################
+
+"####### NERDTree start -explore the directory tree###########
+" automatic open the NERDTree when enter vim
+" autocmd vimenter * NERDTree
+" when no file is specfied NERDTree is opend
+"autocmd vimenter * if !argc() | NERDTree | endif
+" <C-n> is the control key of NERDTree
+" map <C-n> :NERDTreeToggle<CR>
+" close vim if the only window left is NERDTree
+" autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType=="primary") | q | endif
+"####### NERDTree end -explore the directory tree###########
+
+
+"########## emmet start ---html programing #############
+""let g:user_emmet_mode='a'
+" set expand shortcut = ctl+e
+let g:user_emmet_expandabbr_key = '<c-e>'
+let g:use_emmet_complete_tag = 1
+autocmd FileType html setlocal shiftwidth=2 st=2 tabstop=2 softtabstop=2
+autocmd FileType html setlocal et
+"########## emmet end ---html programing #############
+
+
+"################# json config start #######################################
+autocmd FileType json setlocal autoindent 
+autocmd FileType json setlocal formatoptions=tcq2l 
+autocmd FileType json setlocal textwidth=256 shiftwidth=4
+autocmd FileType json setlocal softtabstop=4 tabstop=4 
+autocmd FileType json setlocal expandtab 
+autocmd FileType json setlocal foldmethod=syntax
+"################## json config end ######################################
+
+
+"############# CtrlP configure start###########################
+noremap <Leader>bb :CtrlPBuffer<CR>
+noremap <Leader>bm :CtrlPMixed<CR>
+noremap <Leader>bs :CtrlPMRU<CR>
+let g:ctrlp_custom_ignore = {
+			\ 'dir':  '\v[\/](\.(git|hg|svn)|node_modules|\_site)$',
+			\ 'file': '\v\.(exe|so|dll|class|png|jpg|jpeg)$',
+			\}
+
+let g:ctrlp_working_path_mode="r"
+let g:ctrlp_match_window_bottom=1
+let g:ctrlp_max_height=20
+let g:ctrlp_match_window_reversed=0
+let g:ctrlp_mruf_max=500
+let g:ctrlp_follow_symlinks=1
+"############ CtrlP configure end ##############################
+
+"#################### vim-gitgutter configure start ##################
+let g:gitgutter_avoid_cmd_prompt_on_windows = 0
+let g:gitgutter_map_keys = 0
+set updatetime=250
+"#################### vim-gitgutter configure stop ##################
+
+" ################## ctrlsf config start ##########################
+let g:ctrlsf_ackpkg = 'rg'
+let g:ctrlsf_confirm_save = 0
+" ctrlsf root is project and controll by two options, first f is search the
+" current file, and the second w is default fall back search from current
+" directory
+let g:ctrlsf_default_root = 'project+fw'
+nnoremap <Leader>sp :CtrlSF  
+nnoremap <Leader>sl <Plug>CtrlSFPwordPath<CR>
+vmap <Leader>sp <Plug>CtrlSFVwordPath<CR>
+vmap <Leader>sl <Plug>CtrlSFPwordPath<CR>
+inoremap <Leader>sp <Plug>CtrlSFCwordPath<CR>
+inoremap <Leader>sl <Plug>CtrlSFPwordPath<CR>
+" ################## ctrlsf config end ##########################
+
+" ################## vim-syntastic/syntastic config start ###########
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+" ################## vim-syntastic/syntastic config end ################	
+
+"############################### tmux navigator ##################
+" Write all buffers before navigating from Vim to tmux pane
+let g:tmux_navigator_save_on_switch = 1
+"############################### tmux navigator ##################
+
+"#################### easymotion configure start ##################
+" <Leader>f{char} to move to {char}
+map  <Leader><Leader>f <Plug>(easymotion-bd-f)
+nmap <Leader><Leader>f <Plug>(easymotion-overwin-f)
+" Move to line
+map <Leader><Leader>L <Plug>(easymotion-bd-jk)
+nmap <Leader><Leader>L <Plug>(easymotion-overwin-line)
+
+" Move to word
+map  <Leader><Leader>w <Plug>(easymotion-bd-w)
+nmap <Leader><Leader>w <Plug>(easymotion-overwin-w)
+
+function! s:incsearch_config(...) abort
+	return incsearch#util#deepextend(deepcopy({
+				\   'modules': [incsearch#config#easymotion#module({'overwin': 1})],
+				\   'keymap': {
+				\     "\<CR>": '<Over>(easymotion)'
+				\   },
+				\   'is_expr': 0
+				\ }), get(a:, 1, {}))
+endfunction
+
+function! s:config_easyfuzzymotion(...) abort
+	return extend(copy({
+				\   'converters': [incsearch#config#fuzzyword#converter()],
+				\   'modules': [incsearch#config#easymotion#module({'overwin': 1})],
+				\   'keymap': {"\<CR>": '<Over>(easymotion)'},
+				\   'is_expr': 0,
+				\   'is_stay': 1
+				\ }), get(a:, 1, {}))
+endfunction
+"map  / <Plug>(easymotion-sn)
+"omap / <Plug>(easymotion-tn)
+"map  n <Plug>(easymotion-next)
+"map  N <Plug>(easymotion-prev)
+"let g:EasyMotion_startofline = 0
+"let g:EasyMotion_smartcase = 1
+"noremap <silent><expr> <Space>/ incsearch#go(<SID>config_easyfuzzymotion())
+"#################### easymotion configure stop ##################
+"#################### vim-go configure start ##################
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_interfaces = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constraints = 1
+let g:go_fmt_command = "goimports"
+let g:go_fmt_fail_silently = 1
+"#################### vim-go configure stop ##################
+
+"##################### tmux navigator start ################## 
+" Disable tmux navigator when zooming the Vim pane
+" let g:tmux_navigator_disable_when_zoomed = 1
+" Write all buffers before navigating from Vim to tmux pane
+let g:tmux_navigator_save_on_switch = 2
+"##################### tmux navigator start ################## 
+
+" for mac only
+vmap <D-v> "-d"+p
+vmap <D-c> "*y
+imap <D-c> "*yy
+imap <D-v> "*P<CR>
+nmap <D-c> "*yy
+nmap <D-v> "*P
+
+" enable the filetype detect
+filetype plugin indent on
+filetype plugin on
+" enable syntax highlight
+syntax on
+#+END_SRC

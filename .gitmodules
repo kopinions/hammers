@@ -6,3 +6,7 @@
 	path = hammers/zsh/zplug
 	url = https://github.com/zplug/zplug.git
 	ignore = dirty
+[submodule "hammers/vim/bundle/Vundle"]
+	path = hammers/vim/bundle/Vundle
+	url = https://github.com/VundleVim/Vundle.vim.git
+	ignore = dirty
