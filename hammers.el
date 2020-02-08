@@ -84,6 +84,7 @@
 (m/tangles "${m/root}/hammers/ssh/*.org")
 (m/tangles "${m/root}/hammers/tmux/*.org")
 (m/ln "${m/root}/hammers/tmux/plugins" "~/.tmux/plugins")
+(m/ln "${m/root}/hammers/zsh/zplug" "~/.zsh/zplug")
 
 (message "Finished building hammers. Please Restart Emacs.")
 

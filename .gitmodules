@@ -2,3 +2,7 @@
 	path = hammers/tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm
 	ignore = dirty
+[submodule "hammers/zsh/zplug"]
+	path = hammers/zsh/zplug
+	url = https://github.com/zplug/zplug.git
+	ignore = dirty

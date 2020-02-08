@@ -11,8 +11,8 @@
 
 #+BEGIN_SRC shell :tangle ~/.zshenv
   export LANG=en_US.UTF-8
-  export ZPLUG_HOME=/usr/local/opt/zplug
-  export SHELL=/usr/local/bin/zsh
+  export ZPLUG_HOME=~/.zsh/zplug
+  export SHELL=/usr/bin/zsh
   export GOPATH=~/workspace/envs/golang
   # add go path
   # add brew path
@@ -34,21 +34,21 @@
 #+END_SRC
 
 #+BEGIN_SRC shell :tangle "~/.zshrc"
-  for file in ~/zsh/init/*.zsh; do
+  for file in ~/.zsh/init/*.zsh; do
       source "${file}"
   done
 
-  export ZPLUG_LOADFILE="$HOME/zsh/zplugs.zsh"
+  export ZPLUG_LOADFILE="$HOME/.zsh/zplugs.zsh"
   source ${ZPLUG_HOME}/init.zsh
   zplug load
   zplug install
 
-  for file in ~/zsh/post/*.zsh; do
+  for file in ~/.zsh/post/*.zsh; do
       source "${file}"
   done
 #+END_SRC
 
-#+BEGIN_SRC shell :tangle "~/zsh/init/init.zsh"
+#+BEGIN_SRC shell :tangle "~/.zsh/init/init.zsh"
   if [ ! "$PATH_LOADED" = "true" ]; then
       # Add go binaries
       if [ -d "$GOPATH" ]; then
@@ -76,7 +76,7 @@
   fi
 #+END_SRC
 
-#+BEGIN_SRC shell :tangle "~/zsh/zplugs.zsh"
+#+BEGIN_SRC shell :tangle "~/.zsh/zplugs.zsh"
   #!/usr/bin/env zsh
   # this allows zplug to update itself on `zplug update`
   zplug 'zplug/zplug', hook-build:'zplug --self-manage'
@@ -104,7 +104,7 @@
   return 0 # in case zplug adds plugs ignore them
 #+END_SRC
 
-#+BEGIN_SRC shell :tangle "~/zsh/post/bindings.zsh"
+#+BEGIN_SRC shell :tangle "~/.zsh/post/bindings.zsh"
   if [[ $- == *i* ]]; then
       # CTRL-T - Paste the selected file path(s) into the command line
       __fsel() {
@@ -171,7 +171,7 @@
   fi
 #+END_SRC
 
-#+BEGIN_SRC shell :tangle "~/zsh/post/loads.zsh"
+#+BEGIN_SRC shell :tangle "~/.zsh/post/loads.zsh"
   if [ -d "${HOME}/google-cloud-sdk" ]; then
       . $HOME/google-cloud-sdk/completion.zsh.inc
       . $HOME/google-cloud-sdk/path.zsh.inc
@@ -181,7 +181,7 @@
   fi
 #+END_SRC
 
-#+BEGIN_SRC shell :tangle "~/zsh/post/config.zsh"
+#+BEGIN_SRC shell :tangle "~/.zsh/post/config.zsh"
 # auto menu complete
 setopt auto_menu
 
@@ -215,7 +215,7 @@ setopt chase_links              # resolve symlinks
 setopt correct                  # try to correct spelling of commands
 #+END_SRC
 
-#+BEGIN_SRC shell :tangle "~/zsh/post/functions.zsh"
+#+BEGIN_SRC shell :tangle "~/.zsh/post/functions.zsh"
 #!/bin/zsh
 function gitroot {
     local root
