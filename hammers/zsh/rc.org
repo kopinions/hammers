@@ -12,6 +12,7 @@
 #+BEGIN_SRC shell :tangle ~/.zshenv
   export LANG=en_US.UTF-8
   export ZPLUG_HOME=~/.zsh/zplug
+  export RIPGREP_CONFIG_PATH=~/.ripgreprc
   export GOPATH=~/workspace/envs/golang
   # add go path
   # add brew path

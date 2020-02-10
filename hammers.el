@@ -85,6 +85,7 @@
 (m/tangles "${m/root}/hammers/ssh/*.org")
 (m/tangles "${m/root}/hammers/tmux/*.org")
 (m/tangles "${m/root}/hammers/vim/*.org")
+(m/tangles "${m/root}/hammers/rg/*.org")
 (m/link "${m/root}/hammers/tmux/plugins" "~/.tmux/plugins")
 (m/link "${m/root}/hammers/zsh/zplug" "~/.zsh/zplug")
 (m/link "${m/root}/hammers/vim/bundle" "~/.vim/bundle")
