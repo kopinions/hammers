@@ -71,6 +71,13 @@
 #+BEGIN_SRC elisp
   (use-package lua-mode)
 #+END_SRC
+
+*** meson 构建系统
+#+BEGIN_SRC elisp
+  (use-package meson-mode
+    :hook
+    (meson-mode . company-mode))
+#+END_SRC
 *** provide
 #+BEGIN_SRC elisp
 (provide 'init-languages)
