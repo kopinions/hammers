@@ -10,11 +10,41 @@
 (require 'em-glob)
 (require 'subr-x)
 
+(setq org-confirm-babel-evaluate nil)
+(org-babel-do-load-languages
+   'org-babel-load-languages
+   '((R . t)
+     (dot . t)
+     (ditaa . t)
+     (dot . t)
+     (emacs-lisp . t)
+     (gnuplot . t)
+     (haskell . nil)
+     (latex . t)
+     (ledger . t)
+     (ocaml . nil)
+     (octave . t)
+     (plantuml . t)
+     (python . t)
+     (ruby . t)
+     (screen . nil)
+     (shell . t)
+     (sql . t)
+     (sqlite . t)))
+
+
 (defun m/tangle (file)
   "Give an 'org-mode' FILE, tangle the source code."
   (interactive "fOrg File: ")
   (find-file file)
   (org-babel-tangle)
+  (kill-buffer))
+
+(defun m/evaluate (file)
+  "Give an 'org-mode' FILE, tangle the source code."
+  (interactive "fOrg File: ")
+  (find-file file)
+  (org-babel-execute-buffer)
   (kill-buffer))
 
 (defun m/resolve (path)
@@ -61,6 +91,11 @@
   (interactive "D")
   (mapc 'm/tangle (m/files path t)))
 
+(defun m/evaluates (path)
+  "Give an PATH, tangle all 'org-mode' file."
+  (interactive "D")
+  (mapc 'm/evaluate (m/files path t)))
+
 (defun m/path (path &rest extra)
   "Return path according the PATH & EXTRA arguments."
   (let ((parts (cons (m/resolve path) extra)))
@@ -86,6 +121,8 @@
 (m/tangles "${m/root}/hammers/tmux/*.org")
 (m/tangles "${m/root}/hammers/vim/*.org")
 (m/tangles "${m/root}/hammers/rg/*.org")
+(m/tangles "${m/root}/hammers/brew/*.org")
+(m/evaluates "${m/root}/hammers/brew/*.org")
 (m/link "${m/root}/hammers/tmux/plugins" "~/.tmux/plugins")
 (m/link "${m/root}/hammers/zsh/zplug" "~/.zsh/zplug")
 (m/link "${m/root}/hammers/vim/bundle" "~/.vim/bundle")

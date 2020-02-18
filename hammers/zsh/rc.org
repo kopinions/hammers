@@ -9,7 +9,7 @@
 #+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
-#+BEGIN_SRC shell :tangle ~/.zshenv
+#+BEGIN_SRC shell :tangle ~/.zshenv :noweb yes
   export LANG=en_US.UTF-8
   export ZPLUG_HOME=~/.zsh/zplug
   export RIPGREP_CONFIG_PATH=~/.ripgreprc
@@ -31,7 +31,15 @@
   export RIME_PATH="~/.oh-my-env/06-emacs.d/librime"
   # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
   export PATH="$PATH:$HOME/.rvm/bin"
+  export JAVA_HOME="/Library/Java/JavaVirtualMachines/openjdk-13.0.1.jdk/Contents/Home"
+  <<zshenv>>
 #+END_SRC
+
+*** brew 使用清华大学的二进制源 
+#+BEGIN_SRC shell :exports code :results none :eval never :noweb-ref zshenv
+  export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles
+#+END_SRC
+
 
 #+BEGIN_SRC shell :tangle "~/.zshrc"
   for file in ~/.zsh/init/*.zsh; do

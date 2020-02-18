@@ -1,0 +1,154 @@
+#+TITLE:  brew 配置
+#+AUTHOR: 孙建康（rising.lambda）
+#+EMAIL:  rising.lambda@gmail.com
+
+#+DESCRIPTION: brew 配置文件
+#+PROPERTY:    header-args        :comments org
+#+PROPERTY:    header-args        :mkdirp yes
+#+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil
+#+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
+#+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+
+*** 使用清华大学 git 镜像加速
+#+BEGIN_SRC shell :tangle no :exports code :results none
+cd "$(brew --repo)"
+git remote set-url origin https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git
+cd "$(brew --repo)/Library/Taps/homebrew/homebrew-core"
+git remote set-url origin https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git
+#+END_SRC
+
+*** 默认安装的软件包
+#+BEGIN_SRC conf :tangle ~/.Brewfile :exports code :results none :eval never
+cask_args appdir: '/Applications'
+tap 'homebrew/cask' if OS.mac?
+tap 'homebrew/bundle'
+
+brew "mas" if OS.mac?
+# App Store
+mas "Reeder3", id: 880001334
+mas "ReadKit", id: 588726889
+mas "Hidden Bar", id: 1452453066
+mas "SwordSoft Screenink Free", id: 953841977
+
+# system
+cask 'docker'
+cask 'java8'
+cask 'iterm2'
+cask 'squirrel'
+cask 'snipaste'
+cask 'unshaky' # process the mac keyboard duplicate key problem
+# usb network sharing driver
+cask 'horndis'
+brew 'ruby'
+
+# ides
+cask 'clion'
+cask 'visual-studio-code'
+
+
+# virtualization
+cask 'parallels' 
+
+# productivity
+cask 'alfred'
+cask 'xmind'
+cask 'near-lock'
+cask 'hammerspoon'
+cask 'appcleaner'
+cask 'cheatsheet'
+brew 'mu' if OS.mac?
+brew 'offlineimap', restart_service: :changed if OS.mac?
+cask 'postman'
+
+# video processing
+cask 'handbrake'  # 视屏压缩
+
+# editor
+cask 'sublime-text'
+cask 'emacs'
+cask 'arduino'
+
+# storage
+cask 'baidunetdisk'
+cask 'box-sync'
+cask 'baiducloud'
+cask 'yinxiangbiji'
+cask 'dash'
+cask 'thunder'
+cask '1password'
+cask 'nutstore'
+
+# broswer
+cask 'firefox'
+cask 'google-chrome'
+
+# study
+cask 'kindle'
+cask 'youdaodict'
+
+# entertain
+cask 'neteasemusic'
+cask 'qqmusic'
+cask 'vlc'
+
+# communication
+cask 'qq'
+cask 'wechat'
+cask 'aliwangwang'
+
+# emacs
+cask "mactex-no-gui"
+# terminal apps
+## network
+brew 'inetutils' if OS.mac?
+brew 'nmap'
+brew 'axel' # multiple thread downloader
+brew 'iperf'
+brew 'gradle'
+brew 'cmake'
+brew 'tig'
+brew 'rg'
+brew 'jq'
+brew 'autojump'
+brew 'git'
+brew 'hub' # github command line
+brew 'vim'
+brew 'zsh'
+brew 'tldr'
+brew 'zsh-completions'
+brew 'graphviz'
+brew 'tree'
+
+brew 'reattach-to-user-namespace' if OS.mac?
+brew 'tmux'
+brew 'tmuxinator-completion'
+brew 'mycli' if OS.mac?
+# code statictis
+brew 'cloc'
+brew 'golang'
+brew 'maven' if OS.mac?
+brew 'fzf'
+brew 'watch'
+
+brew 'zplug'
+
+# other
+cask 'logitech-options' 
+
+# design
+cask 'zeplin'
+
+brew 'gcc'
+brew 'llvm', args: ["with-toolchain"]
+
+
+# ic
+brew 'icarus-verilog'
+cask 'gtkwave'
+#+END_SRC
+
+#+BEGIN_SRC shell :tangle no :exports code :results output
+brew bundle --global
+#+END_SRC
+
+#+RESULTS:
