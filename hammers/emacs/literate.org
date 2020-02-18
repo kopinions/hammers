@@ -380,6 +380,16 @@ plain/markdown/orgmode 的形式来插入到当前编辑的文件中。
     (setq plantuml-jar-path org-plantuml-jar-path)
     (setq plantuml-default-exec-mode 'jar))
 #+END_SRC
+
+*** org-mode graphiz 画图配置
+#+BEGIN_SRC elisp
+  (use-package graphviz-dot-mode
+    :after org
+    :config
+    (setq graphviz-dot-indent-width 4))
+  (use-package company-graphviz-dot
+    :ensure nil)
+#+END_SRC
 *** org-mode 番茄工作法
 #+BEGIN_SRC elisp
 ;; Pomodoro
