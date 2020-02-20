@@ -11,7 +11,7 @@
 
 #+BEGIN_SRC conf :tangle "~/.gitconfig"
   [user]
-	  name = sjkyspa
+	  name = neo
 	  email = sjkyspa@gmail.com
   [alias]
 	  ignore = "!gi() { curl -L -s https://www.gitignore.io/api/$@ ;}; gi"
@@ -48,9 +48,8 @@
 	  rebase = true
   [push]
 	  default = simple
-	  followTags = true
   [github]
-	  user = sjkyspa
+	  user = sjkyspa@gmail.com
   [credential]
 	  helper = store
 #+END_SRC
