@@ -10,9 +10,17 @@
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 *** VPN 设置
 #+BEGIN_SRC conf :tangle "~/.ssh/config" :results silent
+ForwardX11 yes
+RequestTTY yes
+
 Host vpn.seoul
 HostName 8.8.8.8
 User ec2-user
 Port 22
 IdentityFile ~/.ssh/keys/vpn.seoul.pem
+Host ubuntu.parallels
+HostName 10.211.55.10
+User neo
+Port 22
+IdentityFile ~/.ssh/id_rsa
 #+END_SRC
