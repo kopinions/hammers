@@ -156,6 +156,11 @@
    ("M-p" . browse-kill-ring-previous)
   ))
 #+END_SRC
+
+** 远程文件访问（Tramp: Transparent Remote Access Multiple Protocol）
+#+BEGIN_SRC elisp :exports code :eval never
+  (setq tramp-terminal-type "tramp")
+#+END_SRC
 ** 括号设置
 *** 括号配对显示
 #+BEGIN_SRC elisp

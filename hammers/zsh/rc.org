@@ -42,6 +42,7 @@
 
 
 #+BEGIN_SRC shell :tangle "~/.zshrc"
+[[ $TERM == "tramp" ]] && unsetopt zle && PS1='$ '&& return
   for file in ~/.zsh/init/*.zsh; do
       source "${file}"
   done
