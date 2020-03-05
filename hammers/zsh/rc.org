@@ -40,7 +40,7 @@
   export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles
 #+END_SRC
 
-
+*** zshrc 配置
 #+BEGIN_SRC shell :tangle "~/.zshrc"
 [[ $TERM == "tramp" ]] && unsetopt zle && PS1='$ '&& return
   for file in ~/.zsh/init/*.zsh; do
