@@ -38,11 +38,12 @@
     (cond ((string= os "darwin") 'macos)
           ((string-prefix-p "gnu" os) 'linux)
           ((or (string-prefix-p "ms" os) (string-prefix-p "windows" os)) 'windows))))
+(defvar m/conf.d (expand-file-name user-emacs-directory))
 #+END_SRC
 
 ** 是否开启离线模式
 #+BEGIN_SRC elisp
-(defconst m/offline 
+(defvar m/offline 
   (file-directory-p (expand-file-name "offline" user-emacs-directory)))
 #+END_SRC
 
