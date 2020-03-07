@@ -154,9 +154,3 @@ cask 'gtkwave'
 #+END_SRC
 
 #+RESULTS:
-
-*** emacs 相关配置
-#+BEGIN_SRC shell :tangle ~/.zsh/init/brew.zsh :exports code :results none
-  (`which brew` ls ditaa 2>/dev/null || echo "") | grep "ditaa.*.jar" |xargs -I {} ln -sf {} ~/.emacs.d/ditaa.jar
-  (`which brew` ls plantuml 2>/dev/null || echo "") | grep "plantuml.jar" |xargs -I {} ln -sf {} ~/.emacs.d/plantuml.jar
-#+END_SRC
