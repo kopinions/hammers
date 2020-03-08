@@ -58,32 +58,40 @@
     Emacs 的包管理器名为：[[http://tromey.com/elpa/][package]]. 但是 package 默认配置插件仓库包含的插件相对较少，我们需要添加一些常用的第三方插件仓库，以便与搜索与安装插件。
 
 #+BEGIN_SRC elisp
-(require 'package)
-;;; Install into separate package dirs for each Emacs version, to prevent bytecode incompatibility
-(let ((versioned-package-dir
-       (expand-file-name (format "elpa-%s.%s" emacs-major-version emacs-minor-version)
-                         user-emacs-directory)))
-  (setq package-user-dir versioned-package-dir))
+  (require 'package)
+    ;;; Install into separate package dirs for each Emacs version, to prevent bytecode incompatibility
+  (let ((versioned-package-dir
+	 (expand-file-name (format "elpa-%s.%s" emacs-major-version emacs-minor-version)
+			   user-emacs-directory)))
+    (setq package-user-dir versioned-package-dir))
 
-(if m/offline
-    (setq package-archives `(("gnu" . ,(expand-file-name "offline/gnu" user-emacs-directory))
-			     ("melpa" . ,(expand-file-name "offline/melpa" user-emacs-directory))))
-  (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
-		      (not (gnutls-available-p))))
-	 (proto (if no-ssl "http" "https")))
-    (if no-ssl
-	(setq package-archives '(("gnu"   . "http://elpa.emacs-china.org/gnu/")
-				 ("melpa" . "http://elpa.emacs-china.org/melpa/")))
-      (unless no-ssl
-    	(setq package-archives '(("gnu"   . "https://elpa.emacs-china.org/gnu/")
-				 ("melpa" . "https://elpa.emacs-china.org/melpa/")))))))
+  (if m/offline
+      (setq package-archives `(("gnu" . ,(expand-file-name "offline/gnu" user-emacs-directory))
+			       ("melpa" . ,(expand-file-name "offline/melpa" user-emacs-directory))))
+    (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
+			(not (gnutls-available-p))))
+	   (proto (if no-ssl "http" "https")))
+      (if no-ssl
+	  (setq package-archives '(("gnu"   . "http://elpa.emacs-china.org/gnu/")
+				   ("melpa" . "http://elpa.emacs-china.org/melpa/")))
+	(unless no-ssl
+	  (setq package-archives '(("gnu"   . "https://elpa.emacs-china.org/gnu/")
+				   ("melpa" . "https://elpa.emacs-china.org/melpa/")))))))
 
-;; Work-around for https://debbugs.gnu.org/cgi/bugreport.cgi?bug=34341
-(when (version= "26.2" emacs-version)
-  (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
+  ;; Work-around for https://debbugs.gnu.org/cgi/bugreport.cgi?bug=34341
+  (when (version= "26.2" emacs-version)
+    (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
 
-(package-initialize)
-(package-refresh-contents)
+  (setq load-prefer-newer t)
+  (package-initialize)
+  (unless (package-installed-p 'auto-compile)
+    (package-refresh-contents)
+    (package-install 'auto-compile))
+
+  (require 'auto-compile)
+  (auto-compile-on-load-mode)
+  (auto-compile-on-save-mode)
+  (package-refresh-contents)
 #+END_SRC
 *** use package
     Emacs 常见的配置管理都是先使用包管理器安装对应的包，然后再进行配置。安装包和配置是割裂开的。对于使用多个包的情况，安装包配置会分散到各个地方，安装包相关的配置会变得难以维护。
