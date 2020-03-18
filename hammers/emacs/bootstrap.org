@@ -85,15 +85,7 @@
   (when (version= "26.2" emacs-version)
     (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
 
-  (setq load-prefer-newer t)
   (package-initialize)
-  (unless (package-installed-p 'auto-compile)
-    (package-refresh-contents)
-    (package-install 'auto-compile))
-
-  (require 'auto-compile)
-  (auto-compile-on-load-mode)
-  (auto-compile-on-save-mode)
   (package-refresh-contents)
 #+END_SRC
 *** use package
