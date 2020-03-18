@@ -51,7 +51,7 @@
 #+END_SRC
 
 *** 禁用鼠标
-#+BEGIN_SRC elisp
+#+BEGIN_SRC elisp :exports code :eval never :tangle no
 (use-package disable-mouse
   :config
   (global-disable-mouse-mode)
