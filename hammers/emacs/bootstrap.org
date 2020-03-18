@@ -67,16 +67,19 @@
 
   (if m/offline
       (setq package-archives `(("gnu" . ,(expand-file-name "offline/gnu" user-emacs-directory))
-			       ("melpa" . ,(expand-file-name "offline/melpa" user-emacs-directory))))
+			       ("melpa" . ,(expand-file-name "offline/melpa" user-emacs-directory))
+			       ("org" . ,(expand-file-name "offline/org" user-emacs-directory))))
     (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
 			(not (gnutls-available-p))))
 	   (proto (if no-ssl "http" "https")))
       (if no-ssl
 	  (setq package-archives '(("gnu"   . "http://elpa.emacs-china.org/gnu/")
-				   ("melpa" . "http://elpa.emacs-china.org/melpa/")))
+				   ("melpa" . "http://elpa.emacs-china.org/melpa/")
+				   ("org" . "http://elpa.emacs-china.org/org/")))
 	(unless no-ssl
 	  (setq package-archives '(("gnu"   . "https://elpa.emacs-china.org/gnu/")
-				   ("melpa" . "https://elpa.emacs-china.org/melpa/")))))))
+				   ("melpa" . "https://elpa.emacs-china.org/melpa/")
+				   ("org" . "http://elpa.emacs-china.org/org/")))))))
 
   ;; Work-around for https://debbugs.gnu.org/cgi/bugreport.cgi?bug=34341
   (when (version= "26.2" emacs-version)
