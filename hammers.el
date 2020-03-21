@@ -126,6 +126,7 @@
 (m/link "${m/root}/hammers/tmux/plugins" "~/.tmux/plugins")
 (m/link "${m/root}/hammers/zsh/zplug" "~/.zsh/zplug")
 (m/link "${m/root}/hammers/vim/bundle" "~/.vim/bundle")
+(m/link "${m/root}/hammers/emacs/3rdparty" "~/.emacs.d/3rdparty")
 
 (message "Finished building hammers. Please Restart Emacs.")
 

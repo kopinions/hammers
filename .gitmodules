@@ -10,3 +10,6 @@
 	path = hammers/vim/bundle/Vundle
 	url = https://github.com/VundleVim/Vundle.vim.git
 	ignore = dirty
+[submodule "hammers/emacs/3rdparty/verilog-mode"]
+	path = hammers/emacs/3rdparty/verilog-mode
+	url = https://github.com/veripool/verilog-mode.git

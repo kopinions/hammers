@@ -127,31 +127,33 @@
 ** 自定义配置聚合
 
    #+BEGIN_SRC elisp
-   (defconst m/load-path (expand-file-name "lisp" user-emacs-directory))
-   (use-package init-os
-    :load-path m/load-path)
-   (use-package init-ui
-    :load-path m/load-path)
-   (use-package init-completion
-    :load-path m/load-path)
-   (use-package init-correction
-    :load-path m/load-path)
-   (use-package init-project
-    :load-path m/load-path)
-   (use-package init-literate
-    :load-path m/load-path)
-   (use-package init-vcs
-    :load-path m/load-path)
-   (use-package init-lsp
-    :load-path m/load-path)
-   (use-package init-editing
-    :load-path m/load-path)
-   (use-package init-chinese
-    :load-path m/load-path)
-   (use-package init-languages
-    :load-path m/load-path)
-   (use-package init-terminal
-    :load-path m/load-path)
+     (defconst m/load-path (lambda () (list 
+				  (expand-file-name "lisp" user-emacs-directory)
+				  (expand-file-name "verilog-mode" (expand-file-name "3rdparty" user-emacs-directory)))))
+     (use-package init-os
+       :load-path m/load-path)
+     (use-package init-ui
+       :load-path m/load-path)
+     (use-package init-completion
+       :load-path m/load-path)
+     (use-package init-correction
+       :load-path m/load-path)
+     (use-package init-project
+       :load-path m/load-path)
+     (use-package init-literate
+       :load-path m/load-path)
+     (use-package init-vcs
+       :load-path m/load-path)
+     (use-package init-lsp
+       :load-path m/load-path)
+     (use-package init-editing
+       :load-path m/load-path)
+     (use-package init-chinese
+       :load-path m/load-path)
+     (use-package init-languages
+       :load-path m/load-path)
+     (use-package init-terminal
+       :load-path m/load-path)
    #+END_SRC
 
 
