@@ -58,6 +58,9 @@
 ### Clangd ###
 # -*- mode: gitignore; -*-
 .clangd
+source/_posts/**/*.png
+source/_drafts/**/*.png
+
 
 ### Emacs ###
 # -*- mode: gitignore; -*-
