@@ -367,6 +367,15 @@ plain/markdown/orgmode 的形式来插入到当前编辑的文件中。
        (sqlite . t))))
 #+END_SRC
 
+*** org-mode export 配置
+允许在 org 文件中通过 bind 修改环境中绑定的值。
+#+BEGIN_SRC elisp :exports code :eval never :tangle yes
+  (use-package org
+    :custom
+    (org-export-allow-bind-keywords t))
+#+END_SRC
+
+
 *** org-mode ditaa/plantuml 画图
 
 #+BEGIN_SRC elisp :exports code
@@ -374,7 +383,8 @@ plain/markdown/orgmode 的形式来插入到当前编辑的文件中。
     :ensure org-plus-contrib
     :config
     (unless (and (boundp 'org-ditaa-jar-path)
-		 (file-exists-p org-ditaa-jar-path))
+		 (file-exists-p org-ditaa-jar-path)
+		 (not (file-directory-p org-ditaa-jar-path)))
       (let ((jar-name "ditaa.jar")
 	    (url "https://github.com/stathissideris/ditaa/releases/download/v0.11.0/ditaa-0.11.0-standalone.jar"))
 	(setq org-ditaa-jar-path (expand-file-name jar-name m/conf.d))
@@ -382,12 +392,14 @@ plain/markdown/orgmode 的形式来插入到当前编辑的文件中。
 	  (url-copy-file url org-ditaa-jar-path))))
 
     (unless (and (boundp 'org-plantuml-jar-path)
-		 (file-exists-p org-plantuml-jar-path))
+		 (file-exists-p org-plantuml-jar-path)
+		 (not (file-directory-p org-plantuml-jar-path)))
       (let ((jar-name "plantuml.jar")
 	    (url "https://downloads.sourceforge.net/project/plantuml/1.2020.2/plantuml.1.2020.2.jar"))
 	(setq org-plantuml-jar-path (expand-file-name jar-name m/conf.d))
 	(unless (file-exists-p org-plantuml-jar-path)
 	  (url-copy-file url org-plantuml-jar-path)))))
+
   (use-package plantuml-mode
     :after org
     :config

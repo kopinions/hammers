@@ -290,6 +290,7 @@
 
 #+BEGIN_SRC elisp
 (use-package expand-region
+  :after org
   :bind
   (("C-=" . er/expand-region)))
 #+END_SRC
