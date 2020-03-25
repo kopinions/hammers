@@ -136,8 +136,6 @@
        :load-path m/load-path)
      (use-package init-ui
        :load-path m/load-path)
-     (use-package init-completion
-       :load-path m/load-path)
      (use-package init-correction
        :load-path m/load-path)
      (use-package init-project
@@ -155,6 +153,8 @@
      (use-package init-languages
        :load-path m/load-path)
      (use-package init-terminal
+       :load-path m/load-path)
+     (use-package init-completion
        :load-path m/load-path)
    #+END_SRC
 
