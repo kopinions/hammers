@@ -64,7 +64,6 @@ plain/markdown/orgmode 的形式来插入到当前编辑的文件中。
     (org-use-sub-superscripts '{})
     (org-export-with-sub-superscripts '{})
     (private-directory "~/agendas")
-    (m/pomodoro 45)
     (org-directory private-directory)
     (org-confirm-babel-evaluate nil)
     (org-clock-out-remove-zero-time-clocks t)
@@ -122,6 +121,83 @@ plain/markdown/orgmode 的形式来插入到当前编辑的文件中。
     (org-clock-out-remove-zero-time-clocks t)
     ;; Show clock sums as hours and minutes, not "n days" etc.
     (org-time-clocksum-format '(:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t))
+    :custom-face
+    (org-link ((t (:foreground "#ebe087" :underline t))))
+    (org-list-dt ((t (:foreground "#bd93f9"))))
+    (org-special-keyword ((t (:foreground "#6272a4"))))
+    (org-todo ((t (:background "#272934" :foreground "#51fa7b" :weight bold))))
+    (org-document-title ((t (:foreground "#f1fa8c" :weight bold))))
+    (org-done ((t (:background "#373844" :foreground "#216933" :strike-through nil :weight bold))))
+    (org-footnote ((t (:foreground "#76e0f3"))))
+
+    ;; do not scale outline header
+    ;; (org-level-1 ((t (:inherit outline-1 :height 1.0))))
+    ;; (org-level-2 ((t (:inherit outline-2 :height 1.0))))
+    ;; (org-level-3 ((t (:inherit outline-3 :height 1.0))))
+    ;; (org-level-4 ((t (:inherit outline-4 :height 1.0))))
+    ;; (org-level-5 ((t (:inherit outline-5 :height 1.0))))
+    :bind (("C-c c" . org-capture)
+	   ("C-c a" . org-agenda)
+	   ("C-c b" . org-switchb)
+	   ("C-x C-l" . org-store-link)
+	   :map org-mode-map
+	   ("C-c i" . org-clock-in)
+	   ("C-c o" . org-clock-out)
+	   ("C-c n" . org-narrow-to-subtree)
+	   ("C-c b" . org-narrow-to-block)
+	   ("C-c w" . widen)
+	   ("C-c e" . org-set-effort))
+    :hook
+    (org-agenda-after-show . org-show-entry)
+    (org-agenda-mode . hl-line-mode)
+    (org-mode . (lambda ()
+		  (dolist (key '("C-'" "C-," "C-."))
+		    (unbind-key key org-mode-map))))
+    :config
+    (advice-add 'org-refile :after (lambda (&rest _) (org-save-all-org-buffers)))
+    (advice-add 'org-deadline       :after (lambda (&rest _rest)  (org-save-all-org-buffers)))
+    (advice-add 'org-schedule       :after (lambda (&rest _rest)  (org-save-all-org-buffers)))
+    (advice-add 'org-agenda-schedule       :after (lambda (&rest _rest)  (org-save-all-org-buffers)))
+    (advice-add 'org-agenda-capture       :after (lambda (&rest _rest)  (org-save-all-org-buffers)))
+    (advice-add 'org-store-log-note :after (lambda (&rest _rest)  (org-save-all-org-buffers)))
+    (advice-add 'org-todo           :after (lambda (&rest _rest)  (org-save-all-org-buffers)))
+
+    (setq org-todo-keywords
+	  (quote (
+		  (sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!/!)")
+		  (sequence "PROJECT(p)" "|" "DONE(d!/!)" "CANCELLED(c@/!)")
+		  (sequence "WAITING(w@/!)" "DELEGATED(e!)" "HOLD(h)" "|" "CANCELLED(c@/!)")
+		  ))
+	  org-todo-repeat-to-state "NEXT")
+    (setq org-todo-keyword-faces
+	  '(("WAIT" . (:foreground "#6272a4":weight bold))
+	    ("NEXT"   . (:foreground "#f1fa8c" :weight bold))
+	    ("CARRY/O" . (:foreground "#6272a4" :background "#373844" :weight bold))))
+    ;; load babel languages
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((R . t)
+       (dot . t)
+       (ditaa . t)
+       (emacs-lisp . t)
+       (gnuplot . t)
+       (haskell . nil)
+       (latex . t)
+       (ledger . t)
+       (ocaml . nil)
+       (octave . t)
+       (plantuml . t)
+       (python . t)
+       (ruby . t)
+       (screen . nil)
+       (shell . t)
+       (sql . t)
+       (sqlite . t))))
+#+END_SRC
+*** org-mode capture 配置
+#+begin_src emacs-lisp :tangle yes
+  (use-package org
+    :custom
     (org-capture-templates
      `(
        ;; tasks
@@ -151,12 +227,13 @@ plain/markdown/orgmode 的形式来插入到当前编辑的文件中。
        ("l" "Store the link of the current position in the clocking task." item
 	(clock)
 	"- %A\n"
-	:immediate t :prepend t)
-       ;; code-reading
-       ("c" "Store the code reading memo to today's diary with metadata." entry
-	(file+headline ladicle/get-today-diary "Code")
-	;;(file+headline ladicle/get-today-diary "Code")
-	"** %? %(ladicle/code-metadata)\n%A\n")))
+	:immediate t :prepend t))))
+#+end_src
+
+*** org-mode 日程配置
+#+BEGIN_SRC elisp :eval never :exports code
+  (use-package org
+    :custom
     (org-agenda-custom-commands
      `(("N" "Notes" tags "NOTE"
 	((org-agenda-overriding-header "Notes")
@@ -231,85 +308,53 @@ plain/markdown/orgmode 的形式来插入到当前编辑的文件中。
 	 ;; (tags-todo "-NEXT"
 	 ;;            ((org-agenda-overriding-header "All other TODOs")
 	 ;;             (org-match-list-sublevels t)))
-	 ))  ))
-
-    :custom-face
-    (org-link ((t (:foreground "#ebe087" :underline t))))
-    (org-list-dt ((t (:foreground "#bd93f9"))))
-    (org-special-keyword ((t (:foreground "#6272a4"))))
-    (org-todo ((t (:background "#272934" :foreground "#51fa7b" :weight bold))))
-    (org-document-title ((t (:foreground "#f1fa8c" :weight bold))))
-    (org-done ((t (:background "#373844" :foreground "#216933" :strike-through nil :weight bold))))
-    (org-footnote ((t (:foreground "#76e0f3"))))
-
-    ;; do not scale outline header
-    ;; (org-level-1 ((t (:inherit outline-1 :height 1.0))))
-    ;; (org-level-2 ((t (:inherit outline-2 :height 1.0))))
-    ;; (org-level-3 ((t (:inherit outline-3 :height 1.0))))
-    ;; (org-level-4 ((t (:inherit outline-4 :height 1.0))))
-    ;; (org-level-5 ((t (:inherit outline-5 :height 1.0))))
-    :bind (("C-c c" . org-capture)
-	   ("C-c a" . org-agenda)
-	   ("C-c b" . org-switchb)
-	   ("C-x C-l" . org-store-link)
-	   :map org-mode-map
-	   ("C-c i" . org-clock-in)
-	   ("C-c o" . org-clock-out)
-	   ("C-c n" . org-narrow-to-subtree)
-	   ("C-c b" . org-narrow-to-block)
-	   ("C-c w" . widen)
-	   ("C-c e" . org-set-effort))
-    :hook
-    (kill-emacs . m/org-clock-out-and-save-when-exit)
-    (org-clock-in .
-		  (lambda ()
-		    (setq org-mode-line-string (m/task-clocked-time))
-		    (run-at-time 0 60 '(lambda ()
-					 (setq org-mode-line-string (m/task-clocked-time))
-					 (force-mode-line-update)))
-		    (run-at-time (* m/pomodoro 60) nil (lambda() (org-clock-out)))
-		    (ignore-errors (request "http://127.0.0.1:13140"
-					    :type "POST"
-					    :data (json-encode `(("type" . "FOCUSED")
-								 ("title" . ,(or org-clock-current-task "interrupt task"))
-								 ("duration" . 45)))
-					    :headers '(("Content-Type" . "application/json"))))))
-    (org-clock-out . (lambda ()
-		       (run-at-time (* m/pomodoro 60) nil (lambda()
-							    (ignore-errors
-							      (request "http://127.0.0.1:13140"
-								       :type "POST"
-								       :data (json-encode `(("type" . "FOCUS")
-											    ("title" . "Ready to work")
-											    ("duration" . 5)))
-								       :headers '(("Content-Type" . "application/json"))))))
-		       (ignore-errors
-			 (request "http://127.0.0.1:13140"
-				  :type "POST"
-				  :data (json-encode `(("type" . "UNFOCUSED")
-						       ("title" . "Have a rest")
-						       ("duration" . 5)))
-				  :headers '(("Content-Type" . "application/json"))))))
-    (org-clock-in-last . (lambda ()
-			   (run-at-time (* m/pomodoro 60) nil (lambda() (org-clock-out)))
-
-			   (ignore-errors
-			     (request "http://127.0.0.1:13140"
-				      :type "POST"
-				      :data (json-encode `(("type" . "FOCUSED")
-							   ("title" . ,(or org-clock-current-task "interrupt task"))
-							   ("duration" . 45)))
-				      :headers '(("Content-Type" . "application/json"))))))
-    (org-agenda-after-show . org-show-entry)
-    (org-agenda-mode . hl-line-mode)
-    (org-mode . (lambda ()
-		  (dolist (key '("C-'" "C-," "C-."))
-		    (unbind-key key org-mode-map))))
+	 ))  )))
+#+END_SRC
+*** org-mode clock 配置
+#+BEGIN_SRC elisp :eval never :exports code
+  (use-package org
+    :custom
+    (m/pomodoro/focus 45)
+    (m/pomodoro/break 5)
+    (m/pomodoro/task/current nil)
+    (m/pomodoro/task/next nil)
+    (m/pomodoro/status/updater nil)
     :preface
     (defun m/org-clock-out-and-save-when-exit ()
       "Save buffers and stop clocking when kill emacs."
       (ignore-errors (org-clock-out) t)
       (save-some-buffers t))
+    (defun m/pomodoro/reset ()
+      "timer update"
+      (if (and m/pomodoro/task/current (timerp m/pomodoro/task/current))
+	  (cancel-timer m/pomodoro/task/current)
+	(setq m/pomodoro/task/current nil))
+
+      (if (and m/pomodoro/task/next (timerp m/pomodoro/task/next))
+	  (cancel-timer m/pomodoro/task/next)
+	(setq m/pomodoro/task/next nil))
+
+      (if (and m/pomodoro/status/updater (timerp m/pomodoro/status/updater))
+	  (cancel-timer m/pomodoro/status/updater)
+	(setq m/pomodoro/status/updater nil)))
+    (defun m/clockin ()
+      "clockin hook"
+      (m/pomodoro/reset)
+      (setq m/pomodoro/status/updater (run-at-time 0 60 '(lambda ()
+							   (setq org-mode-line-string (m/task-clocked-time))
+							   (force-mode-line-update))))
+      (setq m/pomodoro/task/current (run-at-time (* m/pomodoro/focus 60) nil (lambda() (org-clock-out)))))
+    (defun m/clockout ()
+      "clock out hook"
+      (m/pomodoro/reset)
+      (setq m/pomodoro/task/next (run-at-time (* m/pomodoro/break 60) nil (lambda()
+									    (ignore-errors
+									      (request "http://127.0.0.1:13140"
+										:type "POST"
+										:data (json-encode `(("type" . "FOCUS")
+												     ("title" . "Ready to work")
+												     ("duration" . 5)))
+										:headers '(("Content-Type" . "application/json"))))))))
     (defun m/task-clocked-time ()
       "Return a string with the clocked time and effort, if any"
       (interactive)
@@ -325,48 +370,36 @@ plain/markdown/orgmode 的形式来插入到当前编辑的文件中。
 		   (effort-str (format "%d:%02d" effort-h effort-m)))
 	      (format "%s/%s" work-done-str effort-str))
 	  (format "%s" work-done-str))))
-    :config
-    (advice-add 'org-refile :after (lambda (&rest _) (org-save-all-org-buffers)))
-    (advice-add 'org-deadline       :after (lambda (&rest _rest)  (org-save-all-org-buffers)))
-    (advice-add 'org-schedule       :after (lambda (&rest _rest)  (org-save-all-org-buffers)))
-    (advice-add 'org-agenda-schedule       :after (lambda (&rest _rest)  (org-save-all-org-buffers)))
-    (advice-add 'org-agenda-capture       :after (lambda (&rest _rest)  (org-save-all-org-buffers)))
-    (advice-add 'org-store-log-note :after (lambda (&rest _rest)  (org-save-all-org-buffers)))
-    (advice-add 'org-todo           :after (lambda (&rest _rest)  (org-save-all-org-buffers)))
-
-    (setq org-todo-keywords
-	  (quote (
-		  (sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!/!)")
-		  (sequence "PROJECT(p)" "|" "DONE(d!/!)" "CANCELLED(c@/!)")
-		  (sequence "WAITING(w@/!)" "DELEGATED(e!)" "HOLD(h)" "|" "CANCELLED(c@/!)")
-		  ))
-	  org-todo-repeat-to-state "NEXT")
-    (setq org-todo-keyword-faces
-	  '(("WAIT" . (:foreground "#6272a4":weight bold))
-	    ("NEXT"   . (:foreground "#f1fa8c" :weight bold))
-	    ("CARRY/O" . (:foreground "#6272a4" :background "#373844" :weight bold))))
-    ;; load babel languages
-    (org-babel-do-load-languages
-     'org-babel-load-languages
-     '((R . t)
-       (dot . t)
-       (ditaa . t)
-       (emacs-lisp . t)
-       (gnuplot . t)
-       (haskell . nil)
-       (latex . t)
-       (ledger . t)
-       (ocaml . nil)
-       (octave . t)
-       (plantuml . t)
-       (python . t)
-       (ruby . t)
-       (screen . nil)
-       (shell . t)
-       (sql . t)
-       (sqlite . t))))
+    :hook
+    (kill-emacs . m/org-clock-out-and-save-when-exit)
+    (org-clock-in .
+		  (lambda ()
+		    (m/clockin)
+		    (ignore-errors (request "http://127.0.0.1:13140"
+				     :type "POST"
+				     :data (json-encode `(("type" . "FOCUSED")
+							  ("title" . ,(or org-clock-current-task "interrupt task"))
+							  ("duration" . 45)))
+				     :headers '(("Content-Type" . "application/json"))))))
+    (org-clock-out . (lambda ()
+		       (m/clockout)
+		       (ignore-errors
+			 (request "http://127.0.0.1:13140"
+			   :type "POST"
+			   :data (json-encode `(("type" . "UNFOCUSED")
+						("title" . "Have a rest")
+						("duration" . 5)))
+			   :headers '(("Content-Type" . "application/json"))))))
+    (org-clock-in-last . (lambda ()
+			   (m/clockin)
+			   (ignore-errors
+			     (request "http://127.0.0.1:13140"
+			       :type "POST"
+			       :data (json-encode `(("type" . "FOCUSED")
+						    ("title" . ,(or org-clock-current-task "interrupt task"))
+						    ("duration" . 45)))
+			       :headers '(("Content-Type" . "application/json")))))))
 #+END_SRC
-
 *** org-mode export 配置
 允许在 org 文件中通过 bind 修改环境中绑定的值。
 #+BEGIN_SRC elisp :exports code :eval never :tangle yes
@@ -416,84 +449,66 @@ plain/markdown/orgmode 的形式来插入到当前编辑的文件中。
   (use-package company-graphviz-dot
     :ensure nil)
 #+END_SRC
-*** org-mode 番茄工作法
-#+BEGIN_SRC elisp
-;; Pomodoro
-(use-package org-pomodoro
-	    :after (org org-agenda)
-	    :custom
-	    (org-pomodoro-ask-upon-killing t)
-	    (org-pomodoro-keep-killed-pomodoro-time t)
-	    (org-pomodoro-short-break-length 5)
-	    (org-pomodoro-long-break-length 15)
-	    (org-pomodoro-length 45)
-  	    :config
-	    (use-package request)
-	    :bind 
-	    (:map org-agenda-mode-map
-	                ("P" . org-pomodoro)))
-#+END_SRC
-
 *** org mode 可以拖拽下载
 #+BEGIN_SRC elisp
-;; Download Drag&Drop images
-(use-package org-download
-  :after (org))
+  ;; Download Drag&Drop images
+  (use-package org-download
+    :after (org))
 
 #+END_SRC
 
 *** org mode 图标设置
 #+BEGIN_SRC elisp
-;; Pretty bullets
-(use-package org-bullets
-  :after org
-  :hook (org-mode . org-bullets-mode)
-  :config
-  (setq org-bullets-face-name (quote org-bullet-face))
-  (org-bullets-mode 1)
-  (setq org-bullets-bullet-list '("✙" "♱" "♰" "☥" "✞" "✟" "✝" "†" "✠" "✚" "✜" "✛" "✢" "✣" "✤" "✥")))
+  ;; Pretty bullets
+  (use-package org-bullets
+    :after org
+    :hook (org-mode . org-bullets-mode)
+    :config
+    (setq org-bullets-face-name (quote org-bullet-face))
+    (org-bullets-mode 1)
+    (setq org-bullets-bullet-list '("✙" "♱" "♰" "☥" "✞" "✟" "✝" "†" "✠" "✚" "✜" "✛" "✢" "✣" "✤" "✥")))
 #+END_SRC
 
 *** org-mode 博客
 #+BEGIN_SRC elisp
-(use-package ox-gfm)
-(use-package ox-hugo
-      :after (ox org)
-      :custom
-      (org-blackfriday--org-element-string '((src-block . "Code")
-      (table . "Table")
-      (figure . "Figure"))))
+  (use-package ox-gfm)
+  (use-package ox-hugo
+    :after (ox org)
+    :custom
+    (org-blackfriday--org-element-string '((src-block . "Code")
+					   (table . "Table")
+					   (figure . "Figure"))))
 
 
 #+END_SRC
 
 *** org-mode retrospect temlate
 #+BEGIN_SRC org :tangle "~/agendas/retrospect.tmpl" :noweb yes :mkdirp yes
-|----------------------------+---|
-| 昨天学到什么？             |   |
-|----------------------------+---|
-| 昨天得到什么教训？         |   |
-|----------------------------+---|
-| 昨天做了哪些换位思考？     |   |
-|----------------------------+---|
-| 昨天做了哪些倒推思维训练？ |   |
-|----------------------------+---|
-| 昨天发生的事情             |   |
-| 我能提出什么问题           |   |
-|----------------------------+---|
-| 接下来有什么计划？         |   |
-|                            |   |
-|                            |   |
-|                            |   |
-|----------------------------+---|
+  |----------------------------+---|
+  | 昨天学到什么？             |   |
+  |----------------------------+---|
+  | 昨天得到什么教训？         |   |
+  |----------------------------+---|
+  | 昨天做了哪些换位思考？     |   |
+  |----------------------------+---|
+  | 昨天做了哪些倒推思维训练？ |   |
+  |----------------------------+---|
+  | 昨天发生的事情             |   |
+  | 我能提出什么问题           |   |
+  |----------------------------+---|
+  | 接下来有什么计划？         |   |
+  |                            |   |
+  |                            |   |
+  |                            |   |
+  |----------------------------+---|
 #+END_SRC
 
 *** org-mode gtd files
 #+BEGIN_SRC org :tangle no :noweb yes :mkdirp yes
-#+CATEGORY: Inbox
-#+FILETAGS: INBOX
+  ,#+CATEGORY: Inbox
+  ,#+FILETAGS: INBOX
 #+END_SRC
 ** provide
 #+BEGIN_SRC elisp
-(provide 'init-literate)
+  (provide 'init-literate)
 #+END_SRC
