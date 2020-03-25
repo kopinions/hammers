@@ -375,12 +375,10 @@ plain/markdown/orgmode 的形式来插入到当前编辑的文件中。
     (org-export-allow-bind-keywords t))
 #+END_SRC
 
-
 *** org-mode ditaa/plantuml 画图
 
 #+BEGIN_SRC elisp :exports code
   (use-package org
-    :ensure org-plus-contrib
     :config
     (unless (and (boundp 'org-ditaa-jar-path)
 		 (file-exists-p org-ditaa-jar-path)
