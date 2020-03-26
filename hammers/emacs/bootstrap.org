@@ -92,12 +92,12 @@
     Emacs 常见的配置管理都是先使用包管理器安装对应的包，然后再进行配置。安装包和配置是割裂开的。对于使用多个包的情况，安装包配置会分散到各个地方，安装包相关的配置会变得难以维护。
     [[https://github.com/jwiegley/use-package][use-package]] 提供了一个非常干净简洁的安装包配置的方式。use-package 可以将安装包的配置隔离开，使得 Emacs 配置文件干净简洁。
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC elisp :eval never :exports code
   (unless (package-installed-p 'use-package)
     (package-refresh-contents)
     (package-install 'use-package))
 
-  (eval-at-compile (require 'use-package))
+  (eval-when-compile (require 'use-package))
 
   (setq use-package-always-ensure t)
 
@@ -106,6 +106,12 @@
     (setq auto-package-update-delete-old-versions t)
     (setq auto-package-update-hide-results t)
     (auto-package-update-maybe))
+
+  (use-package quelpa)
+
+  (use-package quelpa-use-package
+    :config
+    (quelpa-use-package-activate-advice))
 #+END_SRC
 
 *** 包加载路径配置

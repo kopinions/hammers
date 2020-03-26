@@ -13,3 +13,8 @@
 [submodule "hammers/emacs/3rdparty/verilog-mode"]
 	path = hammers/emacs/3rdparty/verilog-mode
 	url = https://github.com/veripool/verilog-mode.git
+[submodule "hammers/emacs/3rdparty/librime"]
+	path = hammers/emacs/3rdparty/librime
+	url = https://github.com/rime/librime.git
+	ignore = dirty
+	ignore = dirty

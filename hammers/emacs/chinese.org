@@ -12,100 +12,113 @@
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
 ** 中文字体配置
-
-#+BEGIN_SRC elisp
-
-(use-package cnfonts
-  :ensure t
-  :if (display-graphic-p)
-  :init (setq cnfonts-verbose nil)
-  :config
-  (setq cnfonts-use-face-font-rescale t)
-  (cnfonts-enable))
-
+#+BEGIN_SRC elisp :eval never :exports code
+  (use-package cnfonts
+    :ensure t
+    :if (display-graphic-p)
+    :init (setq cnfonts-verbose nil)
+    :config
+    (setq cnfonts-use-face-font-rescale t)
+    (cnfonts-enable))
 #+END_SRC
 
 ** 输入法配置
 
-#+BEGIN_SRC elisp
-(use-package posframe)
+#+BEGIN_SRC elisp :eval never :exports code
+  (use-package posframe)
+  (use-package pyim
+    :diminish pyim-isearch
+    :after posframe
+    :config
+    ;; 激活 basedict 拼音词库，五笔用户请继续阅读 README
+    (use-package pyim-basedict
+      :ensure nil
+      :config (pyim-basedict-enable))
 
-(use-package pyim
-  :diminish pyim-isearch-mode
-  :requires posframe
-  :config
-  ;; 激活 basedict 拼音词库，五笔用户请继续阅读 README
-  (use-package pyim-basedict
-    :ensure nil
-    :config (pyim-basedict-enable))
+    (setq default-input-method "pyim")
 
-  (setq default-input-method "pyim")
+    ;; 使用全拼
+    (setq pyim-default-scheme 'quanpin)
 
-  ;; 使用全拼
-  (setq pyim-default-scheme 'quanpin)
+    ;; 设置 pyim 探针设置，这是 pyim 高级功能设置，可以实现 *无痛* 中英文切换 :-)
+    ;; 我自己使用的中英文动态切换规则是：
+    ;; 1. 光标只有在注释里面时，才可以输入中文。
+    ;; 2. 光标前是汉字字符时，才能输入中文。
+    ;; 3. 使用 M-j 快捷键，强制将光标前的拼音字符串转换为中文。
+    (setq-default pyim-english-input-switch-functions
+		  '(pyim-probe-dynamic-english
+		    pyim-probe-isearch-mode
+		    pyim-probe-program-mode
+		    pyim-probe-org-structure-template))
 
-  ;; 设置 pyim 探针设置，这是 pyim 高级功能设置，可以实现 *无痛* 中英文切换 :-)
-  ;; 我自己使用的中英文动态切换规则是：
-  ;; 1. 光标只有在注释里面时，才可以输入中文。
-  ;; 2. 光标前是汉字字符时，才能输入中文。
-  ;; 3. 使用 M-j 快捷键，强制将光标前的拼音字符串转换为中文。
-  (setq-default pyim-english-input-switch-functions
-                '(pyim-probe-dynamic-english
-                  pyim-probe-isearch-mode
-                  pyim-probe-program-mode
-                  pyim-probe-org-structure-template))
+    (setq-default pyim-punctuation-half-width-functions
+		  '(pyim-probe-punctuation-line-beginning
+		    pyim-probe-punctuation-after-punctuation))
 
-  (setq-default pyim-punctuation-half-width-functions
-                '(pyim-probe-punctuation-line-beginning
-                  pyim-probe-punctuation-after-punctuation))
+    ;; 开启拼音搜索功能
+    (pyim-isearch-mode 1)
 
-  ;; 开启拼音搜索功能
-  (pyim-isearch-mode 1)
+    ;; 使用 pupup-el 来绘制选词框, 如果用 emacs26, 建议设置
+    ;; 为 'posframe, 速度很快并且菜单不会变形，不过需要用户
+    ;; 手动安装 posframe 包。
+    (setq pyim-page-tooltip 'posframe)
 
-  ;; 使用 pupup-el 来绘制选词框, 如果用 emacs26, 建议设置
-  ;; 为 'posframe, 速度很快并且菜单不会变形，不过需要用户
-  ;; 手动安装 posframe 包。
-  (setq pyim-page-tooltip 'posframe)
+    ;; 选词框显示5个候选词
+    (setq pyim-page-length 5)
 
-  ;; 选词框显示5个候选词
-  (setq pyim-page-length 5)
-
-  :bind
-  (("M-j" . pyim-convert-string-at-point) ;与 pyim-probe-dynamic-english 配合
-   ("C-;" . pyim-delete-word-from-personal-buffer)
-   :map pyim-mode-map
-   ("C-n" . pyim-page-next-page)
-   ("C-p" . pyim-page-previous-page)
-  )
-  :hook 
-  ((emacs-startup . pyim-restart)))
+    :bind
+    (("M-j" . pyim-convert-string-at-point) ;与 pyim-probe-dynamic-english 配合
+     ("C-;" . pyim-delete-word-from-personal-buffer)
+     :map pyim-mode-map
+     ("C-n" . pyim-page-next-page)
+     ("C-p" . pyim-page-previous-page)
+    )
+    :hook 
+    ((emacs-startup . pyim-restart)))
 #+END_SRC
 
 ** rime 输入法配置
-#+BEGIN_SRC elisp
-(use-package liberime											   
-    :load-path (lambda () (expand-file-name "rime" user-emacs-directory))					   
-    :custom													   
-    (rime_share_data_dir "/Library/Input Methods/Squirrel.app/Contents/SharedSupport")
-    (rime_user_data_dir (expand-file-name "rime" user-emacs-directory))
-    :hook													   
-    (pyim-load . (lambda () 											   
-      (interactive)												   
-      (liberime-start rime_share_data_dir rime_user_data_dir)						   
-      (liberime-select-schema "luna_pinyin_simp")								   
-      (setq pyim-default-scheme 'rime-quanpin)								   
-    )))													   
+
+*** 安装 rime
+#+BEGIN_SRC shell :exports code :results none :tangle no
+cd ~/.emacs.d/3rdparty/librime
+git submodule update --init
+make thirdparty
+make release
 #+END_SRC
 
-#+BEGIN_SRC yaml :tangle "~/.emacs.d/rime/default.custom.yaml" :noweb yes
-patch:
-  "menu/page_size": 100
-  "speller/auto_select": false
-  "speller/auto_select_unique_candidate": false
+
+*** 安装 liberime
+
+#+BEGIN_SRC elisp :eval never :exports code
+  (use-package liberime
+    :after pyim
+    :quelpa (liberime
+	     :fetcher github
+	     :repo "sjkyspa/liberime"
+	     :files ("CMakeLists.txt" "Makefile" "src" "liberime.el" "liberime-config.el"))
+    :init
+    (setenv "RIME_PATH" (expand-file-name "librime" (expand-file-name "3rdparty" m/conf.d)))
+    (liberime-build)
+    (add-hook 'liberime-after-start-hook
+	      (lambda ()
+		;; Select schema delay 5 second, make sure
+		;; `liberime-load' run finish.
+		(run-with-timer
+		 5 1
+		 (progn (liberime-select-schema "luna_pinyin_simp")
+			(setq pyim-default-scheme 'rime-quanpin))))))
+
 #+END_SRC
 
-#+BEGIN_SRC elisp
 
-(provide 'init-chinese)
+#+BEGIN_SRC yaml :tangle "~/.emacs.d/rime/default.custom.yaml" :noweb yes :eval never :exports code
+  patch:
+    "menu/page_size": 100
+    "speller/auto_select": false
+    "speller/auto_select_unique_candidate": false
+#+END_SRC
 
+#+BEGIN_SRC elisp :eval never :exports code
+  (provide 'init-chinese)
 #+END_SRC
