@@ -105,6 +105,7 @@ brew 'nmap'
 brew 'axel' # multiple thread downloader
 brew 'iperf'
 brew 'gradle'
+brew 'make'
 brew 'cmake'
 brew 'tig'
 brew 'rg'
