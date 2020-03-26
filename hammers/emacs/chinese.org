@@ -79,7 +79,7 @@
 
 ** rime 输入法配置
 
-*** 安装 rime
+*** 安装 librime
 #+BEGIN_SRC shell :exports code :results none :tangle no
 cd ~/.emacs.d/3rdparty/librime
 git submodule update --init
@@ -106,8 +106,9 @@ make release
 		;; `liberime-load' run finish.
 		(run-with-timer
 		 5 1
-		 (progn (liberime-select-schema "luna_pinyin_simp")
-			(setq pyim-default-scheme 'rime-quanpin))))))
+		 (lambda () 
+		   (liberime-select-schema "luna_pinyin_simp")
+		   (setq pyim-default-scheme 'rime))))))
 
 #+END_SRC
 
