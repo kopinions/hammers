@@ -39,10 +39,6 @@
     :ensure t
     :commands lsp-treemacs-errors-list
     )
-  (use-package lsp-origami
-    :after origami
-    :hook
-    (origami-mode . lsp-origami-mode))
   ;; LSP UI tools
   (use-package lsp-ui
     :ensure t

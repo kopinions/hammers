@@ -35,10 +35,10 @@
 #+END_SRC
 *** 环境变量
 #+BEGIN_SRC elisp
-(use-package exec-path-from-shell
- :config
- (when (memq m/os '(macos linux))
-   (exec-path-from-shell-initialize)))
+  (use-package exec-path-from-shell
+    :config
+    (when (memq m/os '(macos linux))
+      (exec-path-from-shell-initialize)))
 #+END_SRC
 ** http
 #+BEGIN_SRC elisp

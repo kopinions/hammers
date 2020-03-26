@@ -195,7 +195,7 @@ plain/markdown/orgmode 的形式来插入到当前编辑的文件中。
        (sqlite . t))))
 #+END_SRC
 *** org-mode capture 配置
-#+begin_src emacs-lisp :tangle yes
+#+begin_src elisp
   (use-package org
     :custom
     (org-capture-templates
@@ -447,6 +447,7 @@ plain/markdown/orgmode 的形式来插入到当前编辑的文件中。
     :config
     (setq graphviz-dot-indent-width 4))
   (use-package company-graphviz-dot
+    :after company
     :ensure nil)
 #+END_SRC
 *** org mode 可以拖拽下载
