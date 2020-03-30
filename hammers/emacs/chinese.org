@@ -96,6 +96,7 @@ make release
     :after pyim
     :init
     (setenv "RIME_PATH" (expand-file-name "librime" (expand-file-name "3rdparty" m/conf.d)))
+    :config
     (liberime-build)
     :hook
     (liberime-after-start . (lambda ()
