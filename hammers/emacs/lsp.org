@@ -92,11 +92,11 @@
 
 ** emacs debug adaptor protocol
 #+BEGIN_SRC elisp
-(use-package dap-mode
-  :after lsp-mode
-  :config
+  (use-package dap-mode
+    :after lsp-mode posframe
+    :config
     (require 'dap-hydra)
-    (require 'dap-gdb-lldb)	
+    (require 'dap-lldb)  
     (require 'dap-go)
     (require 'dap-ui)
     (dap-mode 1)
