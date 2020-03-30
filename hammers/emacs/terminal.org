@@ -19,24 +19,38 @@
 #+END_SRC   
 *** 配置选项
 #+BEGIN_SRC elisp
-(use-package eshell
-  :init
-  (defvar eshell-mode-map (make-sparse-keymap))
-  :custom
-  (eshell-scroll-to-bottom-on-input 'all)
-  (eshell-error-if-no-glob t)
-  (eshell-hist-ignoredups t)
-  (eshell-save-history-on-exit t)
-  (eshell-prefer-lisp-functions nil)
-  (eshell-destroy-buffer-when-process-dies t)
-  :bind
-  (:map eshell-mode-map
-  ("C-c c" . eshell-interrupt-process))
-  :hook
-  ((eshell-mode . (lambda() (add-to-list 'eshell-visual-commands "ssh")
-                           (add-to-list 'eshell-visual-commands "tail")
-			   (add-to-list 'eshell-visual-commands "top")
-			   (setq-local eshell-mode-map (make-sparse-keymap))))))
+  (use-package shrink-path)
+  (use-package eshell
+    :after shrink-path
+    :init
+    (defvar eshell-mode-map (make-sparse-keymap))
+    :custom
+    (eshell-scroll-to-bottom-on-input 'all)
+    (eshell-error-if-no-glob t)
+    (eshell-hist-ignoredups t)
+    (eshell-save-history-on-exit t)
+    (eshell-prefer-lisp-functions nil)
+    (eshell-destroy-buffer-when-process-dies t)
+    (eshell-cmpl-cycle-completions nil)
+    (eshell-cmpl-ignore-case t)
+    (eshell-ask-to-save-history (quote always))
+    (eshell-prompt-regexp "❯❯❯ ")
+    (eshell-prompt-function
+     (lambda ()
+       (format "%s %s\n%s%s%s "
+	       (all-the-icons-octicon "repo")
+	       (propertize (cdr (shrink-path-prompt default-directory)) 'face `(:foreground "white"))
+	       (propertize "❯" 'face `(:foreground "#ff79c6"))
+	       (propertize "❯" 'face `(:foreground "#f1fa8c"))
+	       (propertize "❯" 'face `(:foreground "#50fa7b")))))
+    :bind
+    (:map eshell-mode-map
+	  ("C-c c" . eshell-interrupt-process))
+    :hook
+    ((eshell-mode . (lambda() (add-to-list 'eshell-visual-commands "ssh")
+		      (add-to-list 'eshell-visual-commands "tail")
+		      (add-to-list 'eshell-visual-commands "top")
+		      (setq-local eshell-mode-map (make-sparse-keymap))))))
 #+END_SRC
 *** alias
 #+BEGIN_SRC elisp
@@ -106,6 +120,18 @@ file to edit."
          (file (car (s-split "\n" files))))
     (find-file file)))
 #+END_SRC
+*** autojump
+#+BEGIN_SRC elisp :eval never :exports code
+  (use-package eshell-autojump)
+#+END_SRC
+*** eshell toggle window
+#+BEGIN_SRC elisp :eval never :exports code
+  (use-package eshell-toggle
+    :bind
+    (("M-<f12>" . eshell-toggle)))
+#+END_SRC
+
+
 *** clear
 #+BEGIN_SRC elisp
 
