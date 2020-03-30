@@ -92,23 +92,25 @@ make release
 
 #+BEGIN_SRC elisp :eval never :exports code
   (use-package liberime
+    :load-path (lambda () (expand-file-name "liberime" (expand-file-name "3rdparty" m/conf.d)))
     :after pyim
-    :quelpa (liberime
-	     :fetcher github
-	     :repo "sjkyspa/liberime"
-	     :files ("CMakeLists.txt" "Makefile" "src" "liberime.el" "liberime-config.el"))
     :init
     (setenv "RIME_PATH" (expand-file-name "librime" (expand-file-name "3rdparty" m/conf.d)))
     (liberime-build)
-    (add-hook 'liberime-after-start-hook
-	      (lambda ()
-		;; Select schema delay 5 second, make sure
-		;; `liberime-load' run finish.
-		(run-with-timer
-		 5 1
-		 (lambda () 
-		   (liberime-select-schema "luna_pinyin_simp")
-		   (setq pyim-default-scheme 'rime))))))
+    :hook
+    (liberime-after-start . (lambda ()
+			      (let ((buf (get-buffer "*liberime message*")))
+				(if buf (with-current-buffer buf
+					  (kill-this-buffer)
+					  (if (not (one-window-p))
+					      (delete-window)))))
+			      ;; Select schema delay 5 second, make sure
+			      ;; `liberime-load' run finish.
+			      (run-with-timer
+			       5 1
+			       (ignore-errors (lambda ()
+						(liberime-select-schema "luna_pinyin_simp")
+						(setq pyim-default-scheme 'rime)))))))
 
 #+END_SRC
 

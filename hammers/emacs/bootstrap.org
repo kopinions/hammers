@@ -106,12 +106,6 @@
     (setq auto-package-update-delete-old-versions t)
     (setq auto-package-update-hide-results t)
     (auto-package-update-maybe))
-
-  (use-package quelpa)
-
-  (use-package quelpa-use-package
-    :config
-    (quelpa-use-package-activate-advice))
 #+END_SRC
 
 *** 包加载路径配置
