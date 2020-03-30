@@ -33,6 +33,17 @@
   ,#+END_SRC
 #+END_SRC
 
+*** conf 代码段
+#+BEGIN_SRC text :tangle (expand-file-name "snippets/org-mode/conf" m/conf.d) :mkdirp yes
+  # -*- mode: snippet -*-
+  # name: conf
+  # key: <conf
+  # --
+  ,#+BEGIN_SRC conf :eval never :exports code
+  $0
+  ,#+END_SRC
+#+END_SRC
+
 *** blog front matter 配置
 
 #+BEGIN_SRC text :tangle (expand-file-name "snippets/org-mode/front-matter" m/conf.d) :mkdirp yes
