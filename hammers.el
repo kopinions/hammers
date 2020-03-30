@@ -124,6 +124,7 @@
 (m/tangles "${m/root}/hammers/brew/*.org")
 (m/evaluates "${m/root}/hammers/brew/*.org")
 (m/evaluates "${m/root}/hammers/emacs/chinese.org")
+(m/evaluates "${m/root}/hammers/emacs/lsp.org")
 (m/link "${m/root}/hammers/tmux/plugins" "~/.tmux/plugins")
 (m/link "${m/root}/hammers/zsh/zplug" "~/.zsh/zplug")
 (m/link "${m/root}/hammers/vim/bundle" "~/.vim/bundle")
