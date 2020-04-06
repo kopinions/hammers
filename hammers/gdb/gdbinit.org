@@ -2289,4 +2289,6 @@ python Dashboard.start()
   set history size unlimited
   set history expansion on
   set history remove-duplicates unlimited
+  # 修复在 macos 下 gdb 不能正常启动的问题
+  set startup-with-shell off 
 #+END_SRC
