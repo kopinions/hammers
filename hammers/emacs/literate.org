@@ -402,7 +402,7 @@ plain/markdown/orgmode 的形式来插入到当前编辑的文件中。
 #+END_SRC
 *** org-mode export 配置
 允许在 org 文件中通过 bind 修改环境中绑定的值。
-#+BEGIN_SRC elisp :exports code :eval never :tangle yes
+#+BEGIN_SRC elisp :exports code :eval never
   (use-package org
     :custom
     (org-export-allow-bind-keywords t))
