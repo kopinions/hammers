@@ -9,9 +9,7 @@
 #+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
-* xx
-
-** ceshi
+** dashboard of gdb
 #+BEGIN_SRC python :eval never :tangle ~/.gdbinit :noweb yes
 python
 
@@ -2274,7 +2272,7 @@ python Dashboard.start()
 # vim: filetype=python
 <<customized>>
 #+END_SRC
-** init file for gdb
+** gdb customize config
 #+BEGIN_SRC conf :exports code :noweb-ref customized
   # 开启项目特定的 gdbinit 配置
   set auto-load local-gdbinit
