@@ -123,6 +123,7 @@
 (m/tangles "${m/root}/hammers/vim/*.org")
 (m/tangles "${m/root}/hammers/rg/*.org")
 (m/tangles "${m/root}/hammers/brew/*.org")
+(m/tangles "${m/root}/hammers/gdb/*.org")
 (m/evaluates "${m/root}/hammers/brew/*.org")
 (m/evaluates "${m/root}/hammers/emacs/chinese.org")
 (m/evaluates "${m/root}/hammers/emacs/lsp.org")

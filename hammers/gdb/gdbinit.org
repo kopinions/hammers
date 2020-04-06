@@ -5,14 +5,14 @@
 #+DESCRIPTION: Gdb base config
 #+PROPERTY:    header-args        :results silent   :eval no-export   :comments org
 #+PROPERTY:    header-args        :mkdirp yes
-#+PROPERTY:    header-args:python  :tangle "~/.gdbinit"
-#+PROPERTY:    header-args:conf  :tangle "~/.gdbinit"
 #+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil
 #+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
-** gdb dashboard
-#+BEGIN_SRC python :eval never :exports code :noweb yes
+* xx
+
+** ceshi
+#+BEGIN_SRC python :eval never :tangle ~/.gdbinit :noweb yes
 python
 
 # GDB dashboard - Modular visual interface for GDB in Python.
@@ -2272,9 +2272,6 @@ python Dashboard.start()
 # File variables ---------------------------------------------------------------
 
 # vim: filetype=python
-# Local Variables:
-# mode: python
-# End:
 <<customized>>
 #+END_SRC
 ** init file for gdb
@@ -2282,16 +2279,8 @@ python Dashboard.start()
   # 开启项目特定的 gdbinit 配置
   set auto-load local-gdbinit
 
-  set $64BITS = 1
-
   set confirm off
   set verbose off
-  set prompt \033[31mgdb$ \033[0m
-
-  set height 0
-  set width 0
-  set inferior-tty /tmp/gdb
-  set tui
 
   # Display instructions in Intel format
   set disassembly-flavor intel
@@ -2302,20 +2291,4 @@ python Dashboard.start()
   set history size unlimited
   set history expansion on
   set history remove-duplicates unlimited
-
-  set $SHOW_CONTEXT = 1
-  set $SHOW_NEST_INSN = 0
-
-  set $CONTEXTSIZE_STACK = 6
-  set $CONTEXTSIZE_DATA  = 8
-  set $CONTEXTSIZE_CODE  = 8
-
-  # set to 0 to remove display of objectivec messages (default is 1)
-  set $SHOWOBJECTIVEC = 1
-  # set to 0 to remove display of cpu registers (default is 1)
-  set $SHOWCPUREGISTERS = 1
-  # set to 1 to enable display of stack (default is 0)
-  set $SHOWSTACK = 0
-  # set to 1 to enable display of data window (default is 0)
-  set $SHOWDATAWIN = 0
 #+END_SRC
