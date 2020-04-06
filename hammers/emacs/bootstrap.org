@@ -106,6 +106,9 @@
     (setq auto-package-update-delete-old-versions t)
     (setq auto-package-update-hide-results t)
     (auto-package-update-maybe))
+
+  (use-package use-package-ensure-system-package
+    :ensure t)
 #+END_SRC
 
 *** 包加载路径配置
@@ -155,6 +158,8 @@
      (use-package init-terminal
        :load-path m/load-path)
      (use-package init-completion
+       :load-path m/load-path)
+     (use-package init-email
        :load-path m/load-path)
    #+END_SRC
 

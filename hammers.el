@@ -114,6 +114,7 @@
 		  (if load-file-name
 		      (file-name-directory load-file-name)
 		    (file-name-directory (buffer-file-name)))))
+(defvar m/conf.d (expand-file-name user-emacs-directory))
 (m/tangles "${m/root}/hammers/emacs/*.org")
 (m/tangles "${m/root}/hammers/zsh/*.org")
 (m/tangles "${m/root}/hammers/git/*.org")
