@@ -57,6 +57,7 @@ plain/markdown/orgmode 的形式来插入到当前编辑的文件中。
 *** org-mode 配置
 #+BEGIN_SRC elisp
   (use-package org
+    :diminish org-mode
     :custom
     (org-src-fontify-natively t)
     (org-descriptive-links nil)

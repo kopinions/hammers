@@ -14,7 +14,7 @@
 *** projectile 
 #+BEGIN_SRC elisp
 (use-package projectile
-  :diminish
+  :diminish projectile-mode
   :after counsel
   :custom
   (projectile-sort-order 'recently-active)

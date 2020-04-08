@@ -54,7 +54,7 @@
 *** lisp
 #+BEGIN_SRC elisp
 (use-package rainbow-mode
-  :diminish
+  :diminish rainbow-mode
   :hook
   (emacs-lisp-mode . rainbow-mode))
 #+END_SRC

@@ -31,21 +31,23 @@
     :config
     (global-company-mode)
     (use-package company-posframe
-      :diminish company-posframe
+      :diminish company-posframe-mode
       :hook
       (company-mode . company-posframe-mode))
     (use-package company-flx
+      :diminish company-flx-mode
       :requires company
       :config
       (company-flx-mode +1))
     (use-package company-box
-      :diminish company-box
+      :diminish company-box-mode
       :hook (company-mode . company-box-mode)
       :config
       (setq company-box-backends-colors nil)
       (setq company-box-show-single-candidate nil)
       (setq company-box-max-candidates 50))
     (use-package company-quickhelp
+      :diminish company-quickhelp-mode
       :defines company-quickhelp-delay
       :bind
       (:map company-active-map

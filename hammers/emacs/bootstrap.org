@@ -93,12 +93,15 @@
     [[https://github.com/jwiegley/use-package][use-package]] 提供了一个非常干净简洁的安装包配置的方式。use-package 可以将安装包的配置隔离开，使得 Emacs 配置文件干净简洁。
 
 #+BEGIN_SRC elisp :eval never :exports code
-  (unless (package-installed-p 'use-package)
+  (unless (and 
+	   (package-installed-p 'use-package)
+	   (package-installed-p 'diminish))
     (package-refresh-contents)
-    (package-install 'use-package))
+    (package-install 'use-package)
+    (package-install 'diminish))
 
   (eval-when-compile (require 'use-package))
-
+  (require 'diminish)
   (setq use-package-always-ensure t)
 
   (use-package auto-package-update
