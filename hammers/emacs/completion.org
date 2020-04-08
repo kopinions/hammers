@@ -62,25 +62,25 @@
 如果我们需要将在 company 补全的时候，同时使用 yasnippet, 这种时候需要将 yasnippet 的 backend 添加到 company-backends 变量中
 
 #+BEGIN_SRC elisp
-  (defvar company-mode/enable-yas t
-    "Enable yasnippet for all backends.")
-
-  (defun company-mode/backend-with-yas (backend)
-    (if	(or (not company-mode/enable-yas)
-	      (and (listp backend) (member 'company-yasnippet backend)))
-	backend
-      (append (if (consp backend) backend (list backend))
-	      '(:with company-yasnippet))))
-
   (use-package yasnippet
-    :after company
-    :diminish yas-minor-mode
     :config
     (use-package yasnippet-snippets
       :requires yasnippet
-      :custom (yas-snippet-dirs `(,(expand-file-name "snippets" m/conf.d) ,yasnippet-snippets-dir)))
-    (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
-    (yas-reload-all)
+      :after company
+      :preface
+      (defvar company-mode/enable-yas t
+	"Enable yasnippet for all backends.")
+      (defun company-mode/backend-with-yas (backend)
+	(if	(or (not company-mode/enable-yas)
+		      (and (listp backend) (member 'company-yasnippet backend)))
+	    backend
+	  (append (if (consp backend) backend (list backend))
+		  '(:with company-yasnippet))))
+
+      :custom (yas-snippet-dirs `(,(expand-file-name "snippets" m/conf.d) ,yasnippet-snippets-dir))
+      :config
+      (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
+      (yas-reload-all))
     (yas-global-mode t))
 #+END_SRC
 
