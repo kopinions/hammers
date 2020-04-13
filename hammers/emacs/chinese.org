@@ -80,7 +80,7 @@
 ** rime 输入法配置
 
 *** 安装 librime
-#+BEGIN_SRC shell :exports code :results none :tangle no
+#+BEGIN_SRC shell :exports code :results none :tangle no  :eval (or (and (eq m/os 'macos) "yes") "never")
 cd ~/.emacs.d/3rdparty/librime
 git submodule update --init
 make thirdparty
@@ -92,6 +92,7 @@ make release
 
 #+BEGIN_SRC elisp :eval never :exports code
   (use-package liberime
+    :if (eq m/os 'macos)
     :load-path (lambda () (expand-file-name "liberime" (expand-file-name "3rdparty" m/conf.d)))
     :after pyim
     :init

@@ -48,9 +48,11 @@
 (defun m/evaluate (file)
   "Give an 'org-mode' FILE, tangle the source code."
   (interactive "fOrg File: ")
-  (find-file file)
-  (org-babel-execute-buffer)
-  (kill-buffer))
+  (let ((resolved (m/resolve file)))
+    (find-file resolved)
+    (org-babel-execute-buffer)
+    (kill-buffer))
+  )
 
 (defun m/resolve (path)
   "Interpolation variable like ${var} $var in PATH with environment or elisp variables."
@@ -136,8 +138,9 @@
 
 (if (or (eq m/os 'macos)
 	(eq m/os 'linux))
-    (progn     (m/evaluate "${m/root}/hammers/emacs/chinese.org")
-	       (m/evaluate "${m/root}/hammers/emacs/lsp.org")))
+    (progn
+      (m/evaluate "${m/root}/hammers/emacs/chinese.org")
+      (m/evaluate "${m/root}/hammers/emacs/lsp.org")))
 (m/link "${m/root}/hammers/tmux/plugins" "~/.tmux/plugins")
 (m/link "${m/root}/hammers/zsh/zplug" "~/.zsh/zplug")
 (m/link "${m/root}/hammers/vim/bundle" "~/.vim/bundle")

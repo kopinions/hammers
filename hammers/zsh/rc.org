@@ -29,7 +29,6 @@
   export PATH="/usr/local/opt/llvm/bin:$PATH"
   export PATH="$PATH:$HOME/.rvm/bin"
   export PATH="/opt/xtensa-esp32-elf/bin:/usr/local/opt/mysql-client/bin:$PATH"
-  export RIME_PATH="~/.oh-my-env/06-emacs.d/librime"
   # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
   export PATH="$PATH:$HOME/.rvm/bin"
   export JAVA_HOME="/Library/Java/JavaVirtualMachines/openjdk-13.0.1.jdk/Contents/Home"
