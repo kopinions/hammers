@@ -24,11 +24,11 @@
 不生成 #filename# 临时文件
 #+BEGIN_SRC elisp
   (auto-save-visited-mode)
-  (make-directory (expand-file-name "backups" user-emacs-directory) t)
+  (make-directory (expand-file-name "backups" m/conf.d) t)
   (setq auto-save-file-name-transforms
-	`((".*" ,(expand-file-name "backups/" user-emacs-directory) t)))
+	`((".*" ,(expand-file-name "backups/" m/conf.d) t)))
   (setq auto-save-list-file-prefix
-	(expand-file-name "backups/" user-emacs-directory))
+	(expand-file-name "backups/" m/conf.d))
 #+END_SRC
 禁止备份文件
 #+BEGIN_SRC elisp
