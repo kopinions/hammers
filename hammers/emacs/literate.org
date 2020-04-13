@@ -413,6 +413,9 @@ plain/markdown/orgmode 的形式来插入到当前编辑的文件中。
 
 #+BEGIN_SRC elisp :exports code
   (use-package org
+    :custom
+    (org-ditaa-jar-path (expand-file-name "ditaa.jar" m/conf.d))
+    (org-plantuml-jar-path (expand-file-name "plantuml.jar" m/conf.d))
     :config
     (unless (and (boundp 'org-ditaa-jar-path)
 		 (file-exists-p org-ditaa-jar-path)
