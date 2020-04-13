@@ -341,7 +341,7 @@
 
 #+BEGIN_SRC shell :exports code :tangle no
 mkdir -p ~/.vscode/extensions/llvm-org.lldb-vscode-0.1.0/bin/
-which lldb-vscode && ln -s $(which lldb-vscode) ~/.vscode/extensions/llvm-org.lldb-vscode-0.1.0/bin/lldb-vscode
+(which lldb-vscode && ln -s $(which lldb-vscode) ~/.vscode/extensions/llvm-org.lldb-vscode-0.1.0/bin/lldb-vscode) || echo "Please install lldb-vscode"
 #+END_SRC
 
 #+BEGIN_SRC elisp :eval never :exports code
