@@ -44,6 +44,20 @@
   ,#+END_SRC
 #+END_SRC
 
+*** graphviz 代码段
+#+BEGIN_SRC text :tangle (expand-file-name "snippets/org-mode/dot" m/conf.d) :mkdirp yes
+  # -*- mode: snippet -*-
+  # name: dot
+  # key: <dot
+  # --
+  ,#+BEGIN_SRC dot :exports results :file $1 :eval yes
+    digraph G {
+	  node [shape=$1];
+	  $0
+    }
+  ,#+END_SRC
+#+END_SRC
+
 *** blog front matter 配置
 
 #+BEGIN_SRC text :tangle (expand-file-name "snippets/org-mode/front-matter" m/conf.d) :mkdirp yes
