@@ -8,6 +8,12 @@
 - zshrc & env
 - emacs
 
+** 前置依赖
+1. brew 包管理器
+#+BEGIN_SRC shell :eval never :exports code
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+#+END_SRC
+
 ** 如何使用
 #+BEGIN_SRC shell
   emacs --script "./hammers.el"
