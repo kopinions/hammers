@@ -140,6 +140,7 @@ brew 'llvm', args: ["with-toolchain"]
 
 # ic
 brew 'icarus-verilog'
+cask 'kicad'
 cask 'gtkwave'
 #+END_SRC
 
