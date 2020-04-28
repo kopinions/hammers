@@ -67,7 +67,6 @@ cask 'arduino'
 
 # storage
 cask 'baidunetdisk'
-cask 'box-sync'
 cask 'baiducloud'
 cask 'yinxiangbiji'
 cask 'dash'
