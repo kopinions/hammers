@@ -142,6 +142,7 @@
       (m/evaluate "${m/root}/hammers/emacs/chinese.org")
       (m/evaluate "${m/root}/hammers/emacs/lsp.org")))
 (m/link "${m/root}/hammers/tmux/plugins" "~/.tmux/plugins")
+(m/link "${m/root}/hammers/hammerspoon/Spoons" "~/.hammerspoon/Spoons")
 (m/link "${m/root}/hammers/zsh/zplug" "~/.zsh/zplug")
 (m/link "${m/root}/hammers/vim/bundle" "~/.vim/bundle")
 (m/link "${m/root}/hammers/emacs/3rdparty" "~/.emacs.d/3rdparty")

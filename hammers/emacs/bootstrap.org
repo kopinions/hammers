@@ -32,7 +32,9 @@
 
 ** 系统配置
 
-#+BEGIN_SRC elisp :var conf.d=(or m/conf.d (expand-file-name user-emacs-directory)) :eval never :exports code
+#+HEADER: :var conf.d=(or (and (boundp 'm/conf.d) (file-directory-p m/conf.d) m/conf.d) (expand-file-name user-emacs-directory))
+#+HEADER: :var home.d=(or (and (boundp 'm/home.d) (file-directory-p m/home.d) m/home.d) (expand-file-name "~"))
+#+BEGIN_SRC elisp :eval never :exports code
   (defconst m/os
     (let ((os (symbol-name system-type)))
       (cond ((string= os "darwin") 'macos)
@@ -40,6 +42,7 @@
 	    ((or (string-prefix-p "ms" os) (string-prefix-p "windows" os)) 'windows))))
 
   (defvar m/conf.d conf.d)
+  (defvar m/home.d home.d)
 #+END_SRC
 
 ** 是否开启离线模式
