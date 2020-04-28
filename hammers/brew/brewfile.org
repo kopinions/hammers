@@ -52,12 +52,9 @@ cask 'parallels'
 # productivity
 cask 'alfred'
 cask 'xmind'
-cask 'near-lock'
 cask 'hammerspoon'
 cask 'appcleaner'
 cask 'cheatsheet'
-brew 'mu' if OS.mac?
-brew 'offlineimap', restart_service: :changed if OS.mac?
 cask 'postman'
 
 # video processing
@@ -119,8 +116,6 @@ brew 'tldr'
 brew 'zsh-completions'
 brew 'graphviz'
 brew 'tree'
-brew 'ditaa'
-brew 'plantuml'
 
 brew 'reattach-to-user-namespace' if OS.mac?
 brew 'tmux'
@@ -132,8 +127,6 @@ brew 'golang'
 brew 'maven' if OS.mac?
 brew 'fzf'
 brew 'watch'
-
-brew 'zplug'
 
 # other
 cask 'logitech-options' 
