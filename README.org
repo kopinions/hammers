@@ -1,20 +1,56 @@
 * Hammers
 ** 这是什么？
-通过文本编程，管理所有在开发环境中用到的各种各样的工具的配置，以便与用户下载安装。
-当前包含的工具配置有
+   通过文本编程，管理所有在开发环境中用到的各种各样的工具的配置，以便与用户下载安装。
+   当前包含的工具配置有
 
-- git(ingore&config)
-- ssh(config)
-- zshrc & env
-- emacs
+   - git(ingore&config)
+   - ssh(config)
+   - zsh(rc & env)
+   - emacs
+   - brew
+   - vim
+   - gdb
+   - ripgrep
+   - tmux
+   - brew
+   - shell
 
 ** 前置依赖
-1. brew 包管理器
-#+BEGIN_SRC shell :eval never :exports code
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-#+END_SRC
+   1. brew 包管理器
+   #+BEGIN_SRC shell :eval never :exports code
+     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+   #+END_SRC
+   如果你也在中国，你也在墙内，请使用如下的命令将 brew 的源调整到国内
+   #+BEGIN_SRC shell :eval never :exports code
+     # brew 程序本身，Homebrew/Linuxbrew 相同
+     git -C "$(brew --repo)" remote set-url origin https://github.com/Homebrew/brew.git
+
+     # 以下针对 mac OS 系统上的 Homebrew
+     git -C "$(brew --repo homebrew/core)" remote set-url origin https://github.com/Homebrew/homebrew-core.git
+     git -C "$(brew --repo homebrew/cask)" remote set-url origin https://github.com/Homebrew/homebrew-cask.git
+
+     # 以下针对 Linux 系统上的 Linuxbrew
+     git -C "$(brew --repo homebrew/core)" remote set-url origin https://github.com/Homebrew/linuxbrew-core.git
+     export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles
+     brew update
+   #+END_SRC
+
+   2. 安装常用软件
+   #+BEGIN_SRC shell :eval never :exports code
+     brew bundle install --global
+   #+END_SRC
 
 ** 如何使用
-#+BEGIN_SRC shell
-  emacs --script "./hammers.el"
-#+END_SRC
+   #+BEGIN_SRC shell :eval never :exports code
+     emacs --script "./hammers.el"
+   #+END_SRC
+
+** 彩蛋
+*** melpa 离线加载
+    如果你觉得每次启动 emacs 都需要检查跟新，emacs 启动非常慢，可以使用如下命令将 emacs 的所有包进行离线缓存。emacs 启动配置会自动检测是否有对应的文件，决定是否开启离线模式
+    #+BEGIN_SRC shell :eval never :exports code
+      rsync -ravz --progress rsync://elpa.emacs-china.org/elpa/ /path/to/offline
+      ln -s /path/to/offline ~/.emacs.d/offline
+    #+END_SRC
+
+
