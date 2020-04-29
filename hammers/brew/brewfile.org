@@ -38,7 +38,7 @@ cask 'squirrel'
 cask 'snipaste'
 cask 'unshaky' # process the mac keyboard duplicate key problem
 # usb network sharing driver
-cask 'horndis'
+# cask 'horndis'
 brew 'ruby'
 
 # ides
