@@ -13,7 +13,7 @@
 
 ** flycheck
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC elisp :eval never :exports code
 (use-package flycheck
   :custom
   (flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list)
@@ -25,6 +25,6 @@
 #+END_SRC
 
 ** provide
-#+BEGIN_SRC elisp
+#+BEGIN_SRC elisp :eval never :exports code
 (provide 'init-correction)
 #+END_SRC

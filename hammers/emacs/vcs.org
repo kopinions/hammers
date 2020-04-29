@@ -12,14 +12,14 @@
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
 *** git
-    #+BEGIN_SRC elisp
+    #+BEGIN_SRC elisp :eval never :exports code
       (use-package gitignore-mode)
       (use-package gitconfig-mode)
       (use-package gitattributes-mode)
     #+END_SRC
 
 *** git highlight mode
-    #+BEGIN_SRC elisp
+    #+BEGIN_SRC elisp :eval never :exports code
       (use-package git-gutter
 	:custom
 	(git-gutter:modified-sign "~")
@@ -37,7 +37,7 @@
 	(magit-refresh-buffer . git-gutter:update-all-windows))
     #+END_SRC
 *** magit
-    #+BEGIN_SRC elisp
+    #+BEGIN_SRC elisp :eval never :exports code
       (use-package magit
 	:after (fullframe diff-hl)
 	:custom
@@ -52,7 +52,7 @@
     #+END_SRC
 
 *** other
-    #+BEGIN_SRC elisp
+    #+BEGIN_SRC elisp :eval never :exports code
       (use-package git-messenger
 	:bind ("C-x v p" . git-messenger:popup-message)
 	:config
@@ -64,7 +64,7 @@
 
     #+END_SRC
 
-    #+BEGIN_SRC elisp
+    #+BEGIN_SRC elisp :eval never :exports code
       (use-package yagist)
       (use-package bug-reference-github
 	:hook
@@ -75,6 +75,6 @@
     #+END_SRC
 
 *** export 
-    #+BEGIN_SRC elisp
+    #+BEGIN_SRC elisp :eval never :exports code
       (provide 'init-vcs)
     #+END_SRC

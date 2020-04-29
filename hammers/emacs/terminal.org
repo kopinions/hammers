@@ -14,11 +14,11 @@
 ** eshell
 
 *** 环境变量
-#+BEGIN_SRC elisp
+#+BEGIN_SRC elisp :eval never :exports code
 (setenv "PAGER" "cat")
 #+END_SRC   
 *** 配置选项
-#+BEGIN_SRC elisp
+#+BEGIN_SRC elisp :eval never :exports code
   (use-package shrink-path)
   (use-package eshell
     :after shrink-path
@@ -53,7 +53,7 @@
 		      (setq-local eshell-mode-map (make-sparse-keymap))))))
 #+END_SRC
 *** alias
-#+BEGIN_SRC elisp
+#+BEGIN_SRC elisp :eval never :exports code
 (use-package eshell
   :hook
   (eshell-mode . (lambda() 
@@ -71,14 +71,14 @@
 		   (eshell/alias "ll" (concat ls " -AlohG --color=always"))))))
 #+END_SRC
 *** git
-#+BEGIN_SRC elisp
+#+BEGIN_SRC elisp :eval never :exports code
 (defun eshell/gst (&rest args)
     (magit-status (pop args) nil)
     (eshell/echo)) 
 #+END_SRC
 *** find 命令
 使用命令行程序来进行 find, 而不是使用 eshell 的 find 函数
-#+BEGIN_SRC elisp
+#+BEGIN_SRC elisp :eval never :exports code
 (defun eshell/find (&rest args)
   "Wrapper around the ‘find’ executable."
   (let ((cmd (concat "find " (string-join args " "))))
@@ -133,7 +133,7 @@ file to edit."
 
 
 *** clear
-#+BEGIN_SRC elisp
+#+BEGIN_SRC elisp :eval never :exports code
 
 (use-package eshell
   :config
@@ -144,6 +144,6 @@ file to edit."
     (eshell-send-input))))
 #+END_SRC
 ** provide
-#+BEGIN_SRC elisp
+#+BEGIN_SRC elisp :eval never :exports code
 (provide 'init-terminal)
 #+END_SRC

@@ -11,7 +11,7 @@
 
 *** shell 代码段
 
-#+BEGIN_SRC text :tangle (expand-file-name "snippets/org-mode/shell" m/conf.d) :mkdirp yes
+#+BEGIN_SRC text :tangle (expand-file-name "snippets/org-mode/shell" m/conf.d) :mkdirp yes :eval never :exports code
   # -*- mode: snippet -*-
   # name: shell
   # key: <sh

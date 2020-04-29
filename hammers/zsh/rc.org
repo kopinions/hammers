@@ -9,7 +9,7 @@
 #+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
-#+BEGIN_SRC shell :tangle ~/.zshenv :noweb yes
+#+BEGIN_SRC shell :tangle ~/.zshenv :noweb yes :eval never :exports code
   export LANG=en_US.UTF-8
   export ZPLUG_HOME=~/.zsh/zplug
   export RIPGREP_CONFIG_PATH=~/.ripgreprc
@@ -42,7 +42,7 @@
 #+END_SRC
 
 *** zshrc 配置
-#+BEGIN_SRC shell :tangle "~/.zshrc"
+#+BEGIN_SRC shell :tangle "~/.zshrc" :eval never :exports code
 [[ $TERM == "tramp" ]] && unsetopt zle && PS1='$ '&& return
   for file in ~/.zsh/init/*.zsh; do
       source "${file}"
@@ -58,7 +58,7 @@
   done
 #+END_SRC
 
-#+BEGIN_SRC shell :tangle "~/.zsh/init/init.zsh"
+#+BEGIN_SRC shell :tangle "~/.zsh/init/init.zsh" :eval never :exports code
   if [ ! "$PATH_LOADED" = "true" ]; then
       # Add go binaries
       if [ -d "$GOPATH" ]; then
@@ -86,7 +86,7 @@
   fi
 #+END_SRC
 
-#+BEGIN_SRC shell :tangle "~/.zsh/zplugs.zsh"
+#+BEGIN_SRC shell :tangle "~/.zsh/zplugs.zsh" :eval never :exports code
   #!/usr/bin/env zsh
   # this allows zplug to update itself on `zplug update`
   zplug 'zplug/zplug', hook-build:'zplug --self-manage'
@@ -114,7 +114,7 @@
   return 0 # in case zplug adds plugs ignore them
 #+END_SRC
 
-#+BEGIN_SRC shell :tangle "~/.zsh/post/bindings.zsh"
+#+BEGIN_SRC shell :tangle "~/.zsh/post/bindings.zsh" :eval never :exports code
   if [[ $- == *i* ]]; then
       # CTRL-T - Paste the selected file path(s) into the command line
       __fsel() {
@@ -181,7 +181,7 @@
   fi
 #+END_SRC
 
-#+BEGIN_SRC shell :tangle "~/.zsh/post/loads.zsh"
+#+BEGIN_SRC shell :tangle "~/.zsh/post/loads.zsh" :eval never :exports code
   if [ -d "${HOME}/google-cloud-sdk" ]; then
       . $HOME/google-cloud-sdk/completion.zsh.inc
       . $HOME/google-cloud-sdk/path.zsh.inc
@@ -191,7 +191,7 @@
   fi
 #+END_SRC
 
-#+BEGIN_SRC shell :tangle "~/.zsh/post/config.zsh"
+#+BEGIN_SRC shell :tangle "~/.zsh/post/config.zsh" :eval never :exports code
 # auto menu complete
 setopt auto_menu
 
@@ -225,7 +225,7 @@ setopt chase_links              # resolve symlinks
 setopt correct                  # try to correct spelling of commands
 #+END_SRC
 
-#+BEGIN_SRC shell :tangle "~/.zsh/post/functions.zsh"
+#+BEGIN_SRC shell :tangle "~/.zsh/post/functions.zsh" :eval never :exports code
 #!/bin/zsh
 function gitroot {
     local root

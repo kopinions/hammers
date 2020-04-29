@@ -16,13 +16,13 @@
 当系统为 macos 时，我们可以通过安装 [[https://github.com/xuchunyang/grab-mac-link.el][grab-mac-link]] 插件来获取 chrome/firefox/safia 中的链接，并且可以选择
 plain/markdown/orgmode 的形式来插入到当前编辑的文件中。
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC elisp :eval never :exports code
   (use-package grab-mac-link
     :if (eq m/os 'macos))
 #+END_SRC
 
 *** org-mode 代码块异步执行配置
-#+BEGIN_SRC elisp
+#+BEGIN_SRC elisp :eval never :exports code
   (use-package ob-async
     :hook
     (org-babel-after-execute . org-redisplay-inline-images))
@@ -30,7 +30,7 @@ plain/markdown/orgmode 的形式来插入到当前编辑的文件中。
 
 *** 截屏配置
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC elisp :eval never :exports code
   (defun m/org-screenshot ()
     "Take a screenshot into a time stamped unique-named file in the
   same directory as the org-buffer and insert a link to this file."
@@ -55,7 +55,7 @@ plain/markdown/orgmode 的形式来插入到当前编辑的文件中。
 #+END_SRC
 
 *** org-mode 配置
-#+BEGIN_SRC elisp
+#+BEGIN_SRC elisp :eval never :exports code
   (use-package org
     :diminish org-mode
     :custom
@@ -411,7 +411,7 @@ plain/markdown/orgmode 的形式来插入到当前编辑的文件中。
 
 *** org-mode ditaa/plantuml 画图
 
-#+BEGIN_SRC elisp :exports code
+#+BEGIN_SRC elisp :exports code :eval never
   (use-package org
     :custom
     (org-ditaa-jar-path (expand-file-name "ditaa.jar" m/conf.d))
@@ -445,7 +445,7 @@ plain/markdown/orgmode 的形式来插入到当前编辑的文件中。
 #+END_SRC
 
 *** org-mode graphiz 画图配置
-#+BEGIN_SRC elisp
+#+BEGIN_SRC elisp :eval never :exports code
   (use-package graphviz-dot-mode
     :after org
     :config
@@ -455,7 +455,7 @@ plain/markdown/orgmode 的形式来插入到当前编辑的文件中。
     :ensure nil)
 #+END_SRC
 *** org mode 可以拖拽下载
-#+BEGIN_SRC elisp
+#+BEGIN_SRC elisp :eval never :exports code
   ;; Download Drag&Drop images
   (use-package org-download
     :after (org))
@@ -463,7 +463,7 @@ plain/markdown/orgmode 的形式来插入到当前编辑的文件中。
 #+END_SRC
 
 *** org mode 图标设置
-#+BEGIN_SRC elisp
+#+BEGIN_SRC elisp :eval never :exports code
   ;; Pretty bullets
   (use-package org-bullets
     :after org
@@ -475,7 +475,7 @@ plain/markdown/orgmode 的形式来插入到当前编辑的文件中。
 #+END_SRC
 
 *** org-mode 博客
-#+BEGIN_SRC elisp
+#+BEGIN_SRC elisp :eval never :exports code
   (use-package ox-gfm)
   (use-package ox-hugo
     :after (ox org)
@@ -514,6 +514,6 @@ plain/markdown/orgmode 的形式来插入到当前编辑的文件中。
   ,#+FILETAGS: INBOX
 #+END_SRC
 ** provide
-#+BEGIN_SRC elisp
+#+BEGIN_SRC elisp :eval never :exports code
   (provide 'init-literate)
 #+END_SRC
