@@ -368,7 +368,7 @@ mkdir -p ~/.vscode/extensions/llvm-org.lldb-vscode-0.1.0/bin/
 
 #+BEGIN_SRC elisp :eval never :exports code
 (use-package lsp-ivy
-  :load-path (lambda () (expand-file-name "lsp-ivy" (expand-file-name "3rdparty" m/conf.d)))
+  :load-path m/load-path
   :requires lsp-mode
   :config
   (defun m/lsp-ivy-workspace-symbol-at-point ()

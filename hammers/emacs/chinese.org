@@ -93,7 +93,7 @@ make release
 #+BEGIN_SRC elisp :eval never :exports code
   (use-package liberime
     :if (eq m/os 'macos)
-    :load-path (lambda () (expand-file-name "liberime" (expand-file-name "3rdparty" m/conf.d)))
+    :load-path m/load-path
     :after pyim
     :init
     (setenv "RIME_PATH" (expand-file-name "librime" (expand-file-name "3rdparty" m/conf.d)))
