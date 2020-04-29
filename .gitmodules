@@ -21,3 +21,6 @@
 [submodule "hammers/emacs/3rdparty/liberime"]
 	path = hammers/emacs/3rdparty/liberime
 	url = https://github.com/merrickluo/liberime.git
+[submodule "hammers/emacs/3rdparty/lsp-ivy"]
+	path = hammers/emacs/3rdparty/lsp-ivy
+	url = https://github.com/emacs-lsp/lsp-ivy.git
