@@ -41,17 +41,21 @@
 (defun m/tangle (file)
   "Give an 'org-mode' FILE, tangle the source code."
   (interactive "fOrg File: ")
+  (message "tangling: %s" file)
   (find-file file)
   (org-babel-tangle)
-  (kill-buffer))
+  (kill-buffer)
+  (message "tangled: %s" file))
 
 (defun m/evaluate (file)
   "Give an 'org-mode' FILE, tangle the source code."
   (interactive "fOrg File: ")
   (let ((resolved (m/resolve file)))
+    (message "evaluating: %s" resolved)
     (find-file resolved)
     (org-babel-execute-buffer)
-    (kill-buffer))
+    (kill-buffer)
+    (message "evaluated: %s" resolved))
   )
 
 (defun m/resolve (path)
@@ -107,15 +111,19 @@
   "Return path according the PATH & EXTRA arguments."
   (let ((parts (cons (m/resolve path) extra)))
     (concat "/" (mapconcat #'(lambda (p) (cond ((and (string-prefix-p "/" p) (string-suffix-p "/" p)) (substring p 1 -1))
-					       ((string-prefix-p "/" p) (substring p 1))
-					       ((string-suffix-p "/" p) (substring p 0 -1))
-					       (t p)))
+					  ((string-prefix-p "/" p) (substring p 1))
+					  ((string-suffix-p "/" p) (substring p 0 -1))
+					  (t p)))
                            parts "/"))))
 
 (defun m/link (src dest)
   "Link the SRC to the DEST."
-  (shell-command (concat "mkdir -p $(dirname " (m/resolve dest) ")"))
-  (shell-command (concat "ln -sfn " (m/resolve src) " " (m/resolve dest))))
+  (let* ((resolved-src (m/resolve src))
+	 (resolved-dest (m/resolve dest)))
+    (message "linking: %s to %s" resolved-src resolved-dest)
+    (shell-command (concat "mkdir -p $(dirname " resolved-src ")"))
+    (shell-command (concat "ln -sfn " resolved-src " " resolved-dest))
+    (message "linked: %s to %s" resolved-src resolved-dest)))
 
 (defconst m/root (directory-file-name
 		  (if load-file-name
