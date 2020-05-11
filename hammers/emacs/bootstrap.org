@@ -143,7 +143,8 @@
 				  (expand-file-name "lisp" m/conf.d)
 				  (expand-file-name "verilog-mode" (expand-file-name "3rdparty" m/conf.d))
 				  (expand-file-name "lsp-ivy" (expand-file-name "3rdparty" m/conf.d))
-				  (expand-file-name "librime" (expand-file-name "3rdparty" m/conf.d)))))
+				  (expand-file-name "librime" (expand-file-name "3rdparty" m/conf.d))
+				  (expand-file-name "liberime" (expand-file-name "3rdparty" m/conf.d)))))
      (use-package init-os
        :load-path m/load-path)
      (use-package init-ui
