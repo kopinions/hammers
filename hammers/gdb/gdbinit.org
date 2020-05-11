@@ -2275,20 +2275,23 @@ python Dashboard.start()
 ** gdb customize config
 #+BEGIN_SRC conf :exports code :noweb-ref customized
   # 开启项目特定的 gdbinit 配置
+  set ignore-errors
+  set auto-load safe-path /
   set auto-load local-gdbinit
 
   set confirm off
   set verbose off
 
-  # Display instructions in Intel format
-  set disassembly-flavor intel
+  # Display instructions in att format
+  set disassembly-flavor att
 
   set print pretty on
 
   set history save on
-  set history size unlimited
+  set history size 1024
   set history expansion on
+  
   set history remove-duplicates unlimited
   # 修复在 macos 下 gdb 不能正常启动的问题
-  set startup-with-shell off 
+  set startup-with-shell off
 #+END_SRC
