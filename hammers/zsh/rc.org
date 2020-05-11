@@ -33,6 +33,9 @@
   export PATH="$PATH:$HOME/.rvm/bin"
   export PATH="$HOME/.local/bin:$PATH"
   export JAVA_HOME="/Library/Java/JavaVirtualMachines/openjdk-13.0.1.jdk/Contents/Home"
+  export PATH="/usr/local/opt/openjdk/bin:$PATH"
+  export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+
   <<zshenv>>
 #+END_SRC
 
