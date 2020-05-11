@@ -32,7 +32,7 @@ mas "SwordSoft Screenink Free", id: 953841977
 
 # system
 cask 'docker'
-cask 'java8'
+brew 'openjdk'
 cask 'iterm2'
 cask 'squirrel'
 cask 'snipaste'
@@ -40,6 +40,7 @@ cask 'unshaky' # process the mac keyboard duplicate key problem
 # usb network sharing driver
 # cask 'horndis'
 brew 'ruby'
+brew 'boost'
 
 # ides
 cask 'clion'
@@ -80,7 +81,7 @@ cask 'google-chrome'
 
 # study
 cask 'kindle'
-cask 'youdaodict'
+#cask 'youdaodict'
 
 # entertain
 cask 'neteasemusic'
@@ -97,6 +98,7 @@ cask "mactex-no-gui"
 # terminal apps
 ## network
 brew 'inetutils' if OS.mac?
+brew 'coreutils' if Os.mac?
 brew 'nmap'
 brew 'axel' # multiple thread downloader
 brew 'iperf'
@@ -128,7 +130,7 @@ brew 'fzf'
 brew 'watch'
 
 # other
-cask 'logitech-options' 
+#cask 'logitech-options' 
 
 # design
 cask 'zeplin'
@@ -140,6 +142,7 @@ brew 'llvm', args: ["with-toolchain"]
 # ic
 brew 'icarus-verilog'
 cask 'kicad'
+cask 'xquartz'
 cask 'gtkwave'
 #+END_SRC
 
