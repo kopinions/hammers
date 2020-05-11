@@ -112,16 +112,17 @@ make release
 			       5 1
 			       (ignore-errors (lambda ()
 						(liberime-select-schema "luna_pinyin_simp")
-						(setq pyim-default-scheme 'rime)))))))
+						(setq pyim-default-scheme 'rime-quanpin)))))))
 
 #+END_SRC
-
 
 #+BEGIN_SRC yaml :tangle "~/.emacs.d/rime/default.custom.yaml" :noweb yes :eval never :exports code
   patch:
     "menu/page_size": 100
     "speller/auto_select": false
     "speller/auto_select_unique_candidate": false
+    schema_list: 
+      - schema: luna_pinyin_simp
 #+END_SRC
 
 #+BEGIN_SRC elisp :eval never :exports code
