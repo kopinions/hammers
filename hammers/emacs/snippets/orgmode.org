@@ -9,6 +9,16 @@
 #+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
+*** 通用代码段
+#+BEGIN_SRC text :tangle (expand-file-name "snippets/org-mode/src" m/conf.d) :mkdirp yes :eval never :exports code
+  # -*- mode: snippet -*-
+  # name: 
+  # key: <s
+  # --
+  ,#+BEGIN_SRC $1 :eval never :exports code
+  $0
+  ,#+END_SRC
+#+END_SRC
 *** shell 代码段
 
 #+BEGIN_SRC text :tangle (expand-file-name "snippets/org-mode/shell" m/conf.d) :mkdirp yes :eval never :exports code
