@@ -20,6 +20,7 @@
   ;; debug
   (lsp-log-io t)
   (lsp-trace nil)
+  (lsp-enable-snippet nil)
   (lsp-print-performance nil)
   ;; general
   (lsp-auto-guess-root t)
