@@ -81,7 +81,6 @@ plain/markdown/orgmode 的形式来插入到当前编辑的文件中。
 				    "Effort_ALL" . "00:05 00:10 00:15 00:30 01:00 01:30 02:00 02:30 03:00"))))
     (org-agenda-files `(
 			,(expand-file-name "inbox.org" private-directory)
-			,(expand-file-name "notes.org" private-directory)
 			,(expand-file-name "todos.org" private-directory)
 			,(expand-file-name "routine.org" private-directory)
 			))
