@@ -22,19 +22,19 @@
 ** 版本配置
    配置文件使用了一些特性，这些特性在太久的版本上会出现不兼容。对比版本给出相应的提示信息。
 
-#+BEGIN_SRC elisp :eval never :exports code
+   #+BEGIN_SRC elisp :eval never :exports code
   (let ((minver "24.4"))
     (when (version< emacs-version minver)
       (error "Your Emacs is too old -- this config requires v%s or higher" minver)))
   (when (version< emacs-version "25.1")
     (message "Your Emacs is old, and some functionality in this config will be disabled. Please upgrade if possible."))
-#+END_SRC
+   #+END_SRC
 
 ** 系统配置
 
-#+HEADER: :var conf.d=(or (and (boundp 'm/conf.d) (file-directory-p m/conf.d) m/conf.d) (expand-file-name user-emacs-directory))
-#+HEADER: :var home.d=(or (and (boundp 'm/home.d) (file-directory-p m/home.d) m/home.d) (expand-file-name "~"))
-#+BEGIN_SRC elisp :eval never :exports code
+   #+HEADER: :var conf.d=(or (and (boundp 'm/conf.d) (file-directory-p m/conf.d) m/conf.d) (expand-file-name user-emacs-directory))
+   #+HEADER: :var home.d=(or (and (boundp 'm/home.d) (file-directory-p m/home.d) m/home.d) (expand-file-name "~"))
+   #+BEGIN_SRC elisp :eval never :exports code
   (defconst m/os
     (let ((os (symbol-name system-type)))
       (cond ((string= os "darwin") 'macos)
@@ -43,25 +43,30 @@
 
   (defvar m/conf.d conf.d)
   (defvar m/home.d home.d)
-#+END_SRC
+   #+END_SRC
+
+   #+BEGIN_SRC elisp :eval never :exports code
+  (global-unset-key (kbd "M-`"))
+   #+END_SRC
+
 
 ** 是否开启离线模式
-#+BEGIN_SRC elisp :eval never :exports code
+   #+BEGIN_SRC elisp :eval never :exports code
 (defvar m/offline 
   (file-directory-p (expand-file-name "offline" m/conf.d)))
-#+END_SRC
+   #+END_SRC
 
 ** 垃圾回收设置
-#+BEGIN_SRC elisp :eval never :exports code
+   #+BEGIN_SRC elisp :eval never :exports code
 (setq gc-cons-threshold 100000000)
-#+END_SRC
+   #+END_SRC
 ** 包管理配置
    Emacs 通过插件机制来提高可扩展性，我们可以通过安装插件来灵活的扩展 Emacs 的功能。 插件被封装成适用于 Emacs 的安装包，被存放在插件仓库（软件包仓库）中，以便与用户下载安装。
    Emacs 通过包管理器来管理插件的：安装、配置、装载、升级。
 *** 包管理器配置
     Emacs 的包管理器名为：[[http://tromey.com/elpa/][package]]. 但是 package 默认配置插件仓库包含的插件相对较少，我们需要添加一些常用的第三方插件仓库，以便与搜索与安装插件。
 
-#+BEGIN_SRC elisp :eval never :exports code
+    #+BEGIN_SRC elisp :eval never :exports code
   (require 'package)
     ;;; Install into separate package dirs for each Emacs version, to prevent bytecode incompatibility
   (let ((versioned-package-dir
@@ -91,12 +96,12 @@
 
   (package-initialize)
   (package-refresh-contents)
-#+END_SRC
+    #+END_SRC
 *** use package
     Emacs 常见的配置管理都是先使用包管理器安装对应的包，然后再进行配置。安装包和配置是割裂开的。对于使用多个包的情况，安装包配置会分散到各个地方，安装包相关的配置会变得难以维护。
     [[https://github.com/jwiegley/use-package][use-package]] 提供了一个非常干净简洁的安装包配置的方式。use-package 可以将安装包的配置隔离开，使得 Emacs 配置文件干净简洁。
 
-#+BEGIN_SRC elisp :eval never :exports code
+    #+BEGIN_SRC elisp :eval never :exports code
   (unless (and 
 	   (package-installed-p 'use-package)
 	   (package-installed-p 'diminish))
@@ -116,7 +121,7 @@
 
   (use-package use-package-ensure-system-package
     :ensure t)
-#+END_SRC
+    #+END_SRC
 
 *** 包加载路径配置
     所有的自定义的配置文件都在 emacs 配置文件夹下的 lisp 目录下。所以我们需要将 lisp 目录添加到加载路径中
@@ -126,14 +131,14 @@
     #+END_SRC
 
 *** 保证永远使用最新的 lisp 配置文件，或者库文件
-  #+BEGIN_SRC elisp :eval never :exports code
+    #+BEGIN_SRC elisp :eval never :exports code
   (use-package auto-compile
   :ensure t
   :custom (load-prefer-newer t)
   :config
     (auto-compile-on-load-mode)
     (auto-compile-on-save-mode))
-  #+END_SRC
+    #+END_SRC
 
  
 ** 自定义配置聚合
@@ -174,6 +179,6 @@
    #+END_SRC
 
 
-#+BEGIN_SRC elisp :eval never :exports code
+   #+BEGIN_SRC elisp :eval never :exports code
 (provide 'init)
-#+END_SRC
+   #+END_SRC
