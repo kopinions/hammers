@@ -18,17 +18,17 @@
   :ensure t
   :custom
   ;; debug
-  (lsp-print-io nil)
+  (lsp-log-io t)
   (lsp-trace nil)
   (lsp-print-performance nil)
   ;; general
   (lsp-auto-guess-root t)
   (lsp-document-sync-method 'incremental) ;; none, full, incremental, or nil
-  (lsp-response-timeout 10)
+  (lsp-response-timeout 15)
   (lsp-prefer-flymake nil) ;; t(flymake), nil(lsp-ui), or :none
   ;; go-client
   (lsp-clients-go-server-args '("--cache-style=always" "--diagnostics-style=onsave" "--format-style=goimports"))
-  (lsp-clients-clangd-args '("-j=8" "--pch-storage=memory" "-background-index" "-log=error" "--compile-commands-dir=build" "--clang-tidy" "--completion-style=detailed"))
+  (lsp-clients-clangd-args '("-j=8" "--pch-storage=memory" "-background-index" "-log=error" "--compile-commands-dir=build" "--clang-tidy" "--completion-style=bundled"))
   :hook
   (c-mode-common . lsp)
   :bind
