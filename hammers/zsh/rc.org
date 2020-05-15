@@ -9,230 +9,228 @@
 #+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
-#+BEGIN_SRC shell :tangle ~/.zshenv :noweb yes :eval never :exports code
-  export LANG=en_US.UTF-8
-  export ZPLUG_HOME=~/.zsh/zplug
-  export RIPGREP_CONFIG_PATH=~/.ripgreprc
-  export GOPATH=~/workspace/envs/golang
-  # add go path
-  # add brew path
-  export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
-  export PATH="$PATH:$GOPATH/bin"
-  export PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
-  export PATH="/usr/local/opt/gettext/bin:$PATH"
-  export PATH="/workspace/envs/flutter/bin:$PATH"
-  export PATH="/usr/local/opt/binutils/bin:$PATH"
-  export PATH="/usr/local/opt/node@6/bin:$PATH"
-  export PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
-  export PATH="/usr/local/opt/openssl/bin:$PATH"
-  export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-  export PATH="/usr/local/opt/llvm/bin:$PATH"
-  export PATH="$PATH:$HOME/.rvm/bin"
-  export PATH="/opt/xtensa-esp32-elf/bin:/usr/local/opt/mysql-client/bin:$PATH"
-  # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-  export PATH="$PATH:$HOME/.rvm/bin"
-  export PATH="$HOME/.local/bin:$PATH"
-  export JAVA_HOME="/Library/Java/JavaVirtualMachines/openjdk-13.0.1.jdk/Contents/Home"
-  export PATH="/usr/local/opt/openjdk/bin:$PATH"
-  export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+*** zshenv 环境变量配置
+    #+BEGIN_SRC shell :tangle ~/.zshenv :noweb yes :eval never :exports code
+      export LANG=en_US.UTF-8
+      export ZPLUG_HOME=~/.zsh/zplug
+      export RIPGREP_CONFIG_PATH=~/.ripgreprc
+      export GOPATH=~/workspace/envs/golang
+      # add go path
+      # add brew path
+      export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
+      export PATH="$PATH:$GOPATH/bin"
+      export PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
+      export PATH="/usr/local/opt/gettext/bin:$PATH"
+      export PATH="/workspace/envs/flutter/bin:$PATH"
+      export PATH="/usr/local/opt/binutils/bin:$PATH"
+      export PATH="/usr/local/opt/node@6/bin:$PATH"
+      export PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
+      export PATH="/usr/local/opt/openssl/bin:$PATH"
+      export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+      export PATH="/usr/local/opt/llvm/bin:$PATH"
+      export PATH="$PATH:$HOME/.rvm/bin"
+      export PATH="/opt/xtensa-esp32-elf/bin:/usr/local/opt/mysql-client/bin:$PATH"
+      # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+      export PATH="$PATH:$HOME/.rvm/bin"
+      export PATH="$HOME/.local/bin:$PATH"
+      export JAVA_HOME="/Library/Java/JavaVirtualMachines/openjdk-13.0.1.jdk/Contents/Home"
+      export PATH="/usr/local/opt/openjdk/bin:$PATH"
+      export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 
-  <<zshenv>>
-#+END_SRC
+      <<zshenv>>
+    #+END_SRC
 
 *** brew 使用清华大学的二进制源 
-#+BEGIN_SRC shell :exports code :results none :eval never :noweb-ref zshenv
-  export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles
-#+END_SRC
+    #+BEGIN_SRC shell :exports code :results none :eval never :noweb-ref zshenv
+      export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles
+    #+END_SRC
 
 *** zshrc 配置
-#+BEGIN_SRC shell :tangle "~/.zshrc" :eval never :exports code
-[[ $TERM == "tramp" ]] && unsetopt zle && PS1='$ '&& return
-  for file in ~/.zsh/init/*.zsh; do
-      source "${file}"
-  done
+    #+BEGIN_SRC shell :tangle "~/.zshrc" :eval never :exports code
+      [[ $TERM == "tramp" ]] && unsetopt zle && PS1='$ '&& return
+      for file in ~/.zsh/init/*.zsh; do
+	  source "${file}"
+      done
 
-  export ZPLUG_LOADFILE="$HOME/.zsh/zplugs.zsh"
-  source ${ZPLUG_HOME}/init.zsh
-  zplug install
-  zplug load
+      export ZPLUG_LOADFILE="$HOME/.zsh/zplugs.zsh"
+      source ${ZPLUG_HOME}/init.zsh
+      zplug install
+      zplug load
 
-  for file in ~/.zsh/post/*.zsh; do
-      source "${file}"
-  done
-#+END_SRC
+      for file in ~/.zsh/post/*.zsh; do
+	  source "${file}"
+      done
+    #+END_SRC
 
-#+BEGIN_SRC shell :tangle "~/.zsh/init/init.zsh" :eval never :exports code
-  if [ ! "$PATH_LOADED" = "true" ]; then
-      # Add go binaries
-      if [ -d "$GOPATH" ]; then
-	  export PATH="$GOPATH/bin:$PATH"
-      elif [ $commands[go] ]; then
-	  export PATH="$(go env GOPATH)/bin:$PATH"
-	  export GOPATH="$(go env GOPATH)"
-      fi
-
-      if [ $commands[javac] ]; then
-	  export JAVA_HOME="$(dirname $(dirname $(realpath $(which javac))))"
-      fi
-
-      # Add yarn global binaries
-      if [ $commands[yarn] ]; then export PATH="$(yarn global bin):$PATH"; fi
-
-      # Add ruby gems
-      if [ $commands[ruby] ]; then export PATH="$(ruby -e 'puts Gem.user_dir')/bin:$PATH"; fi
-
-      # Add custom bin files
-      if [ -d "$HOME/bin" ]; then export PATH="$HOME/bin:$PATH"; fi
-      if [ -d "$HOME/.local/bin" ]; then export PATH="$HOME/.local/bin:$PATH"; fi
-
-      export PATH_LOADED="true"
-  fi
-#+END_SRC
-
-#+BEGIN_SRC shell :tangle "~/.zsh/zplugs.zsh" :eval never :exports code
-  #!/usr/bin/env zsh
-  # this allows zplug to update itself on `zplug update`
-  zplug 'zplug/zplug', hook-build:'zplug --self-manage'
-
-  zplug "robbyrussell/oh-my-zsh", use:"lib/{clipboard,completion,directories,history,termsupport}.zsh"
-  zplug "plugins/extract", from:oh-my-zsh
-
-  for plugin in docker docker-compose git tmux tmuxinator autojump fzf gitignore cp; do
-      zplug "plugins/$plugin", from:oh-my-zsh
-  done
-
-  #### ZSH MAGIC
-  zplug "zsh-users/zsh-autosuggestions"
-  zplug "zsh-users/zsh-completions"
-  zplug "zsh-users/zsh-syntax-highlighting", defer:2
-  zplug "zsh-users/zsh-history-substring-search", defer:3
-
-  zplug mafredri/zsh-async, from:github
-  zplug sindresorhus/pure, use:pure.zsh, from:github, as:theme
-
-  SPACESHIP_TIME_SHOW="true"
-  SPACESHIP_BATTERY_THRESHOLD="80"
-  SPACESHIP_EXIT_CODE_SHOW="true"
-  SPACESHIP_EXIT_CODE_SYMBOL="✘"
-  return 0 # in case zplug adds plugs ignore them
-#+END_SRC
-
-#+BEGIN_SRC shell :tangle "~/.zsh/post/bindings.zsh" :eval never :exports code
-  if [[ $- == *i* ]]; then
-      # CTRL-T - Paste the selected file path(s) into the command line
-      __fsel() {
-	local cmd="${FZF_CTRL_T_COMMAND:-"command find -L . \\( -path '*/\\.*' -o -fstype 'dev' -o -fstype 'proc' \\) -prune \
-	  -o -type f -print \
-	  -o -type d -print \
-	  -o -type l -print 2> /dev/null | sed 1d | cut -b3-"}"
-	setopt localoptions pipefail 2> /dev/null
-	eval "$cmd | $(__fzfcmd) -m $FZF_CTRL_T_OPTS" | while read item; do
-	  echo -n "${(q)item} "
-	done
-	local ret=$?
-	echo
-	return $ret
-      }
-
-      __fzfcmd() {
-	[ ${FZF_TMUX:-1} -eq 1 ] && echo "fzf-tmux -d${FZF_TMUX_HEIGHT:-40%}" || echo "fzf"
-      }
-
-      fzf-file-widget() {
-	LBUFFER="${LBUFFER}$(__fsel)"
-	local ret=$?
-	zle redisplay
-	typeset -f zle-line-init >/dev/null && zle zle-line-init
-	return $ret
-      }
-      zle     -N   fzf-file-widget
-      bindkey '^T' fzf-file-widget
-
-      # ALT-C - cd into the selected directory
-      fzf-cd-widget() {
-	local cmd="${FZF_ALT_C_COMMAND:-"command find -L . \\( -path '*/\\.*' -o -fstype 'dev' -o -fstype 'proc' \\) -prune \
-	  -o -type d -print 2> /dev/null | sed 1d | cut -b3-"}"
-	setopt localoptions pipefail 2> /dev/null
-	cd "${$(eval "$cmd | $(__fzfcmd) +m $FZF_ALT_C_OPTS"):-.}"
-	local ret=$?
-	zle reset-prompt
-	typeset -f zle-line-init >/dev/null && zle zle-line-init
-	return $ret
-      }
-      zle     -N    fzf-cd-widget
-      bindkey '\ec' fzf-cd-widget
-
-      # CTRL-R - Paste the selected command from history into the command line
-      fzf-history-widget() {
-	local selected num
-	setopt localoptions noglobsubst pipefail 2> /dev/null
-	selected=( $(fc -l 1 | sort -k2 | uniq -f1|sort -k1 | eval "$(__fzfcmd) +s --tac +m -n2..,.. --tiebreak=index --toggle-sort=ctrl-r $FZF_CTRL_R_OPTS -q ${(q)LBUFFER}") )
-	local ret=$?
-	if [ -n "$selected" ]; then
-	  num=$selected[1]
-	  if [ -n "$num" ]; then
-	    zle vi-fetch-history -n $num
+    #+BEGIN_SRC shell :tangle "~/.zsh/init/init.zsh" :eval never :exports code
+      if [ ! "$PATH_LOADED" = "true" ]; then
+	  # Add go binaries
+	  if [ -d "$GOPATH" ]; then
+	      export PATH="$GOPATH/bin:$PATH"
+	  elif [ $commands[go] ]; then
+	      export PATH="$(go env GOPATH)/bin:$PATH"
+	      export GOPATH="$(go env GOPATH)"
 	  fi
-	fi
-	zle redisplay
-	typeset -f zle-line-init >/dev/null && zle zle-line-init
-	return $ret
+
+	  if [ $commands[javac] ]; then
+	      export JAVA_HOME="$(dirname $(dirname $(realpath $(which javac))))"
+	  fi
+
+	  # Add yarn global binaries
+	  if [ $commands[yarn] ]; then export PATH="$(yarn global bin):$PATH"; fi
+
+	  # Add ruby gems
+	  if [ $commands[ruby] ]; then export PATH="$(ruby -e 'puts Gem.user_dir')/bin:$PATH"; fi
+
+	  # Add custom bin files
+	  if [ -d "$HOME/bin" ]; then export PATH="$HOME/bin:$PATH"; fi
+	  if [ -d "$HOME/.local/bin" ]; then export PATH="$HOME/.local/bin:$PATH"; fi
+
+	  export PATH_LOADED="true"
+      fi
+    #+END_SRC
+
+    #+BEGIN_SRC shell :tangle "~/.zsh/zplugs.zsh" :eval never :exports code
+      #!/usr/bin/env zsh
+      # this allows zplug to update itself on `zplug update`
+      zplug 'zplug/zplug', hook-build:'zplug --self-manage'
+
+      zplug "robbyrussell/oh-my-zsh", use:"lib/{clipboard,completion,directories,history,termsupport}.zsh"
+      for plugin in extract common-aliases docker docker-compose git tmux tmuxinator autojump fzf gitignore cp; do
+	  zplug "plugins/$plugin", from:oh-my-zsh
+      done
+      zplug themes/robbyrussell, from:oh-my-zsh, use:robbyrussel.zsh-theme, as:theme
+
+      #### ZSH MAGIC
+      zplug "zsh-users/zsh-autosuggestions"
+      zplug "zsh-users/zsh-completions"
+      zplug "zsh-users/zsh-syntax-highlighting", defer:2
+      zplug "zsh-users/zsh-history-substring-search", defer:3
+      return 0 # in case zplug adds plugs ignore them
+    #+END_SRC
+
+    #+BEGIN_SRC shell :tangle "~/.zsh/post/bindings.zsh" :eval never :exports code
+      if [[ $- == *i* ]]; then
+	  # CTRL-T - Paste the selected file path(s) into the command line
+	  __fsel() {
+	    local cmd="${FZF_CTRL_T_COMMAND:-"command find -L . \\( -path '*/\\.*' -o -fstype 'dev' -o -fstype 'proc' \\) -prune \
+	      -o -type f -print \
+	      -o -type d -print \
+	      -o -type l -print 2> /dev/null | sed 1d | cut -b3-"}"
+	    setopt localoptions pipefail 2> /dev/null
+	    eval "$cmd | $(__fzfcmd) -m $FZF_CTRL_T_OPTS" | while read item; do
+	      echo -n "${(q)item} "
+	    done
+	    local ret=$?
+	    echo
+	    return $ret
+	  }
+
+	  __fzfcmd() {
+	    [ ${FZF_TMUX:-1} -eq 1 ] && echo "fzf-tmux -d${FZF_TMUX_HEIGHT:-40%}" || echo "fzf"
+	  }
+
+	  fzf-file-widget() {
+	    LBUFFER="${LBUFFER}$(__fsel)"
+	    local ret=$?
+	    zle redisplay
+	    typeset -f zle-line-init >/dev/null && zle zle-line-init
+	    return $ret
+	  }
+	  zle     -N   fzf-file-widget
+	  bindkey '^T' fzf-file-widget
+
+	  # ALT-C - cd into the selected directory
+	  fzf-cd-widget() {
+	    local cmd="${FZF_ALT_C_COMMAND:-"command find -L . \\( -path '*/\\.*' -o -fstype 'dev' -o -fstype 'proc' \\) -prune \
+	      -o -type d -print 2> /dev/null | sed 1d | cut -b3-"}"
+	    setopt localoptions pipefail 2> /dev/null
+	    cd "${$(eval "$cmd | $(__fzfcmd) +m $FZF_ALT_C_OPTS"):-.}"
+	    local ret=$?
+	    zle reset-prompt
+	    typeset -f zle-line-init >/dev/null && zle zle-line-init
+	    return $ret
+	  }
+	  zle     -N    fzf-cd-widget
+	  bindkey '\ec' fzf-cd-widget
+
+	  # CTRL-R - Paste the selected command from history into the command line
+	  fzf-history-widget() {
+	    local selected num
+	    setopt localoptions noglobsubst pipefail 2> /dev/null
+	    selected=( $(fc -l 1 | sort -k2 | uniq -f1|sort -k1 | eval "$(__fzfcmd) +s --tac +m -n2..,.. --tiebreak=index --toggle-sort=ctrl-r $FZF_CTRL_R_OPTS -q ${(q)LBUFFER}") )
+	    local ret=$?
+	    if [ -n "$selected" ]; then
+	      num=$selected[1]
+	      if [ -n "$num" ]; then
+		zle vi-fetch-history -n $num
+	      fi
+	    fi
+	    zle redisplay
+	    typeset -f zle-line-init >/dev/null && zle zle-line-init
+	    return $ret
+	  }
+
+	  zle     -N   fzf-history-widget
+	  bindkey '^R' fzf-history-widget
+      fi
+    #+END_SRC
+
+    #+BEGIN_SRC shell :tangle "~/.zsh/post/loads.zsh" :eval never :exports code
+      if [ -d "${HOME}/google-cloud-sdk" ]; then
+	  . $HOME/google-cloud-sdk/completion.zsh.inc
+	  . $HOME/google-cloud-sdk/path.zsh.inc
+      elif [ -d "/opt/google-cloud-sdk" ]; then
+	  . /opt/google-cloud-sdk/completion.zsh.inc
+	  . /opt/google-cloud-sdk/path.zsh.inc
+      fi
+    #+END_SRC
+
+    #+BEGIN_SRC shell :tangle "~/.zsh/post/config.zsh" :eval never :exports code
+      # auto menu complete
+      setopt auto_menu
+
+      # auto change directory
+      setopt auto_cd
+
+      #### HISTORY SEARCH
+      autoload history-search-end
+      HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND="bg=cyan,fg=white,bold"
+      HIST_STAMPS="dd.mm.yyyy" ## OH-MY-ZSH
+      setopt hist_ignore_dups  # ignore duplication command history list
+      setopt hist_ignore_space # ignore when commands starts with space
+
+      # use brace
+      setopt brace_ccl
+
+      # auto directory pushd that you can get dirs list by cd -[tab]
+      setopt auto_pushd
+      setopt pushd_ignore_dups        # no duplicates in dir stack
+      setopt pushd_silent             # no dir stack after pushd or popd
+      setopt pushd_to_home            # `pushd` = `pushd $HOME`
+
+      # compacked complete list display
+      setopt list_packed
+
+      # multi redirect (e.x. echo "hello" > hoge1.txt > hoge2.txt)
+      setopt multios
+
+      setopt auto_remove_slash        # self explicit
+      setopt chase_links              # resolve symlinks
+      setopt correct                  # try to correct spelling of commands
+    #+END_SRC
+
+    #+BEGIN_SRC shell :tangle "~/.zsh/post/functions.zsh" :eval never :exports code
+      #!/bin/zsh
+      function gitroot {
+	  local root
+	  root=$(git rev-parse --show-toplevel)
+	  eval $root
       }
+    #+END_SRC
 
-      zle     -N   fzf-history-widget
-      bindkey '^R' fzf-history-widget
-  fi
-#+END_SRC
-
-#+BEGIN_SRC shell :tangle "~/.zsh/post/loads.zsh" :eval never :exports code
-  if [ -d "${HOME}/google-cloud-sdk" ]; then
-      . $HOME/google-cloud-sdk/completion.zsh.inc
-      . $HOME/google-cloud-sdk/path.zsh.inc
-  elif [ -d "/opt/google-cloud-sdk" ]; then
-      . /opt/google-cloud-sdk/completion.zsh.inc
-      . /opt/google-cloud-sdk/path.zsh.inc
-  fi
-#+END_SRC
-
-#+BEGIN_SRC shell :tangle "~/.zsh/post/config.zsh" :eval never :exports code
-# auto menu complete
-setopt auto_menu
-
-# auto change directory
-setopt auto_cd
-
-#### HISTORY SEARCH
-autoload history-search-end
-HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND="bg=cyan,fg=white,bold"
-HIST_STAMPS="dd.mm.yyyy" ## OH-MY-ZSH
-setopt hist_ignore_dups  # ignore duplication command history list
-setopt hist_ignore_space # ignore when commands starts with space
-
-# use brace
-setopt brace_ccl
-
-# auto directory pushd that you can get dirs list by cd -[tab]
-setopt auto_pushd
-setopt pushd_ignore_dups        # no duplicates in dir stack
-setopt pushd_silent             # no dir stack after pushd or popd
-setopt pushd_to_home            # `pushd` = `pushd $HOME`
-
-# compacked complete list display
-setopt list_packed
-
-# multi redirect (e.x. echo "hello" > hoge1.txt > hoge2.txt)
-setopt multios
-
-setopt auto_remove_slash        # self explicit
-setopt chase_links              # resolve symlinks
-setopt correct                  # try to correct spelling of commands
-#+END_SRC
-
-#+BEGIN_SRC shell :tangle "~/.zsh/post/functions.zsh" :eval never :exports code
-#!/bin/zsh
-function gitroot {
-    local root
-    root=$(git rev-parse --show-toplevel)
-    eval $root
-}
-#+END_SRC
+    #+BEGIN_SRC shell :tangle "~/.zsh/post/alias.zsh" :eval never :exports code
+      #!/bin/zsh
+      alias ls="ls --color=auto -hF"
+      alias ls="ls --color=auto -lhFA"
+    #+END_SRC
