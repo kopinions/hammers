@@ -232,5 +232,5 @@
     #+BEGIN_SRC shell :tangle "~/.zsh/post/alias.zsh" :eval never :exports code
       #!/bin/zsh
       alias ls="ls --color=auto -hF"
-      alias ls="ls --color=auto -lhFA"
+      alias ll="ls --color=auto -lhFA"
     #+END_SRC
