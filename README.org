@@ -52,5 +52,10 @@
       rsync -ravz --progress rsync://elpa.emacs-china.org/elpa/ /path/to/offline
       ln -s /path/to/offline ~/.emacs.d/offline
     #+END_SRC
+*** 更新所有的 brew
+  #+BEGIN_SRC shell :eval never :exports code
+    brew bundle list --global --brews | xargs brew upgrade
+    brew bundle list --global --casks | xargs brew cask upgrade
+  #+END_SRC
 
 
