@@ -2275,7 +2275,7 @@ python Dashboard.start()
 ** gdb customize config
 #+BEGIN_SRC conf :exports code :noweb-ref customized
   # 开启项目特定的 gdbinit 配置
-  set ignore-errors
+  ignore-errors
   set auto-load safe-path /
   set auto-load local-gdbinit
 
