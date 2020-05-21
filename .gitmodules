@@ -24,3 +24,6 @@
 [submodule "hammers/emacs/3rdparty/lsp-ivy"]
 	path = hammers/emacs/3rdparty/lsp-ivy
 	url = https://github.com/emacs-lsp/lsp-ivy.git
+[submodule "hammers/gdb/plugins/dashboard"]
+	path = hammers/gdb/plugins/dashboard
+	url = https://github.com/cyrus-and/gdb-dashboard.git

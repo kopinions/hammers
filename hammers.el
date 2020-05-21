@@ -157,6 +157,7 @@
       (m/evaluate "${m/root}/hammers/emacs/lsp.org")
       (m/link "${m/root}/hammers/tmux/plugins" "~/.tmux/plugins")
       (m/link "${m/root}/hammers/zsh/zplug" "~/.zsh/zplug")
+      (m/link "${m/root}/hammers/gdb/plugins" "~/.gdb")
       (m/link "${m/root}/hammers/vim/bundle" "~/.vim/bundle")))
 
 
