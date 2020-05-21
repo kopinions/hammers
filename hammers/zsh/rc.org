@@ -10,7 +10,8 @@
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
 *** zshenv 环境变量配置
-    #+BEGIN_SRC shell :tangle ~/.zshenv :noweb yes :eval never :exports code
+    #+NAME: zshenv
+    #+BEGIN_SRC shell :tangle (tangle-if-absent "${HOME}/.zshenv") :eval never :exports code
       export LANG=en_US.UTF-8
       export ZPLUG_HOME=~/.zsh/zplug
       export RIPGREP_CONFIG_PATH=~/.ripgreprc
@@ -36,12 +37,6 @@
       export JAVA_HOME="/Library/Java/JavaVirtualMachines/openjdk-13.0.1.jdk/Contents/Home"
       export PATH="/usr/local/opt/openjdk/bin:$PATH"
       export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-
-      <<zshenv>>
-    #+END_SRC
-
-*** brew 使用清华大学的二进制源 
-    #+BEGIN_SRC shell :exports code :results none :eval never :noweb-ref zshenv
       export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles
     #+END_SRC
 

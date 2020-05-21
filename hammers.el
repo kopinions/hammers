@@ -133,6 +133,12 @@
 (defvar m/conf.d (expand-file-name user-emacs-directory))
 (defvar m/home.d (expand-file-name "~"))
 
+(defun tangle-if-absent (path)
+  (let* ((filename (m/resolve path)))
+    (if (file-exists-p filename)
+	nil
+      filename)))
+
 (m/tangles "${m/root}/hammers/emacs/*.org")
 (m/link "${m/root}/hammers/emacs/3rdparty" "~/.emacs.d/3rdparty")
 (m/tangles "${m/root}/hammers/emacs/snippets/*.org")
