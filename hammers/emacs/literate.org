@@ -242,6 +242,7 @@ plain/markdown/orgmode 的形式来插入到当前编辑的文件中。
 	((agenda "" ((org-agenda-span 1)                      ; daily agenda
 		     (org-deadline-warning-days 0)            ; 7 day advanced warning for deadlines
 		     (org-agenda-scheduled-leaders '("" "Due %2dx: "))
+		     (org-agenda-deadline-leaders '("" "Due in %2dx: "))
 		     (org-agenda-overriding-header "Today's Schedule:")
 		     (org-agenda-start-day nil)
 		     (org-agenda-start-on-weekday nil)
@@ -249,6 +250,9 @@ plain/markdown/orgmode 的形式来插入到当前编辑的文件中。
 		     (org-agenda-use-time-grid nil)))
 	 (agenda "" ((org-agenda-span 7)                      ;; overview of appointments
 		     (org-agenda-start-on-weekday nil)         ;; calendar begins today
+		     (org-agenda-scheduled-leaders '("" "Due %2dx: "))
+		     (org-agenda-deadline-leaders '("" "Due in %2dx: "))
+
 		     (org-agenda-start-day "+1d")
 		     (org-agenda-show-future-repeats nil)
 		     (org-agenda-entry-types '(:timestamp :sexp :scheduled :deadline))))))
@@ -256,16 +260,15 @@ plain/markdown/orgmode 的形式来插入到当前编辑的文件中。
 	((agenda "" ((org-agenda-span 1)                      ; daily agenda
 		     (org-deadline-warning-days 0)            ; 7 day advanced warning for deadlines
 		     (org-agenda-scheduled-leaders '("" "Due %2dx: "))
+		     (org-agenda-deadline-leaders '("" "Due in %2dx: "))
 		     (org-agenda-overriding-header "Today's Schedule:")
 		     (org-agenda-start-day nil)
 		     (org-agenda-start-on-weekday nil)
 		     (org-agenda-compact-blocks t)
 		     (org-agenda-use-time-grid nil)))
 	 (agenda "" (
-		     (org-agenda-tag-filter-preset '("-routine"))
-		     (org-agenda-tag-filter '("-routine"))
-		     (org-agenda-category-filter '("-routine"))
-		     (org-agenda-category-filter-preset '("-routine"))
+		     (org-agenda-scheduled-leaders '("" "Due %2dx: "))
+		     (org-agenda-deadline-leaders '("" "Due in %2dx: "))
 		     (org-agenda-skip-function '(lambda () (let ((next-headline (save-excursion (or (outline-next-heading) (point-max))))
 							    (current-headline (or (and (org-at-heading-p)
 										       (point))
@@ -278,9 +281,8 @@ plain/markdown/orgmode 的形式来插入到当前编辑的文件中。
 		     (org-agenda-start-on-weekday nil)         ;; calendar begins today
 		     (org-agenda-start-day "+1d")
 		     (org-agenda-show-future-repeats nil)
-		   
 		     (org-agenda-entry-types '(:timestamp :sexp :scheduled :deadline))))
-       
+
 	 (tags "INBOX"
 	       ((org-agenda-overriding-header "Inbox")
 		(org-agenda-skip-function
@@ -346,7 +348,7 @@ plain/markdown/orgmode 的形式来插入到当前编辑的文件中。
 		     (org-tags-match-list-sublevels nil)
 		     (org-agenda-sorting-strategy
 		      '(category-keep))))
-       
+
 	 ;; (tags-todo "-NEXT"
 	 ;;            ((org-agenda-overriding-header "All other TODOs")
 	 ;;             (org-match-list-sublevels t)))
