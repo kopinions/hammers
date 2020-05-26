@@ -82,6 +82,7 @@ plain/markdown/orgmode 的形式来插入到当前编辑的文件中。
     (org-agenda-files `(
 			,(expand-file-name "inbox.org" private-directory)
 			,(expand-file-name "todos.org" private-directory)
+			,(expand-file-name "mobile.org" private-directory)
 			,(expand-file-name "routine.org" private-directory)
 			))
     (org-support-shift-select t)
