@@ -91,7 +91,7 @@
       zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 
       zplug "robbyrussell/oh-my-zsh", use:"lib/{clipboard,completion,directories,history,termsupport}.zsh"
-      plugins=(extract common-aliases docker docker-compose git tmux tmuxinator autojump fzf gitignore fancy-ctrl-z cp alias-finder direnv urltools globalias)
+      plugins=(extract common-aliases docker docker-compose git tmux tmuxinator autojump fzf gitignore fancy-ctrl-z cp alias-finder direnv urltools)
       for plugin in $plugins; do
 	  zplug "plugins/$plugin", from:oh-my-zsh
       done
@@ -161,6 +161,5 @@
 
     #+BEGIN_SRC shell :tangle "~/.zsh/post/alias.zsh" :eval never :exports code
       #!/bin/zsh
-      alias ls="ls --color=auto -hF"
-      alias ll="ls --color=auto -lhFA"
+
     #+END_SRC
