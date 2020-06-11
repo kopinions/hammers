@@ -199,6 +199,8 @@
        :load-path m/load-path)
      (use-package init-email
        :load-path m/load-path)
+     (use-package init-macros
+       :load-path m/load-path)
    #+END_SRC
 
 

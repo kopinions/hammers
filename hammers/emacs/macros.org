@@ -1,0 +1,24 @@
+#+TITLE:  常用宏管理
+#+AUTHOR: 孙建康（rising.lambda）
+#+EMAIL:  rising.lambda@gmail.com
+
+#+DESCRIPTION: A collection of emacs macros, loaded by the init.el file.
+#+PROPERTY:    header-args        :results silent   :eval no-export   :comments org
+#+PROPERTY:    header-args        :mkdirp yes
+#+PROPERTY:    header-args:shell  :tangle no
+#+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil
+#+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
+#+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+
+
+*** 所有数字加1
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (expand-file-name "lisp/init-macros.el" m/conf.d)
+      (fset 'plus1
+	 [?\C-a ?\C-  ?\C-e ?\C-\M-% ?\[ ?0 ?- ?9 ?\C-e ?+ return ?\\ ?, ?\( ?1 ?+ ?  ?# ?& left left ?\\ ?\C-e return ?! ?\C-a])
+    #+END_SRC
+
+*** provides
+    #+BEGIN_SRC elisp :eval never :exports code  :tangle (expand-file-name "lisp/init-macros.el" m/conf.d)
+      (provide 'init-macros)
+    #+END_SRC
+
