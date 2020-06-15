@@ -32,6 +32,8 @@
   # 修复在 macos 下 gdb 不能正常启动的问题
   set startup-with-shell off
 
+  set print elements 0
+  
   set breakpoint pending on
   source ~/.gdb/dashboard/.gdbinit
 #+END_SRC
