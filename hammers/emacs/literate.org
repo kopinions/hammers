@@ -152,6 +152,9 @@
 	       ("C-c o" . org-clock-out)
 	       ("C-c n" . org-narrow-to-subtree)
 	       ("C-c b" . org-narrow-to-block)
+	       ("C-c {" . sp-wrap-curly)
+	       ("C-c (" . sp-wrap-round)
+	       ("C-c [" . sp-wrap-square)
 	       ("C-c w" . widen)
 	       ("C-c e" . org-set-effort))
 	:hook
