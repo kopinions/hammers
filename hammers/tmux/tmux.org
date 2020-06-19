@@ -50,7 +50,7 @@
   run '~/.tmux/plugins/tpm/tpm'
 
   bind-key -T prefix 1 resize-pane -Z
-  bind-key -T prefix 2 split-window -h 
-  bind-key -T prefix 3 split-window -v 
+  bind-key -T prefix 2 split-window -v 
+  bind-key -T prefix 3 split-window -h 
   bind-key -T prefix 0 kill-pane
 #+END_SRC
