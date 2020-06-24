@@ -108,6 +108,7 @@ git remote set-url origin https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/home
   brew 'tig'
   brew 'rg'
   brew 'jq'
+  brew 'yq'
   brew 'autojump'
   brew 'git'
   brew 'hub' # github command line
