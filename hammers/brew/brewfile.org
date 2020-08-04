@@ -119,7 +119,8 @@ git remote set-url origin https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/home
   brew 'graphviz'
   brew 'tree'
   brew 'direnv'
-
+  brew 'bat'
+  brew 'eth-p/software/bat-extras'
   brew 'reattach-to-user-namespace' if OS.mac?
   brew 'tmux'
   brew 'tmuxinator-completion'
