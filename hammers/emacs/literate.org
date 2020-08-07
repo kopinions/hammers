@@ -243,6 +243,7 @@
     #+BEGIN_SRC elisp :eval never :exports code
       (use-package org
 	:custom
+	(org-agenda-include-diary t)
 	(org-agenda-custom-commands
 	 `(("N" "Notes" tags "NOTE"
 	    ((org-agenda-overriding-header "Notes")
