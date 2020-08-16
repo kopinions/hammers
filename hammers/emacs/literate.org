@@ -120,41 +120,6 @@
 	   (sql . t)
 	   (sqlite . t))))
     #+END_SRC
-*** org-mode capture 配置
-    #+BEGIN_SRC elisp
-      (use-package org
-	:custom
-	(org-capture-templates
-	 `(
-	   ;; tasks
-	   ("t" "general task." entry
-	    (file ,(expand-file-name "inbox.org" private-directory))
-	    "* NEXT %?\n%U\n" :clock-resume 1)
-	   ("n" "notes." entry
-	    (file ,(expand-file-name "notes.org" private-directory))
-	    "* %? :NOTE:\n%U\n%a\n" :clock-resume t)
-	   ("r" "retrospective note" plain (file+olp+datetree ,(expand-file-name "retrospect.org" private-directory))
-	    ,(concat "%[" (expand-file-name "retrospect.tmpl" private-directory) "]")
-	    :tree-type week)
-	   ("i" "interrupt task" entry
-	    (file ,(expand-file-name "inbox.org" private-directory))
-	    "* NEXT %?\n%U\n" :clock-in 1 :clock-keep 1)
-	   ("e" "Collect hacking Emacs ideas!" item
-	    (file+headline ,(expand-file-name "inbox.org" private-directory) "Hacking Emacs")
-	    "- [ ] %?"
-	    :prepend t)
-	   ("p" "Add an event to the private calendar." entry
-	    (file+olp schedule-file "Calendar" "2019" "Private")
-	    "** %?\n   SCHEDULED: <%(org-read-date)>\n"
-	    :prepend t)
-	   ("w" "Add an event to the work calendar." entry
-	    (file+olp schedule-file "Calendar" "2019" "Work")
-	    "** %?\n   SCHEDULED: <%(org-read-date)>\n")
-	   ("l" "Store the link of the current position in the clocking task." item
-	    (clock)
-	    "- %A\n"
-	    :immediate t :prepend t))))
-    #+END_SRC
 
 *** org-mode 日程配置
     #+BEGIN_SRC elisp :eval never :exports code
@@ -184,13 +149,14 @@
 	 '(:maxlevel 5 :block t :tstart t :tend t :emphasize t :link t :narrow 80 :indent t :formula nil :timestamp t :level 5 :tcolumns nil :formatter nil))
 	(org-global-properties (quote ((
 					"Effort_ALL" . "00:05 00:10 00:15 00:30 01:00 01:30 02:00 02:30 03:00"))))
+	(org-agenda-dir (expand-file-name "agendas" m/home.d))
 	(org-agenda-files `(
-			    ,(expand-file-name "inbox.org" private-directory)
-			    ,(expand-file-name "todos.org" private-directory)
-			    ,(expand-file-name "mobile.org" private-directory)
-			    ,(expand-file-name "routine.org" private-directory)
+			    ,(expand-file-name "inbox.org" org-agenda-dir)
+			    ,(expand-file-name "todos.org" org-agenda-dir)
+			    ,(expand-file-name "mobile.org" org-agenda-dir)
+			    ,(expand-file-name "routine.org" org-agenda-dir)
 			    ))
-	(org-archive-location (concat (expand-file-name "archive.org" private-directory) "::datetree/* Finished Tasks"))
+	(org-archive-location (concat (expand-file-name "archive.org" org-agenda-dir) "::datetree/* Finished Tasks"))
 	(org-support-shift-select t)
 
 	;; Targets start with the file name - allows creating level 1 tasks
@@ -354,6 +320,41 @@
 	      '(("WAIT" . (:foreground "#6272a4":weight bold))
 		("NEXT"   . (:foreground "#f1fa8c" :weight bold))
 		("CARRY/O" . (:foreground "#6272a4" :background "#373844" :weight bold)))))
+    #+END_SRC
+*** org-mode capture 配置
+    #+BEGIN_SRC elisp
+      (use-package org
+	:custom
+	(org-capture-templates
+	 `(
+	   ;; tasks
+	   ("t" "general task." entry
+	    (file ,(expand-file-name "inbox.org" org-agenda-dir))
+	    "* NEXT %?\n%U\n" :clock-resume 1)
+	   ("n" "notes." entry
+	    (file ,(expand-file-name "notes.org" org-agenda-dir))
+	    "* %? :NOTE:\n%U\n%a\n" :clock-resume t)
+	   ("r" "retrospective note" plain (file+olp+datetree ,(expand-file-name "retrospect.org" org-agenda-dir))
+	    ,(concat "%[" (expand-file-name "retrospect.tmpl" org-agenda-dir) "]")
+	    :tree-type week)
+	   ("i" "interrupt task" entry
+	    (file ,(expand-file-name "inbox.org" org-agenda-dir))
+	    "* NEXT %?\n%U\n" :clock-in 1 :clock-keep 1)
+	   ("e" "Collect hacking Emacs ideas!" item
+	    (file+headline ,(expand-file-name "inbox.org" org-agenda-dir) "Hacking Emacs")
+	    "- [ ] %?"
+	    :prepend t)
+	   ("p" "Add an event to the private calendar." entry
+	    (file+olp schedule-file "Calendar" "2019" "Private")
+	    "** %?\n   SCHEDULED: <%(org-read-date)>\n"
+	    :prepend t)
+	   ("w" "Add an event to the work calendar." entry
+	    (file+olp schedule-file "Calendar" "2019" "Work")
+	    "** %?\n   SCHEDULED: <%(org-read-date)>\n")
+	   ("l" "Store the link of the current position in the clocking task." item
+	    (clock)
+	    "- %A\n"
+	    :immediate t :prepend t))))
     #+END_SRC
 *** org-mode clock 配置
     #+BEGIN_SRC elisp :eval never :exports code
