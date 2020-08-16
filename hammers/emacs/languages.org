@@ -12,74 +12,74 @@
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
 *** yaml
-#+BEGIN_SRC elisp :eval never :exports code
-(use-package yaml-mode
-  :mode "\\.yml\\.erb\\.yaml\\'"
-  :hook
-  ((yaml-mode . goto-address-prog-mode)))
-#+END_SRC
+    #+BEGIN_SRC elisp :eval never :exports code
+      (use-package yaml-mode
+	:mode "\\.yml\\.erb\\.yaml\\'"
+	:hook
+	((yaml-mode . goto-address-prog-mode)))
+    #+END_SRC
 
 *** json
-#+BEGIN_SRC elisp :eval never :exports code
-(use-package json-mode
-  :custom
-  (json-reformat:indent-width 2))
-#+END_SRC
+    #+BEGIN_SRC elisp :eval never :exports code
+      (use-package json-mode
+	:custom
+	(json-reformat:indent-width 2))
+    #+END_SRC
 
 *** groovy
-#+BEGIN_SRC elisp :eval never :exports code
-(use-package groovy-mode)
-#+END_SRC
+    #+BEGIN_SRC elisp :eval never :exports code
+      (use-package groovy-mode)
+    #+END_SRC
 
 *** cmake
-#+BEGIN_SRC elisp :eval never :exports code
-(use-package cmake-mode)
-#+END_SRC
+    #+BEGIN_SRC elisp :eval never :exports code
+      (use-package cmake-mode)
+    #+END_SRC
 
 *** ruby
-#+BEGIN_SRC elisp :eval never :exports code
-(use-package ruby-mode
-  :mode "\\.rb\\'"
-  :interpreter "ruby")
-#+END_SRC
+    #+BEGIN_SRC elisp :eval never :exports code
+      (use-package ruby-mode
+	:mode "\\.rb\\'"
+	:interpreter "ruby")
+    #+END_SRC
 
 *** python
-#+BEGIN_SRC elisp :eval never :exports code
-;; The package is "python" but the mode is "python-mode":
-(use-package python
-  :mode ("\\.py\\'" . python-mode)
-  :interpreter ("python" . python-mode))
-#+END_SRC
+    #+BEGIN_SRC elisp :eval never :exports code
+      ;; The package is "python" but the mode is "python-mode":
+      (use-package python
+	:mode ("\\.py\\'" . python-mode)
+	:interpreter ("python" . python-mode))
+    #+END_SRC
 
 *** lisp
-#+BEGIN_SRC elisp :eval never :exports code
-(use-package rainbow-mode
-  :diminish rainbow-mode
-  :hook
-  (emacs-lisp-mode . rainbow-mode))
-#+END_SRC
+    #+BEGIN_SRC elisp :eval never :exports code
+      (use-package rainbow-mode
+	:diminish rainbow-mode
+	:hook
+	(emacs-lisp-mode . rainbow-mode))
+    #+END_SRC
 
 *** verilog mode
-#+BEGIN_SRC elisp :eval never :exports code
-  (use-package verilog-mode
-    :load-path m/load-path
-    :config
-    (autoload 'verilog-mode "verilog-mode" "Verilog mode" t )
-    (add-to-list 'auto-mode-alist '("\\.[ds]?vh?\\'" . verilog-mode)))
-#+END_SRC
+    #+BEGIN_SRC elisp :eval never :exports code
+      (use-package verilog-mode
+	:load-path m/load-path
+	:config
+	(autoload 'verilog-mode "verilog-mode" "Verilog mode" t )
+	(add-to-list 'auto-mode-alist '("\\.[ds]?vh?\\'" . verilog-mode)))
+    #+END_SRC
 
 *** lua mode
-#+BEGIN_SRC elisp :eval never :exports code
-  (use-package lua-mode)
-#+END_SRC
+    #+BEGIN_SRC elisp :eval never :exports code
+      (use-package lua-mode)
+    #+END_SRC
 
 *** meson 构建系统
-#+BEGIN_SRC elisp :eval never :exports code
-  (use-package meson-mode
-    :hook
-    (meson-mode . company-mode))
-#+END_SRC
+    #+BEGIN_SRC elisp :eval never :exports code
+      (use-package meson-mode
+	:hook
+	(meson-mode . company-mode))
+    #+END_SRC
 *** provide
-#+BEGIN_SRC elisp :eval never :exports code
-(provide 'init-languages)
-#+END_SRC
+    #+BEGIN_SRC elisp :eval never :exports code
+      (provide 'init-languages)
+    #+END_SRC
