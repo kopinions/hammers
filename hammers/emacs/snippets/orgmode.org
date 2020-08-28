@@ -10,88 +10,108 @@
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
 *** 通用代码段
-#+BEGIN_SRC text :tangle (expand-file-name "snippets/org-mode/src" m/conf.d) :mkdirp yes :eval never :exports code
-  # -*- mode: snippet -*-
-  # name: 
-  # key: <s
-  # --
-  ,#+BEGIN_SRC $1 :eval never :exports code
-  $0
-  ,#+END_SRC
-#+END_SRC
+    #+BEGIN_SRC text :tangle (expand-file-name "snippets/org-mode/src" m/conf.d) :mkdirp yes :eval never :exports code
+      # -*- mode: snippet -*-
+      # name: 
+      # key: <s
+      # --
+      ,#+BEGIN_SRC $1 :eval never :exports code
+      $0
+      ,#+END_SRC
+    #+END_SRC
 *** shell 代码段
 
-#+BEGIN_SRC text :tangle (expand-file-name "snippets/org-mode/shell" m/conf.d) :mkdirp yes :eval never :exports code
-  # -*- mode: snippet -*-
-  # name: shell
-  # key: <sh
-  # --
-  ,#+BEGIN_SRC shell :eval never :exports code
-  $0
-  ,#+END_SRC
-#+END_SRC
+    #+BEGIN_SRC text :tangle (expand-file-name "snippets/org-mode/shell" m/conf.d) :mkdirp yes :eval never :exports code
+      # -*- mode: snippet -*-
+      # name: shell
+      # key: <sh
+      # --
+      ,#+BEGIN_SRC shell :eval never :exports code
+      $0
+      ,#+END_SRC
+    #+END_SRC
 
 *** elisp 代码段
 
-#+BEGIN_SRC text :tangle (expand-file-name "snippets/org-mode/elisp" m/conf.d) :mkdirp yes
-  # -*- mode: snippet -*-
-  # name: lisp
-  # key: <elisp
-  # --
-  ,#+BEGIN_SRC elisp :eval never :exports code
-  $0
-  ,#+END_SRC
-#+END_SRC
+    #+BEGIN_SRC text :tangle (expand-file-name "snippets/org-mode/elisp" m/conf.d) :mkdirp yes
+      # -*- mode: snippet -*-
+      # name: lisp
+      # key: <elisp
+      # --
+      ,#+BEGIN_SRC elisp :eval never :exports code
+      $0
+      ,#+END_SRC
+    #+END_SRC
 
 *** conf 代码段
-#+BEGIN_SRC text :tangle (expand-file-name "snippets/org-mode/conf" m/conf.d) :mkdirp yes
-  # -*- mode: snippet -*-
-  # name: conf
-  # key: <conf
-  # --
-  ,#+BEGIN_SRC conf :eval never :exports code
-  $0
-  ,#+END_SRC
-#+END_SRC
+    #+BEGIN_SRC text :tangle (expand-file-name "snippets/org-mode/conf" m/conf.d) :mkdirp yes
+      # -*- mode: snippet -*-
+      # name: conf
+      # key: <conf
+      # --
+      ,#+BEGIN_SRC conf :eval never :exports code
+      $0
+      ,#+END_SRC
+    #+END_SRC
 
 *** graphviz 代码段
-#+BEGIN_SRC text :tangle (expand-file-name "snippets/org-mode/dot" m/conf.d) :mkdirp yes
-  # -*- mode: snippet -*-
-  # name: dot
-  # key: <dot
-  # --
-  ,#+BEGIN_SRC dot :exports results :file $1 :eval yes
-    digraph G {
-	  node [shape=$1];
-	  $0
-    }
-  ,#+END_SRC
-#+END_SRC
+    #+BEGIN_SRC text :tangle (expand-file-name "snippets/org-mode/dot" m/conf.d) :mkdirp yes
+      # -*- mode: snippet -*-
+      # name: dot
+      # key: <dot
+      # --
+      ,#+BEGIN_SRC dot :exports results :file $1 :eval yes
+	digraph G {
+	      node [shape=$1];
+	      $0
+	}
+      ,#+END_SRC
+    #+END_SRC
 
 *** blog front matter 配置
 
-#+BEGIN_SRC text :tangle (expand-file-name "snippets/org-mode/front-matter" m/conf.d) :mkdirp yes
-  # -*- mode: snippet -*-
-  # name: front-mater
-  # key: #front
-  # --
-  ,#+TITLE: $1
-  ,#+AUTHOR: 孙建康（rising.lambda）
-  ,#+EMAIL:  rising.lambda@gmail.com
-  ,#+DATE: <$2>
-  ,#+LAYOUT: post
-  ,#+EXCERPT:  $3
-  ,#+DESCRIPTION: $4
-  ,#+TAGS: $5
-  ,#+CATEGORIES: $6
-  ,#+PROPERTY:    header-args        :comments org
-  ,#+PROPERTY:    header-args        :mkdirp yes
-  ,#+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil \n:t
-  ,#+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
-  ,#+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
-  ,#+BIND:        org-preview-latex-image-directory "$7"
-  ,#+OPTIONS:     tex:imagemagick
-  ,#+LATEX_HEADER:\usepackage{xeCJK}
-  ,#+LATEX_HEADER:\setCJKmainfont{Heiti SC}
-  $0
-#+END_SRC
+    #+BEGIN_SRC text :tangle (expand-file-name "snippets/org-mode/front-matter" m/conf.d) :mkdirp yes
+      # -*- mode: snippet -*-
+      # name: front-mater
+      # key: #front
+      # --
+      ,#+TITLE: $1
+      ,#+AUTHOR: 孙建康（rising.lambda）
+      ,#+EMAIL:  rising.lambda@gmail.com
+      ,#+DATE: <$2>
+      ,#+LAYOUT: post
+      ,#+EXCERPT:  $3
+      ,#+DESCRIPTION: $4
+      ,#+TAGS: $5
+      ,#+CATEGORIES: $6
+      ,#+PROPERTY:    header-args        :comments org
+      ,#+PROPERTY:    header-args        :mkdirp yes
+      ,#+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil \n:t
+      ,#+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
+      ,#+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+      ,#+BIND:        org-preview-latex-image-directory "$7"
+      ,#+OPTIONS:     tex:imagemagick
+      ,#+LATEX_HEADER:\usepackage{xeCJK}
+      ,#+LATEX_HEADER:\setCJKmainfont{Heiti SC}
+      $0
+    #+END_SRC
+    
+*** verilog 代码段
+    #+BEGIN_SRC text :tangle (expand-file-name "snippets/org-mode/verilog" m/conf.d) :mkdirp yes
+      # -*- mode: snippet -*-
+      # name: verilog
+      # key: <veri
+      # --
+      ,#+BEGIN_SRC verilog :exports code :eval never
+      module $1($2)
+	  always @*
+	    begin
+	      $0
+	    end
+	  always @(posedge clk)
+	    begin
+	    end
+      endmodule
+      ,#+END_SRC
+    #+END_SRC
+    
