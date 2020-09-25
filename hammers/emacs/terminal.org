@@ -122,7 +122,9 @@
     #+END_SRC
 *** autojump
     #+BEGIN_SRC elisp :eval never :exports code
-      (use-package eshell-autojump)
+      (use-package eshell-autojump
+	:custom
+	(eshell-directory-name (expand-file-name "eshell" m/conf.d)))
     #+END_SRC
 *** eshell toggle window
     #+BEGIN_SRC elisp :eval never :exports code
