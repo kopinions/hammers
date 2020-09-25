@@ -206,20 +206,6 @@
 			 (org-agenda-start-on-weekday nil)
 			 (org-agenda-compact-blocks t)
 			 (org-agenda-use-time-grid t)))
-	     (agenda "" ((org-agenda-scheduled-leaders '("" "Due %2dx: "))
-			 (org-agenda-skip-function '(lambda () (let ((next-headline (save-excursion (or (outline-next-heading) (point-max))))
-								(current-headline (or (and (org-at-heading-p)
-											   (point))
-										      (save-excursion (org-back-to-heading)))))
-							    (if (and (member "routine" (org-get-tags-at current-headline)) (not (org-get-deadline-time current-headline)))
-								next-headline
-							      nil))))
-			 (org-agenda-span 7)
-			 (org-agenda-start-on-weekday nil)
-			 (org-agenda-start-day "+1d")
-			 (org-agenda-show-future-repeats nil)
-			 (org-agenda-entry-types '(:timestamp :sexp :scheduled :deadline))))
-
 	     (tags "INBOX"
 		   ((org-agenda-overriding-header "Inbox")
 		    (org-agenda-skip-function
@@ -227,15 +213,6 @@
 			(or (org-agenda-skip-subtree-if 'todo '("DONE"))
 			    (org-agenda-skip-entry-if 'nottodo '("TODO" "NEXT")))))
 		    (org-tags-match-list-sublevels t)))
-	     (stuck ""
-		    ((org-agenda-overriding-header "Stuck Projects")
-		     (org-agenda-tags-todo-honor-ignore-options t)
-		     (org-tags-match-list-sublevels t)
-		     (org-agenda-skip-function
-		      '(lambda ()
-			 (org-agenda-skip-entry-if 'nottodo '("PROJECT"))))
-		     (org-agenda-todo-ignore-deadlines 'all)
-		     (org-agenda-todo-ignore-scheduled 'all)))
 	     (tags-todo "-INBOX"
 			((org-agenda-overriding-header "Next Actions")
 			 (org-agenda-tags-todo-honor-ignore-options t)
@@ -248,6 +225,15 @@
 			 (org-tags-match-list-sublevels t)
 			 (org-agenda-sorting-strategy
 			  '(todo-state-down effort-up category-keep))))
+	     (stuck ""
+		    ((org-agenda-overriding-header "Stuck Projects")
+		     (org-agenda-tags-todo-honor-ignore-options t)
+		     (org-tags-match-list-sublevels t)
+		     (org-agenda-skip-function
+		      '(lambda ()
+			 (org-agenda-skip-entry-if 'nottodo '("PROJECT"))))
+		     (org-agenda-todo-ignore-deadlines 'all)
+		     (org-agenda-todo-ignore-scheduled 'all)))
 	     (tags-todo "-INBOX/PROJECT"
 			((org-agenda-overriding-header "Projects")
 			 (org-tags-match-list-sublevels t)
