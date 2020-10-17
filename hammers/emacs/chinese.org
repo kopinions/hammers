@@ -99,6 +99,7 @@
 	:after pyim
 	:init
 	(setenv "RIME_PATH" (expand-file-name "librime" (expand-file-name "3rdparty" m/conf.d)))
+	(setenv "EMACS_MAJOR_VERSION" (number-to-string emacs-major-version))
 	:config
 	(liberime-build)
 	:hook
