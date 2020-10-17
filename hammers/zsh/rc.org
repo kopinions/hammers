@@ -16,6 +16,7 @@
       export RIPGREP_CONFIG_PATH=~/.ripgreprc
       export JAVA_HOME="/Library/Java/JavaVirtualMachines/openjdk-13.0.1.jdk/Contents/Home"
       export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles
+      export IDF_TOOLS_PATH=$HOME/.local
     #+END_SRC
 
 *** zshrc 配置
@@ -35,6 +36,10 @@
       for file in ~/.zsh/post/*.zsh; do
 	  source "${file}"
       done
+    #+END_SRC
+
+    #+BEGIN_SRC shell :tangle "~/.zsh/init/python.zsh" :eval never :exports code
+      export PATH="/usr/local/opt/python@3.8/libexec/bin:$PATH"
     #+END_SRC
 
     #+BEGIN_SRC shell :tangle "~/.zsh/init/init.zsh" :eval never :exports code
@@ -60,13 +65,8 @@
 	  # Add custom bin files
 	  if [ -d "$HOME/bin" ]; then export PATH="$HOME/bin:$PATH"; fi
 
-
-	  if [ -d "/usr/local/opt" ]; then
-	      BREW_BIN_PATH=$(find -L /usr/local/opt -maxdepth 3 -type d -name bin | paste -sd: -)
-	      export PATH="${BREW_BIN_PATH}:$PATH"; 
-	  fi
 	  if [ -d "$HOME/.local" ]; then
-	  LOCAL_PATH=$(find -L $HOME/.local/ -maxdepth 3 -name bin -type d| paste -sd: -)
+	      LOCAL_PATH=$(find -L $HOME/.local/ -name bin -type d| paste -sd: -)
 	      export PATH="${LOCAL_PATH}:$PATH"; 
 	  fi
 
