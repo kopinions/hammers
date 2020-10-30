@@ -24,7 +24,7 @@
       export ZPLUG_HOME=~/.zsh/zplug
 
       [[ $TERM == "tramp" ]] && unsetopt zle && PS1='$ '&& return
-      for file in ~/.zsh/init/*.zsh; do
+      for file in $(find ~/.zsh/init/ -name "*.zsh"|sort); do
 	  source "${file}"
       done
 
@@ -62,16 +62,6 @@
 	  # Add ruby gems
 	  if [ $commands[ruby] ]; then export PATH="$(ruby -e 'puts Gem.user_dir')/bin:$PATH"; fi
 
-	  # Add custom bin files
-	  if [ -d "$HOME/bin" ]; then export PATH="$HOME/bin:$PATH"; fi
-
-	  if [ -d "$HOME/.local" ]; then
-	      LOCAL_PATH=$(find -L $HOME/.local/ -name bin -type d| paste -sd: -)
-	      export PATH="${LOCAL_PATH}:$PATH"; 
-	  fi
-
-	  source ~/.zshenv
-
 	  export PATH_LOADED="true"
       fi
     #+END_SRC
@@ -105,6 +95,17 @@
 	  . /opt/google-cloud-sdk/completion.zsh.inc
 	  . /opt/google-cloud-sdk/path.zsh.inc
       fi
+
+      # Add custom bin files
+      if [ -d "$HOME/bin" ]; then export PATH="$HOME/bin:$PATH"; fi
+
+      if [ -d "$HOME/.local" ]; then
+	  LOCAL_PATH=$(find -L $HOME/.local -name bin -type d| paste -sd: -)
+	  export PATH="${LOCAL_PATH}:$PATH"; 
+      fi
+
+      source ~/.zshenv
+
     #+END_SRC
 
     #+BEGIN_SRC shell :tangle "~/.zsh/post/config.zsh" :eval never :exports code
