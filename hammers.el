@@ -120,7 +120,7 @@
   (let* ((resolved-src (m/resolve src))
 	 (resolved-dest (m/resolve dest)))
     (message "linking: %s to %s" resolved-src resolved-dest)
-    (shell-command (concat "mkdir -p $(dirname " resolved-src ")"))
+    (shell-command (concat "mkdir -p $(dirname " resolved-dest ")"))
     (shell-command (concat "ln -sfn " resolved-src " " resolved-dest))
     (message "linked: %s to %s" resolved-src resolved-dest)))
 
