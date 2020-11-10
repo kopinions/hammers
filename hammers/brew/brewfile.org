@@ -109,6 +109,9 @@
       brew 'cloc'
       brew 'fzf'
       brew 'watch'
+
+      brew 'python'
+      brew 'ninja'
       brew 'gcc'
       brew 'llvm'
 
