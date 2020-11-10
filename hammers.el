@@ -1,7 +1,6 @@
 ;;; hammers -- setup hammers config
 
-;;; Commentary:
-
+;;; Commentary: 
 ;;; Code:
 
 (require 'org)

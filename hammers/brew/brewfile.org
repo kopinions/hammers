@@ -10,147 +10,137 @@
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
 *** 使用清华大学 git 镜像加速
-#+BEGIN_SRC shell :tangle no :exports code :results none
-cd "$(brew --repo)"
-git remote set-url origin https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git
-cd "$(brew --repo)/Library/Taps/homebrew/homebrew-core"
-git remote set-url origin https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git
-#+END_SRC
+    #+BEGIN_SRC shell :tangle no :exports code :results none
+      # brew 程序本身，Homebrew/Linuxbrew 相同
+      git -C "$(brew --repo)" remote set-url origin https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git
+      # 以下针对 mac OS 系统上的 Homebrew
+      git -C "$(brew --repo homebrew/core)" remote set-url origin https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git
+      git -C "$(brew --repo homebrew/cask)" remote set-url origin https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-cask.git
+      git -C "$(brew --repo homebrew/cask-fonts)" remote set-url origin https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-cask-fonts.git
+      git -C "$(brew --repo homebrew/cask-drivers)" remote set-url origin https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-cask-drivers.git
+    #+END_SRC
 
 *** 默认安装的软件包
-#+BEGIN_SRC conf :tangle ~/.Brewfile :exports code :results none :eval never
-  cask_args appdir: '/Applications'
-  tap 'homebrew/cask' if OS.mac?
-  tap 'homebrew/bundle'
+    #+BEGIN_SRC conf :tangle ~/.Brewfile :exports code :results none :eval never
+      cask_args appdir: '/Applications'
+      tap 'homebrew/cask' if OS.mac?
+      tap 'homebrew/bundle'
 
-  brew "mas" if OS.mac?
-  # App Store
-  mas "Reeder3", id: 880001334
-  mas "ReadKit", id: 588726889
-  mas "Hidden Bar", id: 1452453066
-  mas "SwordSoft Screenink Free", id: 953841977
+      brew "mas" if OS.mac?
+      # App Store
+      mas "Reeder3", id: 880001334
+      mas "ReadKit", id: 588726889
+      mas "Hidden Bar", id: 1452453066
+      mas "SwordSoft Screenink Free", id: 953841977
 
-  # system
-  cask 'docker'
-  brew 'openjdk'
-  cask 'iterm2'
-  cask 'squirrel'
-  cask 'snipaste'
-  cask 'unshaky' # process the mac keyboard duplicate key problem
-  # usb network sharing driver
-  # cask 'horndis'
-  brew 'ruby'
-  brew 'boost'
+      # system
+      cask 'docker'
+      brew 'openjdk'
+      cask 'iterm2'
+      cask 'squirrel'
+      cask 'snipaste'
+      cask 'unshaky' # process the mac keyboard duplicate key problem
+      # usb network sharing driver
+      # cask 'horndis'
+      brew 'ruby'
+      brew 'boost'
 
-  # ides
-  cask 'clion'
-  cask 'visual-studio-code'
+      # ides
+      cask 'clion'
 
+      # virtualization
 
-  # virtualization
-  cask 'parallels' 
+      # productivity
+      cask 'alfred'
+      cask 'xmind'
+      cask 'hammerspoon'
+      cask 'appcleaner'
+      cask 'cheatsheet'
+      cask 'postman'
 
-  # productivity
-  cask 'alfred'
-  cask 'xmind'
-  cask 'hammerspoon'
-  cask 'appcleaner'
-  cask 'cheatsheet'
-  cask 'postman'
+      # editor
+      cask 'sublime-text'
+      cask 'emacs'
 
-  # video processing
-  cask 'handbrake'  # 视屏压缩
+      # storage
+      cask 'baidunetdisk'
+      cask 'baiducloud'
+      cask 'yinxiangbiji'
+      cask 'dash'
+      cask 'thunder'
+      cask '1password'
+      cask 'nutstore'
 
-  # editor
-  cask 'sublime-text'
-  cask 'emacs'
-  cask 'arduino'
+      # broswer
+      cask 'google-chrome'
 
-  # storage
-  cask 'baidunetdisk'
-  cask 'baiducloud'
-  cask 'yinxiangbiji'
-  cask 'dash'
-  cask 'thunder'
-  cask '1password'
-  cask 'nutstore'
-
-  # broswer
-  cask 'firefox'
-  cask 'google-chrome'
-
-  # study
-  cask 'kindle'
-  #cask 'youdaodict'
-
-  # entertain
-  cask 'neteasemusic'
-  cask 'qqmusic'
-  cask 'vlc'
-
-  # communication
-  cask 'qq'
-  cask 'wechat'
-  cask 'aliwangwang'
-
-  # emacs
-  cask "mactex-no-gui"
-  # terminal apps
-  ## network
-  brew 'inetutils' if OS.mac?
-  brew 'coreutils' if Os.mac?
-  brew 'nmap'
-  brew 'axel' # multiple thread downloader
-  brew 'iperf'
-  brew 'gradle'
-  brew 'make'
-  brew 'cmake'
-  brew 'tig'
-  brew 'rg'
-  brew 'jq'
-  brew 'yq'
-  brew 'autojump'
-  brew 'git'
-  brew 'hub' # github command line
-  brew 'vim'
-  brew 'zsh'
-  brew 'tldr'
-  brew 'zsh-completions'
-  brew 'graphviz'
-  brew 'tree'
-  brew 'direnv'
-  brew 'bat'
-  brew 'eth-p/software/bat-extras'
-  brew 'reattach-to-user-namespace' if OS.mac?
-  brew 'tmux'
-  brew 'tmuxinator-completion'
-  brew 'mycli' if OS.mac?
-  # code statictis
-  brew 'cloc'
-  brew 'golang'
-  brew 'maven' if OS.mac?
-  brew 'fzf'
-  brew 'watch'
-
-  # other
-  #cask 'logitech-options' 
-
-  # design
-  cask 'zeplin'
-
-  brew 'gcc'
-  brew 'llvm', args: ["with-toolchain"]
+      # emacs
+      cask "mactex-no-gui"
+      # terminal apps
+      ## network
+      brew 'inetutils' if OS.mac?
+      brew 'coreutils' if OS.mac?
+      brew 'nmap'
+      brew 'axel' # multiple thread downloader
+      brew 'iperf'
+      brew 'gradle'
+      brew 'make'
+      brew 'cmake'
+      brew 'tig'
+      brew 'rg'
+      brew 'jq'
+      brew 'yq'
+      brew 'autojump'
+      brew 'git'
+      brew 'hub' # github command line
+      brew 'vim'
+      brew 'zsh'
+      brew 'tldr'
+      brew 'zsh-completions'
+      brew 'graphviz'
+      brew 'tree'
+      brew 'direnv'
+      brew 'bat'
+      brew 'eth-p/software/bat-extras'
+      brew 'reattach-to-user-namespace' if OS.mac?
+      brew 'tmux'
+      brew 'tmuxinator-completion'
+      # code statictis
+      brew 'cloc'
+      brew 'fzf'
+      brew 'watch'
+      brew 'gcc'
+      brew 'llvm'
 
 
-  # ic
-  brew 'icarus-verilog'
-  cask 'kicad'
-  cask 'xquartz'
-  cask 'gtkwave'
-#+END_SRC
+      # ic
+      brew 'icarus-verilog'
+      cask 'kicad'
+      cask 'xquartz'
+      cask 'gtkwave'
 
-#+BEGIN_SRC shell :tangle no :exports code :results output
+      # study
+      cask 'kindle'
+      #cask 'youdaodict'
+
+      # communication
+      cask 'qq'
+      cask 'wechat'
+
+      # entertain
+      cask 'neteasemusic'
+      cask 'qqmusic'
+      cask 'vlc'
+
+      # video processing
+      cask 'handbrake'  # 视屏压缩
+
+      # other
+      cask 'logitech-options'
+    #+END_SRC
+
+    #+BEGIN_SRC shell :tangle no :exports code :results output
 #brew bundle --global
-#+END_SRC
+    #+END_SRC
 
-#+RESULTS:
+    #+RESULTS:
