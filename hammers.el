@@ -110,9 +110,9 @@
   "Return path according the PATH & EXTRA arguments."
   (let ((parts (cons (m/resolve path) extra)))
     (concat "/" (mapconcat #'(lambda (p) (cond ((and (string-prefix-p "/" p) (string-suffix-p "/" p)) (substring p 1 -1))
-					  ((string-prefix-p "/" p) (substring p 1))
-					  ((string-suffix-p "/" p) (substring p 0 -1))
-					  (t p)))
+					       ((string-prefix-p "/" p) (substring p 1))
+					       ((string-suffix-p "/" p) (substring p 0 -1))
+					       (t p)))
                            parts "/"))))
 
 (defun m/link (src dest)
@@ -146,7 +146,7 @@
 (if (eq m/os 'macos)
     (progn (m/tangles "${m/root}/hammers/brew/*.org")
 	   (m/evaluates "${m/root}/hammers/brew/*.org")
-	   (m/link "${m/root}/hammers/hammerspoon/Spoons" "~/.hammerspoon/Spoons")
+	   (m/link "${m/root}/hammers/hammerspoon/Spoons" "~/.hammerspoon")
 	   ))
 
 (if (or (eq m/os 'macos)
@@ -158,6 +158,7 @@
       (m/tangles "${m/root}/hammers/vim/*.org")
       (m/tangles "${m/root}/hammers/rg/*.org")
       (m/tangles "${m/root}/hammers/gdb/*.org")
+      (m/tangles "${m/root}/hammers/hammerspoon/*.org")
       (m/evaluate "${m/root}/hammers/emacs/chinese.org")
       (m/evaluate "${m/root}/hammers/emacs/lsp.org")
       (m/link "${m/root}/hammers/tmux/plugins" "~/.tmux/plugins")
