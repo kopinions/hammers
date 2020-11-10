@@ -70,7 +70,6 @@
 	:hook
 	(prog-mode . bug-reference-prog-mode))
       (use-package github-clone)
-      (use-package forge)
       (use-package github-review)
     #+END_SRC
 
