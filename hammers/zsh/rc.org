@@ -16,7 +16,7 @@
       export RIPGREP_CONFIG_PATH=~/.ripgreprc
       export JAVA_HOME="/Library/Java/JavaVirtualMachines/openjdk-13.0.1.jdk/Contents/Home"
       export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles
-      export IDF_TOOLS_PATH=$HOME/.local
+      export IDF_TOOLS_PATH=$HOME/.local/espressif
     #+END_SRC
 
 *** zshrc 配置
@@ -40,6 +40,17 @@
 
     #+BEGIN_SRC shell :tangle "~/.zsh/init/python.zsh" :eval never :exports code
       export PATH="/usr/local/opt/python/libexec/bin:$PATH"
+    #+END_SRC
+
+    #+BEGIN_SRC shell :tangle "~/.zsh/init/brew.zsh" :eval never :exports code
+      if [ -d "/usr/local/Cellar" ]; then
+	  eval $(/usr/local/bin/brew shellenv);
+      fi
+    #+END_SRC
+
+    #+BEGIN_SRC shell :tangle "~/.zsh/init/espressif.zsh" :eval never :exports code
+      LOCAL_PATH=$(find -L $HOME/.local/espressif/tools -name bin -type d| paste -sd: -)
+      export PATH="${LOCAL_PATH}:$PATH";
     #+END_SRC
 
     #+BEGIN_SRC shell :tangle "~/.zsh/init/init.zsh" :eval never :exports code
@@ -88,24 +99,16 @@
     #+END_SRC
 
     #+BEGIN_SRC shell :tangle "~/.zsh/post/loads.zsh" :eval never :exports code
-      if [ -d "${HOME}/google-cloud-sdk" ]; then
-	  . $HOME/google-cloud-sdk/completion.zsh.inc
-	  . $HOME/google-cloud-sdk/path.zsh.inc
-      elif [ -d "/opt/google-cloud-sdk" ]; then
-	  . /opt/google-cloud-sdk/completion.zsh.inc
-	  . /opt/google-cloud-sdk/path.zsh.inc
+      # Add custom bin files
+      if [ -d "$HOME/bin" ]; then
+	  export PATH="$HOME/bin:$PATH";
       fi
 
-      # Add custom bin files
-      if [ -d "$HOME/bin" ]; then export PATH="$HOME/bin:$PATH"; fi
-
       if [ -d "$HOME/.local" ]; then
-	  LOCAL_PATH=$(find -L $HOME/.local -name bin -type d| paste -sd: -)
-	  export PATH="${LOCAL_PATH}:$PATH"; 
+	  export PATH="$HOME/.local/bin:$PATH";
       fi
 
       source ~/.zshenv
-
     #+END_SRC
 
     #+BEGIN_SRC shell :tangle "~/.zsh/post/config.zsh" :eval never :exports code
@@ -153,5 +156,4 @@
 
     #+BEGIN_SRC shell :tangle "~/.zsh/post/alias.zsh" :eval never :exports code
       #!/bin/zsh
-
     #+END_SRC
