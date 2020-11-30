@@ -328,6 +328,9 @@
 	   ("r" "retrospective note" plain (file+olp+datetree ,(expand-file-name "retrospect.org" org-agenda-dir))
 	    ,(concat "%[" (expand-file-name "retrospect.tmpl" org-agenda-dir) "]")
 	    :tree-type week)
+	   ("m" "meeting note" plain (file+olp+datetree ,(expand-file-name "meeting.org" org-agenda-dir))
+	    ,(concat "%[" (expand-file-name "meeting.tmpl" org-agenda-dir) "]")
+	    :tree-type week)
 	   ("i" "interrupt task" entry
 	    (file ,(expand-file-name "inbox.org" org-agenda-dir))
 	    "* NEXT %?\n%U\n" :clock-in 1 :clock-keep 1)
@@ -552,6 +555,17 @@
       |                            |   |
       |                            |   |
       |----------------------------+---|
+    #+END_SRC
+*** org-mode meeting template
+    #+BEGIN_SRC org :tangle "~/agendas/meeting.tmpl" :noweb yes :mkdirp yes
+      ,**** 
+	  |--------------+---|
+	  | 哪些 Action? |   |
+	  |--------------+---|
+	  | 有哪些洞见？ |   |
+	  |--------------+---|
+	  | 有那些问题？ |   |
+	  |--------------+---|
     #+END_SRC
 
 *** org-mode gtd files
