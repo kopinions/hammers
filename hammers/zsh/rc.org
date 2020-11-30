@@ -33,6 +33,8 @@
       zplug install
       zplug load
 
+      source ~/.zshenv
+
       for file in ~/.zsh/post/*.zsh; do
 	  source "${file}"
       done
@@ -51,6 +53,10 @@
     #+BEGIN_SRC shell :tangle "~/.zsh/init/espressif.zsh" :eval never :exports code
       LOCAL_PATH=$(find -L $HOME/.local/espressif/tools -name bin -type d| paste -sd: -)
       export PATH="${LOCAL_PATH}:$PATH";
+    #+END_SRC
+
+    #+BEGIN_SRC shell :tangle "~/.zsh/post/espressif.zsh" :eval never :exports code
+      export PATH="${IDF_PATH}/tools:$PATH";
     #+END_SRC
 
     #+BEGIN_SRC shell :tangle "~/.zsh/init/init.zsh" :eval never :exports code
@@ -107,8 +113,6 @@
       if [ -d "$HOME/.local" ]; then
 	  export PATH="$HOME/.local/bin:$PATH";
       fi
-
-      source ~/.zshenv
     #+END_SRC
 
     #+BEGIN_SRC shell :tangle "~/.zsh/post/config.zsh" :eval never :exports code
