@@ -54,6 +54,7 @@
        (setq-default pyim-punctuation-half-width-functions
 		     '(pyim-probe-punctuation-line-beginning
 		       pyim-probe-punctuation-after-punctuation))
+       (pyim-fuzzy-pinyin-alist '(("en" "eng") ("in" "ing") ("un" "ong")))
 
        ;; 开启拼音搜索功能
        (pyim-isearch-mode 1)
