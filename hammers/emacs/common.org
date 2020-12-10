@@ -1,0 +1,47 @@
+#+TITLE:  lisp 公共函数
+#+AUTHOR: 孙建康（rising.lambda）
+#+EMAIL:  rising.lambda@gmail.com
+
+#+DESCRIPTION: A literate programming version of my Emacs Initialization script, loaded by the .emacs file.
+#+PROPERTY:    header-args        :results silent   :eval no-export   :comments org
+#+PROPERTY:    header-args        :mkdirp yes
+#+PROPERTY:    header-args:elisp  :tangle "~/.emacs.d/lisp/init-common.el"
+#+PROPERTY:    header-args:shell  :tangle no
+#+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil
+#+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
+#+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+
+** 文件操作
+   #+BEGIN_SRC elisp :eval never :exports code
+     (require 'em-glob)
+     (defun m/resolve (path)
+       "Interpolation variable like ${var} $var in PATH with environment or elisp variables."
+       (if (string-prefix-p "~/" path)
+	   (m/resolve (concat (getenv "HOME") (substring path 1)))
+	 (let ((s (or (string-match "${\\([^ }]*\\)}" path)
+		      (string-match "$\\([A-z_]*\\)" path)))
+	       (e (match-end 0)))
+	   (if (not s)
+	       path
+	     (m/resolve
+	      (concat (substring path 0 s) (m/var (match-string 1 path)) (substring path e))))))
+       )
+
+     (defun m/files (glob &optional full)
+       "Give an GLOB, return files matched GLOB.  If FULL is specified, return absolute pathnames for each file."
+       (interactive "M")
+       (let ((resolved (m/resolve glob)))
+	 (condition-case nil
+	     (directory-files (file-name-directory resolved)
+			      full
+			      (eshell-glob-regexp (file-name-nondirectory resolved)))
+	   (error '()))))
+
+     (defun m/var (name)
+       "Return value of variable or environment identified by NAME."
+       (or (getenv name) (eval (read name))))
+
+     (provide 'init-common)
+   #+END_SRC
+
+

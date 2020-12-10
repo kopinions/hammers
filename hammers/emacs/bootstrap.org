@@ -44,23 +44,6 @@
      (defvar m/conf.d conf.d)
      (defvar m/home.d home.d)
 
-     (defun m/var (name)
-       "Return value of variable or environment identified by NAME."
-       (or (getenv name) (eval (read name))))
-
-     (defun m/resolve (path)
-       "Interpolation variable like ${var} $var in PATH with environment or elisp variables."
-       (if (string-prefix-p "~/" path)
-	   (m/resolve (concat (getenv "HOME") (substring path 1)))
-	 (let ((s (or (string-match "${\\([^ }]*\\)}" path)
-		      (string-match "$\\([A-z_]*\\)" path)))
-	       (e (match-end 0)))
-	   (if (not s)
-	       path
-	     (m/resolve
-	      (concat (substring path 0 s) (m/var (match-string 1 path)) (substring path e)))))))
-
-
      (defun tangle-if-absent (path)
        (let* ((filename (m/resolve path)))
 	 (if (file-exists-p filename)
@@ -173,6 +156,8 @@
 				  (expand-file-name "lsp-ivy" (expand-file-name "3rdparty" m/conf.d))
 				  (expand-file-name "librime" (expand-file-name "3rdparty" m/conf.d))
 				  (expand-file-name "liberime" (expand-file-name "3rdparty" m/conf.d)))))
+     (use-package init-common
+       :load-path m/load-path)
      (use-package init-os
        :load-path m/load-path)
      (use-package init-ui

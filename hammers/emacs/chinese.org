@@ -24,17 +24,24 @@
 
 ** 输入法配置
 
-   #+BEGIN_SRC elisp :eval never :exports code
+   #+begin_SRC elisp :eval never :exports code
      (use-package posframe)
      (use-package pyim
        :diminish pyim-isearch-mode
        :after posframe
+       :preface
+       (defun m/dict(path)
+	 `(:name ,(file-name-nondirectory path)
+		 :file ,path))
+       (defun m/dicts()
+	 (mapcar 'm/dict (m/files "${m/conf.d}/pyim/dicts/*.pyim" t)))
        :config
        ;; 激活 basedict 拼音词库，五笔用户请继续阅读 README
+       (setq pyim-dicts (m/dicts))
        (use-package pyim-basedict
 	 :ensure nil
 	 :config (pyim-basedict-enable))
-
+  
        (setq default-input-method "pyim")
 
        ;; 使用全拼
@@ -54,7 +61,7 @@
        (setq-default pyim-punctuation-half-width-functions
 		     '(pyim-probe-punctuation-line-beginning
 		       pyim-probe-punctuation-after-punctuation))
-       (pyim-fuzzy-pinyin-alist '(("en" "eng") ("in" "ing") ("un" "ong")))
+       (setq pyim-fuzzy-pinyin-alist '(("en" "eng") ("in" "ing") ("un" "ong")))
 
        ;; 开启拼音搜索功能
        (pyim-isearch-mode 1)
@@ -77,7 +84,8 @@
 	("C-p" . pyim-page-previous-page)
 	)
        :hook 
-       ((emacs-startup . pyim-restart)))
+       ((emacs-startup . pyim-restart))
+       )
    #+END_SRC
 
 
