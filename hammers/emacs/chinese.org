@@ -79,54 +79,6 @@
        ((emacs-startup . pyim-restart)))
    #+END_SRC
 
-** rime 输入法配置
-
-*** 安装 librime
-    #+BEGIN_SRC shell :exports code :results none :tangle no  :eval (or (and (eq m/os 'macos) "yes") "never")
-      cd ~/.emacs.d/3rdparty/librime
-      git submodule update --init
-      make thirdparty
-      make release
-    #+END_SRC
-
-
-*** 安装 liberime
-
-    #+BEGIN_SRC elisp :eval never :exports code
-      (use-package liberime
-	:if (eq m/os 'macos)
-	:load-path m/load-path
-	:after pyim
-	:init
-	(setenv "RIME_PATH" (expand-file-name "librime" (expand-file-name "3rdparty" m/conf.d)))
-	(setenv "EMACS_MAJOR_VERSION" (number-to-string emacs-major-version))
-	:config
-	(liberime-build)
-	:hook
-	(liberime-after-start . (lambda ()
-				  (let ((buf (get-buffer "*liberime message*")))
-				    (if buf (with-current-buffer buf
-					      (kill-this-buffer)
-					      (if (not (one-window-p))
-						  (delete-window)))))
-				  ;; Select schema delay 5 second, make sure
-				  ;; `liberime-load' run finish.
-				  (run-with-timer
-				   5 1
-				   (ignore-errors (lambda ()
-						    (liberime-select-schema "luna_pinyin_simp")
-						    (setq pyim-default-scheme 'rime-quanpin)))))))
-
-    #+END_SRC
-
-    #+BEGIN_SRC yaml :tangle "~/.emacs.d/rime/default.custom.yaml" :noweb yes :eval never :exports code
-      patch:
-	"menu/page_size": 100
-	"speller/auto_select": false
-	"speller/auto_select_unique_candidate": false
-	schema_list: 
-	  - schema: luna_pinyin_simp
-    #+END_SRC
 
     #+BEGIN_SRC elisp :eval never :exports code
       (provide 'init-chinese)
