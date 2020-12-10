@@ -330,7 +330,7 @@
 	    :tree-type week)
 	   ("m" "meeting note" plain (file+olp+datetree ,(expand-file-name "meeting.org" org-agenda-dir))
 	    ,(concat "%[" (expand-file-name "meeting.tmpl" org-agenda-dir) "]")
-	    :tree-type week)
+	    :tree-type week :clock-in 1 :empty-lines 1 :kill-buffer 1)
 	   ("i" "interrupt task" entry
 	    (file ,(expand-file-name "inbox.org" org-agenda-dir))
 	    "* NEXT %?\n%U\n" :clock-in 1 :clock-keep 1)
