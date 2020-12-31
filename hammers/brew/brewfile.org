@@ -40,6 +40,8 @@
       cask 'squirrel'
       cask 'snipaste'
       cask 'unshaky' # process the mac keyboard duplicate key problem
+      cask 'the-unarchiver'
+      brew 'unar'
       # usb network sharing driver
       # cask 'horndis'
       brew 'ruby'
@@ -83,7 +85,6 @@
       brew 'nmap'
       brew 'axel' # multiple thread downloader
       brew 'iperf'
-      brew 'gradle'
       brew 'make'
       brew 'cmake'
       brew 'tig'
@@ -137,9 +138,6 @@
 
       # video processing
       cask 'handbrake'  # 视屏压缩
-
-      # other
-      cask 'logitech-options'
     #+END_SRC
 
     #+BEGIN_SRC shell :tangle no :exports code :results output
