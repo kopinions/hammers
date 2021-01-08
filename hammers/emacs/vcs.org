@@ -39,7 +39,7 @@
 *** magit
     #+BEGIN_SRC elisp :eval never :exports code
       (use-package magit
-	:after (fullframe diff-hl)
+	:after (fullframe)
 	:custom
 	(magit-diff-refine-hunk t)
 	:bind
