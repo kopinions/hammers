@@ -39,7 +39,6 @@
 *** magit
     #+BEGIN_SRC elisp :eval never :exports code
       (use-package magit
-	:after (fullframe)
 	:custom
 	(magit-diff-refine-hunk t)
 	:bind
@@ -47,7 +46,8 @@
 	:config
 	(use-package fullframe
 	  :config
-	  (fullframe magit-status magit-mode-quit-window)))	
+	  (fullframe magit-status magit-mode-quit-window)))
+
       (use-package magit-todos)
     #+END_SRC
 
