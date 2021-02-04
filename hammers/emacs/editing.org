@@ -161,7 +161,14 @@
     #+BEGIN_SRC elisp :eval never :exports code
       (use-package elec-pair
 	:config
-	(electric-pair-mode 1))
+	(defun m/electric-pair-local-text-mode ()
+	  "Advise and wrap electric pairs in text mode."
+	  (add-function :before-until electric-pair-inhibit-predicate
+			(lambda (c) (eq c ?<)))
+	  (electric-pair-local-mode))
+	:hook
+	((prog-mode . electric-pair-local-mode)
+	 (text-mode . m/electric-pair-local-text-mode)))
     #+END_SRC
 *** 括号中内容显示
     #+BEGIN_SRC elisp :eval never :exports code
