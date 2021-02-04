@@ -146,7 +146,7 @@
 (if (eq m/os 'macos)
     (progn (m/tangles "${m/root}/hammers/brew/*.org")
 	   (m/evaluates "${m/root}/hammers/brew/*.org")
-	   (m/link "${m/root}/hammers/hammerspoon/Spoons" "~/.hammerspoon")
+	   (m/link "${m/root}/hammers/hammerspoon/Spoons" "~/.hammerspoon/Spoons")
 	   ))
 
 (if (or (eq m/os 'macos)
