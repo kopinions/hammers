@@ -114,6 +114,15 @@
 					       ((string-suffix-p "/" p) (substring p 0 -1))
 					       (t p)))
                            parts "/"))))
+(defun m/copy (src dest)
+  "Link the SRC to the DEST."
+  (let* ((resolved-src (m/resolve src))
+	 (resolved-dest (m/resolve dest)))
+    (message "copy: %s to %s" resolved-src resolved-dest)
+    (shell-command (concat "rm -rf " resolved-dest))
+    (shell-command (concat "mkdir -p $(dirname " resolved-dest ")"))
+    (shell-command (concat "cp -rf " resolved-src " " resolved-dest))
+    (message "copied: %s to %s" resolved-src resolved-dest)))
 
 (defun m/link (src dest)
   "Link the SRC to the DEST."
@@ -139,14 +148,14 @@
       filename)))
 
 (m/tangles "${m/root}/hammers/emacs/*.org")
-(m/link "${m/root}/hammers/emacs/3rdparty" "~/.emacs.d/3rdparty")
+(m/copy "${m/root}/hammers/emacs/3rdparty" "~/.emacs.d/3rdparty")
 (m/tangles "${m/root}/hammers/emacs/snippets/*.org")
 (m/tangles "${m/root}/hammers/git/*.org")
 
 (if (eq m/os 'macos)
     (progn (m/tangles "${m/root}/hammers/brew/*.org")
 	   (m/evaluates "${m/root}/hammers/brew/*.org")
-	   (m/link "${m/root}/hammers/hammerspoon/Spoons" "~/.hammerspoon/Spoons")
+	   (m/copy "${m/root}/hammers/hammerspoon/Spoons" "~/.hammerspoon/Spoons")
 	   ))
 
 (if (or (eq m/os 'macos)
@@ -161,10 +170,10 @@
       (m/tangles "${m/root}/hammers/hammerspoon/*.org")
       (m/evaluate "${m/root}/hammers/emacs/chinese.org")
       (m/evaluate "${m/root}/hammers/emacs/lsp.org")
-      (m/link "${m/root}/hammers/tmux/plugins" "~/.tmux/plugins")
-      (m/link "${m/root}/hammers/zsh/zplug" "~/.zsh/zplug")
-      (m/link "${m/root}/hammers/gdb/plugins" "~/.gdb")
-      (m/link "${m/root}/hammers/vim/bundle" "~/.vim/bundle")))
+      (m/copy "${m/root}/hammers/tmux/plugins" "~/.tmux/plugins")
+      (m/copy "${m/root}/hammers/zsh/zplug" "~/.zsh/zplug")
+      (m/copy "${m/root}/hammers/gdb/plugins" "~/.gdb")
+      (m/copy "${m/root}/hammers/vim/bundle" "~/.vim/bundle")))
 
 
 (message "Finished building hammers. Please Restart Emacs.")
