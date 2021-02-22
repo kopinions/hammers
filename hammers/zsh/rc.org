@@ -83,10 +83,10 @@
       # this allows zplug to update itself on `zplug update`
       zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 
-      zplug "robbyrussell/oh-my-zsh", use:"lib/{clipboard,completion,directories,history,termsupport}.zsh"
+      zplug 'robbyrussell/oh-my-zsh', as:plugin, use:"lib/*.zsh"
       plugins=(extract common-aliases docker docker-compose git tmux tmuxinator autojump fzf gitignore fancy-ctrl-z cp alias-finder direnv urltools)
       for plugin in $plugins; do
-	  zplug "plugins/$plugin", from:oh-my-zsh
+	  zplug "plugins/$plugin", from:oh-my-zsh, as:plugin
       done
 
       zplug themes/robbyrussell, from:oh-my-zsh, use:robbyrussel.zsh-theme, as:theme
