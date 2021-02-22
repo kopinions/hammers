@@ -89,13 +89,15 @@
 	  zplug "plugins/$plugin", from:oh-my-zsh, as:plugin
       done
 
-      zplug themes/robbyrussell, from:oh-my-zsh, use:robbyrussel.zsh-theme, as:theme
+      zplug 'themes/robbyrussell', from:oh-my-zsh, use:robbyrussel.zsh-theme, as:theme
+
+      zplug 'junegunn/fzf', use:"shell/*.zsh",  defer:2
 
       #### ZSH MAGIC
-      zplug "zsh-users/zsh-autosuggestions"
-      zplug "zsh-users/zsh-completions"
-      zplug "zsh-users/zsh-syntax-highlighting", defer:2
-      zplug "zsh-users/zsh-history-substring-search", defer:3
+      zplug 'zsh-users/zsh-autosuggestions'
+      zplug 'zsh-users/zsh-completions'
+      zplug 'zsh-users/zsh-syntax-highlighting', defer:2
+      zplug 'zsh-users/zsh-history-substring-search', defer:3
       return 0 # in case zplug adds plugs ignore them
     #+END_SRC
 
