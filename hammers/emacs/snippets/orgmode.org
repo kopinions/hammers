@@ -73,12 +73,13 @@
     #+BEGIN_SRC text :tangle (expand-file-name "snippets/org-mode/front-matter" m/conf.d) :mkdirp yes
       # -*- mode: snippet -*-
       # name: front-mater
-      # key: #front
+      # key: <front
       # --
       ,#+TITLE: $1
       ,#+AUTHOR: 孙建康（rising.lambda）
       ,#+EMAIL:  rising.lambda@gmail.com
-      ,#+DATE: <$2>
+      ,#+DATE: `(format-time-string "%Y-%m-%d")`$0
+      ,#+UPDATED: `(format-time-string "%Y-%m-%d")`$0
       ,#+LAYOUT: post
       ,#+EXCERPT:  $3
       ,#+DESCRIPTION: $4
