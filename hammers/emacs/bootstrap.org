@@ -52,7 +52,7 @@
    #+END_SRC
 
    #+BEGIN_SRC elisp :eval never :exports code
-  (global-unset-key (kbd "M-`"))
+     (global-unset-key (kbd "M-`"))
    #+END_SRC
 
 
@@ -73,6 +73,20 @@
     Emacs 的包管理器名为：[[http://tromey.com/elpa/][package]]. 但是 package 默认配置插件仓库包含的插件相对较少，我们需要添加一些常用的第三方插件仓库，以便与搜索与安装插件。
 
     #+BEGIN_SRC elisp :eval never :exports code
+      (setq load-path
+	    (delq nil (mapcar
+		       (function (lambda (p)
+				   (unless (string-match "lisp\\(/packages\\)?/org$" p)
+				     p)))
+		       load-path)))
+      ;; remove property list to defeat cus-load and remove autoloads
+      (mapatoms (function  (lambda (s)
+			     (let ((sn (symbol-name s)))
+			       (when (string-match "^\\(org\\|ob\\|ox\\)\\(-.*\\)?$" sn)
+				 (setplist s nil)
+				 (when (eq 'autoload (car-safe s))
+				   (unintern s)))))))
+
       (require 'package)
 	;;; Install into separate package dirs for each Emacs version, to prevent bytecode incompatibility
       (let ((versioned-package-dir
@@ -139,9 +153,9 @@
 *** 保证永远使用最新的 lisp 配置文件，或者库文件
     #+BEGIN_SRC elisp :eval never :exports code
       (use-package auto-compile
-      :ensure t
-      :custom (load-prefer-newer t)
-      :config
+	:ensure t
+	:custom (load-prefer-newer t)
+	:config
 	(auto-compile-on-load-mode)
 	(auto-compile-on-save-mode))
     #+END_SRC
@@ -151,11 +165,11 @@
 
    #+BEGIN_SRC elisp :eval never :exports code
      (defconst m/load-path (lambda () (list 
-				  (expand-file-name "lisp" m/conf.d)
-				  (expand-file-name "verilog-mode" (expand-file-name "3rdparty" m/conf.d))
-				  (expand-file-name "lsp-ivy" (expand-file-name "3rdparty" m/conf.d))
-				  (expand-file-name "librime" (expand-file-name "3rdparty" m/conf.d))
-				  (expand-file-name "liberime" (expand-file-name "3rdparty" m/conf.d)))))
+				       (expand-file-name "lisp" m/conf.d)
+				       (expand-file-name "verilog-mode" (expand-file-name "3rdparty" m/conf.d))
+				       (expand-file-name "lsp-ivy" (expand-file-name "3rdparty" m/conf.d))
+				       (expand-file-name "librime" (expand-file-name "3rdparty" m/conf.d))
+				       (expand-file-name "liberime" (expand-file-name "3rdparty" m/conf.d)))))
      (use-package init-common
        :load-path m/load-path)
      (use-package init-os

@@ -11,6 +11,11 @@
 #+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
+*** 禁止 emacs 自带的 orgmode
+    #+BEGIN_SRC elisp :eval never :exports code
+      (assq-delete-all 'org package--builtins)
+      (assq-delete-all 'org package--builtin-versions)
+    #+END_SRC
 
 *** 从系统软件中获取链接
     当系统为 macos 时，我们可以通过安装 [[https://github.com/xuchunyang/grab-mac-link.el][grab-mac-link]] 插件来获取 chrome/firefox/safia 中的链接，并且可以选择
