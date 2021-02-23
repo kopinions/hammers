@@ -61,6 +61,7 @@
 
 *** org-mode 配置
     #+BEGIN_SRC elisp :eval never :exports code
+      (setq org-agenda-dir (expand-file-name "agendas" m/home.d))
       (use-package org
 	:diminish org-mode
 	:custom
@@ -159,7 +160,6 @@
 	 '(:maxlevel 5 :block t :tstart t :tend t :emphasize t :link t :narrow 80 :indent t :formula nil :timestamp t :level 5 :tcolumns nil :formatter nil))
 	(org-global-properties (quote ((
 					"Effort_ALL" . "00:05 00:10 00:15 00:30 01:00 01:30 02:00 02:30 03:00"))))
-	(org-agenda-dir (expand-file-name "agendas" m/home.d))
 	(org-agenda-files `(
 			    ,(expand-file-name "inbox.org" org-agenda-dir)
 			    ,(expand-file-name "todos.org" org-agenda-dir)
