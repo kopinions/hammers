@@ -359,11 +359,6 @@
     #+BEGIN_SRC elisp :eval never :exports code
       (use-package org
 	:custom
-	(m/pomodoro/focus 45)
-	(m/pomodoro/break 5)
-	(m/pomodoro/task/current nil)
-	(m/pomodoro/task/next nil)
-	(m/pomodoro/status/updater nil)
 	(org-clock-in-resume t)
 	;; Save clock data and notes in the LOGBOOK drawer
 	(org-clock-into-drawer t)
@@ -376,21 +371,26 @@
 	;; (org-agenda-current-time-string "------------NOW------------")
 	(org-clock-persist t)
 	:preface
+	(setq m/pomodoro/focus 45)
+	(setq m/pomodoro/break 5)
+	(setq m/pomodoro/task/current nil)
+	(setq m/pomodoro/task/next nil)
+	(setq m/pomodoro/status/updater nil)
 	(defun m/org-clock-out-and-save-when-exit ()
 	  "Save buffers and stop clocking when kill emacs."
 	  (ignore-errors (org-clock-out) t)
 	  (save-some-buffers t))
 	(defun m/pomodoro/reset ()
 	  "timer update"
-	  (if (and m/pomodoro/task/current (timerp m/pomodoro/task/current))
+	  (if (and (boundp 'm/pomodoro/task/current) (timerp m/pomodoro/task/current))
 	      (cancel-timer m/pomodoro/task/current)
 	    (setq m/pomodoro/task/current nil))
 
-	  (if (and m/pomodoro/task/next (timerp m/pomodoro/task/next))
+	  (if (and (boundp 'm/pomodoro/task/next) (timerp m/pomodoro/task/next))
 	      (cancel-timer m/pomodoro/task/next)
 	    (setq m/pomodoro/task/next nil))
 
-	  (if (and m/pomodoro/status/updater (timerp m/pomodoro/status/updater))
+	  (if (and (boundp 'm/pomodoro/status/updater) (timerp m/pomodoro/status/updater))
 	      (cancel-timer m/pomodoro/status/updater)
 	    (setq m/pomodoro/status/updater nil)))
 	(defun m/clockin ()
