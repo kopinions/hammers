@@ -133,6 +133,7 @@
     #+END_SRC
 
 *** org-mode 日程配置
+    
     #+BEGIN_SRC elisp :eval never :exports code
       (use-package org
 	:preface
@@ -157,7 +158,7 @@
 	(org-log-done t)
 	(org-agenda-log-mode-items (quote (closed clock)))
 	(org-agenda-clockreport-parameter-plist
-	 '(:maxlevel 5 :block t :tstart t :tend t :emphasize t :link t :narrow 80 :indent t :formula nil :timestamp t :level 5 :tcolumns nil :formatter nil))
+	 '(:maxlevel 5 :block t :tstart t :tend t :emphasize t :link t :narrow 80 :indent t :compact t :fileskip0 t :formula % :timestamp t :level 5 :tcolumns nil :formatter nil))
 	(org-global-properties (quote ((
 					"Effort_ALL" . "00:05 00:10 00:15 00:30 01:00 01:30 02:00 02:30 03:00"))))
 	(org-agenda-files `(
@@ -181,7 +182,6 @@
 	(org-refile-targets '((m/refile-targets :maxlevel . 5)))
 	(org-archive-mark-done nil)
 	      ;;; Agenda views
-	(org-agenda-clockreport-parameter-plist '(:link t :maxlevel 3))
 	(org-agenda-custom-commands
 	 `(("N" "Notes" tags "NOTE"
 	    ((org-agenda-overriding-header "Notes")
@@ -539,6 +539,17 @@
 					       (figure . "Figure"))))
     #+END_SRC
 
+*** org-mode 中文对齐配置
+    #+BEGIN_SRC elisp :eval never :exports code
+      (use-package valign
+	:custom
+	(valign-fancy-bar nil)
+	:hook
+	(org-mode . valign-mode)
+	(org-agenda-clockreport-mode . valign-mode)
+	(org-agenda-finalize . valign-region)
+	(org-agenda-mode . valign-mode))
+    #+END_SRC
 *** org-mode retrospect temlate
     #+BEGIN_SRC org :tangle "~/agendas/retrospect.tmpl" :noweb yes :mkdirp yes
       |----------------------------+---|
