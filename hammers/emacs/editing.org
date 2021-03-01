@@ -352,12 +352,12 @@
 ** 移动或者复制行
    #+BEGIN_SRC elisp :eval never :exports code
      (use-package move-dup
-       :bind (("M-<up>" . md-move-lines-up)
-	      ("M-<down>" . md-move-lines-down)
-	      ("M-S-<up>" . md-duplicate-up)
-	      ("M-S-<down>" . md-duplicate-down)
-	      ("C-c d" . md-duplicate-down)
-	      ("C-c u" . md-duplicate-up)))
+       :bind (("M-<up>" . move-dup-move-lines-up)
+	      ("M-<down>" . move-dup-move-lines-down)
+	      ("M-S-<up>" . move-dup-duplicate-up)
+	      ("M-S-<down>" . move-dup-duplicate-down)
+	      ("C-c d" . move-dup-duplicate-down)
+	      ("C-c u" . move-dup-duplicate-up)))
    #+END_SRC
 
 ** 复制或剪切当前行
