@@ -124,6 +124,17 @@
     (shell-command (concat "cp -rf " resolved-src " " resolved-dest))
     (message "copied: %s to %s" resolved-src resolved-dest)))
 
+(defun m/gitclone (src dest)
+  "clone the SRC to the DEST."
+  (let* ((resolved-src (m/resolve src))
+	 (resolved-dest (m/resolve dest)))
+    (message "gitclone: %s to %s" resolved-src resolved-dest)
+    (shell-command (concat "rm -rf " resolved-dest))
+    (shell-command (concat "mkdir -p $(dirname " resolved-dest ")"))
+    (shell-command (concat "git clone " resolved-src " " resolved-dest))
+    (message "cloned: %s to %s" resolved-src resolved-dest)))
+
+
 (defun m/link (src dest)
   "Link the SRC to the DEST."
   (let* ((resolved-src (m/resolve src))
@@ -148,14 +159,18 @@
       filename)))
 
 (m/tangles "${m/root}/hammers/emacs/*.org")
-(m/copy "${m/root}/hammers/emacs/3rdparty" "~/.emacs.d/3rdparty")
+
+(m/gitclone "${m/root}/hammers/emacs/3rdparty/lsp-ivy" "${m/conf.d}/3rdparty/lsp-ivy")
+(m/gitclone "${m/root}/hammers/emacs/3rdparty/verilog-mode" "${m/conf.d}/3rdparty/verilog-mode")
 (m/tangles "${m/root}/hammers/emacs/snippets/*.org")
 (m/tangles "${m/root}/hammers/git/*.org")
 
 (if (eq m/os 'macos)
     (progn (m/tangles "${m/root}/hammers/brew/*.org")
 	   (m/evaluates "${m/root}/hammers/brew/*.org")
-	   (m/copy "${m/root}/hammers/hammerspoon/Spoons" "~/.hammerspoon/Spoons")
+	   (m/gitclone "${m/root}/hammers/emacs/3rdparty/librime" "${m/conf.d}/3rdparty/librime")
+	   (m/gitclone "${m/root}/hammers/emacs/3rdparty/liberime" "${m/conf.d}/3rdparty/liberime")
+	   (m/copy "${m/root}/hammers/hammerspoon/Spoons" "${m/home}/.hammerspoon/Spoons")
 	   ))
 
 (if (or (eq m/os 'macos)
@@ -170,10 +185,10 @@
       (m/tangles "${m/root}/hammers/hammerspoon/*.org")
       (m/evaluate "${m/root}/hammers/emacs/chinese.org")
       (m/evaluate "${m/root}/hammers/emacs/lsp.org")
-      (m/copy "${m/root}/hammers/tmux/plugins" "~/.tmux/plugins")
-      (m/copy "${m/root}/hammers/zsh/zplug" "~/.zsh/zplug")
-      (m/copy "${m/root}/hammers/gdb/plugins" "~/.gdb")
-      (m/copy "${m/root}/hammers/vim/bundle" "~/.vim/bundle")))
+      (m/gitclone "${m/root}/hammers/tmux/plugins/tpm" "${m/home}/.tmux/plugins/tpm")
+      (m/gitclone "${m/root}/hammers/zsh/zplug" "${m/home}/.zsh/zplug")
+      (m/gitclone "${m/root}/hammers/gdb/plugins/dashboard" "${m/home}/.gdb/dashboard")
+      (m/gitclone "${m/root}/hammers/vim/bundle/Vundle" "${m/home}/.vim/bundle/Vundle")))
 
 
 (message "Finished building hammers. Please Restart Emacs.")
