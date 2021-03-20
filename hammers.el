@@ -170,7 +170,7 @@
 	   (m/evaluates "${m/root}/hammers/brew/*.org")
 	   (m/gitclone "${m/root}/hammers/emacs/3rdparty/librime" "${m/conf.d}/3rdparty/librime")
 	   (m/gitclone "${m/root}/hammers/emacs/3rdparty/liberime" "${m/conf.d}/3rdparty/liberime")
-	   (m/copy "${m/root}/hammers/hammerspoon/Spoons" "${m/home}/.hammerspoon/Spoons")
+	   (m/copy "${m/root}/hammers/hammerspoon/Spoons" "${m/home.d}/.hammerspoon/Spoons")
 	   ))
 
 (if (or (eq m/os 'macos)
@@ -185,10 +185,10 @@
       (m/tangles "${m/root}/hammers/hammerspoon/*.org")
       (m/evaluate "${m/root}/hammers/emacs/chinese.org")
       (m/evaluate "${m/root}/hammers/emacs/lsp.org")
-      (m/gitclone "${m/root}/hammers/tmux/plugins/tpm" "${m/home}/.tmux/plugins/tpm")
-      (m/gitclone "${m/root}/hammers/zsh/zplug" "${m/home}/.zsh/zplug")
-      (m/gitclone "${m/root}/hammers/gdb/plugins/dashboard" "${m/home}/.gdb/dashboard")
-      (m/gitclone "${m/root}/hammers/vim/bundle/Vundle" "${m/home}/.vim/bundle/Vundle")))
+      (m/gitclone "${m/root}/hammers/tmux/plugins/tpm" "${m/home.d}/.tmux/plugins/tpm")
+      (m/gitclone "${m/root}/hammers/zsh/zplug" "${m/home.d}/.zsh/zplug")
+      (m/gitclone "${m/root}/hammers/gdb/plugins/dashboard" "${m/home.d}/.gdb/dashboard")
+      (m/gitclone "${m/root}/hammers/vim/bundle/Vundle" "${m/home.d}/.vim/bundle/Vundle")))
 
 
 (message "Finished building hammers. Please Restart Emacs.")
