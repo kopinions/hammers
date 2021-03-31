@@ -44,21 +44,9 @@
   }
 
   Install=spoon.SpoonInstall
-
-  Install:andUse("WindowHalfsAndThirds",
-		 {
-		    config = {
-		       use_frame_correctness = true
-		    },
-		    hotkeys = 'default',
-		 }
-  )
-
-  Install:andUse("ToggleScreenRotation",
-		 {
-		    hotkeys = { first = {hyper, "f15"} }
-		 }
-  )
+  Install:updateRepo()
+  Install:installSpoonFromRepo("WindowHalfsAndThirds")
+  Install:installSpoonFromRepo("ToggleScreenRotation")
 
   -- myGrid = { w = 6, h = 4 }
   -- Install:andUse("WindowGrid",
@@ -323,13 +311,11 @@
   function hks(name, etype, app)
      if (etype == hs.application.watcher.activated) then
 	for k, v in pairs(hotkeys) do
-	   hs.hotkey.deleteAll(v.mods, v.key)
+	   hs.hotkey.disableAll(v.mods, v.key)
 	end
 
 	hs.loadSpoon("WindowHalfsAndThirds");
-	WindowHalfsAndThirds = spoon.WindowHalfsAndThirds
-
-	WindowHalfsAndThirds:bindHotkeys(WindowHalfsAndThirds.defaultHotkeys)
+	spoon.WindowHalfsAndThirds:bindHotkeys(spoon.WindowHalfsAndThirds.defaultHotkeys)
 
 
 	for k, v in pairs (hotkeys) do
@@ -535,10 +521,10 @@
 
 
      if(self.timer ~= nil) then
-     dnd()
+	dnd()
 	self.timer:stop()
      end
-	dnd()
+     dnd()
      local tick = tonumber(config.duration) * 60
      self.timer = hs.timer.doUntil(
 	function()
@@ -629,7 +615,7 @@
   function pomodoro:unfocused(config)
      if(self.timer ~= nil) then
 	self.timer:stop()
-     dnd()
+	dnd()
      end
      local tick = tonumber(config.duration) * 60
      self.timer = hs.timer.doUntil(
