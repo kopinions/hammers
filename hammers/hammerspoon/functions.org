@@ -80,11 +80,12 @@
 	   {
 	      name = ".*",
 	      fn = function()
-		 local current = hs.keycodes.currentMethod()
-		 if (current == nil) then
-		    hs.keycodes.setMethod("Squirrel")
-		 else
-		    hs.keycodes.setLayout ("U.S.")
+		 local current = hs.keycodes.currentSourceID()
+		 -- hs.keycodes.setLayout("U.S.")
+		 log.i(current)
+		 hs.keycodes.currentSourceID("com.apple.keylayout.US")
+		 if (current == "com.apple.keylayout.US") then
+		    hs.keycodes.currentSourceID("im.rime.inputmethod.Squirrel.Rime")
 		 end	       
 	      end
 	   },
@@ -398,18 +399,17 @@
 	   end,
 	   apps)
 
-	if next(config) == nil then
-	   local current = hs.keycodes.currentMethod()
-	   if (current ~= nil) then
-	      hs.keycodes.setLayout ("U.S.")
+	if next(config) ~= nil then
+	   local current = hs.keycodes.currentSourceID()
+
+	   if (current ~= "im.rime.inputmethod.Squirrel.Rime" and string.match (config [1].im, "CN")) then
+	      hs.keycodes.currentSourceID("com.apple.keylayout.US")
+	      hs.keycodes.currentSourceID("im.rime.inputmethod.Squirrel.Rime")
+	   elseif (current ~= "com.apple.keylayout.US" and string.match (config [1].im, "EN")) then
+	      hs.keycodes.currentSourceID("com.apple.keylayout.US")
 	   end
 	else
-	   local current = hs.keycodes.currentMethod()
-	   if (current == nil and string.match (config [1].im, "CN")) then
-	      hs.keycodes.setMethod("Squirrel")
-	   elseif (current ~= nil and string.match (config [1].im, "EN")) then
-	      hs.keycodes.setLayout ("U.S.")
-	   end
+	   hs.keycodes.currentSourceID("com.apple.keylayout.US")
 	end
      end
   end
