@@ -504,7 +504,35 @@
 	right = 16,
 	bottom = 16
      }
-     self.canvas:setTopLeft(hs.geometry.point(frame.w - ts.w - padding.right, frame.h - ts.h - padding.bottom))
+     local ok, object, descriptor = hs.osascript.applescript([[
+	global dock_showed
+	global dock_width
+	global dock_height
+	set dock_height to 0
+	set dock_width to 0
+	tell application "System Events"
+		set dock_showed to false
+		tell dock preferences
+			set dock_showed to not autohide
+		end tell
+		tell process "Dock"
+			if (dock_showed) then
+				set dock_dimensions to size in list 1
+				set dock_width to item 1 of dock_dimensions
+				set dock_height to item 2 of dock_dimensions
+			end if
+		end tell
+	end tell
+	return dock_height
+     ]])
+   
+     if (ok) then
+	self.canvas:setTopLeft(hs.geometry.point(frame.w - ts.w - padding.right, frame.h - object - ts.h  - padding.bottom))
+     else
+	self.canvas:setTopLeft(hs.geometry.point(frame.w - ts.w - padding.right, frame.h - ts.h  - padding.bottom))
+     end
+
+
      self.canvas:setSize(hs.geometry.size (ts.w + padding.right, ts.h + padding.bottom))
      self.canvas:setStyledText(content)
   end
