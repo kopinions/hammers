@@ -380,6 +380,11 @@
 ** company lsp
 
    #+BEGIN_SRC elisp :eval never :exports code
+     (use-package lsp-mode
+       :config
+       (use-package company
+	 :config (setq lsp-completion-provider :capf)))
+
      (use-package lsp-ivy
        :load-path m/load-path
        :requires lsp-mode
@@ -400,14 +405,6 @@
    #+END_SRC
 
    #+BEGIN_SRC elisp :eval never :exports code
-     (use-package company-lsp
-       :requires (company yasnippet)
-       :after (company yasnippet)
-       :custom
-       (push 'company-lsp company-backends)
-       (company-lsp-cache-candidates nil)
-       (company-lsp-async t))
-
      (use-package cc-mode
        :bind 
        (:map c-mode-base-map
