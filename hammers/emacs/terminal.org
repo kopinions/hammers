@@ -22,8 +22,6 @@
       (use-package shrink-path)
       (use-package eshell
 	:after shrink-path
-	:init
-	(defvar eshell-mode-map (make-sparse-keymap))
 	:custom
 	(eshell-scroll-to-bottom-on-input 'all)
 	(eshell-error-if-no-glob t)
@@ -43,14 +41,13 @@
 		   (propertize "❯" 'face `(:foreground "#ff79c6"))
 		   (propertize "❯" 'face `(:foreground "#f1fa8c"))
 		   (propertize "❯" 'face `(:foreground "#50fa7b")))))
-	:bind
-	(:map eshell-mode-map
-	      ("C-c c" . eshell-interrupt-process))
 	:hook
 	((eshell-mode . (lambda() (add-to-list 'eshell-visual-commands "ssh")
 			  (add-to-list 'eshell-visual-commands "tail")
 			  (add-to-list 'eshell-visual-commands "top")
-			  (setq-local eshell-mode-map (make-sparse-keymap))))))
+			  (bind-keys :map eshell-mode-map
+				     ("C-c c" . eshell-interrupt-process))
+			  ))))
     #+END_SRC
 *** alias
     #+BEGIN_SRC elisp :eval never :exports code
