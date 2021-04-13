@@ -543,10 +543,8 @@
     #+BEGIN_SRC elisp :eval never :exports code
       (use-package valign
 	:custom
-	(valign-fancy-bar nil)
+	(valign-fancy-bar 't)
 	:hook
-	(org-mode . valign-mode)
-	(org-agenda-clockreport-mode . valign-mode)
 	(org-agenda-finalize . valign-region)
 	(org-agenda-mode . valign-mode))
     #+END_SRC
