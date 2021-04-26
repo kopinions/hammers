@@ -139,7 +139,7 @@
 	:preface
 	(defun m/refile-targets ()
 	  "Refile targets with inbox.org excluded"
-	  (let ((excluded '("mobile.org" "inbox.org" "notes.org")))
+	  (let ((excluded '("mobile.org" "inbox.org" "notes.org" "meeting.org" "retrospect.org" "archive.org")))
 	    (seq-filter (lambda (f) (if (member (file-name-nondirectory f) excluded) nil t)) org-agenda-files)))
 	:custom
 	(org-directory "agendas")
@@ -158,7 +158,7 @@
 	(org-log-done t)
 	(org-agenda-log-mode-items (quote (closed clock)))
 	(org-agenda-clockreport-parameter-plist
-	 '(:maxlevel 5 :block t :tstart t :tend t :emphasize t :link t :narrow 80 :indent t :compact t :fileskip0 t :formula % :level 5 :tcolumns nil :formatter nil))
+	 '(:maxlevel 5 :block t :tstart t :tend t :emphasize t :link nil :narrow 80 :indent t :compact t :fileskip0 t :formula % :level 4 :tcolumns nil :formatter nil))
 	(org-global-properties (quote ((
 					"Effort_ALL" . "00:05 00:10 00:15 00:30 01:00 01:30 02:00 02:30 03:00"))))
 	(org-agenda-files `(
@@ -166,6 +166,8 @@
 			    ,(expand-file-name "todos.org" org-agenda-dir)
 			    ,(expand-file-name "mobile.org" org-agenda-dir)
 			    ,(expand-file-name "routine.org" org-agenda-dir)
+			    ,(expand-file-name "meeting.org" org-agenda-dir)
+			    ,(expand-file-name "retrospect.org" org-agenda-dir)
 			    ))
 	(org-archive-location (concat (expand-file-name "archive.org" org-agenda-dir) "::datetree/* Finished Tasks"))
 	(org-support-shift-select t)
