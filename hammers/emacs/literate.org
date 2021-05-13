@@ -236,6 +236,10 @@
 		    ((org-agenda-overriding-header "Stuck Projects")
 		     (org-agenda-tags-todo-honor-ignore-options t)
 		     (org-tags-match-list-sublevels t)
+		     (org-agenda-files `(
+					 ,(expand-file-name "todos.org" org-agenda-dir)
+					 ,(expand-file-name "routine.org" org-agenda-dir)
+					 ))
 		     (org-agenda-skip-function
 		      '(lambda ()
 			 (org-agenda-skip-entry-if 'nottodo '("PROJECT"))))
