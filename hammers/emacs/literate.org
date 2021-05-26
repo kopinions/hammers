@@ -336,6 +336,12 @@
 	   ("n" "notes." entry
 	    (file ,(expand-file-name "notes.org" org-agenda-dir))
 	    "* %? :NOTE:\n%U\n%a\n" :clock-resume t)
+	   ("c" "code snippet" plain (file ,(expand-file-name "snippets.org" org-agenda-dir))
+	    ,(concat "%[" (expand-file-name "snippet.tmpl" org-agenda-dir) "]")
+	    :tree-type week)
+	   ("v" "vocabulary" table-line (file ,(expand-file-name "vocabulary.org" org-agenda-dir))
+	    ,(concat "%[" (expand-file-name "vocabulary.tmpl" org-agenda-dir) "]")
+	    :tree-type week)
 	   ("r" "retrospective note" plain (file+olp+datetree ,(expand-file-name "retrospect.org" org-agenda-dir))
 	    ,(concat "%[" (expand-file-name "retrospect.tmpl" org-agenda-dir) "]")
 	    :tree-type week)
@@ -556,36 +562,49 @@
     #+END_SRC
 *** org-mode retrospect temlate
     #+BEGIN_SRC org :tangle "~/agendas/retrospect.tmpl" :noweb yes :mkdirp yes
-      |----------------------------+---|
-      | 昨天学到什么？             |   |
-      |----------------------------+---|
-      | 昨天得到什么教训？         |   |
-      |----------------------------+---|
-      | 费曼学习法实践案例？       |   |
-      |----------------------------+---|
-      | 昨天做了哪些换位思考？     |   |
-      |----------------------------+---|
-      | 昨天做了哪些倒推思维训练？ |   |
-      |----------------------------+---|
-      | 昨天发生的事情             |   |
-      | 我能提出什么问题           |   |
-      |----------------------------+---|
-      | 接下来有什么计划？         |   |
-      |                            |   |
-      |                            |   |
-      |                            |   |
-      |----------------------------+---|
+      |----------------------------+----|
+      | 昨天学到什么？             | %? |
+      |----------------------------+----|
+      | 昨天得到什么教训？         |    |
+      |----------------------------+----|
+      | 费曼学习法实践案例？       |    |
+      |----------------------------+----|
+      | 昨天做了哪些换位思考？     |    |
+      |----------------------------+----|
+      | 昨天做了哪些倒推思维训练？ |    |
+      |----------------------------+----|
+      | 昨天发生的事情             |    |
+      | 我能提出什么问题           |    |
+      |----------------------------+----|
+      | 接下来有什么计划？         |    |
+      |                            |    |
+      |                            |    |
+      |                            |    |
+      |----------------------------+----|
+    #+END_SRC
+
+*** org-mode code template
+    #+BEGIN_SRC org :tangle "~/agendas/snippet.tmpl" :noweb yes :mkdirp yes
+      ,**** %^{purpose of the snippet} 
+	   ,#+BEGIN_SRC %^{language|shell|elisp|c|c++} :eval never :exports code
+	       %?
+	   ,#+END_SRC
+    #+END_SRC
+
+*** org-mode vocabulary template
+    #+BEGIN_SRC org :tangle "~/agendas/vocabulary.tmpl" :noweb yes :mkdirp *
+      | %? |   |
     #+END_SRC
 *** org-mode meeting template
     #+BEGIN_SRC org :tangle "~/agendas/meeting.tmpl" :noweb yes :mkdirp yes
-      ,**** 
-	  |--------------+---|
-	  | 哪些 Action? |   |
-	  |--------------+---|
-	  | 有哪些洞见？ |   |
-	  |--------------+---|
-	  | 有那些问题？ |   |
-	  |--------------+---|
+      ,**** %^{会议主题}
+	   |--------------+----|
+	   | 哪些 Action? | %? |
+	   |--------------+----|
+	   | 有哪些洞见？ |    |
+	   |--------------+----|
+	   | 有那些问题？ |    |
+	   |--------------+----|
     #+END_SRC
 
 *** org-mode gtd files
