@@ -89,6 +89,8 @@
       brew 'cmake'
       brew 'tig'
       brew 'rg'
+      # html query like jq for json
+      brew 'pup'
       brew 'jq'
       brew 'yq'
       brew 'autojump'
