@@ -339,7 +339,7 @@
 	   ("c" "code snippet" plain (file ,(expand-file-name "snippets.org" org-agenda-dir))
 	    ,(concat "%[" (expand-file-name "snippet.tmpl" org-agenda-dir) "]")
 	    :tree-type week)
-	   ("v" "vocabulary" table-line (file ,(expand-file-name "vocabulary.org" org-agenda-dir))
+	   ("v" "vocabulary" table-line (file+headline ,(expand-file-name "vocabulary.org" org-agenda-dir) "Vocabulary Notebook")
 	    ,(concat "%[" (expand-file-name "vocabulary.tmpl" org-agenda-dir) "]")
 	    :tree-type week)
 	   ("r" "retrospective note" plain (file+olp+datetree ,(expand-file-name "retrospect.org" org-agenda-dir))
@@ -593,7 +593,7 @@
 
 *** org-mode vocabulary template
     #+BEGIN_SRC org :tangle "~/agendas/vocabulary.tmpl" :noweb yes :mkdirp *
-      | %? |   |   |
+      | %? |   |   |   |
     #+END_SRC
 *** org-mode meeting template
     #+BEGIN_SRC org :tangle "~/agendas/meeting.tmpl" :noweb yes :mkdirp yes
