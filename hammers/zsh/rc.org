@@ -125,6 +125,9 @@
       HIST_STAMPS="dd.mm.yyyy" ## OH-MY-ZSH
       setopt hist_ignore_dups  # ignore duplication command history list
       setopt hist_ignore_space # ignore when commands starts with space
+      setopt hist_reduce_blanks
+      setopt hist_expire_dups_first
+      setopt hist_find_no_dups
 
       # use brace
       setopt brace_ccl
