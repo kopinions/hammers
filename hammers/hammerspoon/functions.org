@@ -151,6 +151,16 @@
 		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
 		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
 	      end
+	   },
+	   {
+	      name = ".*",
+	      fn = function()
+		 
+		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post()
+		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.f13, true):post()
+		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.f13, false):post()
+		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post()
+	      end
 	   }
 	}
      },
