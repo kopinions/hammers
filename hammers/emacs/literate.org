@@ -335,7 +335,7 @@
 	    "* NEXT %?\n%U\n" :clock-resume 1)
 	   ("n" "notes." entry
 	    (file ,(expand-file-name "notes.org" org-agenda-dir))
-	    "* %? :NOTE:\n%U\n%a\n" :clock-resume t)
+	    "* %? :NOTE:\n" :clock-resume t)
 	   ("c" "code snippet" plain (file ,(expand-file-name "snippets.org" org-agenda-dir))
 	    ,(concat "%[" (expand-file-name "snippet.tmpl" org-agenda-dir) "]")
 	    :tree-type week)
