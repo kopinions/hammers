@@ -106,6 +106,13 @@
 	:config
 	(global-page-break-lines-mode))
     #+END_SRC
+    
+*** 命令行控制窗口
+    #+BEGIN_SRC elisp :eval never :exports code
+      (use-package moom
+	:config (moom-mode))
+    #+END_SRC
+
 *** 自动提示可选命令
     #+BEGIN_SRC elisp :eval never :exports code
       (use-package which-key
