@@ -76,6 +76,7 @@
 	(org-hide-emphasis-markers t)
 	(org-catch-invisible-edits 'show)
 	(org-export-coding-system 'utf-8)
+	(org-pretty-entities t)
 	(org-fast-tag-selection-single-key 'expert)
 	:custom-face
 	(org-link ((t (:foreground "#ebe087" :underline t))))
@@ -559,7 +560,8 @@
 	(valign-fancy-bar 't)
 	:hook
 	(org-agenda-finalize . valign-region)
-	(org-agenda-mode . valign-mode))
+	(org-agenda-mode . valign-mode)
+	(org-mode . valign-mode))
     #+END_SRC
 *** org-mode retrospect temlate
     #+BEGIN_SRC org :tangle "~/agendas/retrospect.tmpl" :noweb yes :mkdirp yes
