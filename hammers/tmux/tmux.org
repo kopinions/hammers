@@ -25,6 +25,8 @@
       setw -g pane-base-index 1
       set -g renumber-windows on
 
+      set -g history-limit 102400
+
       set -g @copy_mode_yank "M-w"
       set -g @yank_line "M-w"
       set -g @copy_mode_put "C-y"
@@ -51,6 +53,7 @@
       bind-key -T prefix 2 split-window -v 
       bind-key -T prefix 3 split-window -h 
       bind-key -T prefix 0 kill-pane
+      bind-key -T prefix o if-shell -F "#{e|>:#{window_panes},2}" "if -F '#{window_zoomed_flag}' 'resize-pane -Z;display-panes -d 0 \"select-pane -t %%\"' 'display-panes -d 0 \"select-pane -t %%\"'" 'select-pane -t=:.+1'  
       # move to the last used window
       bind a last-window
       bind | split-window -h
