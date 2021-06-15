@@ -12,7 +12,7 @@
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
 ** 文件操作
-   #+BEGIN_SRC elisp :eval never :exports code
+   #+BEGIN_SRC elisp :eval never :exports code :comments link
      (require 'em-glob)
      (defun m/resolve (path)
        "Interpolation variable like ${var} $var in PATH with environment or elisp variables."
@@ -40,6 +40,12 @@
      (defun m/var (name)
        "Return value of variable or environment identified by NAME."
        (or (getenv name) (eval (read name))))
+
+     (defun tangle-if-absent (path)
+       (let* ((filename (m/resolve path)))
+	 (if (file-exists-p filename)
+	     "no"
+	   filename)))
 
      (provide 'init-common)
    #+END_SRC

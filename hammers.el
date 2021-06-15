@@ -155,7 +155,7 @@
 (defun tangle-if-absent (path)
   (let* ((filename (m/resolve path)))
     (if (file-exists-p filename)
-	nil
+	"no"
       filename)))
 
 (m/tangles "${m/root}/hammers/emacs/*.org")
