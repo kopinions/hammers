@@ -13,7 +13,6 @@
     #+NAME: zshenv
     #+BEGIN_SRC shell :tangle (tangle-if-absent "${HOME}/.zshenv") :eval never :exports code
       export LANG=en_US.UTF-8
-      export RIPGREP_CONFIG_PATH=~/.ripgreprc
       export JAVA_HOME="/Library/Java/JavaVirtualMachines/openjdk-13.0.1.jdk/Contents/Home"
     #+END_SRC
 
@@ -48,10 +47,6 @@
       fi
     #+END_SRC
 
-    #+BEGIN_SRC shell :tangle "~/.zsh/post/espressif.zsh" :eval never :exports code
-      export PATH="${IDF_PATH}/tools:$PATH";
-    #+END_SRC
-
     #+BEGIN_SRC shell :tangle "~/.zsh/init/init.zsh" :eval never :exports code
       if [ ! "$PATH_LOADED" = "true" ]; then
 	  # Add go binaries
@@ -64,6 +59,10 @@
 
 	  if [ $commands[javac] ]; then
 	      export JAVA_HOME="$(dirname $(dirname $(realpath $(which javac))))"
+	  fi
+
+	  if [ $commands[rg] ]; then
+	      export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
 	  fi
 
 	  # Add yarn global binaries
@@ -149,10 +148,27 @@
 
     #+BEGIN_SRC shell :tangle "~/.zsh/post/functions.zsh" :eval never :exports code
       #!/bin/zsh
-      function gitroot {
-	  local root
-	  root=$(git rev-parse --show-toplevel)
-	  eval $root
+      # tat: tmux attach
+      function tat {
+	  name=$(basename `pwd` | sed -e 's/\.//g')
+
+	  if tmux ls 2>&1 | grep "$name"; then
+	      tmux attach -t "$name"
+	  elif [ -f .envrc ]; then
+	      direnv exec . tmux new-session -s "$name"
+	  else
+	      tmux new-session -s "$name"
+	  fi
+      }
+
+      function rg(){
+	  # If outputting (fd 1 = stdout) directly to a terminal, page automatically:
+	  if [ -t 1 ]; then
+	      command rg --pretty "$@" \
+		  | less --no-init --quit-if-one-screen --RAW-CONTROL-CHARS
+	  else
+	      command rg "$@"
+	  fi
       }
     #+END_SRC
 
