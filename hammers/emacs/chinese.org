@@ -91,7 +91,7 @@
 ** rime 输入法配置
 
 *** 安装 librime
-    #+BEGIN_SRC shell :exports code :results none :tangle no  :eval (or (and (eq m/os 'linux) "yes") "never") :comments link
+    #+BEGIN_SRC shell :exports code :results none :tangle no  :eval (or (and (eq m/os 'macos) "yes") "never") :comments link
       cd ~/.emacs.d/3rdparty/librime
       git submodule update --init
       make xcode/thirdparty/boost -j `nproc`
