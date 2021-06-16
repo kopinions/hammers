@@ -297,6 +297,7 @@
 		    (delete-region (point) (1+ (point-at-eol)))))))))
 	:custom
 	(rg-show-header nil)
+	(rg-command-line-flags '("--pcre2"))
 	:config
 	(rg-enable-default-bindings)
 	:bind
