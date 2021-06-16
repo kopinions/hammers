@@ -9,7 +9,7 @@
 #+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 *** VPN 设置
-    #+BEGIN_SRC conf :tangle (or (and (file-exists-p "~/.ssh/config") 'no) "~/.ssh/config") :exports code :eval never  :comments link
+    #+BEGIN_SRC conf :tangle (or (and (file-exists-p "~/.ssh/config") "no") "~/.ssh/config") :exports code :eval never  :comments link
       ForwardX11 yes
       RequestTTY yes
       Host vpn.seoul
@@ -19,7 +19,7 @@
       IdentityFile ~/.ssh/keys/vpn.seoul.pem
     #+END_SRC
 *** ubuntu parallels
-    #+BEGIN_SRC conf :tangle (or (and (file-exists-p "~/.ssh/config") 'no) "~/.ssh/config") :exports code :eval never :comments link
+    #+BEGIN_SRC conf :tangle (or (and (file-exists-p "~/.ssh/config") "no") "~/.ssh/config") :exports code :eval never :comments link
       Host ubuntu.parallels
       HostName 192.168.1.103
       User neo
@@ -27,7 +27,7 @@
       IdentityFile ~/.ssh/id_rsa
     #+END_SRC
 *** ubuntu
-    #+BEGIN_SRC conf :tangle (or (and (file-exists-p "~/.ssh/config") 'no) "~/.ssh/config") :exports code :eval never :comments link
+    #+BEGIN_SRC conf :tangle (or (and (file-exists-p "~/.ssh/config") "no") "~/.ssh/config") :exports code :eval never :comments link
       Host ubuntu.trinity
       HostName 192.168.1.106
       User neo

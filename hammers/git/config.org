@@ -10,7 +10,7 @@
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
 *** git 基本配置
-    #+BEGIN_SRC conf :tangle (or (and (file-exists-p "~/.gitconfig") 'no) "~/.gitconfig") :comments link
+    #+BEGIN_SRC conf :tangle (or (and (file-exists-p "~/.gitconfig") "no") "~/.gitconfig")
       [user]
 	      name = neo
 	      email = rising.lambda@gmail.com
@@ -56,7 +56,7 @@
     #+END_SRC
 
 *** git ignore 基本配置
-    #+BEGIN_SRC conf :tangle (or (and (file-exists-p "~/.gitignore") 'no) "~/.gitignore") :comments link
+    #+BEGIN_SRC conf :tangle (or (and (file-exists-p "~/.gitignore") "no") "~/.gitignore")
       ### Clangd ###
       # -*- mode: gitignore; -*-
       .clangd
