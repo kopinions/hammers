@@ -104,7 +104,7 @@
    #+END_SRC
 
 ** emacs debug adaptor protocol
-   #+BEGIN_SRC json :eval never :exports code :tangle ~/.vscode/extensions/llvm-org.lldb-vscode-0.1.0/package.json
+   #+BEGIN_SRC json :eval never :exports code :tangle (m/resolve "${m/home.d}/.vscode/extensions/llvm-org.lldb-vscode-0.1.0/package.json")
      {
 	 "name": "lldb-vscode",
 	 "displayName": "LLDB native Debug stub",

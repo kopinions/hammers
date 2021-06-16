@@ -10,7 +10,7 @@
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
 
-#+BEGIN_SRC lua :eval never :exports code :tangle (expand-file-name ".hammerspoon/functions.lua" m/home.d) :mkdirp yes
+#+BEGIN_SRC lua :eval never :exports code :tangle (m/resolve "${m/home.d}/.hammerspoon/functions.lua") :mkdirp yes
   local log = hs.logger.new('init.lua', 'debug')
 
   function filter(func, tbl)
@@ -33,7 +33,7 @@
 #+END_SRC
 
 
-#+BEGIN_SRC lua :eval never :exports code :tangle (expand-file-name ".hammerspoon/init.lua" m/home.d) :mkdirp yes
+#+BEGIN_SRC lua :eval never :exports code :tangle (m/resolve "${m/home.d}/.hammerspoon/init.lua") :mkdirp yes
   hs.loadSpoon("SpoonInstall")
   spoon.SpoonInstall.use_syncinstall = true
   require('functions')
@@ -464,7 +464,7 @@
 #+END_SRC
 
 
-#+BEGIN_SRC lua :eval never :exports code :tangle (expand-file-name ".hammerspoon/pomodoro.lua" m/home.d) :mkdirp yes
+#+BEGIN_SRC lua :eval never :exports code :tangle (m/resolve "${m/home.d}/.hammerspoon/pomodoro.lua") :mkdirp yes
   local pomodoro = {}
 
   function pomodoro.new()

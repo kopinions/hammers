@@ -11,13 +11,13 @@
 
 *** zshenv 环境变量配置
     #+NAME: zshenv
-    #+BEGIN_SRC shell :tangle (tangle-if-absent "${HOME}/.zshenv") :eval never :exports code :comments link
+    #+BEGIN_SRC shell :tangle (tangle-if-absent "${m/home.d}/.zshenv") :eval never :exports code :comments link
       export LANG=en_US.UTF-8
       export JAVA_HOME="/Library/Java/JavaVirtualMachines/openjdk-13.0.1.jdk/Contents/Home"
     #+END_SRC
 
 *** zshrc 配置
-    #+BEGIN_SRC shell :tangle "~/.zshrc" :eval never :exports code :comments link
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zshrc") :eval never :exports code :comments link
       export ZPLUG_HOME=~/.zsh/zplug
 
       [[ $TERM == "tramp" ]] && unsetopt zle && PS1='$ '&& return
@@ -37,17 +37,17 @@
       done
     #+END_SRC
 
-    #+BEGIN_SRC shell :tangle "~/.zsh/init/python.zsh" :eval never :exports code :comments link
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zsh/init/python.zsh") :eval never :exports code :comments link
       export PATH="/usr/local/opt/python/libexec/bin:$PATH"
     #+END_SRC
 
-    #+BEGIN_SRC shell :tangle "~/.zsh/init/brew.zsh" :eval never :exports code :comments link
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zsh/init/brew.zsh") :eval never :exports code :comments link
       if [ -d "/usr/local/Cellar" ]; then
 	  eval $(/usr/local/bin/brew shellenv);
       fi
     #+END_SRC
 
-    #+BEGIN_SRC shell :tangle "~/.zsh/init/init.zsh" :eval never :exports code :comments link
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zsh/init/init.zsh") :eval never :exports code :comments link
       if [ ! "$PATH_LOADED" = "true" ]; then
 	  # Add go binaries
 	  if [ -d "$GOPATH" ]; then
@@ -75,7 +75,7 @@
       fi
     #+END_SRC
 
-    #+BEGIN_SRC shell :tangle "~/.zsh/zplugs.zsh" :eval never :exports code :comments link
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zsh/zplugs.zsh") :eval never :exports code :comments link
       #!/usr/bin/env zsh
       # this allows zplug to update itself on `zplug update`
       zplug 'zplug/zplug', hook-build:'zplug --self-manage'
@@ -98,7 +98,7 @@
       return 0 # in case zplug adds plugs ignore them
     #+END_SRC
 
-    #+BEGIN_SRC shell :tangle "~/.zsh/post/loads.zsh" :eval never :exports code :comments link
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zsh/post/loads.zsh") :eval never :exports code :comments link
       # Add custom bin files
       if [ -d "$HOME/bin" ]; then
 	  export PATH="$HOME/bin:$PATH";
@@ -109,7 +109,7 @@
       fi
     #+END_SRC
 
-    #+BEGIN_SRC shell :tangle "~/.zsh/post/config.zsh" :eval never :exports code :comments link
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zsh/post/config.zsh") :eval never :exports code :comments link
       # auto menu complete
       setopt auto_menu
 
@@ -146,7 +146,7 @@
       setopt correct                  # try to correct spelling of commands
     #+END_SRC
 
-    #+BEGIN_SRC shell :tangle "~/.zsh/post/functions.zsh" :eval never :exports code :comments link
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zsh/post/functions.zsh") :eval never :exports code :comments link
       #!/bin/zsh
       # tat: tmux attach
       function tat {
@@ -172,7 +172,7 @@
       }
     #+END_SRC
 
-    #+BEGIN_SRC shell :tangle "~/.zsh/post/alias.zsh" :eval never :exports code :comments link
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zsh/post/alias.zsh") :eval never :exports code :comments link
       #!/bin/zsh
       mk() {
 	  if [ -d build ]; then

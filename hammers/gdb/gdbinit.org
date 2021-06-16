@@ -10,7 +10,7 @@
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
 ** gdb customize config
-#+BEGIN_SRC conf :exports code :tangle (expand-file-name ".gdbinit" (or (and (boundp 'm/home.d) (file-directory-p m/home.d) m/home.d) (expand-file-name "~")))
+#+BEGIN_SRC conf :exports code :tangle (m/resolve "${m/home.d}/.gdbinit")
   # 开启项目特定的 gdbinit 配置
   ignore-errors
   set auto-load safe-path /

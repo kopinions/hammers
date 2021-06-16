@@ -564,7 +564,7 @@
 	(org-mode . valign-mode))
     #+END_SRC
 *** org-mode retrospect temlate
-    #+BEGIN_SRC org :tangle "~/agendas/retrospect.tmpl" :noweb yes :mkdirp yes :comments link
+    #+BEGIN_SRC org :tangle (m/resolve "${m/home.d}/agendas/retrospect.tmpl") :noweb yes :mkdirp yes :comments link
       |----------------------------+----|
       | 我的长远目标是什么？       | %? |
       |----------------------------+----|
@@ -589,14 +589,14 @@
     #+END_SRC
 
 *** org-mode code template
-    #+BEGIN_SRC org :tangle "~/agendas/snippet.tmpl" :noweb yes :mkdirp yes
+    #+BEGIN_SRC org :tangle (m/resolve "${m/home.d}/agendas/snippet.tmpl") :noweb yes :mkdirp yes
       ,**** %^{purpose of the snippet} 
 	   ,#+BEGIN_SRC %^{language|shell|elisp|dot|ditaa|latex|ocaml|plantuml|c|c++} :eval never :exports code
 	       %?
 	   ,#+END_SRC
     #+END_SRC
 *** org-mode meeting template
-    #+BEGIN_SRC org :tangle "~/agendas/meeting.tmpl" :noweb yes :mkdirp yes
+    #+BEGIN_SRC org :tangle (m/resolve "${m/home.d}/agendas/meeting.tmpl") :noweb yes :mkdirp yes
       ,**** %^{会议主题}
 	   |--------------+----|
 	   | 哪些 Action? | %? |

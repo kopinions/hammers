@@ -73,7 +73,7 @@
 
     #+END_SRC
 
-    #+BEGIN_SRC conf :eval never :exports code :tangle ~/.mbsyncrc
+    #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/home.d}/.mbsyncrc")
       IMAPAccount lambda
       Host imap.gmail.com
       User rising.lambda@gmail.com
@@ -145,7 +145,7 @@
     #+END_SRC
 
 
-    #+BEGIN_SRC conf :eval never :exports code :tangle ~/.notmuch-config
+    #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/home.d}/.notmuch-config")
       # 相对于 HOMEDIR ~ 的目录
       [database]
       path=.mails/
@@ -166,7 +166,7 @@
       synchronize_flags=true
     #+END_SRC
 
-    #+BEGIN_SRC conf :eval never :exports code :tangle ~/.msmtprc
+    #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/home.d}/.msmtprc")
       # default config
       defaults
       port 587
