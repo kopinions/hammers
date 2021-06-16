@@ -13,7 +13,7 @@
 
 ** lsp-mode
 
-   #+BEGIN_SRC elisp :eval never :exports code
+   #+BEGIN_SRC elisp :eval never :exports code :comments link
      (use-package lsp-mode
        :ensure t
        :custom
@@ -352,12 +352,12 @@
      }
    #+END_SRC
 
-   #+BEGIN_SRC shell :exports code :tangle no
+   #+BEGIN_SRC shell :exports code :tangle no :comments link
      mkdir -p ~/.vscode/extensions/llvm-org.lldb-vscode-0.1.0/bin/
      (which lldb-vscode && ln -s $(which lldb-vscode) ~/.vscode/extensions/llvm-org.lldb-vscode-0.1.0/bin/lldb-vscode) || echo "Please install lldb-vscode"
    #+END_SRC
 
-   #+BEGIN_SRC elisp :eval never :exports code
+   #+BEGIN_SRC elisp :eval never :exports code :comments link
      (use-package dap-mode
        :custom
        (dap-lldb-debugged-program-function (lambda () (read-file-name "Select file to debug.")))
@@ -379,7 +379,7 @@
    #+END_SRC
 ** company lsp
 
-   #+BEGIN_SRC elisp :eval never :exports code
+   #+BEGIN_SRC elisp :eval never :exports code :comments link
      (use-package lsp-mode
        :config
        (use-package company
@@ -404,13 +404,13 @@
 	     ("C-c C-p" . m/lsp-ivy-global-workspace-symbol-at-point)))
    #+END_SRC
 
-   #+BEGIN_SRC elisp :eval never :exports code
+   #+BEGIN_SRC elisp :eval never :exports code :comments link
      (use-package cc-mode
        :bind 
        (:map c-mode-base-map
 	     ("C-c c" . compile)))
    #+END_SRC
 ** provide
-   #+BEGIN_SRC elisp :eval never :exports code
+   #+BEGIN_SRC elisp :eval never :exports code :comments link
      (provide 'init-lsp)
    #+END_SRC

@@ -12,7 +12,7 @@
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
 *** 禁止 emacs 自带的 orgmode
-    #+BEGIN_SRC elisp :eval never :exports code
+    #+BEGIN_SRC elisp :eval never :exports code :comments link
       (assq-delete-all 'org package--builtins)
       (assq-delete-all 'org package--builtin-versions)
     #+END_SRC
@@ -21,13 +21,13 @@
     当系统为 macos 时，我们可以通过安装 [[https://github.com/xuchunyang/grab-mac-link.el][grab-mac-link]] 插件来获取 chrome/firefox/safia 中的链接，并且可以选择
     plain/markdown/orgmode 的形式来插入到当前编辑的文件中。
 
-    #+BEGIN_SRC elisp :eval never :exports code
+    #+BEGIN_SRC elisp :eval never :exports code :comments link
       (use-package grab-mac-link
 	:if (eq m/os 'macos))
     #+END_SRC
 
 *** org-mode 代码块异步执行配置
-    #+BEGIN_SRC elisp :eval never :exports code
+    #+BEGIN_SRC elisp :eval never :exports code :comments link
       (use-package ob-async
 	:hook
 	(org-babel-after-execute . org-redisplay-inline-images))
@@ -35,7 +35,7 @@
 
 *** 截屏配置
 
-    #+BEGIN_SRC elisp :eval never :exports code
+    #+BEGIN_SRC elisp :eval never :exports code :comments link
       (defun m/org-screenshot ()
 	"Take a screenshot into a time stamped unique-named file in the
       same directory as the org-buffer and insert a link to this file."
@@ -60,7 +60,7 @@
     #+END_SRC
 
 *** org-mode 配置
-    #+BEGIN_SRC elisp :eval never :exports code
+    #+BEGIN_SRC elisp :eval never :exports code :comments link
       (setq org-agenda-dir (expand-file-name "agendas" m/home.d))
       (use-package org
 	:diminish org-mode
@@ -135,7 +135,7 @@
 
 *** org-mode 日程配置
     
-    #+BEGIN_SRC elisp :eval never :exports code
+    #+BEGIN_SRC elisp :eval never :exports code :comments link
       (use-package org
 	:preface
 	(defun m/refile-targets ()
@@ -325,7 +325,7 @@
 		("CARRY/O" . (:foreground "#6272a4" :background "#373844" :weight bold)))))
     #+END_SRC
 *** org-mode capture 配置
-    #+BEGIN_SRC elisp
+    #+BEGIN_SRC elisp :eval never :exports code :comments link
       (use-package org
 	:custom
 	(org-capture-templates
@@ -370,7 +370,7 @@
 	    :immediate t :prepend t))))
     #+END_SRC
 *** org-mode clock 配置
-    #+BEGIN_SRC elisp :eval never :exports code
+    #+BEGIN_SRC elisp :eval never :exports code :comments link
       (use-package org
 	:custom
 	(org-clock-in-resume t)
@@ -472,7 +472,7 @@
     #+END_SRC
 *** org-mode export 配置
     允许在 org 文件中通过 bind 修改环境中绑定的值。
-    #+BEGIN_SRC elisp :exports code :eval never
+    #+BEGIN_SRC elisp :exports code :eval never :comments link
       (use-package org
 	:custom
 	(org-export-allow-bind-keywords t))
@@ -480,7 +480,7 @@
 
 *** org-mode ditaa/plantuml 画图
 
-    #+BEGIN_SRC elisp :exports code :eval never
+    #+BEGIN_SRC elisp :exports code :eval never :comments link
       (use-package org
 	:custom
 	(org-ditaa-jar-path (expand-file-name "ditaa.jar" m/conf.d))
@@ -514,7 +514,7 @@
     #+END_SRC
 
 *** org-mode graphiz 画图配置
-    #+BEGIN_SRC elisp :eval never :exports code
+    #+BEGIN_SRC elisp :eval never :exports code :comments link
       (use-package graphviz-dot-mode
 	:after org
 	:config
@@ -524,14 +524,14 @@
 	:ensure nil)
     #+END_SRC
 *** org mode 可以拖拽下载
-    #+BEGIN_SRC elisp :eval never :exports code
+    #+BEGIN_SRC elisp :eval never :exports code :comments link
       ;; Download Drag&Drop images
       (use-package org-download
 	:after (org))
     #+END_SRC
 
 *** org mode 图标设置
-    #+BEGIN_SRC elisp :eval never :exports code
+    #+BEGIN_SRC elisp :eval never :exports code :comments link
       ;; Pretty bullets
       (use-package org-bullets
 	:after org
@@ -543,7 +543,7 @@
     #+END_SRC
 
 *** org-mode 博客
-    #+BEGIN_SRC elisp :eval never :exports code
+    #+BEGIN_SRC elisp :eval never :exports code :comments link
       (use-package ox-gfm)
       (use-package ox-hugo
 	:after (ox org)
@@ -554,7 +554,7 @@
     #+END_SRC
 
 *** org-mode 中文对齐配置
-    #+BEGIN_SRC elisp :eval never :exports code
+    #+BEGIN_SRC elisp :eval never :exports code :comments link
       (use-package valign
 	:custom
 	(valign-fancy-bar 't)
@@ -564,7 +564,7 @@
 	(org-mode . valign-mode))
     #+END_SRC
 *** org-mode retrospect temlate
-    #+BEGIN_SRC org :tangle "~/agendas/retrospect.tmpl" :noweb yes :mkdirp yes
+    #+BEGIN_SRC org :tangle "~/agendas/retrospect.tmpl" :noweb yes :mkdirp yes :comments link
       |----------------------------+----|
       | 我的长远目标是什么？       | %? |
       |----------------------------+----|
@@ -608,11 +608,11 @@
     #+END_SRC
 
 *** org-mode gtd files
-    #+BEGIN_SRC org :tangle no :noweb yes :mkdirp yes
+    #+BEGIN_SRC org :tangle no :noweb yes :mkdirp yes :comments link
       ,#+CATEGORY: Inbox
       ,#+FILETAGS: INBOX
     #+END_SRC
 ** provide
-   #+BEGIN_SRC elisp :eval never :exports code
+   #+BEGIN_SRC elisp :eval never :exports code :comments link
      (provide 'init-literate)
    #+END_SRC

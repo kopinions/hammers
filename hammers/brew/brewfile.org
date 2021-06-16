@@ -21,7 +21,7 @@
     #+END_SRC
 
 *** 默认安装的软件包
-    #+BEGIN_SRC conf :tangle ~/.Brewfile :exports code :results none :eval never
+    #+BEGIN_SRC conf :tangle ~/.Brewfile :exports code :results none :eval never :comments link
       cask_args appdir: '/Applications'
       tap 'homebrew/cask' if OS.mac?
       tap 'homebrew/bundle'

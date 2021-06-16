@@ -12,18 +12,18 @@
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
 *** emacs 命令行配置
-    #+BEGIN_SRC shell :eval never :exports code
+    #+BEGIN_SRC shell :eval never :exports code :comments link
       alias emcasclient="emacsclient -nw"
     #+END_SRC
 
 *** 剪切板配置
-    #+BEGIN_SRC shell :eval never :exports code
+    #+BEGIN_SRC shell :eval never :exports code :comments link
       alias pbcopy='xclip -selection clipboard'
       alias pbpaste='xclip -selection clipboard -o'
     #+END_SRC
 
 *** git 别名
-    #+BEGIN_SRC shell :eval never :exports code
+    #+BEGIN_SRC shell :eval never :exports code :comments link
       alias gst="git status"
       alias gc="git commit"
       alias gcm="git commit -m "

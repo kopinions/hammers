@@ -12,7 +12,7 @@
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
 ** 中文字体配置
-   #+BEGIN_SRC elisp :eval never :exports code
+   #+BEGIN_SRC elisp :eval never :exports code :comments link
      (use-package cnfonts
        :ensure t
        :if (display-graphic-p)
@@ -24,7 +24,7 @@
 
 ** 输入法配置
 
-   #+BEGIN_SRC elisp :eval never :exports code
+   #+BEGIN_SRC elisp :eval never :exports code :comments link
      (use-package posframe)
      (use-package pyim
        :diminish pyim-isearch-mode
@@ -102,7 +102,7 @@
 
 *** 安装 liberime
 
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (or (and (eq m/os 'macos) "~/.emacs.d/lisp/init-chinese.el") "no")
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (or (and (eq m/os 'macos) "~/.emacs.d/lisp/init-chinese.el") "no") :comments link
       (use-package liberime
 	:if (eq m/os 'macos)
 	:load-path m/load-path
@@ -127,7 +127,7 @@
 						    (setq pyim-default-scheme 'rime-quanpin)))))))
     #+END_SRC
 
-    #+BEGIN_SRC yaml :tangle "~/.emacs.d/rime/default.custom.yaml" :noweb yes :eval never :exports code
+    #+BEGIN_SRC yaml :tangle "~/.emacs.d/rime/default.custom.yaml" :noweb yes :eval never :exports code :comments link
       patch:
 	menu/page_size: 100
 	speller/auto_select: false
@@ -137,6 +137,6 @@
     #+END_SRC
 
 
-    #+BEGIN_SRC elisp :eval never :exports code
+    #+BEGIN_SRC elisp :eval never :exports code :comments link
       (provide 'init-chinese)
     #+END_SRC

@@ -12,7 +12,7 @@
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
 *** yaml
-    #+BEGIN_SRC elisp :eval never :exports code
+    #+BEGIN_SRC elisp :eval never :exports code :comments link
       (use-package yaml-mode
 	:mode "\\.yml\\.erb\\.yaml\\'"
 	:hook
@@ -20,31 +20,31 @@
     #+END_SRC
 
 *** json
-    #+BEGIN_SRC elisp :eval never :exports code
+    #+BEGIN_SRC elisp :eval never :exports code :comments link
       (use-package json-mode
 	:custom
 	(json-reformat:indent-width 2))
     #+END_SRC
 
 *** groovy
-    #+BEGIN_SRC elisp :eval never :exports code
+    #+BEGIN_SRC elisp :eval never :exports code :comments link
       (use-package groovy-mode)
     #+END_SRC
 
 *** cmake
-    #+BEGIN_SRC elisp :eval never :exports code
+    #+BEGIN_SRC elisp :eval never :exports code :comments link
       (use-package cmake-mode)
     #+END_SRC
 
 *** ruby
-    #+BEGIN_SRC elisp :eval never :exports code
+    #+BEGIN_SRC elisp :eval never :exports code :comments link
       (use-package ruby-mode
 	:mode "\\.rb\\'"
 	:interpreter "ruby")
     #+END_SRC
 
 *** python
-    #+BEGIN_SRC elisp :eval never :exports code
+    #+BEGIN_SRC elisp :eval never :exports code :comments link
       ;; The package is "python" but the mode is "python-mode":
       (use-package python
 	:mode ("\\.py\\'" . python-mode)
@@ -52,7 +52,7 @@
     #+END_SRC
 
 *** lisp
-    #+BEGIN_SRC elisp :eval never :exports code
+    #+BEGIN_SRC elisp :eval never :exports code :comments link
       (use-package rainbow-mode
 	:diminish rainbow-mode
 	:hook
@@ -60,7 +60,7 @@
     #+END_SRC
 
 *** verilog mode
-    #+BEGIN_SRC elisp :eval never :exports code
+    #+BEGIN_SRC elisp :eval never :exports code :comments link
       (use-package verilog-mode
 	:load-path m/load-path
 	:config
@@ -69,17 +69,17 @@
     #+END_SRC
 
 *** lua mode
-    #+BEGIN_SRC elisp :eval never :exports code
+    #+BEGIN_SRC elisp :eval never :exports code :comments link
       (use-package lua-mode)
     #+END_SRC
 
 *** meson 构建系统
-    #+BEGIN_SRC elisp :eval never :exports code
+    #+BEGIN_SRC elisp :eval never :exports code :comments link
       (use-package meson-mode
 	:hook
 	(meson-mode . company-mode))
     #+END_SRC
 *** provide
-    #+BEGIN_SRC elisp :eval never :exports code
+    #+BEGIN_SRC elisp :eval never :exports code :comments link
       (provide 'init-languages)
     #+END_SRC

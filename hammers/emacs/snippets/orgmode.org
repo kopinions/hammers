@@ -15,7 +15,7 @@
       # name: 
       # key: <s
       # --
-      ,#+BEGIN_SRC $1 :eval never :exports code
+      ,#+BEGIN_SRC $1 :eval never :exports code :comments link
       $0
       ,#+END_SRC
     #+END_SRC
@@ -26,7 +26,7 @@
       # name: shell
       # key: <sh
       # --
-      ,#+BEGIN_SRC shell :eval never :exports code
+      ,#+BEGIN_SRC shell :eval never :exports code :comments link
       $0
       ,#+END_SRC
     #+END_SRC

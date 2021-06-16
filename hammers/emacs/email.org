@@ -11,7 +11,7 @@
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
 *** notmuch 配置
-    #+BEGIN_SRC elisp :eval never :exports code
+    #+BEGIN_SRC elisp :eval never :exports code :comments link
       (defun sb/mbsync (&rest group)
 	(interactive)
 	(let ((group (or (and (car group) group) '("--all")))
@@ -138,7 +138,7 @@
       SyncState *
     #+END_SRC
 
-    #+BEGIN_SRC shell :eval never :exports code :tangle no
+    #+BEGIN_SRC shell :eval never :exports code :tangle no :comments link
       notmuch config set user.name "neo"
       notmuch config set user.primary_email "rising.lambda@gmail.com"
       notmuch config set user.primary_email "sjkyspa@gmail.com;other@gmail.com;"
@@ -187,7 +187,7 @@
     #+END_SRC
 
 
-    #+BEGIN_SRC elisp :eval never :exports code
+    #+BEGIN_SRC elisp :eval never :exports code :comments link
       (setq message-send-mail-function 'message-send-mail-with-sendmail
 	    sendmail-program "msmtp"
 	    message-sendmail-envelope-from 'header
@@ -197,6 +197,6 @@
       (setq message-kill-buffer-on-exit t)
     #+END_SRC
 
-    #+BEGIN_SRC elisp :eval never :exports code
+    #+BEGIN_SRC elisp :eval never :exports code :comments link
       (provide 'init-email)
     #+END_SRC
