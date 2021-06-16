@@ -15,7 +15,7 @@
       # name: 
       # key: <s
       # --
-      ,#+BEGIN_SRC $1 :eval never :exports code :comments link
+      ,#+BEGIN_SRC $1 :eval never :exports code :noweb yes
       $0
       ,#+END_SRC
     #+END_SRC
@@ -26,7 +26,7 @@
       # name: shell
       # key: <sh
       # --
-      ,#+BEGIN_SRC shell :eval never :exports code :comments link
+      ,#+BEGIN_SRC shell :eval never :exports code :noweb yes :comments link
       $0
       ,#+END_SRC
     #+END_SRC
@@ -38,7 +38,7 @@
       # name: lisp
       # key: <elisp
       # --
-      ,#+BEGIN_SRC elisp :eval never :exports code
+      ,#+BEGIN_SRC elisp :eval never :exports code :noweb yes
       $0
       ,#+END_SRC
     #+END_SRC
@@ -49,7 +49,7 @@
       # name: conf
       # key: <conf
       # --
-      ,#+BEGIN_SRC conf :eval never :exports code
+      ,#+BEGIN_SRC conf :eval never :exports code :noweb yes
       $0
       ,#+END_SRC
     #+END_SRC
@@ -60,7 +60,7 @@
       # name: dot
       # key: <dot
       # --
-      ,#+BEGIN_SRC dot :exports results :file $1 :eval yes
+      ,#+BEGIN_SRC dot :exports results :file $1 :eval yes :noweb yes
 	digraph G {
 	      node [shape=$1];
 	      $0
@@ -103,7 +103,7 @@
       # name: verilog
       # key: <veri
       # --
-      ,#+BEGIN_SRC verilog :exports code :eval never
+      ,#+BEGIN_SRC verilog :exports code :eval never :noweb yes
       module $1($2)
 	  always @*
 	    begin
