@@ -3,47 +3,44 @@
 #+EMAIL:  rising.lambda@gmail.com
 
 #+DESCRIPTION: Emacs config for specific operation system
-#+PROPERTY:    header-args        :results silent   :eval no-export   :comments org
 #+PROPERTY:    header-args        :mkdirp yes
-#+PROPERTY:    header-args:elisp  :tangle "~/.emacs.d/lisp/init-os.el"
-#+PROPERTY:    header-args:shell  :tangle no
 #+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil
 #+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
 ** macos
 *** 键位设置
-    #+BEGIN_SRC elisp :eval never :exports code :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-os.el") :comments link
       (when (eq m/os 'macos)
 	(setq mac-command-modifier 'meta)
 	(setq mac-option-modifier 'super))
     #+END_SRC
 ** linux
 *** 键位设置
-    #+BEGIN_SRC elisp :eval never :exports code :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-os.el") :comments link
       (when (eq m/os 'linux)
 	(setq x-super-keysym 'meta))
 
     #+END_SRC
 *** 剪切板管理
-    #+BEGIN_SRC elisp :eval never :exports code :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-os.el") :comments link
       (use-package xclip
 	:if (eq m/os 'linux)
 	:config
 	(xclip-mode 1))
     #+END_SRC
 *** 环境变量
-    #+BEGIN_SRC elisp :eval never :exports code :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-os.el") :comments link
       (use-package exec-path-from-shell
 	:config
 	(when (memq m/os '(macos linux))
 	  (exec-path-from-shell-initialize)))
     #+END_SRC
 ** http
-   #+BEGIN_SRC elisp :eval never :exports code :comments link
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-os.el") :comments link
      (use-package request)
    #+END_SRC
 ** 导出
-   #+BEGIN_SRC elisp :eval never :exports code :comments link
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-os.el") :comments link
      (provide 'init-os)
    #+END_SRC

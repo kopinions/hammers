@@ -3,10 +3,7 @@
 #+EMAIL:  rising.lambda@gmail.com
 
 #+DESCRIPTION: A literate programming version of my Emacs Initialization script, loaded by the .emacs file.
-#+PROPERTY:    header-args        :results silent   :eval no-export   :comments org
 #+PROPERTY:    header-args        :mkdirp yes
-#+PROPERTY:    header-args:elisp  :tangle "~/.emacs.d/lisp/init-terminal.el"
-#+PROPERTY:    header-args:shell  :tangle no
 #+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil
 #+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
@@ -14,11 +11,11 @@
 ** eshell
 
 *** 环境变量
-    #+BEGIN_SRC elisp :eval never :exports code :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-terminal.el") :comments link
       (setenv "PAGER" "cat")
     #+END_SRC   
 *** 配置选项
-    #+BEGIN_SRC elisp :eval never :exports code :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-terminal.el") :comments link
       (use-package shrink-path)
       (use-package eshell
 	:after shrink-path
@@ -50,7 +47,7 @@
 			  ))))
     #+END_SRC
 *** alias
-    #+BEGIN_SRC elisp :eval never :exports code :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-terminal.el") :comments link
       (use-package eshell
 	:hook
 	(eshell-mode . (lambda() 
@@ -68,14 +65,14 @@
 			   (eshell/alias "ll" (concat ls " -AlohG --color=always"))))))
     #+END_SRC
 *** git
-    #+BEGIN_SRC elisp :eval never :exports code :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-terminal.el") :comments link
       (defun eshell/gst (&rest args)
 	(magit-status (pop args) nil)
 	(eshell/echo)) 
     #+END_SRC
 *** find 命令
     使用命令行程序来进行 find, 而不是使用 eshell 的 find 函数
-    #+BEGIN_SRC elisp :eval never :exports code :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-terminal.el") :comments link
       (defun eshell/find (&rest args)
 	"Wrapper around the ‘find’ executable."
 	(let ((cmd (concat "find " (string-join args " "))))
@@ -118,13 +115,13 @@
 	  (find-file file)))
     #+END_SRC
 *** autojump
-    #+BEGIN_SRC elisp :eval never :exports code :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-terminal.el") :comments link
       (use-package eshell-autojump
 	:custom
 	(eshell-directory-name (expand-file-name "eshell" m/conf.d)))
     #+END_SRC
 *** eshell toggle window
-    #+BEGIN_SRC elisp :eval never :exports code :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-terminal.el") :comments link
       (use-package eshell-toggle
 	:bind
 	(("s-<f12>" . eshell-toggle)))
@@ -132,7 +129,7 @@
 
 
 *** clear
-    #+BEGIN_SRC elisp :eval never :exports code :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-terminal.el") :comments link
       (use-package eshell
 	:config
 	(defun eshell/clear ()
@@ -142,6 +139,6 @@
 	    (eshell-send-input))))
     #+END_SRC
 ** provide
-   #+BEGIN_SRC elisp :eval never :exports code :comments link
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-terminal.el") :comments link
      (provide 'init-terminal)
    #+END_SRC

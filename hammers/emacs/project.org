@@ -3,16 +3,13 @@
 #+EMAIL:  rising.lambda@gmail.com
 
 #+DESCRIPTION: A literate programming version of my Emacs Initialization script, loaded by the .emacs file.
-#+PROPERTY:    header-args        :results silent   :eval no-export   :comments org
 #+PROPERTY:    header-args        :mkdirp yes
-#+PROPERTY:    header-args:elisp  :tangle "~/.emacs.d/lisp/init-project.el"
-#+PROPERTY:    header-args:shell  :tangle no
 #+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil
 #+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
 *** projectile 
-    #+BEGIN_SRC elisp :eval never :exports code :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-project.el") :comments link
       (use-package projectile
 	:diminish projectile-mode
 	:after counsel
@@ -40,12 +37,12 @@
     #+END_SRC
 
 *** ibuffer
-    #+BEGIN_SRC elisp :eval never :exports code :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-project.el") :comments link
       (use-package ibuffer
 	:bind ("C-x C-b" . ibuffer))
     #+END_SRC
 
 *** export
-    #+BEGIN_SRC elisp :eval never :exports code :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-project.el") :comments link
       (provide 'init-project)
     #+END_SRC

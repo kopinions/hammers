@@ -3,16 +3,13 @@
 #+EMAIL:  rising.lambda@gmail.com
 
 #+DESCRIPTION: A literate programming version of my Emacs Initialization script, loaded by the .emacs file.
-#+PROPERTY:    header-args        :results silent   :eval no-export   :comments org
 #+PROPERTY:    header-args        :mkdirp yes
-#+PROPERTY:    header-args:elisp  :tangle "~/.emacs.d/lisp/init-completion.el"
-#+PROPERTY:    header-args:shell  :tangle no
 #+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil
 #+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
 ** company
-   #+BEGIN_SRC elisp :eval never :exports code :comments link
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-completion.el") :comments link
      (use-package company
        :diminish company-mode
        :bind
@@ -61,7 +58,7 @@
 ** yasnippet
    如果我们需要将在 company 补全的时候，同时使用 yasnippet, 这种时候需要将 yasnippet 的 backend 添加到 company-backends 变量中
 
-   #+BEGIN_SRC elisp :eval never :exports code :comments link
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-completion.el") :comments link
      (use-package yasnippet
        :config
        (use-package yasnippet-snippets
@@ -85,6 +82,6 @@
    #+END_SRC
 
 ** provide
-   #+BEGIN_SRC elisp :eval never :exports code :comments link
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-completion.el") :comments link
      (provide 'init-completion)
    #+END_SRC

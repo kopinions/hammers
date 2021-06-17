@@ -3,16 +3,13 @@
 #+EMAIL:  rising.lambda@gmail.com
 
 #+DESCRIPTION: A literate programming version of my Emacs Initialization script, loaded by the .emacs file.
-#+PROPERTY:    header-args        :results silent   :eval no-export   :comments org
 #+PROPERTY:    header-args        :mkdirp yes
-#+PROPERTY:    header-args:elisp  :tangle "~/.emacs.d/lisp/init-chinese.el"
-#+PROPERTY:    header-args:shell  :tangle no
 #+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil
 #+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
 ** 中文字体配置
-   #+BEGIN_SRC elisp :eval never :exports code :comments link
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/home.d}/.emacs.d/lisp/init-chinese.el") :comments link
      (use-package cnfonts
        :ensure t
        :if (display-graphic-p)
@@ -24,7 +21,7 @@
 
 ** 输入法配置
 
-   #+BEGIN_SRC elisp :eval never :exports code :comments link
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/home.d}/.emacs.d/lisp/init-chinese.el") :comments link
      (use-package posframe)
      (use-package pyim
        :diminish pyim-isearch-mode
@@ -91,7 +88,7 @@
 ** rime 输入法配置
 
 *** 安装 librime
-    #+BEGIN_SRC shell :exports code :results none :tangle no  :eval (or (and (eq m/os 'macos) "yes") "never") :comments link
+    #+BEGIN_SRC shell :exports code :results none :tangle no  :eval (or (and (eq m/os 'linux) "yes") "never") :comments link
       cd ~/.emacs.d/3rdparty/librime
       git submodule update --init
       make xcode/thirdparty/boost -j `nproc`
@@ -102,7 +99,7 @@
 
 *** 安装 liberime
 
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/home.d}/.emacs.d/lisp/init-chinese.el")) "no") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (or (and (eq m/os 'linux) (m/resolve "${m/home.d}/.emacs.d/lisp/init-chinese.el")) "no") :comments link
       (use-package liberime
 	:if (eq m/os 'macos)
 	:load-path m/load-path
@@ -137,6 +134,6 @@
     #+END_SRC
 
 
-    #+BEGIN_SRC elisp :eval never :exports code :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/home.d}/.emacs.d/lisp/init-chinese.el")) :comments link
       (provide 'init-chinese)
     #+END_SRC

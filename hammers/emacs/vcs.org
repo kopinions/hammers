@@ -3,23 +3,20 @@
 #+EMAIL:  rising.lambda@gmail.com
 
 #+DESCRIPTION: A literate programming version of my Emacs Initialization script, loaded by the .emacs file.
-#+PROPERTY:    header-args        :results silent   :eval no-export   :comments org
 #+PROPERTY:    header-args        :mkdirp yes
-#+PROPERTY:    header-args:elisp  :tangle "~/.emacs.d/lisp/init-vcs.el"
-#+PROPERTY:    header-args:shell  :tangle no
 #+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil
 #+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
 *** git
-    #+BEGIN_SRC elisp :eval never :exports code :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-vcs.el") :comments link
       (use-package gitignore-mode)
       (use-package gitconfig-mode)
       (use-package gitattributes-mode)
     #+END_SRC
 
 *** git highlight mode
-    #+BEGIN_SRC elisp :eval never :exports code :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-vcs.el") :comments link
       (use-package git-gutter
 	:custom
 	(git-gutter:modified-sign "~")
@@ -37,7 +34,7 @@
 	(magit-refresh-buffer . git-gutter:update-all-windows))
     #+END_SRC
 *** magit
-    #+BEGIN_SRC elisp :eval never :exports code :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-vcs.el") :comments link
       (use-package magit
 	:custom
 	(magit-diff-refine-hunk t)
@@ -52,7 +49,7 @@
     #+END_SRC
 
 *** other
-    #+BEGIN_SRC elisp :eval never :exports code :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-vcs.el") :comments link
       (use-package git-messenger
 	:bind ("C-x v p" . git-messenger:popup-message)
 	:config
@@ -64,7 +61,7 @@
 
     #+END_SRC
 
-    #+BEGIN_SRC elisp :eval never :exports code :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-vcs.el") :comments link
       (use-package yagist)
       (use-package bug-reference-github
 	:hook
@@ -74,6 +71,6 @@
     #+END_SRC
 
 *** export 
-    #+BEGIN_SRC elisp :eval never :exports code :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-vcs.el") :comments link
       (provide 'init-vcs)
     #+END_SRC
