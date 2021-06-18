@@ -135,6 +135,13 @@
     (shell-command (concat "git -C " resolved-dest " submodule update --init --force"))
     (message "cloned: %s to %s" resolved-src resolved-dest)))
 
+(defun m/rsync (src dest)
+  "clone the SRC to the DEST."
+  (let* ((resolved-src (m/resolve src))
+	 (resolved-dest (m/resolve dest)))
+    (message "rsync: %s to %s" resolved-src resolved-dest)
+    (shell-command (concat "rsync -raz " resolved-src " " resolved-dest))
+    (message "synced: %s to %s" resolved-src resolved-dest)))
 
 (defun m/link (src dest)
   "Link the SRC to the DEST."
@@ -161,18 +168,20 @@
 
 (m/tangles "${m/root}/hammers/emacs/*.org")
 
-(m/gitclone "${m/root}/hammers/emacs/3rdparty/lsp-ivy" "${m/conf.d}/3rdparty/lsp-ivy")
-(m/gitclone "${m/root}/hammers/emacs/3rdparty/verilog-mode" "${m/conf.d}/3rdparty/verilog-mode")
+(m/rsync "${m/root}/hammers/emacs/3rdparty/lsp-ivy" "${m/conf.d}/3rdparty/lsp-ivy")
+(m/rsync "${m/root}/hammers/emacs/3rdparty/verilog-mode" "${m/conf.d}/3rdparty/verilog-mode")
 (m/tangles "${m/root}/hammers/emacs/snippets/*.org")
 (m/tangles "${m/root}/hammers/git/*.org")
 
 (if (eq m/os 'macos)
     (progn (m/tangles "${m/root}/hammers/brew/*.org")
 	   (m/evaluates "${m/root}/hammers/brew/*.org")
-	   (m/gitclone "${m/root}/hammers/emacs/3rdparty/librime" "${m/conf.d}/3rdparty/librime")
-	   (m/gitclone "${m/root}/hammers/emacs/3rdparty/liberime" "${m/conf.d}/3rdparty/liberime")
 	   (m/copy "${m/root}/hammers/hammerspoon/Spoons" "${m/home.d}/.hammerspoon/Spoons")
 	   ))
+
+(if (eq m/os 'macos)
+    (progn (m/rsync "${m/root}/hammers/emacs/3rdparty/librime" "${m/conf.d}/3rdparty/librime")
+		   (m/rsync "${m/root}/hammers/emacs/3rdparty/liberime" "${m/conf.d}/3rdparty/liberime")))
 
 (if (or (eq m/os 'macos)
 	(eq m/os 'linux))
@@ -186,10 +195,10 @@
       (m/tangles "${m/root}/hammers/hammerspoon/*.org")
       (m/evaluate "${m/root}/hammers/emacs/chinese.org")
       (m/evaluate "${m/root}/hammers/emacs/lsp.org")
-      (m/gitclone "${m/root}/hammers/tmux/plugins/tpm" "${m/home.d}/.tmux/plugins/tpm")
-      (m/gitclone "${m/root}/hammers/zsh/zplug" "${m/home.d}/.zsh/zplug")
-      (m/gitclone "${m/root}/hammers/gdb/plugins/dashboard" "${m/home.d}/.gdb/dashboard")
-      (m/gitclone "${m/root}/hammers/vim/bundle/Vundle" "${m/home.d}/.vim/bundle/Vundle")))
+      (m/rsync "${m/root}/hammers/tmux/plugins/tpm" "${m/home.d}/.tmux/plugins/tpm")
+      (m/rsync "${m/root}/hammers/zsh/zplug" "${m/home.d}/.zsh/zplug")
+      (m/rsync "${m/root}/hammers/gdb/plugins/dashboard" "${m/home.d}/.gdb/dashboard")
+      (m/rsync "${m/root}/hammers/vim/bundle/Vundle" "${m/home.d}/.vim/bundle/Vundle")))
 
 
 (message "Finished building hammers. Please Restart Emacs.")
