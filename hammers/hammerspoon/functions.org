@@ -154,7 +154,7 @@
 	   {
 	      name = ".*",
 	      fn = function()
-		 
+
 		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post()
 		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.f13, true):post()
 		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.f13, false):post()
@@ -368,6 +368,10 @@
      },
      {
 	name = 'Wechat',
+	im = 'CN'
+     },
+     {
+	name = 'DingTalk',
 	im = 'CN'
      },
      {
