@@ -132,6 +132,7 @@
     (shell-command (concat "rm -rf " resolved-dest))
     (shell-command (concat "mkdir -p $(dirname " resolved-dest ")"))
     (shell-command (concat "git clone " resolved-src " " resolved-dest))
+    (shell-command (concat "git -C " resolved-dest " submodule update --init --force"))
     (message "cloned: %s to %s" resolved-src resolved-dest)))
 
 
