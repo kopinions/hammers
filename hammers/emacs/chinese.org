@@ -91,10 +91,11 @@
     #+BEGIN_SRC shell :exports code :results none :tangle no  :eval (or (and (eq m/os 'macos) "yes") "never") :comments link
       cd ~/.emacs.d/3rdparty/librime
       git submodule update --init
+      export LIBRARY_PATH=${LIBRARY_PATH}:/usr/local/opt/icu4c/lib
       make xcode/thirdparty/boost -j `nproc`
       make xcode/thirdparty -j `nproc`
       make xcode -j `nproc`
-      make install
+      make install -j `nproc`
     #+END_SRC
 
 *** 安装 liberime
@@ -124,16 +125,25 @@
 						    (setq pyim-default-scheme 'rime-quanpin)))))))
     #+END_SRC
 
-    #+BEGIN_SRC yaml :tangle (m/resolve "${m/home.d}/.emacs.d/rime/default.custom.yaml") :noweb yes :eval never :exports code
-	patch:
-	  menu/page_size: 100
-	  speller/auto_select: false
-	  speller/auto_select_unique_candidate: false
-	  schema_list: 
-	    - schema: luna_pinyin_simp
+*** 修复 liberime-core.so 的链接的问题（@rpath librime not found）
+    
+    #+BEGIN_SRC shell :eval (or (and (eq m/os 'macos) "yes") "never") :exports code :results none :noweb yes :var rpath=(m/resolve "${m/conf.d}/3rdparty/librime/build/lib/Release") erime_path=(m/resolve "${m/conf.d}/3rdparty/liberime/src")
+      echo ${rpath}
+      echo ${erime_path}
+      install_name_tool -add_rpath ${rpath} ${erime_path}/liberime-core.so
     #+END_SRC
-
-
+    
+*** liberime 配置文件 
+    #+BEGIN_SRC yaml :tangle (m/resolve "${m/home.d}/.emacs.d/rime/default.custom.yaml") :noweb yes :eval never :exports code
+      patch:
+	menu/page_size: 100
+	speller/auto_select: false
+	speller/auto_select_unique_candidate: false
+	schema_list: 
+	  - schema: luna_pinyin_simp
+    #+END_SRC
+    
+*** 导出
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/home.d}/.emacs.d/lisp/init-chinese.el")) :comments link
       (provide 'init-chinese)
     #+END_SRC
