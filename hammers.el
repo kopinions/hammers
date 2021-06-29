@@ -185,6 +185,7 @@
 (if (or (eq m/os 'macos)
 	(eq m/os 'linux))
     (progn
+      (m/tangles "${m/root}/hammers/scripts/*.org")
       (m/tangles "${m/root}/hammers/zsh/*.org")
       (m/tangles "${m/root}/hammers/ssh/*.org")
       (m/tangles "${m/root}/hammers/tmux/*.org")

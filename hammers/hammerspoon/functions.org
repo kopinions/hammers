@@ -8,7 +8,7 @@
 #+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 *** 通用方法
-    #+BEGIN_SRC lua :eval never :exports code :tangle (m/resolve "${m/home.d}/.hammerspoon/functions.lua") :mkdirp yes
+    #+BEGIN_SRC lua :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/home.d}/.hammerspoon/functions.lua")) "no") :mkdirp yes
       local log = hs.logger.new('init.lua', 'debug')
       
       function filter(func, tbl)
@@ -30,7 +30,7 @@
       end
     #+END_SRC
 *** hammerspoon 启动配置
-    #+BEGIN_SRC lua :eval never :exports code :tangle (m/resolve "${m/home.d}/.hammerspoon/init.lua") :mkdirp yes
+    #+BEGIN_SRC lua :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/home.d}/.hammerspoon/init.lua")) "no") :mkdirp yes
       hs.loadSpoon("SpoonInstall")
       spoon.SpoonInstall.use_syncinstall = true
       require('functions')
@@ -463,83 +463,13 @@
       
       hs.notify.new({title='Hammerspoon', informativeText='Ready to rock 🤘'}):send()
     #+END_SRC
-*** macOS do not distrub config
-**** on
-     #+BEGIN_SRC shell :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/home.d}/.local/bin/dnd_on")) "no") :tangle-mode (identity #o755) :noweb yes
-       #!/usr/bin/env zsh
-       defaults read /Users/${USER}/Library/Preferences/com.apple.ncprefs.plist >/dev/null
-       DND_HEX_DATA=$(plutil -extract dnd_prefs xml1 -o - /Users/${USER}/Library/Preferences/com.apple.ncprefs.plist \
-			  | xmllint --xpath "string(//data)" - \
-			  | base64 --decode \
-			  | plutil -convert xml1 - -o - \
-			  | plutil -insert userPref -xml "
-	 <dict>
-	     <key>date</key>
-	     <date>$(date -u +"%Y-%m-%dT%H:%M:%SZ")</date>
-	     <key>enabled</key>
-	     <true/>
-	     <key>reason</key>
-	     <integer>1</integer>
-	 </dict> " - -o - \
-			  | plutil -convert binary1 - -o - \
-			  | xxd -p \
-			  | tr -d '\n')
-       defaults write com.apple.ncprefs.plist dnd_prefs -data "$DND_HEX_DATA"
-       PROCESS_LIST=(
-	   #cfprefsd
-	   usernoted
-	   #NotificationCenter
-       )
-       while IFS= read -r line || [[ -n "$line" ]]; do
-	   if [[ "$line" == "" ]]; then continue; fi
-	   i="$line"
-	   # echo "$i"
-	   if [[ $(ps aux | grep "$i" | grep -v grep | awk '{print $2;}') != "" ]]; then
-	       killall "$i" && sleep 0.1 && while [[ $(ps aux | grep "$i" | grep -v grep | awk '{print $2;}') == "" ]]; do sleep 0.1; done
-	   else
-	       :
-	   fi
-       done <<<"$(printf "%s\n" "${PROCESS_LIST[@]}")"
-     #+END_SRC
-**** off
-     #+BEGIN_SRC shell :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/home.d}/.local/bin/dnd_off")) "no") :tangle-mode (identity #o755) :noweb yes
-       #!/usr/bin/env zsh
-       
-       # https://github.com/sindresorhus/do-not-disturb/issues/9#issuecomment-768492417
-       defaults read /Users/${USER}/Library/Preferences/com.apple.ncprefs.plist >/dev/null
-       DND_HEX_DATA=$(plutil -extract dnd_prefs xml1 -o - /Users/${USER}/Library/Preferences/com.apple.ncprefs.plist \
-			  | xmllint --xpath "string(//data)" - \
-			  | base64 --decode \
-			  | plutil -convert xml1 - -o - \
-			  | plutil -remove userPref - -o - \
-			  | plutil -convert binary1 - -o - \
-			  | xxd -p \
-			  | tr -d '\n')
-       defaults write com.apple.ncprefs.plist dnd_prefs -data "$DND_HEX_DATA"
-       PROCESS_LIST=(
-	   #cfprefsd
-	   usernoted
-	   #NotificationCenter
-       )
-       while IFS= read -r line || [[ -n "$line" ]]; do
-	   if [[ "$line" == "" ]]; then continue; fi
-	   i="$line"
-	   # echo "$i"
-	   if [[ $(ps aux | grep "$i" | grep -v grep | awk '{print $2;}') != "" ]]; then
-	       killall "$i" && sleep 0.1 && while [[ $(ps aux | grep "$i" | grep -v grep | awk '{print $2;}') == "" ]]; do sleep 0.1; done
-	   else
-	       :
-	   fi
-       done <<<"$(printf "%s\n" "${PROCESS_LIST[@]}")"
-     #+END_SRC
-
 *** hammerspoon 番茄工作法
     #+NAME: dndpath
     #+BEGIN_SRC elisp :var path=(m/resolve "${m/home.d}/.local/bin/")
       path
     #+END_SRC
     
-    #+BEGIN_SRC lua :eval never :exports code :tangle (m/resolve "${m/home.d}/.hammerspoon/pomodoro.lua") :mkdirp yes :noweb yes
+    #+BEGIN_SRC lua :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/home.d}/.hammerspoon/pomodoro.lua")) "no") :mkdirp yes :noweb yes
       local pomodoro = {}
       
       function pomodoro.new()
