@@ -29,8 +29,8 @@
 	 return newtbl
       end
     #+END_SRC
-*** hammerspoon 启动配置
-    #+BEGIN_SRC lua :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/home.d}/.hammerspoon/init.lua")) "no") :mkdirp yes
+*** hammerspoon 基础配置（插件，仓库）
+    #+BEGIN_SRC lua :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/home.d}/.hammerspoon/init.lua")) "no") :mkdirp yes :noweb yes :link comment
       hs.loadSpoon("SpoonInstall")
       spoon.SpoonInstall.use_syncinstall = true
       require('functions')
@@ -57,8 +57,9 @@
       -- )
       
       log = hs.logger.new('init.lua', 'debug')
-      
-      
+    #+END_SRC
+*** hammerspoon 不同应用自动切换快捷键
+    #+BEGIN_SRC lua :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/home.d}/.hammerspoon/init.lua")) "no") :mkdirp yes :link comment
       hotkeys = {
 	 {
 	    mods = {'cmd'},
@@ -353,8 +354,9 @@
       
       hkWatcher = hs.application.watcher.new(hks)
       hkWatcher:start()
-      
-      -- auto change the im for the application callback
+    #+END_SRC
+*** hammerspoon 根据不同应用自动切换输入法
+    #+BEGIN_SRC lua :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/home.d}/.hammerspoon/init.lua")) "no") :mkdirp yes :noweb yes :link comment
       apps = {
 	 {
 	    name = 'Emacs',
@@ -428,7 +430,9 @@
       -- auto change the im for the application
       imWatcher = hs.application.watcher.new(ims)
       imWatcher:start()
-      
+    #+END_SRC
+*** 通过服务监听配置番茄
+    #+BEGIN_SRC lua :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/home.d}/.hammerspoon/init.lua")) "no") :mkdirp yes :noweb yes :link comment 
       pomodoro = require("pomodoro").new()
       
       svr =
@@ -463,13 +467,14 @@
       
       hs.notify.new({title='Hammerspoon', informativeText='Ready to rock 🤘'}):send()
     #+END_SRC
+
 *** hammerspoon 番茄工作法
     #+NAME: dndpath
     #+BEGIN_SRC elisp :var path=(m/resolve "${m/home.d}/.local/bin/")
       path
     #+END_SRC
     
-    #+BEGIN_SRC lua :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/home.d}/.hammerspoon/pomodoro.lua")) "no") :mkdirp yes :noweb yes
+    #+BEGIN_SRC lua :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/home.d}/.hammerspoon/pomodoro.lua")) "no") :mkdirp yes :noweb yes :link comment
       local pomodoro = {}
       
       function pomodoro.new()
