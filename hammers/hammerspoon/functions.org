@@ -7,693 +7,765 @@
 #+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil
 #+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+*** 通用方法
+    #+BEGIN_SRC lua :eval never :exports code :tangle (m/resolve "${m/home.d}/.hammerspoon/functions.lua") :mkdirp yes
+      local log = hs.logger.new('init.lua', 'debug')
+      
+      function filter(func, tbl)
+	 local newtbl= {}
+	 for k,v in pairs(tbl) do
+	    if func(v) then
+	       table.insert(newtbl, v)
+	    end
+	 end
+	 return newtbl
+      end
+      
+      function map(func, tbl)
+	 local newtbl = {}
+	 for i,v in pairs(tbl) do
+	    newtbl[i] = func(v)
+	 end
+	 return newtbl
+      end
+    #+END_SRC
+*** hammerspoon 启动配置
+    #+BEGIN_SRC lua :eval never :exports code :tangle (m/resolve "${m/home.d}/.hammerspoon/init.lua") :mkdirp yes
+      hs.loadSpoon("SpoonInstall")
+      spoon.SpoonInstall.use_syncinstall = true
+      require('functions')
+      hs.application.enableSpotlightForNameSearches(true)
+      spoon.SpoonInstall.repos.zzspoons = {
+	 url = "https://github.com/zzamboni/zzSpoons",
+	 desc = "zzamboni's spoon repository",
+      }
+      
+      Install=spoon.SpoonInstall
+      Install:updateRepo()
+      Install:installSpoonFromRepo("WindowHalfsAndThirds")
+      Install:installSpoonFromRepo("ToggleScreenRotation")
+      
+      -- myGrid = { w = 6, h = 4 }
+      -- Install:andUse("WindowGrid",
+      -- 		 {
+      -- 		    config = { gridGeometries =
+      -- 				  { { myGrid.w .."x" .. myGrid.h } } },
+      -- 		    hotkeys = {show_grid = {hyper, "g"}},
+      -- 		    start = true
+      -- 		 }
+      
+      -- )
+      
+      log = hs.logger.new('init.lua', 'debug')
+      
+      
+      hotkeys = {
+	 {
+	    mods = {'cmd'},
+	    key = 'space',
+	    specs = {
+	       {
+		  name = "Emacs",
+		  fn = function()
+		     local app = hs.window.focusedWindow():application()
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
+		     hs.eventtap.event.newKeyEvent("space", true):post(app)
+		     hs.eventtap.event.newKeyEvent("space", false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
+		  end
+	       },
+	       {
+		  name = ".*",
+		  fn = function()
+		     local current = hs.keycodes.currentSourceID()
+		     -- hs.keycodes.setLayout("U.S.")
+		     log.i(current)
+		     hs.keycodes.currentSourceID("com.apple.keylayout.US")
+		     if (current == "com.apple.keylayout.US") then
+			hs.keycodes.currentSourceID("im.rime.inputmethod.Squirrel.Rime")
+		     end	       
+		  end
+	       },
+	    }
+	 },
+	 {
+	    mods = {'cmd', 'shift'},
+	    key = 'space',
+	    specs = {
+	       {
+		  name = "Emacs",
+		  fn = function()
+		     local app = hs.window.focusedWindow():application()
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.shift, true):post(app)
+		     hs.eventtap.event.newKeyEvent("space", true):post(app)
+		     hs.eventtap.event.newKeyEvent("space", false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.shift, false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
+		  end
+	       },
+	       {
+		  name = ".*",
+		  fn = function()
+		     local emacs = hs.appfinder.appFromName("Emacs")
+		     if (emacs == nil) then
+			emacs = hs.application.open("Emacs")
+			emacs:hide ()
+		     end
+      
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(emacs)
+		     hs.eventtap.event.newKeyEvent('g', true):post(emacs)
+		     hs.eventtap.event.newKeyEvent('g', false):post(emacs)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(emacs)
+      
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(emacs)
+		     hs.eventtap.event.newKeyEvent('c', true):post(emacs)
+		     hs.eventtap.event.newKeyEvent('c', false):post(emacs)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(emacs)
+      
+		     hs.eventtap.event.newKeyEvent('c', true):post(emacs)
+		     hs.eventtap.event.newKeyEvent('c', false):post(emacs)
+      
+		     hs.eventtap.event.newKeyEvent("t", true):post(emacs)
+		     hs.eventtap.event.newKeyEvent("t", false):post(emacs)
+		     emacs:activate()
+		  end
+	       }
+	    }
+	 },
+	 {
+	    mods = {"cmd", "ctrl"},
+	    key = "a",
+	    specs = {
+	       {
+		  name = "Emacs",
+		  fn = function()
+		     local app = hs.window.focusedWindow():application()
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(app)
+		     hs.eventtap.event.newKeyEvent("a", true):post(app)
+		     hs.eventtap.event.newKeyEvent("a", false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
+		  end
+	       },
+	       {
+		  name = ".*",
+		  fn = function()
+      
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post()
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.f13, true):post()
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.f13, false):post()
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post()
+		  end
+	       }
+	    }
+	 },
+	 {
+	    mods = {"cmd", "ctrl"},
+	    key = "d",
+	    specs = {
+	       {
+		  name = "Emacs",
+		  fn = function()
+		     local app = hs.window.focusedWindow():application()
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(app)
+		     hs.eventtap.event.newKeyEvent("d", true):post(app)
+		     hs.eventtap.event.newKeyEvent("d", false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
+		  end
+	       }
+	    }
+	 },
+	 {
+	    mods = {"cmd", "ctrl"},
+	    key = "Left",
+	    specs = {
+	       {
+		  name = "Emacs",
+		  fn = function()
+		     local app = hs.window.focusedWindow():application()
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(app)
+		     hs.eventtap.event.newKeyEvent("Left", true):post(app)
+		     hs.eventtap.event.newKeyEvent("Left", false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
+		  end
+	       }
+	    }
+	 },
+	 {
+	    mods = {"cmd", "ctrl"},
+	    key = "Right",
+	    specs = {
+	       {
+		  name = "Emacs",
+		  fn = function()
+		     local app = hs.window.focusedWindow():application()
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(app)
+		     hs.eventtap.event.newKeyEvent("Right", true):post(app)
+		     hs.eventtap.event.newKeyEvent("Right", false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
+		  end
+	       }
+	    }
+	 },
+	 {
+	    mods = {"cmd", "ctrl"},
+	    key = "Up",
+	    specs = {
+	       {
+		  name = "Emacs",
+		  fn = function()
+		     local app = hs.window.focusedWindow():application()
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(app)
+		     hs.eventtap.event.newKeyEvent("Up", true):post(app)
+		     hs.eventtap.event.newKeyEvent("Up", false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
+		  end
+	       }
+	    }
+	 },
+	 {
+	    mods = {"cmd", "ctrl"},
+	    key = "Down",
+	    specs = {
+	       {
+		  name = "Emacs",
+		  fn = function()
+		     local app = hs.window.focusedWindow():application()
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(app)
+		     hs.eventtap.event.newKeyEvent("Down", true):post(app)
+		     hs.eventtap.event.newKeyEvent("Down", false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
+		  end
+	       }
+	    }
+	 },
+	 {
+	    mods = {"cmd", "ctrl", "alt"},
+	    key = "Up",
+	    specs = {
+	       {
+		  name = "Emacs",
+		  fn = function()
+		     local app = hs.window.focusedWindow():application()
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.alt, true):post(app)
+		     hs.eventtap.event.newKeyEvent("Up", true):post(app)
+		     hs.eventtap.event.newKeyEvent("Up", false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.alt, false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
+		  end
+	       }
+	    }
+	 },
+	 {
+	    mods = {"cmd", "ctrl", "alt"},
+	    key = "f",
+	    specs = {
+	       {
+		  name = "Emacs",
+		  fn = function()
+		     local app = hs.window.focusedWindow():application()
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.alt, true):post(app)
+		     hs.eventtap.event.newKeyEvent("f", true):post(app)
+		     hs.eventtap.event.newKeyEvent("f", false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.alt, false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
+		  end
+	       }
+	    }
+	 },
+	 {
+	    mods = {"cmd", "alt"},
+	    key = "c",
+	    specs = {
+	       {
+		  name = "Emacs",
+		  fn = function()
+		     local app = hs.window.focusedWindow():application()
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.alt, true):post(app)
+		     hs.eventtap.event.newKeyEvent("c", true):post(app)
+		     hs.eventtap.event.newKeyEvent("c", false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.alt, false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
+		  end
+	       }
+	    }
+	 },
+	 {
+	    mods = {"cmd"},
+	    key = "\\",
+	    specs = {
+	       {
+		  name = "Emacs",
+		  fn = function()
+		     local app = hs.window.focusedWindow():application()
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
+		     hs.eventtap.event.newKeyEvent("\\", true):post(app)
+		     hs.eventtap.event.newKeyEvent("\\", false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
+		  end
+	       }
+	    }
+	 }
+      }
+      
+      function hks(name, etype, app)
+	 if (etype == hs.application.watcher.activated) then
+	    for k, v in pairs(hotkeys) do
+	       hs.hotkey.disableAll(v.mods, v.key)
+	    end
+      
+	    hs.loadSpoon("WindowHalfsAndThirds");
+	    spoon.WindowHalfsAndThirds:bindHotkeys(spoon.WindowHalfsAndThirds.defaultHotkeys)
+      
+      
+	    for k, v in pairs (hotkeys) do
+	       local hk = filter(
+		  function(item)
+		     return string.match(name:lower(), item.name:lower()) 
+		  end,
+		  v.specs)
+      
+	       if next(hk) ~= nil then
+		  hs.hotkey.new(v.mods, v.key, nil,  hk[1].fn):enable()
+	       end
+	    end
+	 end
+      end
+      
+      hkWatcher = hs.application.watcher.new(hks)
+      hkWatcher:start()
+      
+      -- auto change the im for the application callback
+      apps = {
+	 {
+	    name = 'Emacs',
+	    im = 'EN'
+	 },
+	 {
+	    name = 'Google Chrome',
+	    im = 'EN'
+	 },
+	 {
+	    name = 'Wechat',
+	    im = 'CN'
+	 },
+	 {
+	    name = 'DingTalk',
+	    im = 'CN'
+	 },
+	 {
+	    name = 'OmniFocus',
+	    im = 'CN'
+	 },
+	 {
+	    name = 'Numbers',
+	    im = 'CN'
+	 },
+	 {
+	    name = 'Pages',
+	    im = 'CN'
+	 },
+	 {
+	    name = 'Keynote',
+	    im = 'CN'
+	 },
+	 {
+	    name = 'Xmind',
+	    im = 'CN'
+	 },
+	 {
+	    name = 'MacDown',
+	    im = 'CN'
+	 },
+	 {
+	    name = 'Microsoft Word',
+	    im = 'CN'
+	 }
+      }
+      
+      function ims(name, etype, app)
+	 if (etype == hs.application.watcher.activated) then
+	    config = filter(
+	       function(item)
+		  return string.match(name:lower(), item.name:lower())
+	       end,
+	       apps)
+      
+	    if next(config) ~= nil then
+	       local current = hs.keycodes.currentSourceID()
+      
+	       if (current ~= "im.rime.inputmethod.Squirrel.Rime" and string.match (config [1].im, "CN")) then
+		  hs.keycodes.currentSourceID("com.apple.keylayout.US")
+		  hs.keycodes.currentSourceID("im.rime.inputmethod.Squirrel.Rime")
+	       elseif (current ~= "com.apple.keylayout.US" and string.match (config [1].im, "EN")) then
+		  hs.keycodes.currentSourceID("com.apple.keylayout.US")
+	       end
+	    else
+	       hs.keycodes.currentSourceID("com.apple.keylayout.US")
+	    end
+	 end
+      end
+      
+      -- auto change the im for the application
+      imWatcher = hs.application.watcher.new(ims)
+      imWatcher:start()
+      
+      pomodoro = require("pomodoro").new()
+      
+      svr =
+	 (
+	    function ()
+	       local svr = hs.httpserver.new(false, false);
+	       svr:setInterface("127.0.0.1")
+	       svr:setPort(13140)
+	       svr:setCallback(
+		  function (method, url, headers, body)
+		     local payload = hs.json.decode(body)
+		     log.i (payload.type, payload.title)
+		     if (payload.type == "FOCUSED") then
+			pomodoro:focused(payload)
+		     elseif (payload.type == "UNFOCUSED") then
+			payload.title = "休息"
+			pomodoro:unfocused(payload)
+		     elseif (payload.type == "UNFOCUS") then
+			payload.title = "任务终止"
+			pomodoro:unfocus(payload)
+		     else
+			pomodoro:focus()
+		     end
+      
+		     return "", 200, {}
+		  end
+	       )
+	       svr:start()
+	       return svr
+	    end
+	 )()
+      
+      hs.notify.new({title='Hammerspoon', informativeText='Ready to rock 🤘'}):send()
+    #+END_SRC
+*** macOS do not distrub config
+**** on
+     #+BEGIN_SRC shell :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/home.d}/.local/bin/dnd_on")) "no") :tangle-mode (identity #o755) :noweb yes
+       #!/usr/bin/env zsh
+       defaults read /Users/${USER}/Library/Preferences/com.apple.ncprefs.plist >/dev/null
+       DND_HEX_DATA=$(plutil -extract dnd_prefs xml1 -o - /Users/${USER}/Library/Preferences/com.apple.ncprefs.plist \
+			  | xmllint --xpath "string(//data)" - \
+			  | base64 --decode \
+			  | plutil -convert xml1 - -o - \
+			  | plutil -insert userPref -xml "
+	 <dict>
+	     <key>date</key>
+	     <date>$(date -u +"%Y-%m-%dT%H:%M:%SZ")</date>
+	     <key>enabled</key>
+	     <true/>
+	     <key>reason</key>
+	     <integer>1</integer>
+	 </dict> " - -o - \
+			  | plutil -convert binary1 - -o - \
+			  | xxd -p \
+			  | tr -d '\n')
+       defaults write com.apple.ncprefs.plist dnd_prefs -data "$DND_HEX_DATA"
+       PROCESS_LIST=(
+	   #cfprefsd
+	   usernoted
+	   #NotificationCenter
+       )
+       while IFS= read -r line || [[ -n "$line" ]]; do
+	   if [[ "$line" == "" ]]; then continue; fi
+	   i="$line"
+	   # echo "$i"
+	   if [[ $(ps aux | grep "$i" | grep -v grep | awk '{print $2;}') != "" ]]; then
+	       killall "$i" && sleep 0.1 && while [[ $(ps aux | grep "$i" | grep -v grep | awk '{print $2;}') == "" ]]; do sleep 0.1; done
+	   else
+	       :
+	   fi
+       done <<<"$(printf "%s\n" "${PROCESS_LIST[@]}")"
+     #+END_SRC
+**** off
+     #+BEGIN_SRC shell :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/home.d}/.local/bin/dnd_off")) "no") :tangle-mode (identity #o755) :noweb yes
+       #!/usr/bin/env zsh
+       
+       # https://github.com/sindresorhus/do-not-disturb/issues/9#issuecomment-768492417
+       defaults read /Users/${USER}/Library/Preferences/com.apple.ncprefs.plist >/dev/null
+       DND_HEX_DATA=$(plutil -extract dnd_prefs xml1 -o - /Users/${USER}/Library/Preferences/com.apple.ncprefs.plist \
+			  | xmllint --xpath "string(//data)" - \
+			  | base64 --decode \
+			  | plutil -convert xml1 - -o - \
+			  | plutil -remove userPref - -o - \
+			  | plutil -convert binary1 - -o - \
+			  | xxd -p \
+			  | tr -d '\n')
+       defaults write com.apple.ncprefs.plist dnd_prefs -data "$DND_HEX_DATA"
+       PROCESS_LIST=(
+	   #cfprefsd
+	   usernoted
+	   #NotificationCenter
+       )
+       while IFS= read -r line || [[ -n "$line" ]]; do
+	   if [[ "$line" == "" ]]; then continue; fi
+	   i="$line"
+	   # echo "$i"
+	   if [[ $(ps aux | grep "$i" | grep -v grep | awk '{print $2;}') != "" ]]; then
+	       killall "$i" && sleep 0.1 && while [[ $(ps aux | grep "$i" | grep -v grep | awk '{print $2;}') == "" ]]; do sleep 0.1; done
+	   else
+	       :
+	   fi
+       done <<<"$(printf "%s\n" "${PROCESS_LIST[@]}")"
+     #+END_SRC
 
-
-#+BEGIN_SRC lua :eval never :exports code :tangle (m/resolve "${m/home.d}/.hammerspoon/functions.lua") :mkdirp yes
-  local log = hs.logger.new('init.lua', 'debug')
-
-  function filter(func, tbl)
-     local newtbl= {}
-     for k,v in pairs(tbl) do
-	if func(v) then
-	   table.insert(newtbl, v)
-	end
-     end
-     return newtbl
-  end
-
-  function map(func, tbl)
-     local newtbl = {}
-     for i,v in pairs(tbl) do
-	newtbl[i] = func(v)
-     end
-     return newtbl
-  end
-#+END_SRC
-
-
-#+BEGIN_SRC lua :eval never :exports code :tangle (m/resolve "${m/home.d}/.hammerspoon/init.lua") :mkdirp yes
-  hs.loadSpoon("SpoonInstall")
-  spoon.SpoonInstall.use_syncinstall = true
-  require('functions')
-  hs.application.enableSpotlightForNameSearches(true)
-  spoon.SpoonInstall.repos.zzspoons = {
-     url = "https://github.com/zzamboni/zzSpoons",
-     desc = "zzamboni's spoon repository",
-  }
-
-  Install=spoon.SpoonInstall
-  Install:updateRepo()
-  Install:installSpoonFromRepo("WindowHalfsAndThirds")
-  Install:installSpoonFromRepo("ToggleScreenRotation")
-
-  -- myGrid = { w = 6, h = 4 }
-  -- Install:andUse("WindowGrid",
-  -- 		 {
-  -- 		    config = { gridGeometries =
-  -- 				  { { myGrid.w .."x" .. myGrid.h } } },
-  -- 		    hotkeys = {show_grid = {hyper, "g"}},
-  -- 		    start = true
-  -- 		 }
-
-  -- )
-
-  log = hs.logger.new('init.lua', 'debug')
-
-
-  hotkeys = {
-     {
-	mods = {'cmd'},
-	key = 'space',
-	specs = {
-	   {
-	      name = "Emacs",
-	      fn = function()
-		 local app = hs.window.focusedWindow():application()
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
-		 hs.eventtap.event.newKeyEvent("space", true):post(app)
-		 hs.eventtap.event.newKeyEvent("space", false):post(app)
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
-	      end
-	   },
-	   {
-	      name = ".*",
-	      fn = function()
-		 local current = hs.keycodes.currentSourceID()
-		 -- hs.keycodes.setLayout("U.S.")
-		 log.i(current)
-		 hs.keycodes.currentSourceID("com.apple.keylayout.US")
-		 if (current == "com.apple.keylayout.US") then
-		    hs.keycodes.currentSourceID("im.rime.inputmethod.Squirrel.Rime")
-		 end	       
-	      end
-	   },
-	}
-     },
-     {
-	mods = {'cmd', 'shift'},
-	key = 'space',
-	specs = {
-	   {
-	      name = "Emacs",
-	      fn = function()
-		 local app = hs.window.focusedWindow():application()
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.shift, true):post(app)
-		 hs.eventtap.event.newKeyEvent("space", true):post(app)
-		 hs.eventtap.event.newKeyEvent("space", false):post(app)
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.shift, false):post(app)
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
-	      end
-	   },
-	   {
-	      name = ".*",
-	      fn = function()
-		 local emacs = hs.appfinder.appFromName("Emacs")
-		 if (emacs == nil) then
-		    emacs = hs.application.open("Emacs")
-		    emacs:hide ()
-		 end
-
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(emacs)
-		 hs.eventtap.event.newKeyEvent('g', true):post(emacs)
-		 hs.eventtap.event.newKeyEvent('g', false):post(emacs)
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(emacs)
-
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(emacs)
-		 hs.eventtap.event.newKeyEvent('c', true):post(emacs)
-		 hs.eventtap.event.newKeyEvent('c', false):post(emacs)
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(emacs)
-
-		 hs.eventtap.event.newKeyEvent('c', true):post(emacs)
-		 hs.eventtap.event.newKeyEvent('c', false):post(emacs)
-
-		 hs.eventtap.event.newKeyEvent("t", true):post(emacs)
-		 hs.eventtap.event.newKeyEvent("t", false):post(emacs)
-		 emacs:activate()
-	      end
-	   }
-	}
-     },
-     {
-	mods = {"cmd", "ctrl"},
-	key = "a",
-	specs = {
-	   {
-	      name = "Emacs",
-	      fn = function()
-		 local app = hs.window.focusedWindow():application()
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(app)
-		 hs.eventtap.event.newKeyEvent("a", true):post(app)
-		 hs.eventtap.event.newKeyEvent("a", false):post(app)
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
-	      end
-	   },
-	   {
-	      name = ".*",
-	      fn = function()
-
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post()
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.f13, true):post()
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.f13, false):post()
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post()
-	      end
-	   }
-	}
-     },
-     {
-	mods = {"cmd", "ctrl"},
-	key = "d",
-	specs = {
-	   {
-	      name = "Emacs",
-	      fn = function()
-		 local app = hs.window.focusedWindow():application()
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(app)
-		 hs.eventtap.event.newKeyEvent("d", true):post(app)
-		 hs.eventtap.event.newKeyEvent("d", false):post(app)
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
-	      end
-	   }
-	}
-     },
-     {
-	mods = {"cmd", "ctrl"},
-	key = "Left",
-	specs = {
-	   {
-	      name = "Emacs",
-	      fn = function()
-		 local app = hs.window.focusedWindow():application()
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(app)
-		 hs.eventtap.event.newKeyEvent("Left", true):post(app)
-		 hs.eventtap.event.newKeyEvent("Left", false):post(app)
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
-	      end
-	   }
-	}
-     },
-     {
-	mods = {"cmd", "ctrl"},
-	key = "Right",
-	specs = {
-	   {
-	      name = "Emacs",
-	      fn = function()
-		 local app = hs.window.focusedWindow():application()
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(app)
-		 hs.eventtap.event.newKeyEvent("Right", true):post(app)
-		 hs.eventtap.event.newKeyEvent("Right", false):post(app)
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
-	      end
-	   }
-	}
-     },
-     {
-	mods = {"cmd", "ctrl"},
-	key = "Up",
-	specs = {
-	   {
-	      name = "Emacs",
-	      fn = function()
-		 local app = hs.window.focusedWindow():application()
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(app)
-		 hs.eventtap.event.newKeyEvent("Up", true):post(app)
-		 hs.eventtap.event.newKeyEvent("Up", false):post(app)
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
-	      end
-	   }
-	}
-     },
-     {
-	mods = {"cmd", "ctrl"},
-	key = "Down",
-	specs = {
-	   {
-	      name = "Emacs",
-	      fn = function()
-		 local app = hs.window.focusedWindow():application()
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(app)
-		 hs.eventtap.event.newKeyEvent("Down", true):post(app)
-		 hs.eventtap.event.newKeyEvent("Down", false):post(app)
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
-	      end
-	   }
-	}
-     },
-     {
-	mods = {"cmd", "ctrl", "alt"},
-	key = "Up",
-	specs = {
-	   {
-	      name = "Emacs",
-	      fn = function()
-		 local app = hs.window.focusedWindow():application()
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(app)
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.alt, true):post(app)
-		 hs.eventtap.event.newKeyEvent("Up", true):post(app)
-		 hs.eventtap.event.newKeyEvent("Up", false):post(app)
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.alt, false):post(app)
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
-	      end
-	   }
-	}
-     },
-     {
-	mods = {"cmd", "ctrl", "alt"},
-	key = "f",
-	specs = {
-	   {
-	      name = "Emacs",
-	      fn = function()
-		 local app = hs.window.focusedWindow():application()
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(app)
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.alt, true):post(app)
-		 hs.eventtap.event.newKeyEvent("f", true):post(app)
-		 hs.eventtap.event.newKeyEvent("f", false):post(app)
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.alt, false):post(app)
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
-	      end
-	   }
-	}
-     },
-     {
-	mods = {"cmd", "alt"},
-	key = "c",
-	specs = {
-	   {
-	      name = "Emacs",
-	      fn = function()
-		 local app = hs.window.focusedWindow():application()
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.alt, true):post(app)
-		 hs.eventtap.event.newKeyEvent("c", true):post(app)
-		 hs.eventtap.event.newKeyEvent("c", false):post(app)
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.alt, false):post(app)
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
-	      end
-	   }
-	}
-     },
-     {
-	mods = {"cmd"},
-	key = "\\",
-	specs = {
-	   {
-	      name = "Emacs",
-	      fn = function()
-		 local app = hs.window.focusedWindow():application()
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
-		 hs.eventtap.event.newKeyEvent("\\", true):post(app)
-		 hs.eventtap.event.newKeyEvent("\\", false):post(app)
-		 hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
-	      end
-	   }
-	}
-     }
-  }
-
-  function hks(name, etype, app)
-     if (etype == hs.application.watcher.activated) then
-	for k, v in pairs(hotkeys) do
-	   hs.hotkey.disableAll(v.mods, v.key)
-	end
-
-	hs.loadSpoon("WindowHalfsAndThirds");
-	spoon.WindowHalfsAndThirds:bindHotkeys(spoon.WindowHalfsAndThirds.defaultHotkeys)
-
-
-	for k, v in pairs (hotkeys) do
-	   local hk = filter(
-	      function(item)
-		 return string.match(name:lower(), item.name:lower()) 
-	      end,
-	      v.specs)
-
-	   if next(hk) ~= nil then
-	      hs.hotkey.new(v.mods, v.key, nil,  hk[1].fn):enable()
-	   end
-	end
-     end
-  end
-
-  hkWatcher = hs.application.watcher.new(hks)
-  hkWatcher:start()
-
-  -- auto change the im for the application callback
-  apps = {
-     {
-	name = 'Emacs',
-	im = 'EN'
-     },
-     {
-	name = 'Google Chrome',
-	im = 'EN'
-     },
-     {
-	name = 'Wechat',
-	im = 'CN'
-     },
-     {
-	name = 'DingTalk',
-	im = 'CN'
-     },
-     {
-	name = 'OmniFocus',
-	im = 'CN'
-     },
-     {
-	name = 'Numbers',
-	im = 'CN'
-     },
-     {
-	name = 'Pages',
-	im = 'CN'
-     },
-     {
-	name = 'Keynote',
-	im = 'CN'
-     },
-     {
-	name = 'Xmind',
-	im = 'CN'
-     },
-     {
-	name = 'MacDown',
-	im = 'CN'
-     },
-     {
-	name = 'Microsoft Word',
-	im = 'CN'
-     }
-  }
-
-  function ims(name, etype, app)
-     if (etype == hs.application.watcher.activated) then
-	config = filter(
-	   function(item)
-	      return string.match(name:lower(), item.name:lower())
-	   end,
-	   apps)
-
-	if next(config) ~= nil then
-	   local current = hs.keycodes.currentSourceID()
-
-	   if (current ~= "im.rime.inputmethod.Squirrel.Rime" and string.match (config [1].im, "CN")) then
-	      hs.keycodes.currentSourceID("com.apple.keylayout.US")
-	      hs.keycodes.currentSourceID("im.rime.inputmethod.Squirrel.Rime")
-	   elseif (current ~= "com.apple.keylayout.US" and string.match (config [1].im, "EN")) then
-	      hs.keycodes.currentSourceID("com.apple.keylayout.US")
-	   end
-	else
-	   hs.keycodes.currentSourceID("com.apple.keylayout.US")
-	end
-     end
-  end
-
-  -- auto change the im for the application
-  imWatcher = hs.application.watcher.new(ims)
-  imWatcher:start()
-
-  pomodoro = require("pomodoro").new()
-
-  svr =
-     (
-	function ()
-	   local svr = hs.httpserver.new(false, false);
-	   svr:setInterface("127.0.0.1")
-	   svr:setPort(13140)
-	   svr:setCallback(
-	      function (method, url, headers, body)
-		 local payload = hs.json.decode(body)
-		 log.i (payload.type, payload.title)
-		 if (payload.type == "FOCUSED") then
-		    pomodoro:focused(payload)
-		 elseif (payload.type == "UNFOCUSED") then
-		    payload.title = "休息"
-		    pomodoro:unfocused(payload)
-		 elseif (payload.type == "UNFOCUS") then
-		    payload.title = "任务终止"
-		    pomodoro:unfocus(payload)
-		 else
-		    pomodoro:focus()
-		 end
-
-		 return "", 200, {}
-	      end
-	   )
-	   svr:start()
-	   return svr
-	end
-     )()
-
-  hs.notify.new({title='Hammerspoon', informativeText='Ready to rock 🤘'}):send()
-#+END_SRC
-
-
-#+BEGIN_SRC lua :eval never :exports code :tangle (m/resolve "${m/home.d}/.hammerspoon/pomodoro.lua") :mkdirp yes
-  local pomodoro = {}
-
-  function pomodoro.new()
-     local o = {}
-
-     setmetatable(o, pomodoro)
-     local mt = {
-	focused = pomodoro.focused,
-	unfocused = pomodoro.unfocused,
-	focus = pomodoro.focus,
-	unfocus = pomodoro.unfocus,
-	timer = nil,
-	canvas =
-	   (
-	      function ()
-		 local w,h = 500, 100;
-		 local frame = hs.screen.mainScreen():fullFrame()
-		 canvas = hs.drawing.text(hs.geometry.rect(frame.w - w, frame.h - h, w , h), "")
-		 canvas:setBehavior(hs.drawing.windowBehaviors["canJoinAllSpaces"])
-		 return canvas
-	      end
-	   )()
-     }
-     pomodoro.__index = mt
-     return o
-  end
-
-  function pomodoro:show(text)
-     self.canvas:show()
-     local content = hs.styledtext.new(
-	text,
-	{
-	   font = {
-	      name = "Heiti SC",
-	      size = 30
-	   },
-	   color = hs.drawing.color.asRGB({hex= "#f8d25c", alpha= 1}),
-	   --         backgroundColor = hs.drawing.color.asRGB({hex= "#ffffff", alpha= 1}),
-	   paragraphStyle = {
-	      alignment = "right",
-	   }
-	}
-     )
-     local frame = hs.screen.mainScreen():fullFrame()
-     local ts = hs.drawing.getTextDrawingSize(content)
-     local padding = {
-	right = 16,
-	bottom = 16
-     }
-     local ok, object, descriptor = hs.osascript.applescript([[
-	global dock_showed
-	global dock_width
-	global dock_height
-	set dock_height to 0
-	set dock_width to 0
-	tell application "System Events"
-		set dock_showed to false
-		tell dock preferences
-			set dock_showed to not autohide
-		end tell
-		tell process "Dock"
-			if (dock_showed) then
-				set dock_dimensions to size in list 1
-				set dock_width to item 1 of dock_dimensions
-				set dock_height to item 2 of dock_dimensions
-			end if
-		end tell
-	end tell
-	return dock_height
-     ]])
-   
-     if (ok) then
-	self.canvas:setTopLeft(hs.geometry.point(frame.w - ts.w - padding.right, frame.h - object - ts.h  - padding.bottom))
-     else
-	self.canvas:setTopLeft(hs.geometry.point(frame.w - ts.w - padding.right, frame.h - ts.h  - padding.bottom))
-     end
-
-
-     self.canvas:setSize(hs.geometry.size (ts.w + padding.right, ts.h + padding.bottom))
-     self.canvas:setStyledText(content)
-  end
-
-  function dnd()
-     hs.eventtap.event.newKeyEvent(hs.keycodes.map.alt, true):post()
-     hs.eventtap.event.newKeyEvent(hs.keycodes.map.f15, true):post()
-
-     hs.eventtap.event.newKeyEvent(hs.keycodes.map.f15, false):post()
-     hs.eventtap.event.newKeyEvent(hs.keycodes.map.alt, false):post()
-  end
-
-  function pomodoro:focused(config)
-     hs.notify.new(
-	function()
-	end,
-	{
-	   title = "Pomodoro",
-	   informativeText = "任务已经开始，加油吧！！！",
-	   subTitle = "",
-	   autoWithdraw = true,
-	   withdrawAfter = 3,
-	}
-     ):send()
-
-
-     if(self.timer ~= nil) then
-	dnd()
-	self.timer:stop()
-     end
-     dnd()
-     local tick = tonumber(config.duration) * 60
-     self.timer = hs.timer.doUntil(
-	function()
-	   return tick <= 0
-	end,
-	function()
-	   tick = tick - 1
-	   pomodoro.show(self, config.title .. "[" .. math.floor(tick/60) .. ":" .. string.format("%02d", tick % 60) .. "]")
-	end,
-	1
-     ):fire():start()
-  end
-
-  function pomodoro:focus()
-     hs.notify.new(
-	function()
-	   local emacs = hs.appfinder.appFromName("Emacs")
-	   local agenda = function(app)
-
-	      hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(app)
-	      hs.eventtap.event.newKeyEvent("g", true):post(app)
-	      hs.eventtap.event.newKeyEvent("g", false):post(app)
-	      hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
-
-	      hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(app)
-	      hs.eventtap.event.newKeyEvent("g", true):post(app)
-	      hs.eventtap.event.newKeyEvent("g", false):post(app)
-	      hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
-
-	      hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(app)
-	      hs.eventtap.event.newKeyEvent("c", true):post(app)
-	      hs.eventtap.event.newKeyEvent("c", false):post(app)
-	      hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
-
-	      hs.eventtap.event.newKeyEvent("a", true):post(app)
-	      hs.eventtap.event.newKeyEvent("a", false):post(app)
-
-	      hs.eventtap.event.newKeyEvent("a", true):post(app)
-	      hs.eventtap.event.newKeyEvent("a", false):post(app)
-
-	      hs.eventtap.event.newKeyEvent("r", true):post(app)
-	      hs.eventtap.event.newKeyEvent("r", false):post(app)
-	   end
-	   if (emacs == nil) then
-	      emacs = hs.application.open("Emacs")
-	   end
-
-	   emacs:activate()
-	   hs.timer.doAfter(
-	      1,
-	      function()
-		 agenda(emacs)
-	      end
-	   )
-
-	end,
-	{
-	   title = "Pomodoro",
-	   informativeText = "准备好了吗？",
-	   autoWithdraw = true,
-	   withdrawAfter = 36000,
-	   alwaysPresent = true,
-	   hasActionButton = true,
-	   actionButtonTitle = "好了"
-	}
-     ):send()
-  end
-
-
-  function pomodoro:unfocus(config)
-     if(self.timer ~= nil) then
-	self.timer:stop()
-     end
-     local tick = tonumber(config.duration) * 60
-     self.timer = hs.timer.doUntil(
-	function()
-	   return tick <= 0
-	end,
-	function()
-	   tick = tick - 1
-	   pomodoro.show(self, config.title .. "[" .. math.floor(tick/60) .. ":" .. string.format("%02d", tick % 60) .. "]")
-	end,
-	1
-     ):fire():start()
-     dnd()
-  end
-
-  function pomodoro:unfocused(config)
-     if(self.timer ~= nil) then
-	self.timer:stop()
-	dnd()
-     end
-     local tick = tonumber(config.duration) * 60
-     self.timer = hs.timer.doUntil(
-	function()
-	   return tick <= 0
-	end,
-	function()
-	   tick = tick - 1
-	   pomodoro.show(self, config.title .. "[" .. math.floor(tick/60) .. ":" .. string.format("%02d", tick % 60) .. "]")
-	end,
-	1
-     ):fire():start()
-
-     hs.notify.new(
-	function()
-	end,
-	{
-	   title = "Pomodoro",
-	   informativeText = "任务已经结束，休息一会吧。",
-	   subTitle = "",
-	   autoWithdraw = true,
-	   withdrawAfter = 3,
-	}
-     ):send()
-  end
-
-  return pomodoro
-#+END_SRC
+*** hammerspoon 番茄工作法
+    #+NAME: dndpath
+    #+BEGIN_SRC elisp :var path=(m/resolve "${m/home.d}/.local/bin/")
+      path
+    #+END_SRC
+    
+    #+BEGIN_SRC lua :eval never :exports code :tangle (m/resolve "${m/home.d}/.hammerspoon/pomodoro.lua") :mkdirp yes :noweb yes
+      local pomodoro = {}
+      
+      function pomodoro.new()
+	 local o = {}
+      
+	 setmetatable(o, pomodoro)
+	 local mt = {
+	    focused = pomodoro.focused,
+	    unfocused = pomodoro.unfocused,
+	    focus = pomodoro.focus,
+	    unfocus = pomodoro.unfocus,
+	    timer = nil,
+	    canvas =
+	       (
+		  function ()
+		     local w,h = 500, 100;
+		     local frame = hs.screen.mainScreen():fullFrame()
+		     canvas = hs.drawing.text(hs.geometry.rect(frame.w - w, frame.h - h, w , h), "")
+		     canvas:setBehavior(hs.drawing.windowBehaviors["canJoinAllSpaces"])
+		     return canvas
+		  end
+	       )()
+	 }
+	 pomodoro.__index = mt
+	 return o
+      end
+      
+      function pomodoro:show(text)
+	 self.canvas:show()
+	 local content = hs.styledtext.new(
+	    text,
+	    {
+	       font = {
+		  name = "Heiti SC",
+		  size = 30
+	       },
+	       color = hs.drawing.color.asRGB({hex= "#f8d25c", alpha= 1}),
+	       --         backgroundColor = hs.drawinng.color.asRGB({hex= "#ffffff", alpha= 1}),
+	       paragraphStyle = {
+		  alignment = "right",
+	       }
+	    }
+	 )
+	 local frame = hs.screen.mainScreen():fullFrame()
+	 local ts = hs.drawing.getTextDrawingSize(content)
+	 local padding = {
+	    right = 16,
+	    bottom = 16
+	 }
+	 local ok, object, descriptor = hs.osascript.applescript([[
+	    global dock_showed
+	    global dock_width
+	    global dock_height
+	    set dock_height to 0
+	    set dock_width to 0
+	    tell application "System Events"
+		    set dock_showed to false
+		    tell dock preferences
+			    set dock_showed to not autohide
+		    end tell
+		    tell process "Dock"
+			    if (dock_showed) then
+				    set dock_dimensions to size in list 1
+				    set dock_width to item 1 of dock_dimensions
+				    set dock_height to item 2 of dock_dimensions
+			    end if
+		    end tell
+	    end tell
+	    return dock_height
+	 ]])
+      
+	 if (ok) then
+	    self.canvas:setTopLeft(hs.geometry.point(frame.w - ts.w - padding.right, frame.h - object - ts.h  - padding.bottom))
+	 else
+	    self.canvas:setTopLeft(hs.geometry.point(frame.w - ts.w - padding.right, frame.h - ts.h  - padding.bottom))
+	 end
+      
+      
+	 self.canvas:setSize(hs.geometry.size (ts.w + padding.right, ts.h + padding.bottom))
+	 self.canvas:setStyledText(content)
+      end
+      
+      function dnd(status)
+	 if(status) then
+	    hs.execute("<<dndpath()>>" .. "/dnd_on")
+	 else
+	    hs.execute("<<dndpath()>>" .. "/dnd_off")
+	 end
+      end
+      
+      function pomodoro:focused(config)
+	 hs.notify.new(
+	    function()
+	    end,
+	    {
+	       title = "Pomodoro",
+	       informativeText = "任务已经开始，加油吧！！！",
+	       subTitle = "",
+	       autoWithdraw = true,
+	       withdrawAfter = 3,
+	    }
+	 ):send()
+      
+      
+	 if(self.timer ~= nil) then
+	    self.timer:stop()
+	 end
+	 local tick = tonumber(config.duration) * 60
+	 self.timer = hs.timer.doUntil(
+	    function()
+	       return tick <= 0
+	    end,
+	    function()
+	       tick = tick - 1
+	       pomodoro.show(self, config.title .. "[" .. math.floor(tick/60) .. ":" .. string.format("%02d", tick % 60) .. "]")
+	    end,
+	    1
+	 ):fire():start()
+	 dnd(true)
+      end
+      
+      function pomodoro:focus()
+	 hs.notify.new(
+	    function()
+	       local emacs = hs.appfinder.appFromName("Emacs")
+	       local agenda = function(app)
+      
+		  hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(app)
+		  hs.eventtap.event.newKeyEvent("g", true):post(app)
+		  hs.eventtap.event.newKeyEvent("g", false):post(app)
+		  hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
+      
+		  hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(app)
+		  hs.eventtap.event.newKeyEvent("g", true):post(app)
+		  hs.eventtap.event.newKeyEvent("g", false):post(app)
+		  hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
+      
+		  hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(app)
+		  hs.eventtap.event.newKeyEvent("c", true):post(app)
+		  hs.eventtap.event.newKeyEvent("c", false):post(app)
+		  hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
+      
+		  hs.eventtap.event.newKeyEvent("a", true):post(app)
+		  hs.eventtap.event.newKeyEvent("a", false):post(app)
+      
+		  hs.eventtap.event.newKeyEvent("a", true):post(app)
+		  hs.eventtap.event.newKeyEvent("a", false):post(app)
+      
+		  hs.eventtap.event.newKeyEvent("r", true):post(app)
+		  hs.eventtap.event.newKeyEvent("r", false):post(app)
+	       end
+	       if (emacs == nil) then
+		  emacs = hs.application.open("Emacs")
+	       end
+      
+	       emacs:activate()
+	       hs.timer.doAfter(
+		  1,
+		  function()
+		     agenda(emacs)
+		  end
+	       )
+      
+	    end,
+	    {
+	       title = "Pomodoro",
+	       informativeText = "准备好了吗？",
+	       autoWithdraw = true,
+	       withdrawAfter = 36000,
+	       alwaysPresent = true,
+	       hasActionButton = true,
+	       actionButtonTitle = "好了"
+	    }
+	 ):send()
+      end
+      
+      
+      function pomodoro:unfocus(config)
+	 if(self.timer ~= nil) then
+	    self.timer:stop()
+	 end
+	 local tick = tonumber(config.duration) * 60
+	 self.timer = hs.timer.doUntil(
+	    function()
+	       return tick <= 0
+	    end,
+	    function()
+	       tick = tick - 1
+	       pomodoro.show(self, config.title .. "[" .. math.floor(tick/60) .. ":" .. string.format("%02d", tick % 60) .. "]")
+	    end,
+	    1
+	 ):fire():start()
+	 dnd(false)
+      end
+      
+      function pomodoro:unfocused(config)
+	 if(self.timer ~= nil) then
+	    self.timer:stop()
+	 end
+	 dnd(false)
+      
+	 local tick = tonumber(config.duration) * 60
+	 self.timer = hs.timer.doUntil(
+	    function()
+	       return tick <= 0
+	    end,
+	    function()
+	       tick = tick - 1
+	       pomodoro.show(self, config.title .. "[" .. math.floor(tick/60) .. ":" .. string.format("%02d", tick % 60) .. "]")
+	    end,
+	    1
+	 ):fire():start()
+      
+	 hs.notify.new(
+	    function()
+	    end,
+	    {
+	       title = "Pomodoro",
+	       informativeText = "任务已经结束，休息一会吧。",
+	       subTitle = "",
+	       autoWithdraw = true,
+	       withdrawAfter = 3,
+	    }
+	 ):send()
+      end
+      
+      return pomodoro
+    #+END_SRC
 
