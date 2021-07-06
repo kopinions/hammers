@@ -23,7 +23,7 @@
 	     (m/resolve
 	      (concat (substring path 0 s) (m/var (match-string 1 path)) (substring path e))))))
        )
-
+     
      (defun m/files (glob &optional full)
        "Give an GLOB, return files matched GLOB.  If FULL is specified, return absolute pathnames for each file."
        (interactive "M")
@@ -33,18 +33,27 @@
 			      full
 			      (eshell-glob-regexp (file-name-nondirectory resolved)))
 	   (error '()))))
-
+     
      (defun m/var (name)
        "Return value of variable or environment identified by NAME."
        (or (getenv name) (eval (read name))))
-
+     
      (defun tangle-if-absent (path)
        (let* ((filename (m/resolve path)))
 	 (if (file-exists-p filename)
 	     "no"
 	   filename)))
-
-     (provide 'init-common)
+     
    #+END_SRC
 
+** 时间操作
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-common.el") :noweb yes :comments link
+     (use-package ts)
+   #+END_SRC
+
+   
+** 模块导出
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-common.el") :noweb yes :comments link
+     (provide 'init-common)
+   #+END_SRC   
 
