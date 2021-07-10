@@ -1,8 +1,8 @@
-#+TITLE:  Do not distrub 脚本配置
+#+TITLE:  常见脚本工具
 #+AUTHOR: 孙建康（rising.lambda）
 #+EMAIL:  rising.lambda@gmail.com
 
-#+DESCRIPTION: zsh 配置文件
+#+DESCRIPTION: 常见脚本工具
 #+PROPERTY:    header-args        :mkdirp yes
 #+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil
 #+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
@@ -77,3 +77,16 @@
 	   fi
        done <<<"$(printf "%s\n" "${PROCESS_LIST[@]}")"
      #+END_SRC
+*** respell of words
+    #+BEGIN_SRC shell :eval never :exports code :tangle (or (and (or (eq m/os 'macos) (eq m/os 'liunx)) (m/resolve "${m/home.d}/.local/bin/respell")) "no") :tangle-mode (identity #o755) :noweb yes
+      #!/bin/bash
+      query=$1
+      
+      html=$(curl -qsjklL "https://www.dictionary.com/browse/${query}")
+      emphasize=`echo $html | pup ".serp-nav-button + div .pron-spell-ipa-container .pron-spell-content .bold text{}" |head -n 1`
+      pronunciation=`echo $html | pup '.serp-nav-button + div .pron-spell-ipa-container .pron-spell-content text{}' | tr -d '[][:space:]' | awk -F, '{print $1}'`
+      result=$(echo $pronunciation | awk -v em="$emphasize" '{gsub(em, toupper(em)); print $0;}')
+      
+      echo ${result}
+    #+END_SRC
+
