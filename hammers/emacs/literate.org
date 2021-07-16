@@ -330,7 +330,7 @@
 	   ;; tasks
 	   ("t" "general task." entry
 	    (file ,(expand-file-name "inbox.org" org-agenda-dir))
-	    "* NEXT %?\n%U\n" :clock-resume 1)
+	    "* NEXT %?\n  :PROPERTIES:\n  :ID: %(org-id-uuid)\n  :CAPTURED_AT: %U\n  :END:" :clock-resume 1)
 	   ("n" "notes." entry
 	    (file ,(expand-file-name "notes.org" org-agenda-dir))
 	    "* %? :NOTE:\n" :clock-resume t)
