@@ -188,6 +188,7 @@
       (m/tangles "${m/root}/hammers/scripts/*.org")
       (m/tangles "${m/root}/hammers/zsh/*.org")
       (m/tangles "${m/root}/hammers/ssh/*.org")
+      (m/tangles "${m/root}/hammers/direnv/*.org")
       (m/tangles "${m/root}/hammers/tmux/*.org")
       (m/tangles "${m/root}/hammers/vim/*.org")
       (m/tangles "${m/root}/hammers/rg/*.org")
