@@ -141,6 +141,9 @@
 	    (seq-filter (lambda (f) (if (member (file-name-nondirectory f) excluded) nil t)) org-agenda-files)))
 	:custom
 	(org-directory "agendas")
+	;; Save state changes in the LOGBOOK drawer
+	(org-log-into-drawer t)
+	(org-log-done t)
 	(org-agenda-include-diary t)
 	(org-agenda-time-grid
 	 '((daily today require-timed)
@@ -153,7 +156,6 @@
 	(org-agenda-span 'day)
 	(org-agenda-skip-scheduled-if-done t)
 	(org-agenda-skip-deadline-if-done t)
-	(org-log-done t)
 	(org-agenda-log-mode-items (quote (closed clock)))
 	(org-agenda-clockreport-parameter-plist
 	 '(:maxlevel 5 :block t :tstart t :tend t :emphasize t :link nil :narrow 80 :indent t :compact t :fileskip0 t :formula % :level 4 :tcolumns nil :formatter nil))
@@ -373,8 +375,6 @@
 	(org-clock-in-resume t)
 	;; Save clock data and notes in the LOGBOOK drawer
 	(org-clock-into-drawer t)
-	;; Save state changes in the LOGBOOK drawer
-	(org-log-into-drawer t)
 	;; Removes clocked tasks with 0:00 duration
 	(org-clock-out-remove-zero-time-clocks t)
 	;; Show clock sums as hours and minutes, not "n days" etc.
