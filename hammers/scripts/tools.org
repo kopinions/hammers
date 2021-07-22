@@ -10,9 +10,19 @@
 
 *** macOS do not distrub config
 **** on
-     #+BEGIN_SRC shell :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/home.d}/.local/bin/dnd_on")) "no") :tangle-mode (identity #o755) :noweb yes
+     #+BEGIN_SRC shell :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/home.d}/.local/bin/dnd_on")) "no") :tangle-mode (identity #o755) :noweb yes :comments link
        #!/usr/bin/env zsh
-       defaults read /Users/${USER}/Library/Preferences/com.apple.ncprefs.plist >/dev/null
+
+       STATUS=$(plutil -extract dnd_prefs xml1 -o - /Users/${USER}/Library/Preferences/com.apple.ncprefs.plist \
+	   | xmllint --xpath "string(//data)" - \
+	   | base64 --decode \
+	   | plutil -convert xml1 - -o - \
+	   | xmllint --xpath 'boolean(//key[text()="userPref"]/following-sibling::dict/key[text()="enabled"])' -)
+
+       if [[ $STATUS == "true" ]]; then
+	   exit 0;
+       fi 
+
        DND_HEX_DATA=$(plutil -extract dnd_prefs xml1 -o - /Users/${USER}/Library/Preferences/com.apple.ncprefs.plist \
 			  | xmllint --xpath "string(//data)" - \
 			  | base64 --decode \
@@ -30,28 +40,37 @@
 			  | xxd -p \
 			  | tr -d '\n')
        defaults write com.apple.ncprefs.plist dnd_prefs -data "$DND_HEX_DATA"
-       PROCESS_LIST=(
+       declare -a PROCESSES=(
 	   #cfprefsd
 	   usernoted
 	   #NotificationCenter
        )
-       while IFS= read -r line || [[ -n "$line" ]]; do
-	   if [[ "$line" == "" ]]; then continue; fi
-	   i="$line"
-	   # echo "$i"
-	   if [[ $(ps aux | grep "$i" | grep -v grep | awk '{print $2;}') != "" ]]; then
-	       killall "$i" && sleep 0.1 && while [[ $(ps aux | grep "$i" | grep -v grep | awk '{print $2;}') == "" ]]; do sleep 0.1; done
-	   else
-	       :
+
+       for process in "${PROCESSES[@]}"
+       do
+	   if [[ -n "${process}" ]]; then
+	       pkill -9 "${process}"
 	   fi
-       done <<<"$(printf "%s\n" "${PROCESS_LIST[@]}")"
+	   while [[ -z $(pgrep "${process}") ]]; do
+	       sleep 0.1
+	   done
+       done
      #+END_SRC
 **** off
-     #+BEGIN_SRC shell :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/home.d}/.local/bin/dnd_off")) "no") :tangle-mode (identity #o755) :noweb yes
+     #+BEGIN_SRC shell :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/home.d}/.local/bin/dnd_off")) "no") :tangle-mode (identity #o755) :noweb yes :comments link
        #!/usr/bin/env zsh
-       
+
        # https://github.com/sindresorhus/do-not-disturb/issues/9#issuecomment-768492417
-       defaults read /Users/${USER}/Library/Preferences/com.apple.ncprefs.plist >/dev/null
+       STATUS=$(plutil -extract dnd_prefs xml1 -o - /Users/${USER}/Library/Preferences/com.apple.ncprefs.plist \
+	   | xmllint --xpath "string(//data)" - \
+	   | base64 --decode \
+	   | plutil -convert xml1 - -o - \
+	   | xmllint --xpath 'boolean(//key[text()="userPref"]/following-sibling::dict/key[text()="enabled"])' -)
+
+       if [[ $STATUS == "false" ]]; then
+	   exit 0;
+       fi
+
        DND_HEX_DATA=$(plutil -extract dnd_prefs xml1 -o - /Users/${USER}/Library/Preferences/com.apple.ncprefs.plist \
 			  | xmllint --xpath "string(//data)" - \
 			  | base64 --decode \
@@ -61,21 +80,21 @@
 			  | xxd -p \
 			  | tr -d '\n')
        defaults write com.apple.ncprefs.plist dnd_prefs -data "$DND_HEX_DATA"
-       PROCESS_LIST=(
+       declare -a PROCESSES=(
 	   #cfprefsd
 	   usernoted
 	   #NotificationCenter
        )
-       while IFS= read -r line || [[ -n "$line" ]]; do
-	   if [[ "$line" == "" ]]; then continue; fi
-	   i="$line"
-	   # echo "$i"
-	   if [[ $(ps aux | grep "$i" | grep -v grep | awk '{print $2;}') != "" ]]; then
-	       killall "$i" && sleep 0.1 && while [[ $(ps aux | grep "$i" | grep -v grep | awk '{print $2;}') == "" ]]; do sleep 0.1; done
-	   else
-	       :
+
+       for process in "${PROCESSES[@]}"
+       do
+	   if [[ -n "${process}" ]]; then
+	       pkill -9 "${process}"
 	   fi
-       done <<<"$(printf "%s\n" "${PROCESS_LIST[@]}")"
+	   while [[ -z $(pgrep "${process}") ]]; do
+	       sleep 0.1
+	   done
+       done
      #+END_SRC
 *** respell of words
     #+BEGIN_SRC shell :eval never :exports code :tangle (or (and (or (eq m/os 'macos) (eq m/os 'liunx)) (m/resolve "${m/home.d}/.local/bin/respell")) "no") :tangle-mode (identity #o755) :noweb yes
