@@ -589,13 +589,25 @@
 	    1
 	 ):fire():start()
 	 dnd(true)
+	 hs.notify.withdrawAll()
       end
       
       
       function pomodoro:unfocused(config)
-	 log.i("dnd false")
-      
 	 dnd(false)
+	 hs.notify.withdrawAll()
+	 hs.notify.new(
+	    function()
+	    end,
+	    {
+	       title = "Pomodoro",
+	       informativeText = "任务已经结束，休息一会儿吧！！！",
+	       subTitle = "休息吧",
+	       autoWithdraw = true,
+	       withdrawAfter = 3,
+	    }
+	 ):send()
+      
 	 if(self.timer ~= nil) then
 	    self.timer:stop()
 	 end
@@ -667,18 +679,6 @@
 	    end,
 	    1
 	 ):fire():start()
-      
-	 hs.notify.new(
-	    function()
-	    end,
-	    {
-	       title = "Pomodoro",
-	       informativeText = "任务已经结束，休息一会吧。",
-	       subTitle = "",
-	       autoWithdraw = true,
-	       withdrawAfter = 3,
-	    }
-	 ):send()
       end
       
       return pomodoro
