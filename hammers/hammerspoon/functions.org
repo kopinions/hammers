@@ -450,11 +450,6 @@
 		     elseif (payload.type == "UNFOCUSED") then
 			payload.title = "休息"
 			pomodoro:unfocused(payload)
-		     elseif (payload.type == "UNFOCUS") then
-			payload.title = "任务终止"
-			pomodoro:unfocus(payload)
-		     else
-			pomodoro:focus()
 		     end
       
 		     return "", 200, {}
@@ -596,85 +591,14 @@
 	 dnd(true)
       end
       
-      function pomodoro:focus()
-	 hs.notify.new(
-	    function()
-	       local emacs = hs.appfinder.appFromName("Emacs")
-	       local agenda = function(app)
-      
-		  hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(app)
-		  hs.eventtap.event.newKeyEvent("g", true):post(app)
-		  hs.eventtap.event.newKeyEvent("g", false):post(app)
-		  hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
-      
-		  hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(app)
-		  hs.eventtap.event.newKeyEvent("g", true):post(app)
-		  hs.eventtap.event.newKeyEvent("g", false):post(app)
-		  hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
-      
-		  hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(app)
-		  hs.eventtap.event.newKeyEvent("c", true):post(app)
-		  hs.eventtap.event.newKeyEvent("c", false):post(app)
-		  hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
-      
-		  hs.eventtap.event.newKeyEvent("a", true):post(app)
-		  hs.eventtap.event.newKeyEvent("a", false):post(app)
-      
-		  hs.eventtap.event.newKeyEvent("a", true):post(app)
-		  hs.eventtap.event.newKeyEvent("a", false):post(app)
-      
-		  hs.eventtap.event.newKeyEvent("r", true):post(app)
-		  hs.eventtap.event.newKeyEvent("r", false):post(app)
-	       end
-	       if (emacs == nil) then
-		  emacs = hs.application.open("Emacs")
-	       end
-      
-	       emacs:activate()
-	       hs.timer.doAfter(
-		  1,
-		  function()
-		     agenda(emacs)
-		  end
-	       )
-      
-	    end,
-	    {
-	       title = "Pomodoro",
-	       informativeText = "准备好了吗？",
-	       autoWithdraw = true,
-	       withdrawAfter = 36000,
-	       alwaysPresent = true,
-	       hasActionButton = true,
-	       actionButtonTitle = "好了"
-	    }
-	 ):send()
-      end
-      
-      
-      function pomodoro:unfocus(config)
-	 if(self.timer ~= nil) then
-	    self.timer:stop()
-	 end
-	 local tick = tonumber(config.duration) * 60
-	 self.timer = hs.timer.doUntil(
-	    function()
-	       return tick <= 0
-	    end,
-	    function()
-	       tick = tick - 1
-	       pomodoro.show(self, config.title .. "[" .. math.floor(tick/60) .. ":" .. string.format("%02d", tick % 60) .. "]")
-	    end,
-	    1
-	 ):fire():start()
-	 dnd(false)
-      end
       
       function pomodoro:unfocused(config)
+	 log.i("dnd false")
+      
+	 dnd(false)
 	 if(self.timer ~= nil) then
 	    self.timer:stop()
 	 end
-	 dnd(false)
       
 	 local tick = tonumber(config.duration) * 60
 	 self.timer = hs.timer.doUntil(
@@ -683,7 +607,63 @@
 	    end,
 	    function()
 	       tick = tick - 1
-	       pomodoro.show(self, config.title .. "[" .. math.floor(tick/60) .. ":" .. string.format("%02d", tick % 60) .. "]")
+	       if (tick > 0) then
+		  pomodoro.show(self, config.title .. "[" .. math.floor(tick/60) .. ":" .. string.format("%02d", tick % 60) .. "]")
+	       else
+		  pomodoro.show(self, "准备工作吧？")
+		  hs.notify.new(
+		     function()
+			local emacs = hs.appfinder.appFromName("Emacs")
+			local agenda = function(app)
+      
+			   hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(app)
+			   hs.eventtap.event.newKeyEvent("g", true):post(app)
+			   hs.eventtap.event.newKeyEvent("g", false):post(app)
+			   hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
+      
+			   hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(app)
+			   hs.eventtap.event.newKeyEvent("g", true):post(app)
+			   hs.eventtap.event.newKeyEvent("g", false):post(app)
+			   hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
+      
+			   hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(app)
+			   hs.eventtap.event.newKeyEvent("c", true):post(app)
+			   hs.eventtap.event.newKeyEvent("c", false):post(app)
+			   hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
+      
+			   hs.eventtap.event.newKeyEvent("a", true):post(app)
+			   hs.eventtap.event.newKeyEvent("a", false):post(app)
+      
+			   hs.eventtap.event.newKeyEvent("a", true):post(app)
+			   hs.eventtap.event.newKeyEvent("a", false):post(app)
+      
+			   hs.eventtap.event.newKeyEvent("r", true):post(app)
+			   hs.eventtap.event.newKeyEvent("r", false):post(app)
+			end
+			if (emacs == nil) then
+			   emacs = hs.application.open("Emacs")
+			end
+      
+			emacs:activate()
+			hs.timer.doAfter(
+			   2,
+			   function()
+			      agenda(emacs)
+			   end
+			)
+      
+		     end,
+		     {
+			title = "Pomodoro",
+			informativeText = "开始工作吧？",
+			autoWithdraw = true,
+			withdrawAfter = 36000,
+			alwaysPresent = true,
+			hasActionButton = true,
+			actionButtonTitle = "好"
+		     }
+		  ):send()
+	       end
 	    end,
 	    1
 	 ):fire():start()
