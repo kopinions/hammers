@@ -610,8 +610,7 @@
 	(valign-fancy-bar 't)
 	:hook
 	(org-agenda-finalize . valign-region)
-	(org-agenda-mode . valign-mode)
-	(org-mode . valign-mode))
+	(org-agenda-mode . valign-mode))
     #+END_SRC
 *** org-mode retrospect temlate
     #+BEGIN_SRC org :tangle (m/resolve "${m/home.d}/agendas/retrospect.tmpl") :noweb yes :mkdirp yes
@@ -662,6 +661,7 @@
       ,#+CATEGORY: Inbox
       ,#+FILETAGS: INBOX
     #+END_SRC
+    
 ** provide
    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-literate.el") :comments link
      (provide 'init-literate)
