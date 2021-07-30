@@ -36,6 +36,13 @@
 	(when (memq m/os '(macos linux))
 	  (exec-path-from-shell-initialize)))
     #+END_SRC
+** emacs server
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-os.el") :comments link
+     (use-package server
+       :config
+       (unless (server-running-p) (server-start)))
+   #+END_SRC
+
 ** http
    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-os.el") :comments link
      (use-package request)
