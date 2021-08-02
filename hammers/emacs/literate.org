@@ -169,20 +169,20 @@
 			    ,(expand-file-name "meeting.org" org-agenda-dir)
 			    ,(expand-file-name "retrospect.org" org-agenda-dir)
 			    ))
-	(org-archive-location (concat (expand-file-name "archive.org" org-agenda-dir) "::datetree/* Finished Tasks"))
+	(org-archive-location (concat (expand-file-name "archive.org" org-agenda-dir) "::datetree/"))
+	(org-archive-mark-done t)
 	(org-support-shift-select t)
-
+      
 	;; Targets start with the file name - allows creating level 1 tasks
 	;;(setq org-refile-use-outline-path (quote file))
 	(org-refile-use-outline-path t)
 	(org-outline-path-complete-in-steps nil)
-
+      
 	;; Allow refile to create parent tasks with confirmation
 	(org-refile-use-cache t)
-
+      
 	(org-refile-allow-creating-parent-nodes 'confirm)
 	(org-refile-targets '((m/refile-targets :maxlevel . 5)))
-	(org-archive-mark-done nil)
 	      ;;; Agenda views
 	(org-agenda-custom-commands
 	 `(("N" "Notes" tags "NOTE"
@@ -285,7 +285,7 @@
 			 (org-tags-match-list-sublevels nil)
 			 (org-agenda-sorting-strategy
 			  '(category-keep))))
-
+      
 	     ;; (tags-todo "-NEXT"
 	     ;;            ((org-agenda-overriding-header "All other TODOs")
 	     ;;             (org-match-list-sublevels t)))
