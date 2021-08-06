@@ -75,6 +75,7 @@
 	(org-export-coding-system 'utf-8)
 	(org-pretty-entities t)
 	(org-fast-tag-selection-single-key 'expert)
+	(org-image-actual-width nil)
 	:custom-face
 	(org-link ((t (:foreground "#ebe087" :underline t))))
 	(org-list-dt ((t (:foreground "#bd93f9"))))
