@@ -239,6 +239,7 @@
 			 (org-agenda-scheduled-leaders '("" "Due %2dx: "))
 			 (org-agenda-overriding-header "Today's Schedule:")
 			 (org-agenda-start-day nil)
+			 (org-agenda-archives-mode t)			 
 			 (org-agenda-start-on-weekday nil)
 			 (org-agenda-compact-blocks t)
 			 (org-agenda-use-time-grid nil)))
@@ -248,6 +249,7 @@
 			 (org-agenda-deadline-leaders '("" "Due in %2dx: "))
 			 (org-agenda-start-day "+1d")
 			 (org-agenda-show-future-repeats nil)
+			 (org-agenda-archives-mode t)			 
 			 (org-agenda-entry-types '(:timestamp :sexp :scheduled :deadline))))))
 	   ("g" "GTD"
 	    ((agenda "" ((org-agenda-span 1)                      ; daily agenda
@@ -255,6 +257,7 @@
 			 (org-agenda-scheduled-leaders '("" "Due %2dx: "))
 			 (org-agenda-overriding-header "Today's Schedule:")
 			 (org-agenda-start-day nil)
+			 (org-agenda-archives-mode t)			 
 			 (org-agenda-start-on-weekday nil)
 			 (org-agenda-compact-blocks t)
 			 (org-agenda-use-time-grid t)))
