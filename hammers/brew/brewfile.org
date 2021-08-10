@@ -48,7 +48,7 @@
       brew 'boost'
 
       # ides
-      cask 'clion'
+      cask 'clion', greedy: false
 
       # virtualization
 
