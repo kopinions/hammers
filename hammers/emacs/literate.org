@@ -140,7 +140,7 @@
 			     (or (org-entry-get nil "ARCHIVE" 'inherit) org-archive-location))))
 	       (buffer (or (find-buffer-visiting afile) (find-file-noselect afile))))
 	  ad-do-it
-      
+
 	  (when fix-archive-p
 	    (with-current-buffer buffer
 	      (goto-char (point-max))
@@ -217,15 +217,15 @@
 	(org-archive-location (concat (expand-file-name "archive.org" org-agenda-dir) "::"))
 	(org-archive-mark-done t)
 	(org-support-shift-select t)
-      
+
 	;; Targets start with the file name - allows creating level 1 tasks
 	;;(setq org-refile-use-outline-path (quote file))
 	(org-refile-use-outline-path t)
 	(org-outline-path-complete-in-steps nil)
-      
+
 	;; Allow refile to create parent tasks with confirmation
 	(org-refile-use-cache t)
-      
+
 	(org-refile-allow-creating-parent-nodes 'confirm)
 	(org-refile-targets '((m/refile-targets :maxlevel . 5)))
 	      ;;; Agenda views
@@ -333,7 +333,7 @@
 			 (org-tags-match-list-sublevels nil)
 			 (org-agenda-sorting-strategy
 			  '(category-keep))))
-      
+
 	     ;; (tags-todo "-NEXT"
 	     ;;            ((org-agenda-overriding-header "All other TODOs")
 	     ;;             (org-match-list-sublevels t)))
@@ -380,7 +380,15 @@
 	   ;; tasks
 	   ("t" "general task." entry
 	    (file ,(expand-file-name "inbox.org" org-agenda-dir))
-	    "* NEXT %?\n  :PROPERTIES:\n  :ID: %(org-id-uuid)\n  :CAPTURED_AT: %U\n  :END:" :clock-resume 1)
+	    ,(mapconcat 'identity
+		       '("* NEXT %?"
+			 "  :PROPERTIES:"
+			 "  :ID: %(org-id-uuid)"
+			 "  :CAPTURED_AT: %U"
+			 "  :LOGGING: DONE CANCELLED(@/!) nologrepeat"
+			 "  :END:")
+		       "\n")
+	    :clock-resume 1)
 	   ("n" "notes." entry
 	    (file ,(expand-file-name "notes.org" org-agenda-dir))
 	    "* %? :NOTE:\n" :clock-resume t)
