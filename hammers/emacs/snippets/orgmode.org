@@ -86,7 +86,7 @@
       ,#+CATEGORIES: $6
       ,#+PROPERTY:    header-args        :comments org
       ,#+PROPERTY:    header-args        :mkdirp yes
-      ,#+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil \n:nil ^:true *:t <:t -:t f:t |:t ::t
+      ,#+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil \n:nil ^:nil *:t <:t -:t f:t |:t ::t
       ,#+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
       ,#+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
       ,#+BIND:        org-preview-latex-image-directory "$7"
