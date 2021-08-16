@@ -139,3 +139,15 @@
       ,#+END_SRC
     #+END_SRC
     
+*** latex
+    #+BEGIN_SRC org :tangle (m/resolve "${m/conf.d}/snippets/org-mode/latex") :mkdirp yes
+      # -*- mode: snippet -*-
+      # name: latex
+      # key: <latex
+      # --
+      ,#+HEADER: :imagemagick yes :iminoptions -density 300 -trim -background '#$1'  :imoutoptions -opaque none  -density 300 -quality 100 -flatten -trim  -sharpen 0x1.0 -geometry $2
+      ,#+HEADER: :fit yes
+      ,#+BEGIN_SRC latex  :file $3 :exports results :noweb yes
+	$0
+      ,#+END_SRC
+    #+END_SRC
