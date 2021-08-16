@@ -68,7 +68,7 @@
       cask 'baidunetdisk'
       cask 'baiducloud'
       cask 'yinxiangbiji'
-      cask 'dash'
+      # cask 'dash'
       cask 'thunder'
       cask '1password'
       cask 'nutstore'
