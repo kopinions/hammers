@@ -77,34 +77,35 @@
 				 (setplist s nil)
 				 (when (eq 'autoload (car-safe s))
 				   (unintern s)))))))
-
+      
       (require 'package)
 	;;; Install into separate package dirs for each Emacs version, to prevent bytecode incompatibility
       (let ((versioned-package-dir
 	     (expand-file-name (format "elpa-%s.%s" emacs-major-version emacs-minor-version)
 			       m/conf.d)))
 	(setq package-user-dir versioned-package-dir))
-
+      
       (if m/offline
 	  (setq package-archives `(("gnu" . ,(expand-file-name "offline/gnu" m/conf.d))
 				   ("melpa" . ,(expand-file-name "offline/melpa" m/conf.d))
-				   ("org" . ,(expand-file-name "offline/org" m/conf.d))))
+				   ("stable-melpa" . ,(expand-file-name "offline/stable-melpa" m/conf.d))))
 	(let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
 			    (not (gnutls-available-p))))
 	       (proto (if no-ssl "http" "https")))
 	  (if no-ssl
 	      (setq package-archives '(("gnu"   . "http://elpa.emacs-china.org/gnu/")
 				       ("melpa" . "http://elpa.emacs-china.org/melpa/")
-				       ("org" . "http://elpa.emacs-china.org/org/")))
+				       ("stable-melpa" . "http://elpa.emacs-china.org/stable-melpa/")))
 	    (unless no-ssl
 	      (setq package-archives '(("gnu"   . "https://elpa.emacs-china.org/gnu/")
 				       ("melpa" . "https://elpa.emacs-china.org/melpa/")
-				       ("org" . "http://elpa.emacs-china.org/org/")))))))
-
+				       ("stable-melpa" . "https://elpa.emacs-china.org/stable-melpa/")
+				       ))))))
+      
       ;; Work-around for https://debbugs.gnu.org/cgi/bugreport.cgi?bug=34341
       (when (version= "26.2" emacs-version)
 	(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
-
+      
       (package-initialize)
       (package-refresh-contents)
     #+END_SRC
