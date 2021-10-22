@@ -36,7 +36,7 @@
        ;; 激活 basedict 拼音词库，五笔用户请继续阅读 README
        (setq pyim-dicts (m/dicts))
        (use-package pyim-basedict
-	 :ensure nil
+	 :ensure t
 	 :config (pyim-basedict-enable))
      
        (setq default-input-method "pyim")
