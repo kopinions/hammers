@@ -145,12 +145,13 @@
       setopt correct                  # try to correct spelling of commands
     #+END_SRC
 
+*** tmux 连接到当前目录的实例上
     #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zsh/post/functions.zsh") :eval never :exports code :comments link
       #!/bin/zsh
       # tat: tmux attach
       function tat {
 	  name=$(basename `pwd` | sed -e 's/\.//g')
-
+      
 	  if tmux ls 2>&1 | grep "$name"; then
 	      tmux attach -t "$name"
 	  elif [ -f .envrc ]; then
@@ -159,7 +160,10 @@
 	      tmux new-session -s "$name"
 	  fi
       }
+    #+END_SRC
 
+*** rg 命令管道相关处理，如果 rg 被输出到 terminal, 则使用 less 进行分页，否则直接输出所有结果
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zsh/post/functions.zsh") :eval never :exports code :comments link
       function rg(){
 	  # If outputting (fd 1 = stdout) directly to a terminal, page automatically:
 	  if [ -t 1 ]; then
@@ -171,6 +175,28 @@
       }
     #+END_SRC
 
+*** 获取当前用户的某个名字的进程
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zsh/post/functions.zsh") :eval never :exports code :comments link
+      function egrep(){
+		# If outputting (fd 1 = stdout) directly to a terminal, page automatically:
+		if [ -t 1 ]; then
+		    command rg --pretty "$@" \
+			| less --no-init --quit-if-one-screen --RAW-CONTROL-CHARS
+		else
+		    command rg "$@"
+		fi
+	    }
+    #+END_SRC
+
+
+
+*** 根据正则表达式生成随机值
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zsh/post/functions.zsh") :eval never :exports code :comments link
+      function regen(){
+	  perl -e "use String::Random qw(random_regex random_string);print random_regex('$1');"
+      }
+    #+END_SRC
+    
     #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zsh/post/alias.zsh") :eval never :exports code :comments link
       #!/bin/zsh
       mk() {
@@ -180,7 +206,7 @@
 	      cmake --build cmake-build-debug --target ${1:-all} -j `nproc`
 	  fi
       }
-
+      
       mkt() {
 	  if [ -d build ]; then
 	      cmake --build build --target ${1:-test} -j `nproc`
