@@ -59,7 +59,9 @@
 *** verilog mode
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-languages.el") :comments link
       (use-package verilog-mode
-	:load-path m/load-path
+	:ensure t
+	:custom
+	(verilog-auto-arg-format 'single)
 	:config
 	(autoload 'verilog-mode "verilog-mode" "Verilog mode" t )
 	(add-to-list 'auto-mode-alist '("\\.[ds]?vh?\\'" . verilog-mode)))
