@@ -77,14 +77,22 @@
 				 (setplist s nil)
 				 (when (eq 'autoload (car-safe s))
 				   (unintern s)))))))
-      
+      (mapatoms (function  (lambda (s)
+			     (let ((sn (symbol-name s)))
+			       (when (string-match "^\\(verilog\\)\\(-.*\\)?$" sn)
+				 (setplist s nil)
+				 (message "xxx")
+				 (when (eq 'autoload (car-safe s))
+				   (unintern s)))))))
+
+
       (require 'package)
 	;;; Install into separate package dirs for each Emacs version, to prevent bytecode incompatibility
       (let ((versioned-package-dir
 	     (expand-file-name (format "elpa-%s.%s" emacs-major-version emacs-minor-version)
 			       m/conf.d)))
 	(setq package-user-dir versioned-package-dir))
-      
+
       (if m/offline
 	  (setq package-archives `(("gnu" . ,(expand-file-name "offline/gnu" m/conf.d))
 				   ("melpa" . ,(expand-file-name "offline/melpa" m/conf.d))
@@ -101,11 +109,11 @@
 				       ("melpa" . "https://elpa.emacs-china.org/melpa/")
 				       ("stable-melpa" . "https://elpa.emacs-china.org/stable-melpa/")
 				       ))))))
-      
+
       ;; Work-around for https://debbugs.gnu.org/cgi/bugreport.cgi?bug=34341
       (when (version= "26.2" emacs-version)
 	(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
-      
+
       (package-initialize)
       (package-refresh-contents)
     #+END_SRC
