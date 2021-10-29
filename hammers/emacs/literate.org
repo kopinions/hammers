@@ -76,6 +76,7 @@
 	(org-pretty-entities t)
 	(org-fast-tag-selection-single-key 'expert)
 	(org-image-actual-width nil)
+	(org-adapt-indentation t)
 	:custom-face
 	(org-link ((t (:foreground "#ebe087" :underline t))))
 	(org-list-dt ((t (:foreground "#bd93f9"))))
@@ -386,13 +387,13 @@
 	   ("t" "general task." entry
 	    (file ,(expand-file-name "inbox.org" org-agenda-dir))
 	    ,(mapconcat 'identity
-		       '("* NEXT %?"
-			 "  :PROPERTIES:"
-			 "  :ID: %(org-id-uuid)"
-			 "  :CAPTURED_AT: %U"
-			 "  :LOGGING: DONE CANCELLED(@/!) nologrepeat"
-			 "  :END:")
-		       "\n")
+			'("* NEXT %?"
+			  "  :PROPERTIES:"
+			  "  :ID: %(org-id-uuid)"
+			  "  :CAPTURED_AT: %U"
+			  "  :LOGGING: DONE CANCELLED(@/!) nologrepeat"
+			  "  :END:")
+			"\n")
 	    :clock-resume 1)
 	   ("n" "notes." entry
 	    (file ,(expand-file-name "notes.org" org-agenda-dir))
@@ -432,27 +433,27 @@
 *** org-mode capture command line tool
     #+BEGIN_SRC shell :eval never :exports code :tangle (m/resolve "${m/conf.d}/bin/capture") :tangle-mode (identity #o755) :comments link :noweb yes
       #!/usr/bin/env sh
-      
+
       # Open an org-capture popup frame from the shell. This opens a temporary emacsp
       # daemon if emacs isn't already running.
       #
       # Usage: org-capture [-k KEY] [MESSAGE]
       # Examples:
       #   org-capture -k n "To the mind that is still, the whole universe surrenders."
-      
+
       set -e
-      
+
       cleanup() {
 	  emacsclient --eval '(let (kill-emacs-hook) (kill-emacs))'
       }
-      
+
       # If emacs isn't running, we start a temporary daemon, solely for this window.
       if ! emacsclient --suppress-output --eval nil; then
 	  emacs --daemon
 	  trap cleanup EXIT INT TERM
 	  daemon=1
       fi
-      
+
       # org-capture key mapped to argument flags
       # keys=$(emacsclient -e "(+org-capture-available-keys)" | cut -d '"' -f2)
       while getopts "hk:" opt; do
@@ -460,16 +461,16 @@
 	  break
       done
       shift $((OPTIND-1))
-      
+
       # use remaining args, else read from stdin if passed a single dash
       str="$*"
       case "$str" in
 	  -) str=$(cat) ;;
       esac
-      
+
       # Fix incompatible terminals that cause odd 'not a valid terminal' errors
       [ "$TERM" = "alacritty" ] && export TERM=xterm-256color
-      
+
       if [ $daemon ]; then
 	  emacsclient -a "" \
 		      -c -F '((name . "org-capture") (width . 70) (height . 25) (transient . t))' \
