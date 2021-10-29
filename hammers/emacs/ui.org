@@ -48,7 +48,7 @@
     #+END_SRC
 
 *** 禁用鼠标
-    #+BEGIN_SRC elisp :exports code :eval never :tangle no :comments link
+    #+BEGIN_SRC elisp :exports code :eval never :tangle (m/resolve "${m/conf.d}/lisp/init-ui.el")  :comments link
       (use-package disable-mouse
 	:config
 	(global-disable-mouse-mode))
