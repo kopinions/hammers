@@ -134,6 +134,16 @@
     (shell-command (concat "git clone --no-hardlinks --recurse-submodule " resolved-src " " resolved-dest))
     (message "cloned: %s to %s" resolved-src resolved-dest)))
 
+(defun m/untar (src dest)
+  "clone the SRC to the DEST."
+  (let* ((resolved-src (m/resolve src))
+	 (resolved-dest (m/resolve dest)))
+    (message "untar: %s to %s" resolved-src resolved-dest)
+    (shell-command (concat "rm -rf " resolved-dest))
+    (shell-command (concat "mkdir -p $(dirname " resolved-dest ")"))
+    (shell-command (concat "tar -xJf" resolved-src " -C $(dirname " resolved-dest ")"))
+    (message "untared: %s to %s" resolved-src resolved-dest)))
+
 (defun m/rsync (src dest)
   "clone the SRC to the DEST."
   (let* ((resolved-src (m/resolve src))
@@ -168,6 +178,7 @@
 (m/tangles "${m/root}/hammers/emacs/*.org")
 
 (m/clone "${m/root}/hammers/emacs/3rdparty/lsp-ivy" "${m/conf.d}/3rdparty/lsp-ivy")
+(m/untar "${m/root}/hammers/emacs/3rdparty/pyim-bigdict.tar.xz" "${m/conf.d}/pyim/dicts/pyim-bigdict.pyim")
 (m/clone "${m/root}/hammers/emacs/3rdparty/verilog-mode" "${m/conf.d}/3rdparty/verilog-mode")
 (m/tangles "${m/root}/hammers/emacs/snippets/*.org")
 (m/tangles "${m/root}/hammers/git/*.org")
