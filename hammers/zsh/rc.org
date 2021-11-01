@@ -151,7 +151,7 @@
       # tat: tmux attach
       function tat {
 	  name=$(basename `pwd` | sed -e 's/\.//g')
-      
+
 	  if tmux ls 2>&1 | grep "$name"; then
 	      tmux attach -t "$name"
 	  elif [ -f .envrc ]; then
@@ -178,16 +178,15 @@
 *** 获取当前用户的某个名字的进程
     #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zsh/post/functions.zsh") :eval never :exports code :comments link
       function egrep(){
-		# If outputting (fd 1 = stdout) directly to a terminal, page automatically:
-		if [ -t 1 ]; then
-		    command rg --pretty "$@" \
-			| less --no-init --quit-if-one-screen --RAW-CONTROL-CHARS
-		else
-		    command rg "$@"
-		fi
-	    }
+	  # If outputting (fd 1 = stdout) directly to a terminal, page automatically:
+	  if [ -t 1 ]; then
+	      command rg --pretty "$@" \
+		  | less --no-init --quit-if-one-screen --RAW-CONTROL-CHARS
+	  else
+	      command rg "$@"
+	  fi
+      }
     #+END_SRC
-
 
 
 *** 根据正则表达式生成随机值
@@ -196,7 +195,8 @@
 	  perl -e "use String::Random qw(random_regex random_string);print random_regex('$1');"
       }
     #+END_SRC
-    
+
+*** cmake 编译
     #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zsh/post/alias.zsh") :eval never :exports code :comments link
       #!/bin/zsh
       mk() {
@@ -206,7 +206,7 @@
 	      cmake --build cmake-build-debug --target ${1:-all} -j `nproc`
 	  fi
       }
-      
+
       mkt() {
 	  if [ -d build ]; then
 	      cmake --build build --target ${1:-test} -j `nproc`
@@ -215,3 +215,14 @@
 	  fi
       }
     #+END_SRC
+
+*** 同步 emacs repo
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zsh/post/functions.zsh") :eval never :exports code :comments link
+      function rsync_emacs() {
+	  export PKG_ROOT=${HOME}/workspace/7t/disposables/mirrors/emacs
+	  rsync --progress -ravz rsync://stable.melpa.org/packages/ ${PKG_ROOT}/stable-melpa
+	  rsync --progress -ravz rsync://melpa.org/packages/ ${PKG_ROOT}/melpa
+	  rsync --progress -ravz rsync://elpa.gnu.org/elpa/ ${PKG_ROOT}/gnu
+      }
+    #+END_SRC
+
