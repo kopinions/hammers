@@ -207,6 +207,7 @@
 	(org-agenda-span 'day)
 	(org-agenda-skip-scheduled-if-done t)
 	(org-agenda-skip-deadline-if-done t)
+	(org-deadline-warning-days 3)
 	(org-agenda-log-mode-items (quote (closed clock)))
 	(org-agenda-clockreport-parameter-plist
 	 '(:maxlevel 5 :block t :tstart t :tend t :emphasize t :link nil :narrow 80 :indent t :compact t :fileskip0 t :formula % :level 4 :tcolumns nil :formatter nil))
@@ -241,7 +242,7 @@
 	     (org-tags-match-list-sublevels t)))
 	   ("a" "Agenda"
 	    ((agenda "" ((org-agenda-span 1)                      ; daily agenda
-			 (org-deadline-warning-days 0)            ; 7 day advanced warning for deadlines
+			 (org-deadline-warning-days 3)            ; 7 day advanced warning for deadlines
 			 (org-agenda-scheduled-leaders '("" "Due %2dx: "))
 			 (org-agenda-overriding-header "Today's Schedule:")
 			 (org-agenda-start-day nil)
@@ -259,7 +260,7 @@
 			 (org-agenda-entry-types '(:timestamp :sexp :scheduled :deadline))))))
 	   ("g" "GTD"
 	    ((agenda "" ((org-agenda-span 1)                      ; daily agenda
-			 (org-deadline-warning-days 0)            ; 7 day advanced warning for deadlines
+			 (org-deadline-warning-days 3)            ; 7 day advanced warning for deadlines
 			 (org-agenda-scheduled-leaders '("" "Due %2dx: "))
 			 (org-agenda-overriding-header "Today's Schedule:")
 			 (org-agenda-start-day nil)
