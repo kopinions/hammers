@@ -65,29 +65,21 @@
 
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/init.el") :comments link
       (setq load-path
-	    (delq nil (mapcar
-		       (function (lambda (p)
-				   (unless (string-match "lisp\\(/packages\\)?/org$" p)
-				     p)))
-		       load-path)))
-      ;; remove property list to defeat cus-load and remove autoloads
-      (mapatoms (function  (lambda (s)
-			     (let ((sn (symbol-name s)))
-			       (when (string-match "^\\(org\\|ob\\|ox\\)\\(-.*\\)?$" sn)
-				 (setplist s nil)
-				 (when (eq 'autoload (car-safe s))
-				   (unintern s)))))))
-      (mapatoms (function  (lambda (s)
-			     (let ((sn (symbol-name s)))
-			       (when (string-match "^\\(verilog\\)\\(-.*\\)?$" sn)
-				 (setplist s nil)
-				 (message "xxx")
-				 (when (eq 'autoload (car-safe s))
-				   (unintern s)))))))
+	    (delq nil (mapcar (lambda (p)
+				(unless (string-match "lisp/org$" p)
+				  p))
+			      load-path)))
 
+      ;; remove property list to defeat cus-load and remove autoloads
+      (mapatoms (lambda (s)
+		  (let ((sn (symbol-name s)))
+		    (when (string-match "^\\(org\\|ob\\|ox\\)\\(-.*\\)?$" sn)
+		      (setplist s nil)
+		      (when (autoloadp s)
+			(unintern s))))))
 
       (require 'package)
-	;;; Install into separate package dirs for each Emacs version, to prevent bytecode incompatibility
+	      ;;; Install into separate package dirs for each Emacs version, to prevent bytecode incompatibility
       (let ((versioned-package-dir
 	     (expand-file-name (format "elpa-%s.%s" emacs-major-version emacs-minor-version)
 			       m/conf.d)))
