@@ -63,6 +63,54 @@
       hotkeys = {
 	 {
 	    mods = {'cmd'},
+	    key = 'w',
+	    specs = {
+	       {
+		  name = "Microsoft Remote Desktop",
+		  fn = function()
+		     local app = hs.window.focusedWindow():application()
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.alt, true):post(app)
+		     hs.eventtap.event.newKeyEvent("w", true):post(app)
+		     hs.eventtap.event.newKeyEvent("w", false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.alt, false):post(app)
+		  end
+	       },
+	    }
+	 },
+	 {
+	    mods = {'cmd'},
+	    key = 'q',
+	    specs = {
+	       {
+		  name = "Microsoft Remote Desktop",
+		  fn = function()
+		     local app = hs.window.focusedWindow():application()
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.alt, true):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.f4, true):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.f4, false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.alt, false):post(app)
+		  end
+	       },
+	    }
+	 },
+	 {
+	    mods = {'cmd'},
+	    key = 'h',
+	    specs = {
+	       {
+		  name = "Microsoft Remote Desktop",
+		  fn = function()
+		     local app = hs.window.focusedWindow():application()
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.alt, true):post(app)
+		     hs.eventtap.event.newKeyEvent('h', true):post(app)
+		     hs.eventtap.event.newKeyEvent('h', false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.alt, false):post(app)
+		  end
+	       },
+	    }
+	 },
+	 {
+	    mods = {'cmd'},
 	    key = 'space',
 	    specs = {
 	       {
@@ -113,20 +161,20 @@
 			emacs = hs.application.open("Emacs")
 			emacs:hide ()
 		     end
-      
+
 		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(emacs)
 		     hs.eventtap.event.newKeyEvent('g', true):post(emacs)
 		     hs.eventtap.event.newKeyEvent('g', false):post(emacs)
 		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(emacs)
-      
+
 		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(emacs)
 		     hs.eventtap.event.newKeyEvent('c', true):post(emacs)
 		     hs.eventtap.event.newKeyEvent('c', false):post(emacs)
 		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(emacs)
-      
+
 		     hs.eventtap.event.newKeyEvent('c', true):post(emacs)
 		     hs.eventtap.event.newKeyEvent('c', false):post(emacs)
-      
+
 		     hs.eventtap.event.newKeyEvent("t", true):post(emacs)
 		     hs.eventtap.event.newKeyEvent("t", false):post(emacs)
 		     emacs:activate()
@@ -153,7 +201,7 @@
 	       {
 		  name = ".*",
 		  fn = function()
-      
+
 		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post()
 		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.f13, true):post()
 		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.f13, false):post()
@@ -327,31 +375,31 @@
 	    }
 	 }
       }
-      
+
       function hks(name, etype, app)
 	 if (etype == hs.application.watcher.activated) then
 	    for k, v in pairs(hotkeys) do
 	       hs.hotkey.disableAll(v.mods, v.key)
 	    end
-      
+
 	    hs.loadSpoon("WindowHalfsAndThirds");
 	    spoon.WindowHalfsAndThirds:bindHotkeys(spoon.WindowHalfsAndThirds.defaultHotkeys)
-      
-      
+
+
 	    for k, v in pairs (hotkeys) do
 	       local hk = filter(
 		  function(item)
 		     return string.match(name:lower(), item.name:lower()) 
 		  end,
 		  v.specs)
-      
+
 	       if next(hk) ~= nil then
 		  hs.hotkey.new(v.mods, v.key, nil,  hk[1].fn):enable()
 	       end
 	    end
 	 end
       end
-      
+
       hkWatcher = hs.application.watcher.new(hks)
       hkWatcher:start()
     #+END_SRC
