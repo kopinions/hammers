@@ -9,7 +9,7 @@
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
 *** config
-    #+BEGIN_SRC conf :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/home.d}/.config/direnv/direnv.toml")) "no") :tangle-mode (identity #o644) :noweb yes
+    #+BEGIN_SRC conf :eval never :exports code :tangle (or (and (or (eq m/os 'macos) (eq m/os 'linux)) (m/resolve "${m/home.d}/.config/direnv/direnv.toml")) "no") :tangle-mode (identity #o644) :noweb yes
       [global]
       #base_path=""
       #disable_stdin="true"
