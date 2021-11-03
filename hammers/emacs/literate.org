@@ -113,28 +113,23 @@
 	;; load babel languages
 	(org-babel-do-load-languages
 	 'org-babel-load-languages
-	 (seq-filter
-	  (lambda (pair)
-	    (featurep (intern (concat "ob-" (symbol-name (car pair))))))
-	  '((R . t)
-	    (ditaa . t)
-	    (dot . t)
-	    (emacs-lisp . t)
-	    (list . t)
-	    (gnuplot . t)
-	    (haskell . nil)
-	    (latex . t)
-	    (ledger . t)
-	    (ocaml . nil)
-	    (octave . t)
-	    (plantuml . t)
-	    (python . t)
-	    (ruby . t)
-	    (screen . nil)
-	    (sh . t) ;; obsolete
-	    (shell . t)
-	    (sql . t)
-	    (sqlite . t)))))
+	 '((R . t)
+	   (dot . t)
+	   (ditaa . t)
+	   (emacs-lisp . t)
+	   (gnuplot . t)
+	   (haskell . nil)
+	   (latex . t)
+	   (ocaml . nil)
+	   (octave . t)
+	   (plantuml . t)
+	   (python . t)
+	   (ruby . t)
+	   (screen . nil)
+	   (shell . t)
+	   (sql . t)
+	   (sqlite . t))))
+
     #+END_SRC
 
 *** org-mode archive 配置
