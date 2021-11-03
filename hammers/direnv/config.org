@@ -9,6 +9,10 @@
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
 *** config
+    #+NAME: workspace
+    #+BEGIN_SRC elisp :var workspace=(m/resolve "${m/home.d}/workspace")
+      workspace
+    #+END_SRC
     #+BEGIN_SRC conf :eval never :exports code :tangle (or (and (or (eq m/os 'macos) (eq m/os 'linux)) (m/resolve "${m/home.d}/.config/direnv/direnv.toml")) "no") :tangle-mode (identity #o644) :noweb yes
       [global]
       #base_path=""
@@ -16,6 +20,6 @@
       #strict_env="true"
       #warn_timeout="5s"
       [whitelist]
-      prefix = [ "/Volumes/data/workspace/1si/iot/keyboard" ]
+      prefix = [ "<<workspace()>>" ]
       exact = []
     #+END_SRC
