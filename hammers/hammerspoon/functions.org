@@ -69,10 +69,10 @@
 		  name = "Microsoft Remote Desktop",
 		  fn = function()
 		     local app = hs.window.focusedWindow():application()
-		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.alt, true):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
 		     hs.eventtap.event.newKeyEvent("w", true):post(app)
 		     hs.eventtap.event.newKeyEvent("w", false):post(app)
-		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.alt, false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
 		  end
 	       },
 	    }
@@ -101,10 +101,10 @@
 		  name = "Microsoft Remote Desktop",
 		  fn = function()
 		     local app = hs.window.focusedWindow():application()
-		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.alt, true):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
 		     hs.eventtap.event.newKeyEvent('h', true):post(app)
 		     hs.eventtap.event.newKeyEvent('h', false):post(app)
-		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.alt, false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
 		  end
 	       },
 	    }
@@ -371,7 +371,17 @@
 		     hs.eventtap.event.newKeyEvent("\\", false):post(app)
 		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
 		  end
-	       }
+	       },
+	       {
+		  name = "Microsoft Remote Desktop",
+		  fn = function()
+		     local app = hs.window.focusedWindow():application()
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
+		     hs.eventtap.event.newKeyEvent("\\", true):post(app)
+		     hs.eventtap.event.newKeyEvent("\\", false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
+		  end
+	       },
 	    }
 	 }
       }
