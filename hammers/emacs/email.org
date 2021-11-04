@@ -76,7 +76,7 @@
       Host imap.gmail.com
       User rising.lambda@gmail.com
       SSLType IMAPS
-      AuthMechs LOGIN
+      AuthMechs PLAIN
       #PassCmd "security find-generic-password -s lambda -w"
       PassCmd "cat ~/.authinfo|grep rising.lambda@gmail.com|awk '{print $6}'"
       # To rotate:
@@ -92,20 +92,20 @@
       Trash trash
 
       Channel inbox
-      Master :remote:
-      Slave :local:
+      Far :remote:
+      Near :local:
       Create Slave
       SyncState *
 
       Channel sent
-      Master :remote:Sent
-      Slave :local:sent
+      Far :remote:Sent
+      Near :local:sent
       Create Slave
       SyncState *
 
       Channel org-mode
-      Master :remote:org-mode
-      Slave :local:org-mode
+      Far :remote:org-mode
+      Near :local:org-mode
       Create Slave
       SyncState *
       MaxMessages 500
@@ -113,8 +113,8 @@
       Expunge Both
 
       Channel clojure
-      Master :remote:clojure
-      Slave :local:clojure
+      Far :remote:clojure
+      Near :local:clojure
       Create Slave
       SyncState *
       MaxMessages 500
@@ -130,8 +130,8 @@
       # Expunge Both
 
       Channel archive
-      Master :remote:Archive
-      Slave :local:archive
+      Far :remote:Archive
+      Near :local:archive
       Create Slave
       SyncState *
     #+END_SRC
