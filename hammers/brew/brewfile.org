@@ -144,6 +144,13 @@
       cask 'handbrake', greedy: true  # 视屏压缩
     #+END_SRC
 
+*** emacs email package
+    #+BEGIN_SRC conf :tangle (m/resolve "${m/home.d}/.Brewfile") :exports code :results none :eval never :comments link
+      brew 'isync'
+      brew 'notmuch'
+      brew 'msmtp'
+    #+END_SRC
+    
     #+BEGIN_SRC shell :tangle no :exports code :results output
       #brew bundle --global
     #+END_SRC
