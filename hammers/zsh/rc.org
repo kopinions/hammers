@@ -188,7 +188,6 @@
       }
     #+END_SRC
 
-
 *** 根据正则表达式生成随机值
     #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zsh/post/functions.zsh") :eval never :exports code :comments link
       function regen(){
@@ -213,6 +212,13 @@
 	  else
 	      cmake --build cmake-build-debug --target ${1:-test} -j `nproc`
 	  fi
+      }
+    #+END_SRC
+
+*** export http proxy
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zsh/post/alias.zsh") :eval never :exports code :comments link
+      pe() {
+	  export http_proxy=http://127.0.0.1:8080 https_proxy=http://127.0.0.1:8080
       }
     #+END_SRC
 
