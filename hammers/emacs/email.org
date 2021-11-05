@@ -72,7 +72,7 @@
     #+END_SRC
 
     #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/home.d}/.mbsyncrc")
-      IMAPAccount lambda
+      IMAPAccount rising-lambda
       Host imap.gmail.com
       User rising.lambda@gmail.com
       SSLType IMAPS
@@ -83,57 +83,76 @@
       # > security delete-generic-password -s mbsync-gandi-password
       # > security add-generic-password -a stig@brautaset.org -s mbsync-gandi-password -w APP-SPECIFIC-PASSWORD
 
-      IMAPStore remote
-      Account lambda
+      IMAPStore rising-lambda-remote
+      Account rising-lambda
 
-      MaildirStore local
+      MaildirStore rising-lambda-local
       Path ~/.mails/rising.lambda/
       Inbox ~/.mails/rising.lambda/INBOX
-      Trash trash
 
-      Channel inbox
-      Far :remote:
-      Near :local:
-      Create Slave
-      SyncState *
-
-      Channel sent
-      Far :remote:Sent
-      Near :local:sent
-      Create Slave
-      SyncState *
-
-      Channel org-mode
-      Far :remote:org-mode
-      Near :local:org-mode
-      Create Slave
-      SyncState *
-      MaxMessages 500
-      ExpireUnread yes
+      Channel rising-lambda
+      Far :rising-lambda-remote:
+      Near :rising-lambda-local:
+      Sync All
+      Create Both
       Expunge Both
-
-      Channel clojure
-      Far :remote:clojure
-      Near :local:clojure
-      Create Slave
       SyncState *
-      MaxMessages 500
-      ExpireUnread yes
+      Patterns INBOX Travel Archive Sent Spam Trash
+
+      IMAPAccount neo-sietium
+      Host imap.qiye.aliyun.com
+      User neo@sietium.com
+      SSLType NONE
+      AuthMechs LOGIN
+      #PassCmd "security find-generic-password -s lambda -w"
+      PassCmd "cat ~/.authinfo|grep neo@sietium.com|awk '{print $6}'"
+      # To rotate:
+      # > security delete-generic-password -s mbsync-gandi-password
+      # > security add-generic-password -a stig@brautaset.org -s mbsync-gandi-password -w APP-SPECIFIC-PASSWORD
+
+      IMAPStore neo-sietium-remote
+      Account neo-sietium
+
+      MaildirStore neo-sietium-local
+      Path ~/.mails/neo.sietium/
+      Inbox ~/.mails/neo.sietium/INBOX
+
+      Channel neo-sietium
+      Far :neo-sietium-remote:
+      Near :neo-sietium-local:
+      Sync All
+      Create Both
       Expunge Both
-
-      # Channel tuls
-      # Master :remote:tuls
-      # Slave :local:tuls
-      # Create Slave
-      # SyncState *
-      # MaxMessages 500
-      # Expunge Both
-
-      Channel archive
-      Far :remote:Archive
-      Near :local:archive
-      Create Slave
       SyncState *
+      Patterns INBOX Travel Archive Sent Spam Trash
+
+
+      IMAPAccount qq
+      Host imap.exmail.qq.com
+      User 529085249@qq.com
+      SSLType IMAPS
+      AuthMechs PLAIN
+      #PassCmd "security find-generic-password -s lambda -w"
+      PassCmd "cat ~/.authinfo|grep 529085249@qq.com|awk '{print $6}'"
+      # To rotate:
+      # > security delete-generic-password -s mbsync-gandi-password
+      # > security add-generic-password -a stig@brautaset.org -s mbsync-gandi-password -w APP-SPECIFIC-PASSWORD
+
+      IMAPStore qq-remote
+      Account qq
+
+      MaildirStore qq-local
+      Path ~/.mails/qq/
+      Inbox ~/.mails/qq/INBOX
+
+      Channel qq
+      Far :qq-remote:
+      Near :qq-local:
+      Sync All
+      Create Both
+      Expunge Both
+      SyncState *
+      Patterns INBOX Travel Archive Sent Spam Trash
     #+END_SRC
 
     #+BEGIN_SRC shell :eval never :exports code :tangle no :comments link
