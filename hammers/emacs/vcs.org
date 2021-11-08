@@ -38,7 +38,8 @@
 	  :config
 	  (fullframe magit-status magit-mode-quit-window)))
 
-      (use-package magit-todos)
+      (use-package magit-todos
+	:requires org)
     #+END_SRC
 
 *** other

@@ -62,8 +62,7 @@
      (use-package yasnippet
        :config
        (use-package yasnippet-snippets
-	 :requires yasnippet
-	 :after company
+	 :requires (company yasnippet)
 	 :preface
 	 (defvar company-mode/enable-yas t
 	   "Enable yasnippet for all backends.")

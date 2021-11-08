@@ -613,7 +613,7 @@
 	      (url-copy-file url org-plantuml-jar-path)))))
 
       (use-package plantuml-mode
-	:after org
+	:requires org
 	:config
 	(add-to-list
 	 'org-src-lang-modes '("plantuml" . plantuml))
@@ -624,25 +624,25 @@
 *** org-mode graphiz 画图配置
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-literate.el") :comments link
       (use-package graphviz-dot-mode
-	:after org
+	:requires org
 	:config
 	(setq graphviz-dot-indent-width 4))
       (use-package company-graphviz-dot
-	:after company
+	:requires company
 	:ensure nil)
     #+END_SRC
 *** org mode 可以拖拽下载
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-literate.el") :comments link
       ;; Download Drag&Drop images
       (use-package org-download
-	:after (org))
+	:requires org)
     #+END_SRC
 
 *** org mode 图标设置
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-literate.el") :comments link
       ;; Pretty bullets
       (use-package org-bullets
-	:after org
+	:requires org
 	:hook (org-mode . org-bullets-mode)
 	:config
 	(setq org-bullets-face-name (quote org-bullet-face))
@@ -652,9 +652,10 @@
 
 *** org-mode 博客
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-literate.el") :comments link
-      (use-package ox-gfm)
+      (use-package ox-gfm
+	:requires (ox org))
       (use-package ox-hugo
-	:after (ox org)
+	:requires (ox org)
 	:custom
 	(org-blackfriday--org-element-string '((src-block . "Code")
 					       (table . "Table")

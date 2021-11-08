@@ -192,7 +192,7 @@
 *** ivy-xref
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-ui.el") :comments link
       (use-package ivy-xref
-	:after (ivy)
+	:requires ivy
 	:init (if (< emacs-major-version 27)
 		  (setq xref-show-xrefs-function #'ivy-xref-show-xrefs)
 		(setq xref-show-definitions-function #'ivy-xref-show-defs)))

@@ -499,7 +499,7 @@
 ** 其他
    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
      (use-package goto-line-preview
-       :after display-line-numbers
+       :requires display-line-numbers
        :bind
        (([remap goto-line] . goto-line-preview))
        :config

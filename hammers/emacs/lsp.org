@@ -358,7 +358,7 @@
      (use-package dap-mode
        :custom
        (dap-lldb-debugged-program-function (lambda () (read-file-name "Select file to debug.")))
-       :after lsp-mode posframe
+       :requires (lsp-mode posframe)
        :config
        (require 'dap-hydra)
        (require 'dap-lldb)  
