@@ -19,8 +19,8 @@
 *** 键位设置
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-os.el") :comments link
       (when (eq m/os 'linux)
-	(setq x-super-keysym 'meta))
-
+	(setq x-super-keysym 'meta
+	      x-meta-keysym 'super))
     #+END_SRC
 *** 剪切板管理
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-os.el") :comments link
