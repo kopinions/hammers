@@ -63,58 +63,20 @@
       hotkeys = {
 	 {
 	    mods = {'cmd'},
-	    key = 'w',
-	    specs = {
-	       {
-		  name = "Microsoft Remote Desktop",
-		  fn = function()
-		     local app = hs.window.focusedWindow():application()
-		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
-		     hs.eventtap.event.newKeyEvent("w", true):post(app)
-		     hs.eventtap.event.newKeyEvent("w", false):post(app)
-		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
-		  end
-	       },
-	    }
-	 },
-	 {
-	    mods = {'cmd'},
-	    key = 'q',
-	    specs = {
-	       {
-		  name = "Microsoft Remote Desktop",
-		  fn = function()
-		     local app = hs.window.focusedWindow():application()
-		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.alt, true):post(app)
-		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.f4, true):post(app)
-		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.f4, false):post(app)
-		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.alt, false):post(app)
-		  end
-	       },
-	    }
-	 },
-	 {
-	    mods = {'cmd'},
-	    key = 'h',
-	    specs = {
-	       {
-		  name = "Microsoft Remote Desktop",
-		  fn = function()
-		     local app = hs.window.focusedWindow():application()
-		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
-		     hs.eventtap.event.newKeyEvent('h', true):post(app)
-		     hs.eventtap.event.newKeyEvent('h', false):post(app)
-		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
-		  end
-	       },
-	    }
-	 },
-	 {
-	    mods = {'cmd'},
 	    key = 'space',
 	    specs = {
 	       {
 		  name = "Emacs",
+		  fn = function()
+		     local app = hs.window.focusedWindow():application()
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
+		     hs.eventtap.event.newKeyEvent("space", true):post(app)
+		     hs.eventtap.event.newKeyEvent("space", false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
+		  end
+	       },
+	       {
+		  name = "Microsoft Remote Desktop",
 		  fn = function()
 		     local app = hs.window.focusedWindow():application()
 		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
@@ -143,6 +105,18 @@
 	    specs = {
 	       {
 		  name = "Emacs",
+		  fn = function()
+		     local app = hs.window.focusedWindow():application()
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.shift, true):post(app)
+		     hs.eventtap.event.newKeyEvent("space", true):post(app)
+		     hs.eventtap.event.newKeyEvent("space", false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.shift, false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
+		  end
+	       },
+	       {
+		  name = "Microsoft Remote Desktop",
 		  fn = function()
 		     local app = hs.window.focusedWindow():application()
 		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
@@ -199,6 +173,18 @@
 		  end
 	       },
 	       {
+		  name = "Microsoft Remote Desktop",
+		  fn = function()
+		     local app = hs.window.focusedWindow():application()
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(app)
+		     hs.eventtap.event.newKeyEvent("a", true):post(app)
+		     hs.eventtap.event.newKeyEvent("a", false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
+		  end
+	       },
+	       {
 		  name = ".*",
 		  fn = function()
 
@@ -216,6 +202,18 @@
 	    specs = {
 	       {
 		  name = "Emacs",
+		  fn = function()
+		     local app = hs.window.focusedWindow():application()
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(app)
+		     hs.eventtap.event.newKeyEvent("d", true):post(app)
+		     hs.eventtap.event.newKeyEvent("d", false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
+		  end
+	       },
+	       {
+		  name = "Microsoft Remote Desktop",
 		  fn = function()
 		     local app = hs.window.focusedWindow():application()
 		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
@@ -243,6 +241,18 @@
 		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
 		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
 		  end
+	       },
+	       {
+		  name = "Microsoft Remote Desktop",
+		  fn = function()
+		     local app = hs.window.focusedWindow():application()
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(app)
+		     hs.eventtap.event.newKeyEvent("Left", true):post(app)
+		     hs.eventtap.event.newKeyEvent("Left", false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
+		  end
 	       }
 	    }
 	 },
@@ -252,6 +262,18 @@
 	    specs = {
 	       {
 		  name = "Emacs",
+		  fn = function()
+		     local app = hs.window.focusedWindow():application()
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(app)
+		     hs.eventtap.event.newKeyEvent("Right", true):post(app)
+		     hs.eventtap.event.newKeyEvent("Right", false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
+		  end
+	       },
+	       {
+		  name = "Microsoft Remote Desktop",
 		  fn = function()
 		     local app = hs.window.focusedWindow():application()
 		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
@@ -279,7 +301,19 @@
 		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
 		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
 		  end
-	       }
+	       },
+	       {
+		  name = "Microsoft Remote Desktop",
+		  fn = function()
+		     local app = hs.window.focusedWindow():application()
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(app)
+		     hs.eventtap.event.newKeyEvent("Up", true):post(app)
+		     hs.eventtap.event.newKeyEvent("Up", false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
+		  end
+	       },
 	    }
 	 },
 	 {
@@ -288,6 +322,18 @@
 	    specs = {
 	       {
 		  name = "Emacs",
+		  fn = function()
+		     local app = hs.window.focusedWindow():application()
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(app)
+		     hs.eventtap.event.newKeyEvent("Down", true):post(app)
+		     hs.eventtap.event.newKeyEvent("Down", false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
+		  end
+	       },
+	       {
+		  name = "Microsoft Remote Desktop",
 		  fn = function()
 		     local app = hs.window.focusedWindow():application()
 		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
@@ -317,7 +363,21 @@
 		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
 		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
 		  end
-	       }
+	       },
+	       {
+		  name = "Microsoft Remote Desktop",
+		  fn = function()
+		     local app = hs.window.focusedWindow():application()
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.alt, true):post(app)
+		     hs.eventtap.event.newKeyEvent("Up", true):post(app)
+		     hs.eventtap.event.newKeyEvent("Up", false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.alt, false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
+		  end
+	       },
 	    }
 	 },
 	 {
@@ -326,6 +386,20 @@
 	    specs = {
 	       {
 		  name = "Emacs",
+		  fn = function()
+		     local app = hs.window.focusedWindow():application()
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.alt, true):post(app)
+		     hs.eventtap.event.newKeyEvent("f", true):post(app)
+		     hs.eventtap.event.newKeyEvent("f", false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.alt, false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
+		  end
+	       },
+	       {
+		  name = "Microsoft Remote Desktop",
 		  fn = function()
 		     local app = hs.window.focusedWindow():application()
 		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
@@ -346,6 +420,18 @@
 	    specs = {
 	       {
 		  name = "Emacs",
+		  fn = function()
+		     local app = hs.window.focusedWindow():application()
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.alt, true):post(app)
+		     hs.eventtap.event.newKeyEvent("c", true):post(app)
+		     hs.eventtap.event.newKeyEvent("c", false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.alt, false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, false):post(app)
+		  end
+	       },
+	       {
+		  name = "Microsoft Remote Desktop",
 		  fn = function()
 		     local app = hs.window.focusedWindow():application()
 		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.cmd, true):post(app)
