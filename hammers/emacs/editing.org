@@ -345,7 +345,9 @@
 		  (when (not (looking-at-p "^\nrg finished "))
 		    (delete-region (point) (1+ (point-at-eol)))))))))
 	:custom
-	(rg-show-header nil)
+	(rg-show-header t)
+	(rg-hide-command nil)
+	(rg-align-line-column-separator ":")
 	(rg-command-line-flags '("--pcre2"))
 	:config
 	(rg-enable-default-bindings)
