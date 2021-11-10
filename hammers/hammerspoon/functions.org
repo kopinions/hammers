@@ -62,6 +62,31 @@
     #+BEGIN_SRC lua :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/home.d}/.hammerspoon/init.lua")) "no") :mkdirp yes :link comment
       hotkeys = {
 	 {
+	    mods = {'alt'},
+	    key = 'space',
+	    specs = {
+	       {
+		  name = "Microsoft Remote Desktop",
+		  fn = function()
+		     local app = hs.window.focusedWindow():application()
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.alt, true):post(app)
+		     hs.eventtap.event.newKeyEvent("space", true):post(app)
+		     hs.eventtap.event.newKeyEvent("space", false):post(app)
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.alt, false):post(app)
+		  end
+	       },
+	       {
+		  name = ".*",
+		  fn = function()
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.alt, true):post()
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.f14, true):post()
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.f14, false):post()
+		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.alt, false):post()	       
+		  end
+	       },
+	    }
+	 },
+	 {
 	    mods = {'cmd'},
 	    key = 'space',
 	    specs = {
