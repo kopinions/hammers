@@ -30,8 +30,8 @@
     禁止备份文件
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
       (setq make-backup-files nil)
-      ; stop to create the lock files
-      ; lock files is used to prevent concurrent edit of a file
+					      ; stop to create the lock files
+					      ; lock files is used to prevent concurrent edit of a file
       (setq create-lockfiles nil)
     #+END_SRC
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
@@ -140,11 +140,11 @@
 		(when (string= char utf8)
 		  (setq name (car e))
 		  (throw 'break name)))))))
-      
+
       (defun m/org-insert-org-entity-maybe (&rest args)
 	"When the universal prefix C-u is used before entering any character,
 	  insert the character's `org-entity' name if available.
-      
+
 	  If C-u prefix is not used and if `org-entity' name is not available, the
 	  returned value `entity-name' will be nil."
 	;; It would be fine to use just (this-command-keys) instead of
@@ -170,7 +170,7 @@
 					   'face 'font-lock-function-name-face)
 			       "."))))
 	  entity-name))
-      
+
       ;; Run `org-self-insert-command' only if `m/org-insert-org-entity-maybe'
       ;; returns nil.
       (advice-add 'org-self-insert-command :before-until #'m/org-insert-org-entity-maybe)
@@ -498,6 +498,77 @@
        :hook
        ((prog-mode yaml-mode systemd-mode) . display-line-numbers-mode))
    #+END_SRC
+** 数字增加
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+     (defun m/increment-number-hexadecimal (&optional arg base)
+       "Increment the number forward from point by 'arg'."
+       (interactive "P")
+
+       (save-excursion
+	 (save-match-data
+	   (let (inc-by field-width answer hex-format hex-en repeat-cnt prompt base skipchars regx)
+	     (setq inc-by 1)
+	     (setq repeat-cnt 1)
+	     (setq base 10)
+	     (setq skipchars "0123456789")
+	     (setq regx "\\([0-9]+\\)")
+	     (cond
+	      ((listp arg) (cond
+			    ((eq (car arg) 4)  (progn
+						 (setq hex-en nil)
+						 (setq prompt "number:")
+						 (setq base 10)
+						 (setq skipchars "0123456789")
+						 (setq regx "\\([0-9]+\\)")
+						 (setq inc-by (string-to-number (read-string prompt) base))
+						 (setq repeat-cnt (string-to-number (read-string "repeat:")))
+						 (skip-chars-backward skipchars)
+						 (re-search-forward regx nil t)
+
+						 ))
+			    ((eq (car arg) 16)  (progn
+						  (setq hex-en t)
+						  (setq prompt "hex:")
+						  (setq base 16)
+						  (setq skipchars "0123456789abcdefABCDEF")
+						  (setq regx "\\(0[xX]\\)\\([0-9a-fA-F]+\\)")
+						  (setq inc-by (string-to-number (read-string prompt) base))
+						  (setq repeat-cnt (string-to-number (read-string "repeat:")))
+						  (skip-chars-backward skipchars)
+						  (re-search-forward regx nil t)))))
+	      ((numberp arg) (progn
+			       (setq hex-en nil)
+			       (setq prompt ":")
+			       (setq base 10)
+			       (setq skipchars "0123456789")
+			       (setq regx "\\([0-9]+\\)")
+			       (setq inc-by arg)
+			       (setq repeat-cnt 1)))
+	      ((eq arg '-) (progn
+			     (setq hex-en nil)
+			     (setq prompt ":")
+			     (setq base 10)
+			     (setq skipchars "0123456789")
+			     (setq regx "\\([0-9]+\\)")
+			     (setq inc-by -1)
+			     (setq repeat-cnt 1))))
+	     (skip-chars-backward skipchars)
+	     (let* ((group (if hex-en 2 1)))
+	       (when (re-search-forward regx nil t)
+		 (setq field-width (length (match-string group)))
+		 (setq answer (+ (string-to-number (match-string group) base) (* repeat-cnt inc-by)))
+		 (when (< answer 0)
+		   (setq answer (+ (expt 16 field-width) answer)))
+		 (if (equal (match-string 0) (upcase (match-string 0)))
+		     (setq hex-format "X")
+		   (setq hex-format "x"))
+		 (replace-match (format (if hex-en (concat "%0" (int-to-string field-width)
+							   hex-format) (concat "%0" (int-to-string field-width)
+							   "d")) answer))))))))
+
+       (global-set-key (kbd "C-c +") 'm/increment-number-hexadecimal)
+   #+END_SRC
+
 ** 其他
    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
      (use-package goto-line-preview
