@@ -105,6 +105,7 @@
 	:ensure t
 	:config
 	;; autosave the undo-tree history
+	(global-undo-tree-mode)
 	(setq undo-tree-history-directory-alist
 	      `((".*" . ,temporary-file-directory)))
 	(setq undo-tree-auto-save-history t))
