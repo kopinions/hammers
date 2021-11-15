@@ -18,7 +18,7 @@
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-terminal.el") :comments link
       (use-package shrink-path)
       (use-package eshell
-	:requires shrink-path
+	:after shrink-path
 	:custom
 	(eshell-scroll-to-bottom-on-input 'all)
 	(eshell-error-if-no-glob t)

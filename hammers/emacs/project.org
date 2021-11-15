@@ -12,7 +12,7 @@
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-project.el") :comments link
       (use-package projectile
 	:diminish projectile-mode
-	:requires counsel
+	:after counsel
 	:custom
 	(projectile-sort-order 'recently-active)
 	:bind
@@ -30,9 +30,9 @@
 	(setq projectile-enable-caching t)
 	(setq projectile-mode-line-prefix "ρ")
 	(use-package ibuffer-projectile
-	  :requires ibuffer)
+	  :after ibuffer)
 	(use-package counsel-projectile
-	  :requires counsel)
+	  :after counsel)
 	(projectile-mode))
     #+END_SRC
 
