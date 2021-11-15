@@ -33,7 +33,7 @@
 	 (company-mode . company-posframe-mode))
        (use-package company-flx
 	 :diminish company-flx-mode
-	 :requires company
+	 :after company
 	 :config
 	 (company-flx-mode +1))
        (use-package company-box
@@ -62,8 +62,7 @@
      (use-package yasnippet
        :config
        (use-package yasnippet-snippets
-	 :requires yasnippet
-	 :after company
+	 :after (company yasnippet)
 	 :preface
 	 (defvar company-mode/enable-yas t
 	   "Enable yasnippet for all backends.")

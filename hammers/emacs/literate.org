@@ -635,7 +635,7 @@
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-literate.el") :comments link
       ;; Download Drag&Drop images
       (use-package org-download
-	:after (org))
+	:after org)
     #+END_SRC
 
 *** org mode 图标设置

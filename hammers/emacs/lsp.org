@@ -358,7 +358,7 @@
      (use-package dap-mode
        :custom
        (dap-lldb-debugged-program-function (lambda () (read-file-name "Select file to debug.")))
-       :after lsp-mode posframe
+       :after (lsp-mode posframe)
        :config
        (require 'dap-hydra)
        (require 'dap-lldb)  
@@ -384,7 +384,7 @@
 
      (use-package lsp-ivy
        :load-path m/load-path
-       :requires lsp-mode
+       :after lsp-mode
        :config
        (defun m/lsp-ivy-workspace-symbol-at-point ()
 	 (interactive)
