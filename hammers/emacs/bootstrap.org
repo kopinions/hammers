@@ -64,35 +64,6 @@
     Emacs 的包管理器名为：[[http://tromey.com/elpa/][package]]. 但是 package 默认配置插件仓库包含的插件相对较少，我们需要添加一些常用的第三方插件仓库，以便与搜索与安装插件。
 
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/init.el") :comments link
-      (setq load-path
-	    (delq nil (mapcar (lambda (p)
-				(unless (string-match "lisp/org$" p)
-				  p))
-			      load-path)))
-
-      ;; remove property list to defeat cus-load and remove autoloads
-      (mapatoms (lambda (s)
-		  (let ((sn (symbol-name s)))
-		    (when (string-match "^\\(org\\|ob\\|ox\\)\\(-.*\\)?$" sn)
-		      (setplist s nil)
-		      (when (autoloadp s)
-			(unintern s))))))
-
-      (let* ((verilog-lib (locate-library "verilog-mode")))
-	(if verilog-lib
-	    (if (string-match ".*/lisp/progmodes/.*" verilog-lib)
-		(let* ((verilog-lib-dir (replace-regexp-in-string "\\(.*/lisp/progmodes\\).*" "\\1" verilog-lib)))
-		  (progn
-		    (message verilog-lib-dir)
-		    (delete-file (expand-file-name "verilog-mode.elc" verilog-lib-dir ))
-		    (delete-file (expand-file-name "verilog-mode.el.gz" verilog-lib-dir)))))))
-
-      (mapatoms (lambda (s)
-		  (let ((sn (symbol-name s)))
-		    (when (string-match "^\\(verilog\\)\\(-.*\\)?$" sn)
-		      (setplist s nil)
-		      (unintern s)
-		      ))))
 
 
       (require 'package)
