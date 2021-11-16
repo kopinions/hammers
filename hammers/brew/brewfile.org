@@ -148,6 +148,11 @@
     #+BEGIN_SRC conf :tangle (m/resolve "${m/home.d}/.Brewfile") :exports code :results none :eval never :comments link
       brew 'texinfo'
     #+END_SRC
+
+*** emacs related tools
+    #+BEGIN_SRC conf :tangle (m/resolve "${m/home.d}/.Brewfile") :exports code :results none :eval never :comments link
+      brew 'w3m'
+    #+END_SRC
     
 *** emacs email package
     #+BEGIN_SRC conf :tangle (m/resolve "${m/home.d}/.Brewfile") :exports code :results none :eval never :comments link
