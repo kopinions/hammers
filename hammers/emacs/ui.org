@@ -47,6 +47,13 @@
 		  (setq line-spacing 0)))
     #+END_SRC
 
+*** html 页面浏览配置
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-ui.el") :comments link
+      (use-package w3m
+	:ensure-system-package w3m
+	:custom
+	(mm-text-html-renderer 'w3m))
+    #+END_SRC
 *** 禁用鼠标
     #+BEGIN_SRC elisp :exports code :eval never :tangle (m/resolve "${m/conf.d}/lisp/init-ui.el")  :comments link
       (use-package disable-mouse
@@ -60,10 +67,10 @@
     #+END_SRC
 *** macos 不显示 title bar
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-ui.el") :comments link
-    (use-package ns-auto-titlebar
-      :if (eq m/os 'macos)
-      :config
-      (ns-auto-titlebar-mode))
+      (use-package ns-auto-titlebar
+	:if (eq m/os 'macos)
+	:config
+	(ns-auto-titlebar-mode))
     #+END_SRC
 
 *** 安装主题
@@ -80,7 +87,7 @@
 	:config
 	(unless (or (member "all-the-icons" (font-family-list)) m/offline)
 	  (ignore-errors (all-the-icons-install-fonts t)
-			   (if (eq m/os 'linux)
+			 (if (eq m/os 'linux)
 			     (set-default-font "-WQYF-WenQuanYi Micro Hei Mono-normal-normal-normal-*-15-*-*-*-*-0-iso10646-1"))))
 	)
     #+END_SRC
@@ -215,5 +222,5 @@
     #+END_SRC
 *** provide
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-ui.el") :comments link
-(provide 'init-ui)
+      (provide 'init-ui)
     #+END_SRC
