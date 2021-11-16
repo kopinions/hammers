@@ -8,15 +8,18 @@
 #+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
+
+*** mail box 初始化
+    #+NAME: maildir
+    #+BEGIN_SRC elisp :var maildir=(m/resolve "${m/home.d}/.mails")
+      maildir
+    #+END_SRC
+    #+BEGIN_SRC shell :eval (or (and (eq m/os 'macos) "yes") "never") :exports none :results none :noweb yes
+      mkdir -p <<maildir()>>/{ding,lambda,qq,sjkyspa}
+    #+END_SRC
+
 *** notmuch 配置
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-email.el") :comments link
-      (defun sb/mbsync (&rest group)
-	(interactive)
-	(let ((group (or (and (car group) group) '("--all")))
-	      (command `("mbsync" "--verbose" "--quiet" ,@group)))
-	  (message "Starting %s.." (mapconcat 'identity command " "))
-	  (apply 'start-process "mbsync" "*mbsync*" command)))
-
       (use-package notmuch
 	:ensure-system-package (notmuch msmtp (mbsync . isync))
 	:hook
@@ -55,6 +58,12 @@
 	    "Mute Thread"))))
 
 	:config
+	(defun sb/mbsync (&rest group)
+	  (interactive)
+	  (let ((group (or (and (car group) group) '("--all")))
+		(command `("mbsync" "--verbose" "--quiet" ,@group)))
+	    (message "Starting %s.." (mapconcat 'identity command " "))
+	    (apply 'start-process "mbsync" "*mbsync*" command)))
 	(defun sb/notmuch (arg)
 	  "Launch notmuch. If ran with prefix arg, launch mbsync in the
 	background, and automatically refresh the current buffer when
@@ -71,8 +80,9 @@
 
     #+END_SRC
 
+*** mbsync 配置（同步邮件）
     #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/home.d}/.mbsyncrc")
-      IMAPAccount rising-lambda
+      IMAPAccount lambda
       Host imap.gmail.com
       User rising.lambda@gmail.com
       SSLType IMAPS
@@ -83,43 +93,44 @@
       # > security delete-generic-password -s mbsync-gandi-password
       # > security add-generic-password -a stig@brautaset.org -s mbsync-gandi-password -w APP-SPECIFIC-PASSWORD
 
-      IMAPStore rising-lambda-remote
-      Account rising-lambda
+      IMAPStore lambda-remote
+      Account lambda
 
-      MaildirStore rising-lambda-local
-      Path ~/.mails/rising.lambda/
-      Inbox ~/.mails/rising.lambda/INBOX
+      MaildirStore lambda-local
+      Path ~/.mails/lambda/
+      Inbox ~/.mails/lambda/INBOX
 
-      Channel rising-lambda
-      Far :rising-lambda-remote:
-      Near :rising-lambda-local:
+      Channel lambda
+      Far :lambda-remote:
+      Near :lambda-local:
       Sync All
       Create Both
       Expunge Both
       SyncState *
       Patterns INBOX Travel Archive Sent Spam Trash
 
-      IMAPAccount neo-sietium
+      IMAPAccount ding
       Host imap.qiye.aliyun.com
       User neo@sietium.com
-      SSLType NONE
+      SSLType IMAPS
       AuthMechs LOGIN
-      #PassCmd "security find-generic-password -s lambda -w"
       PassCmd "cat ~/.authinfo|grep neo@sietium.com|awk '{print $6}'"
+      #PassCmd "security find-generic-password -s lambda -w"
+
       # To rotate:
       # > security delete-generic-password -s mbsync-gandi-password
       # > security add-generic-password -a stig@brautaset.org -s mbsync-gandi-password -w APP-SPECIFIC-PASSWORD
 
-      IMAPStore neo-sietium-remote
-      Account neo-sietium
+      IMAPStore ding-remote
+      Account ding
 
-      MaildirStore neo-sietium-local
-      Path ~/.mails/neo.sietium/
-      Inbox ~/.mails/neo.sietium/INBOX
+      MaildirStore ding-local
+      Path ~/.mails/ding/
+      Inbox ~/.mails/ding/INBOX
 
-      Channel neo-sietium
-      Far :neo-sietium-remote:
-      Near :neo-sietium-local:
+      Channel ding
+      Far :ding-remote:
+      Near :ding-local:
       Sync All
       Create Both
       Expunge Both
@@ -128,12 +139,12 @@
 
 
       IMAPAccount qq
-      Host imap.exmail.qq.com
-      User 529085249@qq.com
+      Host imap.qq.com
+      User sjkyspa@qq.com
       SSLType IMAPS
-      AuthMechs PLAIN
-      #PassCmd "security find-generic-password -s lambda -w"
-      PassCmd "cat ~/.authinfo|grep 529085249@qq.com|awk '{print $6}'"
+      SSLVersions TLSv1.2
+      AuthMechs LOGIN
+      PassCmd "cat ~/.authinfo|grep sjkyspa@qq.com|awk '{print $6}'"
       # To rotate:
       # > security delete-generic-password -s mbsync-gandi-password
       # > security add-generic-password -a stig@brautaset.org -s mbsync-gandi-password -w APP-SPECIFIC-PASSWORD
@@ -155,13 +166,8 @@
       Patterns INBOX Travel Archive Sent Spam Trash
     #+END_SRC
 
-    #+BEGIN_SRC shell :eval never :exports code :tangle no :comments link
-      notmuch config set user.name "neo"
-      notmuch config set user.primary_email "rising.lambda@gmail.com"
-      notmuch config set user.primary_email "sjkyspa@gmail.com;other@gmail.com;"
-    #+END_SRC
-
-
+    
+*** notmuch 配置文件
     #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/home.d}/.notmuch-config")
       # 相对于 HOMEDIR ~ 的目录
       [database]
@@ -170,10 +176,10 @@
       [user]
       name=neo
       primary_email=rising.lambda@gmail.com
-      other_email=sjkyspa@gmail.com;
+      other_email=sjkyspa@gmail.com;neo@sietium.com;sjkyspa@qq.com
 
       [new]
-      tags=new;unread;inbox
+      tags=new;unread;inbox;cur;
       ignore=.mbsyncstate;.mbsyncstate.journal;.mbsyncstate.lock;.mbsyncstate.new;.uidvalidity;.isyncuidmap.db
 
       [search]
@@ -183,6 +189,7 @@
       synchronize_flags=true
     #+END_SRC
 
+*** msmtp 配置（发送端）
     #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/home.d}/.msmtprc")
       # default config
       defaults
@@ -203,7 +210,8 @@
       passwordeval cat ~/.authinfo|grep rising.lambda@gmail.com|awk '{print $6}'
     #+END_SRC
 
-
+    
+*** emacs 发送端配置
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-email.el") :comments link
       (setq message-send-mail-function 'message-send-mail-with-sendmail
 	    sendmail-program "msmtp"
