@@ -62,6 +62,7 @@
 	:ensure t
 	:custom
 	(verilog-auto-arg-format 'single)
+	(verilog-auto-tieoff-declaration "assign")
 	:config
 	(autoload 'verilog-mode "verilog-mode" "Verilog mode" t )
 	(add-to-list 'auto-mode-alist '("\\.[ds]?vh?\\'" . verilog-mode)))
