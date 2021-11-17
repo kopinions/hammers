@@ -40,6 +40,10 @@
       export PATH="/usr/local/opt/python/libexec/bin:$PATH"
     #+END_SRC
 
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zsh/init/ruby.zsh") :eval never :exports code :comments link
+      export PATH="/usr/local/opt/ruby/bin:$PATH"
+    #+END_SRC
+
     #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zsh/init/brew.zsh") :eval never :exports code :comments link
       if [ -d "/usr/local/Cellar" ]; then
 	  eval $(/usr/local/bin/brew shellenv);
