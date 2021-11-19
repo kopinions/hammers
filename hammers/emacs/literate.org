@@ -554,7 +554,7 @@
 	(org-clock-in .
 		      (lambda ()
 			(m/clockin)
-			(let* ((title (if (string-match org-link-bracket-re org-clock-current-task)  (replace-regexp-in-string org-link-bracket-re "\\2" org-clock-current-task) "interrupt task")))
+			(let* ((title (if (string-match org-link-bracket-re org-clock-current-task)  (replace-regexp-in-string org-link-bracket-re "\\2" org-clock-current-task) (or org-clock-current-task "interrupt task"))))
 			  (ignore-errors (request "http://127.0.0.1:13140"
 					   :type "POST"
 					   :data (json-encode `(("type" . "FOCUSED")
@@ -572,7 +572,7 @@
 			       :headers '(("Content-Type" . "application/json"))))))
 	(org-clock-in-last . (lambda ()
 			       (m/clockin)
-			       (let* ((title (if (string-match org-link-bracket-re org-clock-current-task) (replace-regexp-in-string org-link-bracket-re "\\2" org-clock-current-task) "interrupt task")))
+			       (let* ((title (if (string-match org-link-bracket-re org-clock-current-task) (replace-regexp-in-string org-link-bracket-re "\\2" org-clock-current-task) (or org-clock-current-task "interrupt task"))))
 				 (ignore-errors
 				   (request "http://127.0.0.1:13140"
 				     :type "POST"
