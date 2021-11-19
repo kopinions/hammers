@@ -493,11 +493,6 @@
 	;; (org-agenda-current-time-string "------------NOW------------")
 	(org-clock-persist t)
 	:preface
-	(setq m/pomodoro/focus 45)
-	(setq m/pomodoro/break 5)
-	(setq m/pomodoro/task/current nil)
-	(setq m/pomodoro/task/next nil)
-	(setq m/pomodoro/status/updater nil)
 	(defun m/org-clock-out-and-save-when-exit ()
 	  "Save buffers and stop clocking when kill emacs."
 	  (ignore-errors (org-clock-out) t)
@@ -548,17 +543,24 @@
 		       (effort-str (format "%d:%02d" effort-h effort-m)))
 		  (format "%s/%s" work-done-str effort-str))
 	      (format "%s" work-done-str))))
+	:config
+	(setq m/pomodoro/focus 45)
+	(setq m/pomodoro/break 5)
+	(setq m/pomodoro/task/current nil)
+	(setq m/pomodoro/task/next nil)
+	(setq m/pomodoro/status/updater nil)
 	:hook
 	(kill-emacs . m/org-clock-out-and-save-when-exit)
 	(org-clock-in .
 		      (lambda ()
 			(m/clockin)
-			(ignore-errors (request "http://127.0.0.1:13140"
-					 :type "POST"
-					 :data (json-encode `(("type" . "FOCUSED")
-							      ("title" . ,(or org-clock-current-task "interrupt task"))
-							      ("duration" . 45)))
-					 :headers '(("Content-Type" . "application/json"))))))
+			(let* ((title (if (string-match org-link-bracket-re org-clock-current-task)  (replace-regexp-in-string org-link-bracket-re "\\2" org-clock-current-task) "interrupt task")))
+			  (ignore-errors (request "http://127.0.0.1:13140"
+					   :type "POST"
+					   :data (json-encode `(("type" . "FOCUSED")
+								("title" . ,title)
+								("duration" . 45)))
+					   :headers '(("Content-Type" . "application/json")))))))
 	(org-clock-out . (lambda ()
 			   (m/clockout)
 			   (ignore-errors
@@ -570,13 +572,14 @@
 			       :headers '(("Content-Type" . "application/json"))))))
 	(org-clock-in-last . (lambda ()
 			       (m/clockin)
-			       (ignore-errors
-				 (request "http://127.0.0.1:13140"
-				   :type "POST"
-				   :data (json-encode `(("type" . "FOCUSED")
-							("title" . ,(or org-clock-current-task "interrupt task"))
-							("duration" . 45)))
-				   :headers '(("Content-Type" . "application/json")))))))
+			       (let* ((title (if (string-match org-link-bracket-re org-clock-current-task) (replace-regexp-in-string org-link-bracket-re "\\2" org-clock-current-task) "interrupt task")))
+				 (ignore-errors
+				   (request "http://127.0.0.1:13140"
+				     :type "POST"
+				     :data (json-encode `(("type" . "FOCUSED")
+							  ("title" . ,title)
+							  ("duration" . 45)))
+				     :headers '(("Content-Type" . "application/json"))))))))
     #+END_SRC
 *** org-mode export 配置
     允许在 org 文件中通过 bind 修改环境中绑定的值。
