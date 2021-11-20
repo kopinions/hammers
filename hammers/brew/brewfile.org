@@ -25,6 +25,7 @@
       cask_args appdir: '/Applications'
       tap 'homebrew/cask' if OS.mac?
       tap 'homebrew/bundle'
+      tap 'd12frosted/emacs-plus'
 
       brew "mas" if OS.mac?
       # App Store
@@ -62,7 +63,7 @@
 
       # editor
       cask 'sublime-text', greedy: true
-      cask 'emacs', greedy: true
+      brew 'emacs-plus@28', args: ["with-imagemagick", "with-native-comp"]
 
       # storage
       cask 'baidunetdisk', greedy: true

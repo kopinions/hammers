@@ -46,7 +46,6 @@
      (global-unset-key (kbd "M-`"))
    #+END_SRC
 
-
 ** 是否开启离线模式
    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/init.el") :comments link
      (defvar m/offline 
@@ -140,7 +139,6 @@
 	(auto-compile-on-save-mode))
     #+END_SRC
 
- 
 ** 自定义配置聚合
 
    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/init.el") :comments link
