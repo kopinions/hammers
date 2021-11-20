@@ -59,7 +59,11 @@
       log = hs.logger.new('init.lua', 'debug')
     #+END_SRC
 *** hammerspoon 不同应用自动切换快捷键
-    #+BEGIN_SRC lua :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/home.d}/.hammerspoon/init.lua")) "no") :mkdirp yes :link comment
+    #+NAME: capture
+    #+BEGIN_SRC elisp :var capture=(m/resolve "${m/conf.d}/bin/capture")
+      capture
+    #+END_SRC
+    #+BEGIN_SRC lua :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/home.d}/.hammerspoon/init.lua")) "no") :mkdirp yes :noweb yes :link comment 
       hotkeys = {
 	 {
 	    mods = {'alt'},
@@ -155,28 +159,7 @@
 	       {
 		  name = ".*",
 		  fn = function()
-		     local emacs = hs.appfinder.appFromName("Emacs")
-		     if (emacs == nil) then
-			emacs = hs.application.open("Emacs")
-			emacs:hide ()
-		     end
-
-		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(emacs)
-		     hs.eventtap.event.newKeyEvent('g', true):post(emacs)
-		     hs.eventtap.event.newKeyEvent('g', false):post(emacs)
-		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(emacs)
-
-		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, true):post(emacs)
-		     hs.eventtap.event.newKeyEvent('c', true):post(emacs)
-		     hs.eventtap.event.newKeyEvent('c', false):post(emacs)
-		     hs.eventtap.event.newKeyEvent(hs.keycodes.map.ctrl, false):post(emacs)
-
-		     hs.eventtap.event.newKeyEvent('c', true):post(emacs)
-		     hs.eventtap.event.newKeyEvent('c', false):post(emacs)
-
-		     hs.eventtap.event.newKeyEvent("t", true):post(emacs)
-		     hs.eventtap.event.newKeyEvent("t", false):post(emacs)
-		     emacs:activate()
+		     hs.execute("<<capture()>>", true)
 		  end
 	       }
 	    }
