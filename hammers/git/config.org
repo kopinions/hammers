@@ -27,6 +27,7 @@
 	      pager = less -F -X
 	      excludesfile = ~/.gitignore
 	      whitespace = -trailing-space
+	      editor = vim
       [color]
 	      ui = auto
 
