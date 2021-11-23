@@ -314,6 +314,7 @@
 *** 使用 rg 去处理 ripgrep 结果
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
       (use-package rg
+	:load-path m/load-path
 	:preface
 	(defun rg-occur-hide-lines-not-matching (search-text)
 	  "Hide lines that don't match the specified regexp."

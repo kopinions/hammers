@@ -178,7 +178,7 @@
 
 (m/clone "${m/root}/hammers/emacs/3rdparty/lsp-ivy" "${m/conf.d}/3rdparty/lsp-ivy")
 (m/untar "${m/root}/hammers/emacs/3rdparty/pyim-bigdict.tar.xz" "${m/conf.d}/pyim/dicts/pyim-bigdict.pyim")
-(m/clone "${m/root}/hammers/emacs/3rdparty/verilog-mode" "${m/conf.d}/3rdparty/verilog-mode")
+(m/clone "${m/root}/hammers/emacs/3rdparty/rg.el" "${m/conf.d}/3rdparty/rg.el")
 (m/tangles "${m/root}/hammers/emacs/snippets/*.org")
 (m/tangles "${m/root}/hammers/git/*.org")
 

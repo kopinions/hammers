@@ -24,3 +24,6 @@
 [submodule "hammers/gdb/plugins/dashboard"]
 	path = hammers/gdb/plugins/dashboard
 	url = https://github.com/cyrus-and/gdb-dashboard.git
+[submodule "hammers/emacs/3rdparty/rg.el"]
+	path = hammers/emacs/3rdparty/rg.el
+	url = https://github.com/dajva/rg.el.git

@@ -145,11 +145,11 @@
 ** 自定义配置聚合
 
    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/init.el") :comments link
-     (defconst m/load-path (lambda () (list 
-				       (expand-file-name "lisp" m/conf.d)
-				       (expand-file-name "lsp-ivy" (expand-file-name "3rdparty" m/conf.d))
-				       (expand-file-name "librime" (expand-file-name "3rdparty" m/conf.d))
-				       (expand-file-name "liberime" (expand-file-name "3rdparty" m/conf.d)))))
+     (defconst m/load-path (list (expand-file-name "lisp" m/conf.d)
+				 (expand-file-name "lsp-ivy" (expand-file-name "3rdparty" m/conf.d))
+				 (expand-file-name "rg.el" (expand-file-name "3rdparty" m/conf.d))
+				 (expand-file-name "librime" (expand-file-name "3rdparty" m/conf.d))
+				 (expand-file-name "liberime" (expand-file-name "3rdparty" m/conf.d))))
      (use-package init-common
        :load-path m/load-path)
      (use-package init-os
