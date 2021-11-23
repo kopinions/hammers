@@ -109,9 +109,9 @@
   "Return path according the PATH & EXTRA arguments."
   (let ((parts (cons (m/resolve path) extra)))
     (concat "/" (mapconcat #'(lambda (p) (cond ((and (string-prefix-p "/" p) (string-suffix-p "/" p)) (substring p 1 -1))
-					       ((string-prefix-p "/" p) (substring p 1))
-					       ((string-suffix-p "/" p) (substring p 0 -1))
-					       (t p)))
+					  ((string-prefix-p "/" p) (substring p 1))
+					  ((string-suffix-p "/" p) (substring p 0 -1))
+					  (t p)))
                            parts "/"))))
 (defun m/copy (src dest)
   "Link the SRC to the DEST."
@@ -175,26 +175,26 @@
       filename)))
 
 (m/tangles "${m/root}/hammers/emacs/*.org")
-
 (m/clone "${m/root}/hammers/emacs/3rdparty/lsp-ivy" "${m/conf.d}/3rdparty/lsp-ivy")
-(m/untar "${m/root}/hammers/emacs/3rdparty/pyim-bigdict.tar.xz" "${m/conf.d}/pyim/dicts/pyim-bigdict.pyim")
 (m/clone "${m/root}/hammers/emacs/3rdparty/rg.el" "${m/conf.d}/3rdparty/rg.el")
 (m/tangles "${m/root}/hammers/emacs/snippets/*.org")
 (m/tangles "${m/root}/hammers/git/*.org")
 
 (if (eq m/os 'macos)
     (progn (m/tangles "${m/root}/hammers/brew/*.org")
+	   (m/tangles "${m/root}/hammers/hammerspoon/*.org")
 	   (m/evaluates "${m/root}/hammers/brew/*.org")
 	   (m/copy "${m/root}/hammers/hammerspoon/Spoons" "${m/home.d}/.hammerspoon/Spoons")
 	   ))
 
 (if (eq m/os 'macos)
     (progn (m/clone "${m/root}/hammers/emacs/3rdparty/librime" "${m/conf.d}/3rdparty/librime")
-		   (m/clone "${m/root}/hammers/emacs/3rdparty/liberime" "${m/conf.d}/3rdparty/liberime")))
+	   (m/clone "${m/root}/hammers/emacs/3rdparty/liberime" "${m/conf.d}/3rdparty/liberime")))
 
 (if (or (eq m/os 'macos)
 	(eq m/os 'linux))
     (progn
+      (m/untar "${m/root}/hammers/emacs/3rdparty/pyim-bigdict.tar.xz" "${m/conf.d}/pyim/dicts/pyim-bigdict.pyim")
       (m/tangles "${m/root}/hammers/scripts/*.org")
       (m/tangles "${m/root}/hammers/zsh/*.org")
       (m/tangles "${m/root}/hammers/ssh/*.org")
@@ -203,7 +203,6 @@
       (m/tangles "${m/root}/hammers/vim/*.org")
       (m/tangles "${m/root}/hammers/rg/*.org")
       (m/tangles "${m/root}/hammers/gdb/*.org")
-      (m/tangles "${m/root}/hammers/hammerspoon/*.org")
       (m/evaluate "${m/root}/hammers/emacs/chinese.org")
       (m/evaluate "${m/root}/hammers/emacs/lsp.org")
       (m/clone "${m/root}/hammers/tmux/plugins/tpm" "${m/home.d}/.tmux/plugins/tpm")
