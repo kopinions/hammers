@@ -86,6 +86,12 @@
 	:config
 	(add-to-list 'auto-mode-alist '("\\.adoc\\'" . adoc-mode)))
     #+END_SRC
+
+*** jenkinsfile mode
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-languages.el") :comments link
+      (use-package jenkinsfile-mode)
+    #+END_SRC
+
 *** provide
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-languages.el") :comments link
       (provide 'init-languages)
