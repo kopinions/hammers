@@ -8,6 +8,7 @@
 #+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
+
 *** git 基本配置
     #+BEGIN_SRC conf :tangle (tangle-if-absent "${m/home.d}/.gitconfig")
       [user]
@@ -49,10 +50,42 @@
 	      rebase = true
       [push]
 	      default = simple
+      [commit]
+	      template = ~/.gitcommit.tmpl
       [github]
 	      user = sjkyspa@gmail.com
       [credential]
 	      helper = store
+    #+END_SRC
+
+*** git commit template
+    #+BEGIN_SRC conf :tangle (tangle-if-absent "${m/home.d}/.gitcommit.tmpl")
+      # Type(<scope>): <subject>
+
+      # <body>
+
+      # <footer>
+
+      # Type should be one of the following:
+      # * feat (new feature)
+      # * fix (bug fix)
+      # * docs (changes to documentation)
+      # * style (formatting, missing semi colons, etc; no code change)
+      # * refactor (refactoring production code)
+      # * test (adding missing tests, refactoring tests; no production code change)
+      # * chore (updating grunt tasks etc; no production code change)
+      # Scope is just the scope of the change. Something like (admin) or (teacher).
+      # Subject should use impertivite tone and say what you did.
+      # The body should go into detail about changes made.
+      # The footer should contain any JIRA (or other tool) issue references or actions.
+
+      # For a full example of how to write a good commit message, check out
+      # https://github.com/sparkbox/how_to/tree/master/style/git
+
+      # ---------------------------------------------------------------------------------
+      # Jira Issue Processing
+      # ISSUE_KEY #comment This is a comment
+      # ISSUE_KEY #done 
     #+END_SRC
 
 *** git ignore 基本配置
