@@ -60,6 +60,8 @@
 
 *** git commit template
     #+BEGIN_SRC conf :tangle (tangle-if-absent "${m/home.d}/.gitcommit.tmpl")
+      f
+
       # Type(<scope>): <subject>
 
       # <body>
