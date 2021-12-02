@@ -14,6 +14,7 @@
       export LANG=en_US.UTF-8
       export JAVA_HOME="/Library/Java/JavaVirtualMachines/openjdk-13.0.1.jdk/Contents/Home"
       export EDITOR=vim
+      export DISABLE_AUTO_TITLE=true
     #+END_SRC
 
 *** zshrc 配置
@@ -218,6 +219,7 @@
 	      cmake --build cmake-build-debug --target ${1:-test} -j `nproc`
 	  fi
       }
+      alias mux=tmuxinator
     #+END_SRC
 
 *** export http proxy
