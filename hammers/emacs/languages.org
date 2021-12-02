@@ -61,10 +61,119 @@
       (use-package verilog-mode
 	:ensure t
 	:custom
+	;; false tab indent mode
+	;; moudule arg one line per signal
 	(verilog-auto-arg-format 'single)
+	;; tieoff with assignment statement
 	(verilog-auto-tieoff-declaration "assign")
+	;; "Type of statements to lineup across multiple lines.
+	;; If `all' is selected, then all line ups described below are done.
+	;;
+	;; If `declarations', then just declarations are lined up with any
+	;; preceding declarations, taking into account widths and the like,
+	;; so or example the code:
+	;;	reg [31:0] a;
+	;;	reg b;
+	;; would become
+	;;	reg [31:0] a;
+	;;	reg        b;
+	;;
+	;; If `assignment', then assignments are lined up with any preceding
+	;; assignments, so for example the code
+	;;	a_long_variable <= b + c;
+	;;	d = e + f;
+	;; would become
+	;;	a_long_variable <= b + c;
+	;;	d                = e + f;
+	(verilog-auto-lineup "all")
+	;; text used for delays in delayed assignments.  Add a trailing space if set
+	(verilog-assignment-delay "#1 ")
+	;; t means AUTORESET should determine the width of signals
+	(verilog-auto-reset-widths t)
+	;; Non-nil means a comment /* ... */ is set after the ends which ends cases, tasks, functions and modules.
+	;; The type and name of the object will be set between the braces.
+	(verilog-auto-endcomments t)
+	;; Non-nil means automatically newline after semicolons and the punctuation mark after an end
+	(verilog-auto-newline t)
+	;;Non-nil means indent begin statements following if, else, while, etc. Otherwise, line them up.
+	(verilog-indent-begin-after-if t)
+	;; Non-nil means TAB should always re-indent the current line.
+	;; nil means TAB will only reindent when at the beginning of the line.
+	(verilog-tab-always-indent t)
+	;; Non-nil means automatically indent line after newline
+	(verilog-auto-indent-on-newline t)
+	;; Absolute indentation of first begin in a task or function block
+	(verilog-indent-level-behavioral 4) 
+	;; Indentation to add to each level of \\=`ifdef declarations
+	(verilog-indent-level-directive 4)
+	;; Indentation of Verilog statements with respect to containing block
+	(verilog-indent-level 4)
+	;; Indentation of Module level Verilog statements (eg always, initial)
+	(verilog-indent-level-module 4) 
+	;; Indentation of declarations with respect to containing block
+	(verilog-indent-level-declaration 4) 
+	;; Indentation for case statements
+	(verilog-case-indent 4)              
+	;; Indentation of Verilog statements split across lines
+	(verilog-cexp-indent 4)              
+	;; Indentation of lists, look the under content. How to treat indenting items in a list.
+	;; t (the default), indent as:
+	;;	always @( posedge a or
+	;;              reset ) begin
+	;;
+	;; nil, treat as:
+	;;	always @( posedge a or
+	;;	   reset ) begin"
+	(verilog-indent-lists t)     
+	;; dates are written in scientific format (e.g.  1997/09/17)
+	(verilog-date-scientific-format t)
+	(verilog-auto-delete-trailing-whitespace t)
+	;; Non-nil means report warning if an AUTO_TEMPLATE line is not used.
+	(verilog-auto-template-warn-unused t)
+	;; Non-nil means highlight grouping keywords more dramatically.
+	;; If false, these words are in the ‘font-lock-type-face’;
+	;; if True, then they are in ‘verilog-font-lock-grouping-keywords-face’.
+	;; Some find that special highlighting on these grouping constructs
+	;; allow the structure of the code to be understood at a glance.
+	(verilog-highlight-grouping-keywords t)
+	;; Non-nil means highlight module statements for ‘verilog-load-file-at-point’.
+	;; When true, mousing over module names will allow jumping to the
+	;; module definition.  If false, this is not supported.
+	(verilog-highlight-modules t)
+	;; Non-nil means TAB moves to the right hand column in preparation for a comment.
+	(verilog-tab-to-comment t)
+	;; Non-nil means align ‘else’ under matching ‘if’.
+	;; Otherwise else is lined up with first character on line holding matching if.
+	(verilog-align-ifelse t)
+	;; True means when creating default ports with AUTOINST, use bus subscripts.
+	;; If nil, skip the subscript when it matches the entire bus as declared in
+	;; the module (AUTOWIRE signals always are subscripted, you must manually
+	;; declare the wire to have the subscripts removed.)  Setting this to nil may
+	;; speed up some simulators, but is less general and harder to read, so avoid.
+	;; If ‘unsigned’, use vectors for unsigned types (like using true,
+	;; otherwise no vectors if sizes match (like using nil).
+	(verilog-auto-inst-vector t)
+	;; Non-nil indicates action to take when saving a Verilog buffer with AUTOs.
+	;; A value of ‘force’ will always do a M-x verilog-auto automatically if
+	;; needed on every save.  A value of ‘detect’ will do M-x verilog-auto
+	;; automatically when it thinks necessary.  A value of ‘ask’ will query the
+	;; user when it thinks updating is needed.
+	(verilog-auto-save-policy "ask")
+	;; Non-nil indicates to insert to/from comments with ‘verilog-auto-wire’ etc.
+	(verilog-auto-wire-comment t)
+	;; Non-nil means ‘verilog-mode’ regexps should ignore case.
+	;; This variable is t for backward compatibility; nil is suggested.
+	(verilog-case-fold nil)
+	;; Non-nil means highlight module statements for ‘verilog-load-file-at-point’.
+	;; When true, mousing over include file names will allow jumping to the
+	;; file referenced.  If false, this is not supported.
+	(verilog-highlight-includes t)
+	;; Non-nil means highlight module statements for ‘verilog-load-file-at-point’.
+	;; When true, mousing over module names will allow jumping to the
+	;; module definition.  If false, this is not supported.  Setting
+	;; this is experimental, and may lead to bad performance.
+	(verilog-highlight-modules t)
 	:config
-	(autoload 'verilog-mode "verilog-mode" "Verilog mode" t )
 	(add-to-list 'auto-mode-alist '("\\.[ds]?vh?\\'" . verilog-mode)))
     #+END_SRC
 
