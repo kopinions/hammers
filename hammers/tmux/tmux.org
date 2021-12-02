@@ -47,7 +47,13 @@
       set -g @plugin 'tmux-plugins/tmux-urlview'
       # copy to system clipboard in tmux
       set -g @plugin 'tmux-plugins/tmux-yank'
+      set -g @plugin 'laktak/extrakto'
       run '~/.tmux/plugins/tpm/tpm'
+
+      set -g @extrakto_split_size "15"
+      set -g @extrakto_split_direction "v"
+      set -g @extrakto_copy_key "tab"      # use tab to copy to clipboard
+      set -g @extrakto_insert_key "enter"  # use enter to insert selection
 
       bind-key -T prefix 1 resize-pane -Z
       bind-key -T prefix 2 split-window -v 
