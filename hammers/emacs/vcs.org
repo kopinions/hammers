@@ -40,6 +40,10 @@
 
       (use-package magit-todos)
     #+END_SRC
+*** git config file edit support
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-vcs.el") :comments link
+      (use-package git-modes)
+    #+END_SRC
 
 *** other
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-vcs.el") :comments link

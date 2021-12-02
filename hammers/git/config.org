@@ -10,7 +10,7 @@
 
 
 *** git 基本配置
-    #+BEGIN_SRC conf :tangle (tangle-if-absent "${m/home.d}/.gitconfig")
+    #+BEGIN_SRC gitconfig :tangle (tangle-if-absent "${m/home.d}/.gitconfig")
       [user]
 	      name = neo
 	      email = rising.lambda@gmail.com
@@ -31,7 +31,6 @@
 	      editor = vim
       [color]
 	      ui = auto
-
       [color "branch"]
 	      current = yellow reverse
 	      local = yellow
@@ -45,7 +44,6 @@
 	      added = green
 	      changed = red
 	      untracked = cyan
-
       [pull]
 	      rebase = true
       [push]
