@@ -349,7 +349,6 @@
 	:custom
 	(rg-show-header t)
 	(rg-hide-command nil)
-	(rg-align-line-column-separator ":")
 	(rg-command-line-flags '("--pcre2"))
 	:config
 	(rg-enable-default-bindings)
@@ -364,7 +363,7 @@
       (use-package wgrep
 	:custom
 	(wgrep-enable-key "e")
-	(wgrep-auto-save-buffer nil)
+	(wgrep-auto-save-buffer t)
 	(wgrep-change-readonly-file t))
     #+END_SRC
 
