@@ -59,9 +59,8 @@
     #+END_SRC
 
 *** git commit template
-    #+BEGIN_SRC conf :tangle (tangle-if-absent "${m/home.d}/.gitcommit.tmpl")
-      f
-
+    #+BEGIN_SRC org :tangle "~/.gitcommit.tmpl" :noweb yes :link comment
+      type
       # Type(<scope>): <subject>
 
       # <body>
