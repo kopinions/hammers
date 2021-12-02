@@ -109,8 +109,8 @@
       brew 'eth-p/software/bat-extras'
       brew 'reattach-to-user-namespace' if OS.mac?
       brew 'tmux'
-      brew 'tmuxinator-completion'
       brew 'urlview'
+      brew 'tmuxinator'
       # code statictis
       brew 'cloc'
       brew 'fzf'
