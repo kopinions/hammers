@@ -27,11 +27,6 @@
 
       set -g history-limit 102400
 
-      set -g @copy_mode_yank "M-w"
-      set -g @yank_line "M-w"
-      set -g @copy_mode_put "C-y"
-      set -g @yank_with_mouse on
-      set -g @yank_selection_mouse 'clipboard'
 
 
       # enable mouse to scoll history
@@ -49,6 +44,13 @@
       set -g @plugin 'tmux-plugins/tmux-yank'
       set -g @plugin 'laktak/extrakto'
       run '~/.tmux/plugins/tpm/tpm'
+
+
+      set -g @copy_mode_yank "M-w"
+      set -g @yank_line "M-w"
+      set -g @copy_mode_put "C-y"
+      set -g @yank_with_mouse on
+      set -g @yank_selection_mouse 'clipboard'
 
       set -g @extrakto_split_size "15"
       set -g @extrakto_split_direction "v"
