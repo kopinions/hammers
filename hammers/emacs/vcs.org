@@ -11,6 +11,7 @@
 *** git highlight mode
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-vcs.el") :comments link
       (use-package git-gutter
+	:after magit
 	:custom
 	(git-gutter:modified-sign "~")
 	(git-gutter:added-sign    "+")
@@ -28,7 +29,9 @@
     #+END_SRC
 *** magit
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-vcs.el") :comments link
+      (define-derived-mode commit-msg-mode text-mode "Commit Msg")
       (use-package magit
+	:after (yasnippet yasnippet-snippets)
 	:custom
 	(magit-diff-refine-hunk t)
 	:bind
@@ -36,7 +39,11 @@
 	:config
 	(use-package fullframe
 	  :config
-	  (fullframe magit-status magit-mode-quit-window)))
+	  (fullframe magit-status magit-mode-quit-window))
+	:hook
+	(git-commit-mode . commit-msg-mode)
+	(git-commit-mode . (lambda ()
+			     (yas-activate-extra-mode 'commit-msg-mode))))
 
       (use-package magit-todos)
     #+END_SRC
@@ -55,7 +62,6 @@
       (use-package git-timemachine
 	:config
 	(defalias 'tm 'git-timemachine))
-
     #+END_SRC
 
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-vcs.el") :comments link
