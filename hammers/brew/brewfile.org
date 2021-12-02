@@ -110,6 +110,7 @@
       brew 'reattach-to-user-namespace' if OS.mac?
       brew 'tmux'
       brew 'tmuxinator-completion'
+      brew 'urlview'
       # code statictis
       brew 'cloc'
       brew 'fzf'
