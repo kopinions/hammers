@@ -8,11 +8,18 @@
 #+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
+*** ibuffer
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-project.el") :comments link
+      (use-package ibuffer
+	:bind ("C-x C-b" . ibuffer))
+    #+END_SRC
+
+
 *** projectile 
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-project.el") :comments link
       (use-package projectile
 	:diminish projectile-mode
-	:after counsel
+	:after (rg counsel)
 	:custom
 	(projectile-sort-order 'recently-active)
 	:bind
@@ -34,12 +41,6 @@
 	(use-package counsel-projectile
 	  :after counsel)
 	(projectile-mode))
-    #+END_SRC
-
-*** ibuffer
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-project.el") :comments link
-      (use-package ibuffer
-	:bind ("C-x C-b" . ibuffer))
     #+END_SRC
 
 *** export
