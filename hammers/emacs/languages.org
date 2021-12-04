@@ -201,6 +201,10 @@
       (use-package jenkinsfile-mode)
     #+END_SRC
 
+*** vimrc mode
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-languages.el") :comments link
+      (use-package vimrc-mode)
+    #+END_SRC
 *** provide
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-languages.el") :comments link
       (provide 'init-languages)

@@ -20,6 +20,7 @@
 *** zshrc 配置
     #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zshrc") :eval never :exports code :comments link
       export ZPLUG_HOME=~/.zsh/zplug
+      export ZPLUG_REPOS=~/.config/zplug/repos
 
       [[ $TERM == "tramp" ]] && unsetopt zle && PS1='$ '&& return
       for file in $(find ~/.zsh/init/ -name "*.zsh"|sort); do

@@ -131,6 +131,7 @@
     (shell-command (concat "rm -rf " resolved-dest))
     (shell-command (concat "mkdir -p $(dirname " resolved-dest ")"))
     (shell-command (concat "git clone --no-hardlinks --recurse-submodule " resolved-src " " resolved-dest))
+    (shell-command (concat "git -C " resolved-dest " config remote.origin.url $(git -C " resolved-src " remote get-url origin)"))
     (message "cloned: %s to %s" resolved-src resolved-dest)))
 
 (defun m/untar (src dest)
@@ -175,26 +176,13 @@
       filename)))
 
 (m/tangles "${m/root}/hammers/emacs/*.org")
-(m/clone "${m/root}/hammers/emacs/3rdparty/lsp-ivy" "${m/conf.d}/3rdparty/lsp-ivy")
-(m/clone "${m/root}/hammers/emacs/3rdparty/rg.el" "${m/conf.d}/3rdparty/rg.el")
 (m/tangles "${m/root}/hammers/emacs/snippets/*.org")
 (m/tangles "${m/root}/hammers/git/*.org")
-
-(if (eq m/os 'macos)
-    (progn (m/tangles "${m/root}/hammers/brew/*.org")
-	   (m/tangles "${m/root}/hammers/hammerspoon/*.org")
-	   (m/evaluates "${m/root}/hammers/brew/*.org")
-	   (m/copy "${m/root}/hammers/hammerspoon/Spoons" "${m/home.d}/.hammerspoon/Spoons")
-	   ))
-
-(if (eq m/os 'macos)
-    (progn (m/clone "${m/root}/hammers/emacs/3rdparty/librime" "${m/conf.d}/3rdparty/librime")
-	   (m/clone "${m/root}/hammers/emacs/3rdparty/liberime" "${m/conf.d}/3rdparty/liberime")))
+(m/untar "${m/root}/hammers/emacs/3rdparty/pyim-bigdict.tar.xz" "${m/conf.d}/pyim/dicts/pyim-bigdict.pyim")
 
 (if (or (eq m/os 'macos)
 	(eq m/os 'linux))
     (progn
-      (m/untar "${m/root}/hammers/emacs/3rdparty/pyim-bigdict.tar.xz" "${m/conf.d}/pyim/dicts/pyim-bigdict.pyim")
       (m/tangles "${m/root}/hammers/scripts/*.org")
       (m/tangles "${m/root}/hammers/zsh/*.org")
       (m/tangles "${m/root}/hammers/ssh/*.org")
@@ -202,14 +190,34 @@
       (m/tangles "${m/root}/hammers/tmux/*.org")
       (m/tangles "${m/root}/hammers/vim/*.org")
       (m/tangles "${m/root}/hammers/rg/*.org")
-      (m/tangles "${m/root}/hammers/gdb/*.org")
+      (m/tangles "${m/root}/hammers/gdb/*.org")))
+
+(if (eq m/os 'macos)
+    (progn (m/tangles "${m/root}/hammers/brew/*.org")
+	   (m/tangles "${m/root}/hammers/hammerspoon/*.org")))
+
+(if (eq m/os 'macos)
+    (progn (m/evaluates "${m/root}/hammers/brew/*.org")
+	   (m/copy "${m/root}/hammers/hammerspoon/Spoons" "${m/home.d}/.hammerspoon/Spoons")))
+
+
+
+(if (eq m/os 'macos)
+    (progn (m/clone "${m/root}/hammers/emacs/3rdparty/librime" "${m/conf.d}/3rdparty/librime")
+	   (m/clone "${m/root}/hammers/emacs/3rdparty/liberime" "${m/conf.d}/3rdparty/liberime")))
+
+
+(if (or (eq m/os 'macos)
+	(eq m/os 'linux))
+    (progn
       (m/evaluate "${m/root}/hammers/emacs/chinese.org")
-      (m/evaluate "${m/root}/hammers/emacs/lsp.org")
+      ;; start copy config file
+      (m/clone "${m/root}/hammers/emacs/3rdparty/lsp-ivy" "${m/conf.d}/3rdparty/lsp-ivy")
+      (m/clone "${m/root}/hammers/emacs/3rdparty/rg.el" "${m/conf.d}/3rdparty/rg.el")
       (m/clone "${m/root}/hammers/tmux/plugins/tpm" "${m/home.d}/.tmux/plugins/tpm")
       (m/clone "${m/root}/hammers/zsh/zplug" "${m/home.d}/.zsh/zplug")
       (m/clone "${m/root}/hammers/gdb/plugins/dashboard" "${m/home.d}/.gdb/dashboard")
       (m/clone "${m/root}/hammers/vim/bundle/Vundle" "${m/home.d}/.vim/bundle/Vundle")))
-
 
 (message "Finished building hammers. Please Restart Emacs.")
 
