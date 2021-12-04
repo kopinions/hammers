@@ -60,6 +60,7 @@
       cask 'appcleaner', greedy: true
       cask 'cheatsheet', greedy: true
       cask 'postman', greedy: true
+      cask 'drawio', greedy: true
 
       # editor
       cask 'sublime-text', greedy: true
