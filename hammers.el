@@ -131,13 +131,15 @@
     (if (file-directory-p resolved-dest)
 	(progn
 	  (message "repo under: %s exists, pull from %s" resolved-dest resolved-src)
-	  (shell-command (concat "git -C " resolved-dest " pull filelocal")))
+	  (shell-command (format "git -C %s  pull filelocal $(git -C %s branch --show-current)"  resolved-dest resolved-dest)))
       (progn
 	(message "repo under: %s not exists, clone from  %s" resolved-dest resolved-src)
 	(shell-command (concat "mkdir -p $(dirname " resolved-dest ")"))
 	(shell-command (concat "git clone --no-hardlinks --recurse-submodule " resolved-src " " resolved-dest))
 	(shell-command (concat "git -C " resolved-dest " remote rename origin filelocal"))
-	(shell-command (concat "git -C " resolved-dest " remote add origin $(git -C " resolved-src " remote get-url origin)"))))))
+	(shell-command (format "git -C %s remote add origin $(git -C %s remote get-url origin)" resolved-dest resolved-src))
+	(shell-command (format "git -C %s checkout $(git -C %s branch --show-current)" resolved-dest resolved-src))
+	))))
 
 (defun m/untar (src dest)
   "clone the SRC to the DEST."
