@@ -158,7 +158,7 @@
 	;; needed on every save.  A value of ‘detect’ will do M-x verilog-auto
 	;; automatically when it thinks necessary.  A value of ‘ask’ will query the
 	;; user when it thinks updating is needed.
-	(verilog-auto-save-policy "ask")
+	(verilog-auto-save-policy nil)
 	;; Non-nil indicates to insert to/from comments with ‘verilog-auto-wire’ etc.
 	(verilog-auto-wire-comment t)
 	;; Non-nil means ‘verilog-mode’ regexps should ignore case.
