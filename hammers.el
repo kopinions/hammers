@@ -118,9 +118,9 @@
   (let* ((resolved-src (m/resolve src))
 	 (resolved-dest (m/resolve dest)))
     (message "copy: %s to %s" resolved-src resolved-dest)
-    (shell-command (concat "rm -rf " resolved-dest))
-    (shell-command (concat "mkdir -p $(dirname " resolved-dest ")"))
-    (shell-command (concat "cp -rf " resolved-src " " resolved-dest))
+    (if (file-directory-p resolved-dest)
+	(shell-command (format "rsync -ravz %s/ %s" resolved-src resolved-dest))
+      (shell-command (format "rsync -ravz %s %s" resolved-src resolved-dest)))
     (message "copied: %s to %s" resolved-src resolved-dest)))
 
 (defun m/clone (src dest)
@@ -128,20 +128,25 @@
   (let* ((resolved-src (m/resolve src))
 	 (resolved-dest (m/resolve dest)))
     (message "clone: %s to %s" resolved-src resolved-dest)
-    (shell-command (concat "rm -rf " resolved-dest))
-    (shell-command (concat "mkdir -p $(dirname " resolved-dest ")"))
-    (shell-command (concat "git clone --no-hardlinks --recurse-submodule " resolved-src " " resolved-dest))
-    (shell-command (concat "git -C " resolved-dest " config remote.origin.url $(git -C " resolved-src " remote get-url origin)"))
-    (message "cloned: %s to %s" resolved-src resolved-dest)))
+    (if (file-directory-p resolved-dest)
+	(progn
+	  (message "repo under: %s exists, pull from %s" resolved-dest resolved-src)
+	  (shell-command (concat "git -C " resolved-dest " pull filelocal")))
+      (progn
+	(message "repo under: %s not exists, clone from  %s" resolved-dest resolved-src)
+	(shell-command (concat "mkdir -p $(dirname " resolved-dest ")"))
+	(shell-command (concat "git clone --no-hardlinks --recurse-submodule " resolved-src " " resolved-dest))
+	(shell-command (concat "git -C " resolved-dest " remote rename origin filelocal"))
+	(shell-command (concat "git -C " resolved-dest " remote add origin $(git -C " resolved-src " remote get-url origin)"))))))
 
 (defun m/untar (src dest)
   "clone the SRC to the DEST."
   (let* ((resolved-src (m/resolve src))
 	 (resolved-dest (m/resolve dest)))
     (message "untar: %s to %s" resolved-src resolved-dest)
-    (shell-command (concat "rm -rf " resolved-dest))
-    (shell-command (concat "mkdir -p $(dirname " resolved-dest ")"))
-    (shell-command (concat "tar -xJf" resolved-src " -C $(dirname " resolved-dest ")"))
+    (shell-command (concat "mkdir -p " resolved-dest))
+    (message (concat "tmp=$(mktemp -d) && tar -xJf " resolved-src " -C ${tmp} && rsync -ravz ${tmp}" resolved-dest))
+    (shell-command (concat "tmp=$(mktemp -d) && tar -xJf " resolved-src " -C ${tmp} && rsync -ravz ${tmp}/ " resolved-dest))
     (message "untared: %s to %s" resolved-src resolved-dest)))
 
 (defun m/rsync (src dest)
@@ -166,8 +171,8 @@
 		      (file-name-directory load-file-name)
 		    (file-name-directory (buffer-file-name)))))
 
-(defvar m/conf.d (expand-file-name user-emacs-directory))
-(defvar m/home.d (expand-file-name "~"))
+(defvar m/conf.d (directory-file-name (expand-file-name user-emacs-directory)))
+(defvar m/home.d (directory-file-name (expand-file-name "~")))
 
 (defun tangle-if-absent (path)
   (let* ((filename (m/resolve path)))
@@ -178,7 +183,7 @@
 (m/tangles "${m/root}/hammers/emacs/*.org")
 (m/tangles "${m/root}/hammers/emacs/snippets/*.org")
 (m/tangles "${m/root}/hammers/git/*.org")
-(m/untar "${m/root}/hammers/emacs/3rdparty/pyim-bigdict.tar.xz" "${m/conf.d}/pyim/dicts/pyim-bigdict.pyim")
+(m/untar "${m/root}/hammers/emacs/3rdparty/pyim-bigdict.tar.xz" "${m/conf.d}/pyim/dicts")
 
 (if (or (eq m/os 'macos)
 	(eq m/os 'linux))
@@ -192,32 +197,33 @@
       (m/tangles "${m/root}/hammers/rg/*.org")
       (m/tangles "${m/root}/hammers/gdb/*.org")))
 
+;; tangle brew and hammerspoon
 (if (eq m/os 'macos)
     (progn (m/tangles "${m/root}/hammers/brew/*.org")
 	   (m/tangles "${m/root}/hammers/hammerspoon/*.org")))
 
+;; copy hammerspoon config
 (if (eq m/os 'macos)
     (progn (m/evaluates "${m/root}/hammers/brew/*.org")
 	   (m/copy "${m/root}/hammers/hammerspoon/Spoons" "${m/home.d}/.hammerspoon/Spoons")))
 
 
-
-(if (eq m/os 'macos)
-    (progn (m/clone "${m/root}/hammers/emacs/3rdparty/librime" "${m/conf.d}/3rdparty/librime")
-	   (m/clone "${m/root}/hammers/emacs/3rdparty/liberime" "${m/conf.d}/3rdparty/liberime")))
-
-
+;; copy config file
 (if (or (eq m/os 'macos)
 	(eq m/os 'linux))
     (progn
-      (m/evaluate "${m/root}/hammers/emacs/chinese.org")
       ;; start copy config file
       (m/clone "${m/root}/hammers/emacs/3rdparty/lsp-ivy" "${m/conf.d}/3rdparty/lsp-ivy")
       (m/clone "${m/root}/hammers/emacs/3rdparty/rg.el" "${m/conf.d}/3rdparty/rg.el")
-      (m/clone "${m/root}/hammers/tmux/plugins/tpm" "${m/home.d}/.tmux/plugins/tpm")
+      (m/clone "${m/root}/hammers/tmux/plugins/tpm" "${m/home.d}/.config/tmux/plugins/tpm")
       (m/clone "${m/root}/hammers/zsh/zplug" "${m/home.d}/.zsh/zplug")
       (m/clone "${m/root}/hammers/gdb/plugins/dashboard" "${m/home.d}/.gdb/dashboard")
-      (m/clone "${m/root}/hammers/vim/bundle/Vundle" "${m/home.d}/.vim/bundle/Vundle")))
+      (m/clone "${m/root}/hammers/vim/bundle/Vundle" "${m/home.d}/.config/vim/plugins/Vundle")))
+
+(if (eq m/os 'macos)
+    (progn (m/clone "${m/root}/hammers/emacs/3rdparty/librime" "${m/conf.d}/3rdparty/librime")
+	   (m/clone "${m/root}/hammers/emacs/3rdparty/liberime" "${m/conf.d}/3rdparty/liberime")
+	   (m/evaluate "${m/root}/hammers/emacs/chinese.org")))
 
 (message "Finished building hammers. Please Restart Emacs.")
 
