@@ -12,10 +12,9 @@
   let mapleader=";"
 
   " #################vundel config start #####################
-  set rtp+=~/.vim/bundle/Vundle
-  call vundle#rc("~/.config/vim/plugins")
-  call vundle#begin()
-  Plugin 'VundleVim/Vundle.vim'
+  set rtp+=~/.config/vim/Vundle.vim
+
+  call vundle#begin('~/.config/vim/plugins')
   Plugin 'ctrlp.vim'
   "Plugin 'Valloric/YouCompleteMe'
   Plugin 'dyng/ctrlsf.vim'
@@ -45,8 +44,7 @@
   Plugin 'tpope/vim-obsession'
   Plugin 'mustache/vim-mustache-handlebars'
   Plugin 'surround.vim'
-  call vundle#end()  
-
+  call vundle#end()
   " #################vundel config end #####################
 
   " disable vi campatible mode

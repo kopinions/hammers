@@ -43,7 +43,7 @@
       # copy to system clipboard in tmux
       set -g @plugin 'tmux-plugins/tmux-yank'
       set -g @plugin 'laktak/extrakto'
-      run '~/.tmux/plugins/tpm/tpm'
+      run '~/.config/tmux/tpm/tpm'
 
 
       set -g @copy_mode_yank "M-w"
