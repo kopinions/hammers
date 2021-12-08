@@ -19,7 +19,7 @@
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-project.el") :comments link
       (use-package projectile
 	:diminish projectile-mode
-	:after (rg counsel)
+	:after counsel
 	:custom
 	(projectile-sort-order 'recently-active)
 	:bind
