@@ -173,6 +173,12 @@
 	;; module definition.  If false, this is not supported.  Setting
 	;; this is experimental, and may lead to bad performance.
 	(verilog-highlight-modules t)
+	;; Non-nil specifies the data type to use with ‘verilog-auto-wire’ etc.
+	;; Set this to "logic" for SystemVerilog code, or use ‘verilog-auto-logic’.
+	;; Set this to "wire" to force use of wire when logic is otherwise appropriate;
+	;; this is generally only appropriate when making a non-SystemVerilog wrapper
+	;; containing SystemVerilog cells.
+	(verilog-auto-wire-type "wire")
 	:config
 	(add-to-list 'auto-mode-alist '("\\.[ds]?vh?\\'" . verilog-mode)))
     #+END_SRC
