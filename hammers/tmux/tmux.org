@@ -72,3 +72,64 @@
       # rename pane
       bind t command-prompt -p "(rename-pane)" -I "#T" "select-pane -T '%%'"
     #+END_SRC
+*** tmuxinator misc config
+    #+BEGIN_SRC yaml :tangle (m/resolve "${m/home.d}/.config/tmuxinator/misc.yaml") :eval never :exports code :noweb yes
+      name: misc
+      root: ~
+
+      # Optional tmux socket
+      # socket_name: foo
+
+      # Note that the pre and post options have been deprecated and will be replaced by
+      # project hooks.
+
+      # Project hooks
+
+      # Runs on project start, always
+      # on_project_start: command
+
+      # Run on project start, the first time
+      # on_project_first_start: command
+
+      # Run on project start, after the first time
+      # on_project_restart: command
+
+      # Run on project exit ( detaching from tmux session )
+      # on_project_exit: command
+
+      # Run on project stop
+      # on_project_stop: command
+
+      # Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
+      # pre_window: rbenv shell 2.0.0-p247
+
+      # Pass command line options to tmux. Useful for specifying a different tmux.conf.
+      # tmux_options: -f ~/.tmux.mac.conf
+
+      # Change the command to call tmux.  This can be used by derivatives/wrappers like byobu.
+      # tmux_command: byobu
+
+      # Specifies (by name or index) which window will be selected on project startup. If not set, the first window is used.
+      startup_window: commands
+
+      # Specifies (by index) which pane of the specified window will be selected on project startup. If not set, the first pane is used.
+      startup_pane: 1
+
+      # Controls whether the tmux session should be attached to automatically. Defaults to true.
+      # attach: false
+
+      windows:
+	- commands:
+	    layout: even-vertical
+	    # Synchronize all panes of this window, can be enabled before or after the pane commands run.
+	    # 'before' represents legacy functionality and will be deprecated in a future release, in favour of 'after'
+	    # synchronize: after
+	    panes:
+	      - misc:
+		- tmux select-pane -t misc:1.1 -T "misc" && clear
+	- workspace:
+	    root: ~/workspace
+	    panes:
+	      - tmux select-pane -t misc:2 -T "workspace" && clear
+
+    #+END_SRC
