@@ -10,10 +10,24 @@
 
 
 *** git 基本配置
-    #+BEGIN_SRC gitconfig :tangle (tangle-if-absent "${m/home.d}/.gitconfig")
+    #+NAME: username
+    #+BEGIN_SRC elisp
+      (let* ((result (m/system "git" "config" "--global" "--get" "user.name"))
+	     (status (car result))
+	     (output (string-trim-right (cadr result))))
+	(if (eq status 0) output (read-string "Please input your username: ")))
+    #+END_SRC
+    #+NAME: email
+    #+BEGIN_SRC elisp
+      (let* ((result (m/system "git" "config" "--global" "--get" "user.email"))
+	     (status (car result))
+	     (output (string-trim-right (cadr result))))
+	(if (eq status 0) output (read-string "Please input your email: ")))
+    #+END_SRC    
+    #+BEGIN_SRC gitconfig :tangle (m/resolve "${m/home.d}/.gitconfig") :tangle-mode (identity #o644) :noweb yes
       [user]
-	      name = neo
-	      email = rising.lambda@gmail.com
+	      name = <<username()>>
+	      email = <<email()>>
       [alias]
 	      ignore = "!gi() { curl -L -s https://www.gitignore.io/api/$@ ;}; gi"
 	      root = "rev-parse --show-toplevel"
@@ -50,8 +64,6 @@
 	      default = simple
       [commit]
 	      template = ~/.gitcommit.tmpl
-      [github]
-	      user = sjkyspa@gmail.com
       [credential]
 	      helper = store
     #+END_SRC
@@ -88,7 +100,7 @@
     #+END_SRC
 
 *** git ignore 基本配置
-    #+BEGIN_SRC conf :tangle (tangle-if-absent "${m/home.d}/.gitconfig")
+    #+BEGIN_SRC gitignore :tangle (m/resolve "${m/home.d}/.gitignore")
       ### Clangd ###
       # -*- mode: gitignore; -*-
       .clangd

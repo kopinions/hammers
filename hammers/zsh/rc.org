@@ -10,7 +10,7 @@
 
 *** zshenv 环境变量配置
     #+NAME: zshenv
-    #+BEGIN_SRC shell :tangle (tangle-if-absent "${m/home.d}/.zshenv") :eval never :exports code :comments link
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zshenv") :eval never :exports code :comments link
       export LANG=en_US.UTF-8
       export JAVA_HOME="/Library/Java/JavaVirtualMachines/openjdk-13.0.1.jdk/Contents/Home"
       export EDITOR=vim

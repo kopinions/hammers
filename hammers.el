@@ -69,6 +69,13 @@
          (concat (substring path 0 s) (m/var (match-string 1 path)) (substring path e))))))
   )
 
+
+(defun m/system (program &rest args)
+  "Run PROGRAM with ARGS and return the exit code and output in a list."
+  (with-temp-buffer 
+    (list (apply 'call-process program nil (current-buffer) nil args)
+          (buffer-string))))
+
 (defun m/files (glob &optional full)
   "Give an GLOB, return files matched GLOB.  If FULL is specified, return absolute pathnames for each file."
   (interactive "M")
