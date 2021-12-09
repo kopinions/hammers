@@ -12,7 +12,7 @@
   let mapleader=";"
 
   " #################vundel config start #####################
-  set rtp+=~/.config/vim/Vundle.vim
+  set rtp+=~/.vim/Vundle.vim
 
   call vundle#begin('~/.config/vim/plugins')
   Plugin 'ctrlp.vim'

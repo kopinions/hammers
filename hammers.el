@@ -217,10 +217,10 @@
       ;; start copy config file
       (m/clone "${m/root}/hammers/emacs/3rdparty/lsp-ivy" "${m/conf.d}/3rdparty/lsp-ivy")
       (m/clone "${m/root}/hammers/emacs/3rdparty/rg.el" "${m/conf.d}/3rdparty/rg.el")
-      (m/clone "${m/root}/hammers/tmux/plugins/tpm" "${m/home.d}/.config/tmux/tpm")
+      (m/clone "${m/root}/hammers/tmux/plugins/tpm" "${m/home.d}/.tmux/tpm")
       (m/clone "${m/root}/hammers/zsh/zplug" "${m/home.d}/.zsh/zplug")
       (m/clone "${m/root}/hammers/gdb/plugins/dashboard" "${m/home.d}/.gdb/dashboard")
-      (m/clone "${m/root}/hammers/vim/bundle/Vundle" "${m/home.d}/.config/vim/Vundle.vim")))
+      (m/clone "${m/root}/hammers/vim/bundle/Vundle" "${m/home.d}/.vim/Vundle.vim")))
 
 (if (eq m/os 'macos)
     (progn (m/clone "${m/root}/hammers/emacs/3rdparty/librime" "${m/conf.d}/3rdparty/librime")
