@@ -126,11 +126,13 @@
     #+END_SRC
 
 *** 修复 liberime-core.so 的链接的问题（@rpath librime not found）
-    
-    #+BEGIN_SRC shell :eval (or (and (eq m/os 'macos) "yes") "never") :exports code :results none :noweb yes :var rpath=(m/resolve "${m/conf.d}/3rdparty/librime/build/lib/Release") erime_path=(m/resolve "${m/conf.d}/3rdparty/liberime/src")
+
+    #+HEADER: :var erime_path=(m/resolve "${m/conf.d}/3rdparty/liberime/src")
+    #+HEADER: :var rpath=(m/resolve "${m/conf.d}/3rdparty/librime/build/lib/Release") 
+    #+BEGIN_SRC shell :eval (or (and (eq m/os 'macos) "yes") "never") :exports code :results none :noweb yes 
       echo ${rpath}
       echo ${erime_path}
-      install_name_tool -add_rpath ${rpath} ${erime_path}/liberime-core.so
+      (otool -l ${erime_path}/liberime-core.so | grep "${rpath}") || install_name_tool -add_rpath ${rpath} ${erime_path}/liberime-core.so
     #+END_SRC
     
 *** liberime 配置文件 
