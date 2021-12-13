@@ -97,17 +97,71 @@
       Account lambda
 
       MaildirStore lambda-local
-      Path ~/.mails/lambda/
-      Inbox ~/.mails/lambda/INBOX
+      Inbox ~/.mails/lambda
 
-      Channel lambda
+      Channel lambda-inbox
       Far :lambda-remote:
       Near :lambda-local:
       Sync All
       Create Both
       Expunge Both
       SyncState *
-      Patterns INBOX Travel Archive Sent Spam Trash
+      Patterns INBOX
+
+      Channel lambda-starred
+      Far :lambda-remote:
+      Near :lambda-local:
+      Sync All
+      Create Both
+      Expunge Both
+      SyncState *
+      Patterns Starred
+
+      Channel lambda-snoozed
+      Far :lambda-remote:
+      Near :lambda-local:
+      Sync All
+      Create Both
+      Expunge Both
+      SyncState *
+      Patterns Snoozed
+
+      Channel lambda-sent
+      Far :lambda-remote:
+      Near :lambda-local:
+      Sync All
+      Create Both
+      Expunge Both
+      SyncState *
+      Patterns Sent
+
+      Channel lambda-spam
+      Far :lambda-remote:
+      Near :lambda-local:
+      Sync All
+      Create Both
+      Expunge Both
+      SyncState *
+      Patterns Spam
+
+      Channel lambda-drafts
+      Far :lambda-remote:
+      Near :lambda-local:
+      Sync All
+      Create Both
+      Expunge Both
+      SyncState *
+      Patterns Drafts
+
+
+      Channel lambda-trash
+      Far :lambda-remote:
+      Near :lambda-local:
+      Sync All
+      Create Both
+      Expunge Both
+      SyncState *
+      Patterns Trash
 
       IMAPAccount ding
       Host imap.qiye.aliyun.com
