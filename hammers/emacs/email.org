@@ -252,15 +252,35 @@
       auth on
 
       # config for the rising.lambda
-      account rising.lambda@gmail.com
+      account lambda
       host smtp.gmail.com
       port 587
       tls on
       tls_starttls on
       auth on
-      user rising.lambda
+      user rising.lambda@gmail.com
       from rising.lambda@gmail.com
-      passwordeval cat ~/.authinfo|grep rising.lambda@gmail.com|awk '{print $6}'
+      passwordeval "gpg --for-your-eyes-only --no-tty -qd ~/.authinfo.gpg |grep rising.lambda@gmail.com|awk '{print $6}'"
+
+      account sietium
+      host smtp.qiye.aliyun.com
+      port 587
+      tls on
+      tls_starttls on
+      auth on
+      user neo@sietium.com
+      from neo@sietium.com
+      passwordeval "gpg --for-your-eyes-only --no-tty -qd ~/.authinfo.gpg | grep neo@sietium.com |awk '{print $6}'"
+
+      account qq
+      host smtp.qq.com
+      port 587
+      tls on
+      tls_starttls on
+      auth on
+      user sjkyspa@qq.com
+      from sjkyspa@qq.com
+      passwordeval "gpg --for-your-eyes-only --no-tty -qd ~/.authinfo.gpg | grep sjkyspa@qq.com |awk '{print $6}'"
     #+END_SRC
 
 *** emacs 发送端配置
