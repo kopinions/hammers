@@ -97,7 +97,9 @@
       Account lambda
 
       MaildirStore lambda-local
-      Inbox ~/.mails/lambda
+      SubFolders Verbatim
+      Path ~/.mails/lambda/
+      Inbox ~/.mails/lambda/INBOX
 
       Channel lambda-inbox
       Far :lambda-remote:
@@ -179,6 +181,7 @@
       Account ding
 
       MaildirStore ding-local
+      SubFolders Verbatim
       Path ~/.mails/ding/
       Inbox ~/.mails/ding/INBOX
 
@@ -207,6 +210,7 @@
       Account qq
 
       MaildirStore qq-local
+      SubFolders Verbatim
       Path ~/.mails/qq/
       Inbox ~/.mails/qq/INBOX
 
