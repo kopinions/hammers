@@ -236,7 +236,7 @@
       other_email=sjkyspa@gmail.com;neo@sietium.com;sjkyspa@qq.com
 
       [new]
-      tags=new;unread;inbox;cur;
+      tags=new;
       ignore=.mbsyncstate;.mbsyncstate.journal;.mbsyncstate.lock;.mbsyncstate.new;.uidvalidity;.isyncuidmap.db
 
       [search]
