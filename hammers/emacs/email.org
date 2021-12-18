@@ -10,10 +10,16 @@
 
 
 *** mail box 初始化
+    #+NAME: database
+    #+BEGIN_SRC shell :var database=(m/resolve "${m/home.d}/cloudfication/hammers/notmuch")
+      mkdir -p ${database}
+      echo ${database}
+    #+END_SRC
     #+NAME: maildir
     #+BEGIN_SRC elisp :var maildir=(m/resolve "${m/home.d}/.mails")
       maildir
     #+END_SRC
+
     #+BEGIN_SRC shell :eval (or (and (eq m/os 'macos) "yes") "never") :exports none :results none :noweb yes
       mkdir -p <<maildir()>>/{ding,lambda,qq,sjkyspa}
     #+END_SRC
@@ -228,8 +234,9 @@
     #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/home.d}/.notmuch-config") :noweb yes
       # 相对于 HOMEDIR ~ 的目录
       [database]
-      path=<<maildir()>>
-
+      path=<<database()>>
+      mail_root=<<maildir()>>
+      
       [user]
       name=neo
       primary_email=rising.lambda@gmail.com
@@ -244,7 +251,7 @@
 
       [maildir]
       synchronize_flags=true
-      
+
     #+END_SRC
 
 *** afew 配置文件
