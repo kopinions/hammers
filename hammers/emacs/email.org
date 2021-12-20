@@ -15,13 +15,11 @@
       mkdir -p ${database}
       echo ${database}
     #+END_SRC
+    
     #+NAME: maildir
-    #+BEGIN_SRC elisp :var maildir=(m/resolve "${m/home.d}/.mails")
-      maildir
-    #+END_SRC
-
-    #+BEGIN_SRC shell :eval (or (and (eq m/os 'macos) "yes") "never") :exports none :results none :noweb yes
-      mkdir -p <<maildir()>>/{ding,lambda,qq,sjkyspa}
+    #+BEGIN_SRC shell :var maildir=(m/resolve "${m/home.d}/.mails")
+      mkdir -p ${maildir}/{ding,lambda,qq,sjkyspa}
+      echo ${maildir}
     #+END_SRC
 
 *** notmuch 配置
