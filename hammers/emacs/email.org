@@ -286,8 +286,8 @@
       Patterns *
 
       Channel qq-archive
-      Far :qq-remote::"Archive"
-      Near :qq-local::"Archive"
+      Far :qq-remote:"Archive"
+      Near :qq-local:"Archive"
       Sync All
       Create Both
       Expunge Both
