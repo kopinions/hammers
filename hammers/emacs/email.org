@@ -11,7 +11,7 @@
 
 *** mail box 初始化
     #+NAME: database
-    #+BEGIN_SRC shell :var database=(m/resolve "${m/home.d}/cloudfication/hammers/notmuch")
+    #+BEGIN_SRC shell :var database=(m/resolve "${m/home.d}/.mails/.notmuch")
       mkdir -p ${database}
       echo ${database}
     #+END_SRC
@@ -189,14 +189,45 @@
       Path ~/.mails/ding/
       Inbox ~/.mails/ding/INBOX
 
-      Channel ding
-      Far :ding-remote:
-      Near :ding-local:
+      Channel ding-inbox
+      Far :ding-remote:INBOX
+      Near :ding-local:INBOX
       Sync All
       Create Both
       Expunge Both
       SyncState *
-      Patterns INBOX Travel Archive Sent Spam Trash
+
+      Channel ding-drafts
+      Far :ding-remote:Drafts
+      Near :ding-local:Drafts
+      Sync All
+      Create Both
+      Expunge Both
+      SyncState *
+
+      Channel ding-trash
+      Far :ding-remote:Trash
+      Near :ding-local:Trash
+      Sync All
+      Create Both
+      Expunge Both
+      SyncState *
+
+      Channel ding-sent
+      Far :ding-remote:Sent
+      Near :ding-local:Sent
+      Sync All
+      Create Both
+      Expunge Both
+      SyncState *
+
+      Channel ding-spam
+      Far :ding-remote:Spam
+      Near :ding-local:Spam
+      Sync All
+      Create Both
+      Expunge Both
+      SyncState *
 
 
       IMAPAccount qq
@@ -218,9 +249,45 @@
       Path ~/.mails/qq/
       Inbox ~/.mails/qq/INBOX
 
-      Channel qq
-      Far :qq-remote:
-      Near :qq-local:
+      Channel qq-inbox
+      Far :qq-remote:"INBOX"
+      Near :qq-local:"INBOX"
+      Sync All
+      Create Both
+      Expunge Both
+      SyncState *
+      Patterns *
+
+      Channel qq-drafts
+      Far :qq-remote:"Drafts"
+      Near :qq-local:"Drafts"
+      Sync All
+      Create Both
+      Expunge Both
+      SyncState *
+      Patterns *
+
+      Channel qq-spam
+      Far :qq-remote:"Junk"
+      Near :qq-local:"Spam"
+      Sync All
+      Create Both
+      Expunge Both
+      SyncState *
+      Patterns *
+
+      Channel qq-sent
+      Far :qq-remote:"Sent Messages"
+      Near :qq-local:"Sent"
+      Sync All
+      Create Both
+      Expunge Both
+      SyncState *
+      Patterns *
+
+      Channel qq-archive
+      Far :qq-remote::"Archive"
+      Near :qq-local::"Archive"
       Sync All
       Create Both
       Expunge Both
@@ -298,7 +365,7 @@
       [MailMover]
       # 要列出所有涉案的本地 maildir
       # 'lambda/Junk' 'lambda/Archive' 'lambda/Sent'
-      folders = 'lambda/INBOX' 
+      folders = 'lambda/INBOX' 'qq/INBOX' 
       rename = True
 
       # xx 天之前的邮件不移动
@@ -311,6 +378,7 @@
       # 这就是为什么这里写得这么死板
       # 当然你可以把它当作一个 feature 加以利用
       lambda/INBOX = 'tag:junk':'lambda/[Gmail]/Spam' 'NOT tag:inbox AND NOT tag:junk':'lambda/[Gmail]/All Mail' 'tag:inbox AND NOT tag:unread':'lambda/[Gmail]/All Mail'
+      qq/INBOX = 'tag:junk':'qq/Junk' 'NOT tag:inbox AND NOT tag:junk':'qq/Archive' 'tag:inbox AND NOT tag:unread':'qq/Archive'
     #+END_SRC
 *** msmtp 配置（发送端）
     #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/home.d}/.msmtprc")
