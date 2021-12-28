@@ -73,7 +73,7 @@
       bind t command-prompt -p "(rename-pane)" -I "#T" "select-pane -T '%%'"
     #+END_SRC
 *** tmuxinator misc config
-    #+BEGIN_SRC yaml :tangle (m/resolve "${m/home.d}/.config/tmuxinator/misc.yaml") :eval never :exports code :noweb yes
+    #+BEGIN_SRC yaml :tangle (m/resolve "${m/home.d}/.config/tmuxinator/misc.yml") :eval never :exports code :noweb yes
       name: misc
       root: ~
 
@@ -119,17 +119,20 @@
       # attach: false
 
       windows:
-	- commands:
-	    layout: even-vertical
-	    # Synchronize all panes of this window, can be enabled before or after the pane commands run.
-	    # 'before' represents legacy functionality and will be deprecated in a future release, in favour of 'after'
-	    # synchronize: after
-	    panes:
-	      - misc:
-		- tmux select-pane -t misc:1.1 -T "misc" && clear
-	- workspace:
-	    root: ~/workspace
-	    panes:
-	      - tmux select-pane -t misc:2 -T "workspace" && clear
-
+        - commands:
+            layout: even-vertical
+            # Synchronize all panes of this window, can be enabled before or after the pane commands run.
+            # 'before' represents legacy functionality and will be deprecated in a future release, in favour of 'after'
+            # synchronize: after
+            panes:
+              - misc:
+                - tmux select-pane -t misc:1.1 -T "misc" && clear
+        - workspace:
+            root: ~/workspace
+            panes:
+              - tmux select-pane -t misc:2 -T "workspace" && clear
     #+END_SRC
+
+# Local Variables:
+# indent-tabs-mode: nil
+# End:
