@@ -10,11 +10,6 @@
 
 
 *** mail box 初始化
-    #+NAME: database
-    #+BEGIN_SRC shell :var database=(m/resolve "${m/home.d}/.mails/.notmuch")
-      mkdir -p ${database}
-      echo ${database}
-    #+END_SRC
     
     #+NAME: maildir
     #+BEGIN_SRC shell :var maildir=(m/resolve "${m/home.d}/.mails")
@@ -229,6 +224,14 @@
       Expunge Both
       SyncState *
 
+      Channel ding-archive
+      Far :ding-remote:Archive
+      Near :ding-local:Archive
+      Sync All
+      Create Both
+      Expunge Both
+      SyncState *
+
 
       IMAPAccount qq
       Host imap.qq.com
@@ -299,8 +302,7 @@
     #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/home.d}/.notmuch-config") :noweb yes
       # 相对于 HOMEDIR ~ 的目录
       [database]
-      path=<<database()>>
-      mail_root=<<maildir()>>
+      path=<<maildir()>>
       
       [user]
       name=neo
@@ -330,7 +332,7 @@
       # github/receipt 会被打上两个Tag： +github +receipt
       maildir_separator = /
       # 以下文件夹不加 tag
-      folder_blacklist = Archive INBOX \[Gmail\] All\ Mail  
+      folder_blacklist = Archive INBOX \[Gmail\] All\ Mail  Trash Spam Junk
       # 所有文件夹名先转小写再打 Tag
       folder_lowercases = true
 
@@ -361,15 +363,28 @@
       # https://afew.readthedocs.io/en/latest/filters.html
 
       # 同样的配置文件，把这段放在上一段后面即可
+      [Filter.1]
+      message = tag gbe
+      query = tag:ding AND { to:GB02_FE@sietium.com OR to:GB02_BE@sietium.com OR to:GB02_DFT@sietium.com OR GB02_ALL@sietium.com OR GB02_XIAN@sietium.com} AND tag:inbox
+      tags = +gbe;-inbox;
+      [Filter.2]
+      message = remove inbox with trash
+      query = tag:trash AND tag:inbox
+      tags = -inbox;
+      [Filter.3]
+      message = patent
+      query = tag:ding AND from:/.*@wing-ip.cn/
+      tags = +patent;-inbox;-trash;
+
 
       [MailMover]
       # 要列出所有涉案的本地 maildir
       # 'lambda/Junk' 'lambda/Archive' 'lambda/Sent'
-      folders = 'lambda/INBOX' 'qq/INBOX' 
+      folders = 'lambda/INBOX' 'qq/INBOX' 'ding/INBOX' 'ding/Trash' 'ding/Archive'
       rename = True
 
       # xx 天之前的邮件不移动
-      max_age = 3650
+      max_age = 36500
 
       # 规则：等号左边 dir 里的邮件，如果满足引号左边的搜索条件，则被移动到冒号右边的 dir
       # 注意：如果一个邮件同时符合多个搜索条件，它会被复制多份至所有符合条件的 maildir
@@ -379,6 +394,9 @@
       # 当然你可以把它当作一个 feature 加以利用
       lambda/INBOX = 'tag:junk':'lambda/[Gmail]/Spam' 'NOT tag:inbox AND NOT tag:junk':'lambda/[Gmail]/All Mail' 'tag:inbox AND NOT tag:unread':'lambda/[Gmail]/All Mail'
       qq/INBOX = 'tag:junk':'qq/Junk' 'NOT tag:inbox AND NOT tag:junk':'qq/Archive' 'tag:inbox AND NOT tag:unread':'qq/Archive'
+      ding/INBOX = 'tag:junk':'ding/Spam' 'NOT tag:inbox AND NOT tag:junk':'ding/Archive' 'tag:ding AND tag:inbox AND NOT tag:unread':'ding/Archive'
+      ding/Trash = 'tag:ding AND tag:unread':'ding/INBOX' 'tag:ding AND tag:gbe':'ding/Archive' 'tag:ding AND tag:patent':'ding:Archive'
+      ding/Archive = 'tag:ding AND tag:unread':'ding/INBOX'
     #+END_SRC
 *** msmtp 配置（发送端）
     #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/home.d}/.msmtprc")
