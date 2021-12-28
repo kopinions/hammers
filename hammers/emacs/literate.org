@@ -57,6 +57,7 @@
 	:diminish org-mode
 	:custom
 	(org-src-fontify-natively t)
+	(org-src-tab-acts-natively t)
 	(org-descriptive-links nil)
 	(org-special-ctrl-a/e t)
 	(org-use-sub-superscripts '{})
