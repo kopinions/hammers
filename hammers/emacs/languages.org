@@ -144,7 +144,7 @@
 	(verilog-tab-to-comment t)
 	;; Non-nil means align ‘else’ under matching ‘if’.
 	;; Otherwise else is lined up with first character on line holding matching if.
-	(verilog-align-ifelse t)
+	(verilog-align-ifelse nil)
 	;; True means when creating default ports with AUTOINST, use bus subscripts.
 	;; If nil, skip the subscript when it matches the entire bus as declared in
 	;; the module (AUTOWIRE signals always are subscripted, you must manually
