@@ -28,58 +28,58 @@
        :after posframe
        :preface
        (defun m/dict(path)
-	 `(:name ,(file-name-nondirectory path)
-		 :file ,path))
+         `(:name ,(file-name-nondirectory path)
+                 :file ,path))
        (defun m/dicts()
-	 (mapcar 'm/dict (m/files "${m/conf.d}/pyim/dicts/*.pyim" t)))
+         (mapcar 'm/dict (m/files "${m/conf.d}/pyim/dicts/*.pyim" t)))
        :config
        ;; 激活 basedict 拼音词库，五笔用户请继续阅读 README
        (setq pyim-dicts (m/dicts))
        (use-package pyim-basedict
-	 :ensure t
-	 :config (pyim-basedict-enable))
-     
+         :ensure t
+         :config (pyim-basedict-enable))
+
        (setq default-input-method "pyim")
-     
+
        ;; 使用全拼
        (setq pyim-default-scheme 'quanpin)
-     
+
        ;; 设置 pyim 探针设置，这是 pyim 高级功能设置，可以实现 *无痛* 中英文切换 :-)
        ;; 我自己使用的中英文动态切换规则是：
        ;; 1. 光标只有在注释里面时，才可以输入中文。
        ;; 2. 光标前是汉字字符时，才能输入中文。
        ;; 3. 使用 M-j 快捷键，强制将光标前的拼音字符串转换为中文。
        (setq-default pyim-english-input-switch-functions
-		     '(pyim-probe-dynamic-english
-		       pyim-probe-isearch-mode
-		       pyim-probe-program-mode
-		       pyim-probe-org-structure-template))
-     
+                     '(pyim-probe-dynamic-english
+                       pyim-probe-isearch-mode
+                       pyim-probe-program-mode
+                       pyim-probe-org-structure-template))
+
        (setq-default pyim-punctuation-half-width-functions
-		     '(pyim-probe-punctuation-line-beginning
-		       pyim-probe-punctuation-after-punctuation))
+                     '(pyim-probe-punctuation-line-beginning
+                       pyim-probe-punctuation-after-punctuation))
        (setq pyim-fuzzy-pinyin-alist '(("en" "eng") ("in" "ing") ("un" "ong")))
-     
+
        ;; 开启拼音搜索功能
        (pyim-isearch-mode 1)
-     
+
        ;; 使用 pupup-el 来绘制选词框, 如果用 emacs26, 建议设置
        ;; 为 'posframe, 速度很快并且菜单不会变形，不过需要用户
        ;; 手动安装 posframe 包。
        (setq pyim-page-tooltip 'posframe)
-     
+
        ;; 选词框显示5个候选词
        (setq pyim-page-length 5)
-     
+
        :bind
        (("M-j" . pyim-convert-string-at-point) ;与 pyim-probe-dynamic-english 配合
-	("C-;" . pyim-delete-word-from-personal-buffer)
-	("M-f" . pyim-forward-word)
-	("M-b" . pyim-backward-word)
-	:map pyim-mode-map
-	("C-n" . pyim-page-next-page)
-	("C-p" . pyim-page-previous-page)
-	)
+        ("C-;" . pyim-delete-word-from-personal-buffer)
+        ("M-f" . pyim-forward-word)
+        ("M-b" . pyim-backward-word)
+        :map pyim-mode-map
+        ("C-n" . pyim-page-next-page)
+        ("C-p" . pyim-page-previous-page)
+        )
        :hook 
        ((emacs-startup . pyim-restart-1))
        )
@@ -102,27 +102,27 @@
 
     #+BEGIN_SRC elisp :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/home.d}/.emacs.d/lisp/init-chinese.el")) "no") :comments link
       (use-package liberime
-	:if (eq m/os 'macos)
-	:load-path m/load-path
-	:after pyim
-	:init
-	(setenv "RIME_PATH" (expand-file-name "librime" (expand-file-name "3rdparty" m/conf.d)))
-	:config
-	(liberime-build)
-	:hook
-	(liberime-after-start . (lambda ()
-				  (let ((buf (get-buffer "*liberime message*")))
-				    (if buf (with-current-buffer buf
-					      (kill-this-buffer)
-					      (if (not (one-window-p))
-						  (delete-window)))))
-				  ;; Select schema delay 5 second, make sure
-				  ;; `liberime-load' run finish.
-				  (run-with-timer
-				   5 1
-				   (ignore-errors (lambda ()
-						    (liberime-select-schema "luna_pinyin_simp")
-						    (setq pyim-default-scheme 'rime-quanpin)))))))
+        :if (eq m/os 'macos)
+        :load-path m/load-path
+        :after pyim
+        :init
+        (setenv "RIME_PATH" (expand-file-name "librime" (expand-file-name "3rdparty" m/conf.d)))
+        :config
+        (liberime-build)
+        :hook
+        (liberime-after-start . (lambda ()
+                                  (let ((buf (get-buffer "*liberime message*")))
+                                    (if buf (with-current-buffer buf
+                                              (kill-this-buffer)
+                                              (if (not (one-window-p))
+                                                  (delete-window)))))
+                                  ;; Select schema delay 5 second, make sure
+                                  ;; `liberime-load' run finish.
+                                  (run-with-timer
+                                   5 1
+                                   (ignore-errors (lambda ()
+                                                    (liberime-select-schema "luna_pinyin_simp")
+                                                    (setq pyim-default-scheme 'rime-quanpin)))))))
     #+END_SRC
 
 *** 修复 liberime-core.so 的链接的问题（@rpath librime not found）
@@ -138,11 +138,11 @@
 *** liberime 配置文件 
     #+BEGIN_SRC yaml :tangle (m/resolve "${m/home.d}/.emacs.d/rime/default.custom.yaml") :noweb yes :eval never :exports code
       patch:
-	menu/page_size: 100
-	speller/auto_select: false
-	speller/auto_select_unique_candidate: false
-	schema_list: 
-	  - schema: luna_pinyin_simp
+        menu/page_size: 100
+        speller/auto_select: false
+        speller/auto_select_unique_candidate: false
+        schema_list: 
+          - schema: luna_pinyin_simp
     #+END_SRC
     
 *** 导出
