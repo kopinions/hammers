@@ -10,46 +10,51 @@
 
 ** 基础设置
 *** 基础设置
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
-      (put 'narrow-to-region 'disabled nil)
-      (put 'narrow-to-page 'disabled nil)
-      (put 'narrow-to-defun 'disabled nil)
-      (put 'upcase-region 'disabled nil)
-      (put 'downcase-region 'disabled nil)
-      (cua-selection-mode t)
-    #+END_SRC
-    不生成 #filename# 临时文件
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
-      (auto-save-visited-mode)
-      (make-directory (expand-file-name "backups" m/conf.d) t)
-      (setq auto-save-file-name-transforms
-	    `((".*" ,(expand-file-name "backups/" m/conf.d) t)))
-      (setq auto-save-list-file-prefix
-	    (expand-file-name "backups/" m/conf.d))
-    #+END_SRC
-    禁止备份文件
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
-      (setq make-backup-files nil)
-					      ; stop to create the lock files
-					      ; lock files is used to prevent concurrent edit of a file
-      (setq create-lockfiles nil)
-    #+END_SRC
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
-      (setq delete-by-moving-to-trash t) 
-    #+END_SRC
-    保持光标在行尾
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
-      (setq track-eol t)
-      (setq line-move-visual nil)
-    #+END_SRC
-    默认整行删除，包括 \n
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
-      (setq-default kill-whole-line t)
-    #+END_SRC
+**** 使用 NoTabs 进行所有的编辑
+     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+       (setq indent-tabs-mode nil)
+     #+END_SRC
+**** 启用 emacs narrow 相关的功能
+     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+       (put 'narrow-to-region 'disabled nil)
+       (put 'narrow-to-page 'disabled nil)
+       (put 'narrow-to-defun 'disabled nil)
+       (put 'upcase-region 'disabled nil)
+       (put 'downcase-region 'disabled nil)
+       (cua-selection-mode t)
+     #+END_SRC
+**** 不生成 #filename# 临时文件
+     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+       (auto-save-visited-mode)
+       (make-directory (expand-file-name "backups" m/conf.d) t)
+       (setq auto-save-file-name-transforms
+	     `((".*" ,(expand-file-name "backups/" m/conf.d) t)))
+       (setq auto-save-list-file-prefix
+	     (expand-file-name "backups/" m/conf.d))
+     #+END_SRC
+**** 禁止备份文件
+     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+       (setq make-backup-files nil)
+					       ; stop to create the lock files
+					       ; lock files is used to prevent concurrent edit of a file
+       (setq create-lockfiles nil)
+     #+END_SRC
+     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+       (setq delete-by-moving-to-trash t) 
+     #+END_SRC
+**** 保持光标在行尾
+     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+       (setq track-eol t)
+       (setq line-move-visual nil)
+     #+END_SRC
+**** 默认整行删除，包括 \n
+     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+       (setq-default kill-whole-line t)
+     #+END_SRC
 
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
-      (setq set-mark-command-repeat-pop t)
-    #+END_SRC
+     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+       (setq set-mark-command-repeat-pop t)
+     #+END_SRC
 *** 光标位置
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
       (use-package beacon
