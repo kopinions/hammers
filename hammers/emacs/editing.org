@@ -12,7 +12,7 @@
 *** 基础设置
 **** 使用 NoTabs 进行所有的编辑
      #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
-       (setq indent-tabs-mode nil)
+       (setq-default indent-tabs-mode nil)
      #+END_SRC
 **** 启用 emacs narrow 相关的功能
      #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
