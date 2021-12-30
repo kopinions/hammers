@@ -10,13 +10,13 @@
 
 
 *** 所有数字加1
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-macros.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-macros.el") :comments link
       (fset 'plus1
 	 [?\C-a ?\C-  ?\C-e ?\C-\M-% ?\[ ?0 ?- ?9 ?\C-e ?+ return ?\\ ?, ?\( ?1 ?+ ?  ?# ?& left left ?\\ ?\C-e return ?! ?\C-a])
     #+END_SRC
 
 *** provides
-    #+BEGIN_SRC elisp :eval never :exports code  :tangle (m/resolve "${m/conf.d}/lisp/init-macros.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code  :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-macros.el") :comments link
       (provide 'init-macros)
     #+END_SRC
 

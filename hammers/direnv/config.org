@@ -13,7 +13,7 @@
     #+BEGIN_SRC elisp :var workspace=(m/resolve "${m/home.d}/workspace")
       workspace
     #+END_SRC
-    #+BEGIN_SRC conf :eval never :exports code :tangle (or (and (or (eq m/os 'macos) (eq m/os 'linux)) (m/resolve "${m/home.d}/.config/direnv/direnv.toml")) "no") :tangle-mode (identity #o644) :noweb yes
+    #+BEGIN_SRC conf :eval never :exports code :tangle (or (and (or (eq m/os 'macos) (eq m/os 'linux)) (m/resolve "${m/xdg.conf.d}/direnv/direnv.toml")) "no") :tangle-mode (identity #o644) :noweb yes
       [global]
       #base_path=""
       #disable_stdin="true"

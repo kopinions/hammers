@@ -18,7 +18,7 @@
     #+END_SRC
 
 *** notmuch 配置
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-email.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-email.el") :comments link
       (use-package notmuch
 	:ensure-system-package (notmuch msmtp (mbsync . isync))
 	:hook
@@ -80,7 +80,7 @@
     #+END_SRC
 
 *** mbsync 配置（同步邮件）
-    #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/home.d}/.mbsyncrc")
+    #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/isync/config")
       IMAPAccount lambda
       Host imap.gmail.com
       User rising.lambda@gmail.com
@@ -299,7 +299,7 @@
     #+END_SRC
 
 *** notmuch 配置文件
-    #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/home.d}/.notmuch-config") :noweb yes
+    #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/notmuch/neo/config") :noweb yes
       # 相对于 HOMEDIR ~ 的目录
       [database]
       path=<<maildir()>>
@@ -322,7 +322,7 @@
     #+END_SRC
 
 *** afew 配置文件
-    #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/home.d}/.config/afew/config")
+    #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/afew/config")
       # ~/.config/afew/config
       # 所有新邮件会从上至下经过所有规则
 
@@ -399,7 +399,7 @@
       ding/Archive = 'tag:ding AND tag:unread':'ding/INBOX'
     #+END_SRC
 *** msmtp 配置（发送端）
-    #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/home.d}/.msmtprc")
+    #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/msmtp/config")
       # default config
       defaults
       port 587
@@ -440,7 +440,7 @@
     #+END_SRC
 
 *** emacs 发送端配置
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-email.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-email.el") :comments link
       (setq message-send-mail-function 'message-send-mail-with-sendmail
 	    sendmail-program "msmtp"
 	    message-sendmail-envelope-from 'header
@@ -450,6 +450,6 @@
       (setq message-kill-buffer-on-exit t)
     #+END_SRC
 
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-email.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-email.el") :comments link
       (provide 'init-email)
     #+END_SRC

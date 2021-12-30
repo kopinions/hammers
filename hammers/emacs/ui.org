@@ -9,7 +9,7 @@
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
 *** 界面配置
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-ui.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-ui.el") :comments link
       (setq use-file-dialog nil)
       (setq use-dialog-box nil)
       (setq inhibit-startup-screen t)
@@ -48,25 +48,25 @@
     #+END_SRC
 
 *** html 页面浏览配置
-    #+BEGIN_SRC elisp :eval never :exports code :tangle  :tangle (or (and (eq m/os 'macos) (m/resolve "${m/conf.d}/lisp/init-ui.el")) "no") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle  :tangle (or (and (eq m/os 'macos) (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-ui.el")) "no") :comments link
       (use-package w3m
         :ensure-system-package w3m
         :custom
         (mm-text-html-renderer 'w3m))
     #+END_SRC
 *** 禁用鼠标
-    #+BEGIN_SRC elisp :exports code :eval never :tangle (m/resolve "${m/conf.d}/lisp/init-ui.el")  :comments link
+    #+BEGIN_SRC elisp :exports code :eval never :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-ui.el")  :comments link
       (use-package disable-mouse
         :config
         (global-disable-mouse-mode))
     #+END_SRC
 
 *** yes-no -> y-n
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-ui.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-ui.el") :comments link
       (defalias 'yes-or-no-p 'y-or-n-p)
     #+END_SRC
 *** macos 不显示 title bar
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-ui.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-ui.el") :comments link
       (use-package ns-auto-titlebar
         :if (eq m/os 'macos)
         :config
@@ -74,7 +74,7 @@
     #+END_SRC
 
 *** 安装主题
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-ui.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-ui.el") :comments link
       (use-package color-theme-sanityinc-tomorrow
         :config
         (setq custom-safe-themes t)
@@ -82,7 +82,7 @@
     #+END_SRC
 
 *** 安装图标库
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-ui.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-ui.el") :comments link
       (use-package all-the-icons
         :config
         (unless (or (member "all-the-icons" (font-family-list)) m/offline)
@@ -92,7 +92,7 @@
     #+END_SRC
 
 *** 快速切换窗口
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-ui.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-ui.el") :comments link
       (use-package ace-window
         :ensure t
         :custom
@@ -103,7 +103,7 @@
     #+END_SRC
 
 *** 分页
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-ui.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-ui.el") :comments link
       (use-package page-break-lines
         :diminish page-break-lines-mode
         :config
@@ -111,19 +111,19 @@
     #+END_SRC
     
 *** 命令行控制窗口
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-ui.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-ui.el") :comments link
       (use-package moom
         :config (moom-mode))
     #+END_SRC
 
 *** 自动提示可选命令
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-ui.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-ui.el") :comments link
       (use-package which-key
         :config
         (which-key-mode t))
     #+END_SRC
 *** counsel
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-ui.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-ui.el") :comments link
       (use-package counsel
         :diminish ivy-mode counsel-mode  
         :custom
@@ -196,7 +196,7 @@
     #+END_SRC
 
 *** ivy-xref
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-ui.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-ui.el") :comments link
       (use-package ivy-xref
         :after ivy
         :init (if (< emacs-major-version 27)
@@ -204,7 +204,7 @@
                 (setq xref-show-definitions-function #'ivy-xref-show-defs)))
     #+END_SRC
 *** dashboard
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-ui.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-ui.el") :comments link
       (use-package dashboard
         :diminish dashboard-mode
         :config
@@ -220,6 +220,6 @@
         (after-init . dashboard-setup-startup-hook))
     #+END_SRC
 *** provide
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-ui.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-ui.el") :comments link
       (provide 'init-ui)
     #+END_SRC

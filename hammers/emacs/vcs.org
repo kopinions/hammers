@@ -9,7 +9,7 @@
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
 *** git highlight mode
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-vcs.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-vcs.el") :comments link
       (use-package git-gutter
 	:after magit
 	:custom
@@ -28,7 +28,7 @@
 	(magit-refresh-buffer . git-gutter:update-all-windows))
     #+END_SRC
 *** magit
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-vcs.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-vcs.el") :comments link
       (define-derived-mode commit-msg-mode text-mode "Commit Msg")
       (use-package magit
 	:after (yasnippet yasnippet-snippets)
@@ -48,12 +48,12 @@
       (use-package magit-todos)
     #+END_SRC
 *** git config file edit support
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-vcs.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-vcs.el") :comments link
       (use-package git-modes)
     #+END_SRC
 
 *** other
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-vcs.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-vcs.el") :comments link
       (use-package git-messenger
 	:bind ("C-x v p" . git-messenger:popup-message)
 	:config
@@ -64,7 +64,7 @@
 	(defalias 'tm 'git-timemachine))
     #+END_SRC
 
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-vcs.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-vcs.el") :comments link
       (use-package yagist)
       (use-package bug-reference-github
 	:hook
@@ -74,6 +74,6 @@
     #+END_SRC
 
 *** export 
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-vcs.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-vcs.el") :comments link
       (provide 'init-vcs)
     #+END_SRC

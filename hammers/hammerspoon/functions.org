@@ -8,7 +8,7 @@
 #+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 *** 通用方法
-    #+BEGIN_SRC lua :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/home.d}/.hammerspoon/functions.lua")) "no") :mkdirp yes
+    #+BEGIN_SRC lua :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/xdg.conf.d}/hammerspoon/functions.lua")) "no") :mkdirp yes
       local log = hs.logger.new('init.lua', 'debug')
       
       function filter(func, tbl)
@@ -30,7 +30,7 @@
       end
     #+END_SRC
 *** hammerspoon 基础配置（插件，仓库）
-    #+BEGIN_SRC lua :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/home.d}/.hammerspoon/init.lua")) "no") :mkdirp yes :noweb yes :link comment
+    #+BEGIN_SRC lua :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/xdg.conf.d}/hammerspoon/init.lua")) "no") :mkdirp yes :noweb yes :link comment
       hs.loadSpoon("SpoonInstall")
       spoon.SpoonInstall.use_syncinstall = true
       require('functions')
@@ -60,10 +60,10 @@
     #+END_SRC
 *** hammerspoon 不同应用自动切换快捷键
     #+NAME: capture
-    #+BEGIN_SRC elisp :var capture=(m/resolve "${m/conf.d}/bin/capture")
+    #+BEGIN_SRC elisp :var capture=(m/resolve "${m/xdg.conf.d}/emacs/bin/capture")
       capture
     #+END_SRC
-    #+BEGIN_SRC lua :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/home.d}/.hammerspoon/init.lua")) "no") :mkdirp yes :noweb yes :link comment 
+    #+BEGIN_SRC lua :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/xdg.conf.d}/hammerspoon/init.lua")) "no") :mkdirp yes :noweb yes :link comment 
       hotkeys = {
 	 {
 	    mods = {'alt'},
@@ -508,7 +508,7 @@
       hkWatcher:start()
     #+END_SRC
 *** hammerspoon 根据不同应用自动切换输入法
-    #+BEGIN_SRC lua :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/home.d}/.hammerspoon/init.lua")) "no") :mkdirp yes :noweb yes :link comment
+    #+BEGIN_SRC lua :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/xdg.conf.d}/hammerspoon/init.lua")) "no") :mkdirp yes :noweb yes :link comment
       apps = {
 	 {
 	    name = 'Emacs',
@@ -584,7 +584,7 @@
       imWatcher:start()
     #+END_SRC
 *** 通过服务监听配置番茄
-    #+BEGIN_SRC lua :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/home.d}/.hammerspoon/init.lua")) "no") :mkdirp yes :noweb yes :link comment 
+    #+BEGIN_SRC lua :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/xdg.conf.d}/hammerspoon/init.lua")) "no") :mkdirp yes :noweb yes :link comment 
       pomodoro = require("pomodoro").new()
       
       svr =
@@ -621,7 +621,7 @@
       path
     #+END_SRC
     
-    #+BEGIN_SRC lua :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/home.d}/.hammerspoon/pomodoro.lua")) "no") :mkdirp yes :noweb yes :link comment
+    #+BEGIN_SRC lua :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/xdg.conf.d}/hammerspoon/pomodoro.lua")) "no") :mkdirp yes :noweb yes :link comment
       local pomodoro = {}
       
       function pomodoro.new()

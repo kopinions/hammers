@@ -10,44 +10,44 @@
 
 ** macos
 *** 键位设置
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-os.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-os.el") :comments link
       (when (eq m/os 'macos)
 	(setq mac-command-modifier 'meta)
 	(setq mac-option-modifier 'super))
     #+END_SRC
 ** linux
 *** 键位设置
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-os.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-os.el") :comments link
       (when (eq m/os 'linux)
 	(setq x-super-keysym 'meta
 	      x-meta-keysym 'super))
     #+END_SRC
 *** 剪切板管理
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-os.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-os.el") :comments link
       (use-package xclip
 	:if (eq m/os 'linux)
 	:config
 	(xclip-mode 1))
     #+END_SRC
 *** 环境变量
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-os.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-os.el") :comments link
       (use-package exec-path-from-shell
 	:config
 	(when (memq m/os '(macos linux))
 	  (exec-path-from-shell-initialize)))
     #+END_SRC
 ** emacs server
-   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-os.el") :comments link
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-os.el") :comments link
      (use-package server
        :config
        (unless (server-running-p) (server-start)))
    #+END_SRC
 
 ** http
-   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-os.el") :comments link
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-os.el") :comments link
      (use-package request)
    #+END_SRC
 ** 导出
-   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-os.el") :comments link
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-os.el") :comments link
      (provide 'init-os)
    #+END_SRC

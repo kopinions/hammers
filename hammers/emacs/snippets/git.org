@@ -9,7 +9,7 @@
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
 *** commit message
-    #+BEGIN_SRC text :tangle (m/resolve "${m/conf.d}/snippets/commit-msg-mode/type") :mkdirp yes
+    #+BEGIN_SRC text :tangle (m/resolve "${m/xdg.conf.d}/emacs/snippets/commit-msg-mode/type") :mkdirp yes
       # -*- mode: snippet -*-
       # name: type
       # key: type

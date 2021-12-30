@@ -9,7 +9,7 @@
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
 ** 文件操作
-   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-common.el") :comments link
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-common.el") :comments link
      (require 'em-glob)
      (defun m/resolve (path)
        "Interpolation variable like ${var} $var in PATH with environment or elisp variables."
@@ -46,7 +46,7 @@
    #+END_SRC
 
 ** 系统调用
-   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-common.el") :comments link
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-common.el") :comments link
      (defun m/system (program &rest args)
        "Run PROGRAM with ARGS and return the exit code and output in a list."
        (with-temp-buffer 
@@ -55,7 +55,7 @@
    #+END_SRC
 
 ** 交互设置
-   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-common.el") :comments link
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-common.el") :comments link
      (use-package noflet)
      
      (defun m/bypass-prompt (function &rest args)
@@ -70,13 +70,13 @@
 
 
 ** 时间操作
-   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-common.el") :noweb yes :comments link
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-common.el") :noweb yes :comments link
      (use-package ts)
    #+END_SRC
 
    
 ** 模块导出
-   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-common.el") :noweb yes :comments link
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-common.el") :noweb yes :comments link
      (provide 'init-common)
    #+END_SRC   
 

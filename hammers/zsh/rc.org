@@ -15,47 +15,65 @@
       export JAVA_HOME="/Library/Java/JavaVirtualMachines/openjdk-13.0.1.jdk/Contents/Home"
       export EDITOR=vim
       export DISABLE_AUTO_TITLE=true
+      export NOTMUCH_PROFILE=neo
+      export XDG_CONFIG_HOME=${HOME}/.config
+      export XDG_CACHE_HOME=${HOME}/.cache
+      export XDG_DATA_HOME=${HOME}/.local/share
+      export HOMEBREW_BUNDLE_FILE=${XDG_CONFIG_HOME}/homebrew-bundle/Brewfile
+      export RIPGREP_CONFIG_PATH=${XDG_CONFIG_HOME}/ripgrep/config
+      export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
+      export VIMDOTDIR="$XDG_CONFIG_HOME/vim"
+
+      export LESSHISTFILE="${XDG_CONFIG_HOME}/less/history"
+      export LESSKEY="${XDG_CONFIG_HOME}/less/keys"
+
+      export GEM_SPEC_CACHE=${XDG_CACHE_HOME}/rubygems/cache
+
+      export INPUTRC=${XDG_CONFIG_HOME}/readline/inputrc
+      #export GNUPGHOME=${XDG_CONFIG_HOME}/gnupg
+
+      export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
     #+END_SRC
 
 *** zshrc 配置
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zshrc") :eval never :exports code :comments link
-      export ZPLUG_HOME=~/.zsh/zplug
-      export ZPLUG_REPOS=~/.config/zplug/repos
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/.zshrc") :eval never :exports code :comments link
+      export ZPLUG_HOME=${XDG_CONFIG_HOME}/zsh/zplug
+      export ZPLUG_REPOS=${XDG_CONFIG_HOME}/zplug/repos
+      export ZPLUG_CACHE_DIR=${XDG_CACHE_HOME}/zplug
+      
 
       [[ $TERM == "tramp" ]] && unsetopt zle && PS1='$ '&& return
-      for file in $(find ~/.zsh/init/ -name "*.zsh"|sort); do
-	  source "${file}"
+      for file in $(find ${XDG_CONFIG_HOME}/zsh/init -name "*.zsh"|sort); do
+          source "${file}"
       done
 
-      export ZPLUG_LOADFILE="$HOME/.zsh/zplugs.zsh"
+      export ZPLUG_LOADFILE="${XDG_CONFIG_HOME}/zsh/zplugs.zsh"
       source ${ZPLUG_HOME}/init.zsh
       zplug install
       zplug load
 
-      source ~/.zshenv
-
-      for file in ~/.zsh/post/*.zsh; do
-	  source "${file}"
+      for file in ${XDG_CONFIG_HOME}/zsh/post/*.zsh; do
+          source "${file}"
       done
 
       mux start misc
     #+END_SRC
 
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zsh/init/python.zsh") :eval never :exports code :comments link
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/init/python.zsh") :eval never :exports code :comments link
       export PATH="/usr/local/opt/python/libexec/bin:$PATH"
     #+END_SRC
 
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zsh/init/ruby.zsh") :eval never :exports code :comments link
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/init/ruby.zsh") :eval never :exports code :comments link
       export PATH="/usr/local/opt/ruby/bin:$PATH"
-    #+END_SRC
+    #+END_SRCS
 
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zsh/init/brew.zsh") :eval never :exports code :comments link
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/init/brew.zsh") :eval never :exports code :comments link
       if [ -d "/usr/local/Cellar" ]; then
 	  eval $(/usr/local/bin/brew shellenv);
       fi
     #+END_SRC
 
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zsh/init/init.zsh") :eval never :exports code :comments link
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/init/init.zsh") :eval never :exports code :comments link
       if [ ! "$PATH_LOADED" = "true" ]; then
 	  # Add go binaries
 	  if [ -d "$GOPATH" ]; then
@@ -69,10 +87,6 @@
 	      export JAVA_HOME="$(dirname $(dirname $(realpath $(which javac))))"
 	  fi
 
-	  if [ $commands[rg] ]; then
-	      export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
-	  fi
-
 	  # Add yarn global binaries
 	  if [ $commands[yarn] ]; then export PATH="$(yarn global bin):$PATH"; fi
 
@@ -83,7 +97,7 @@
       fi
     #+END_SRC
 
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zsh/zplugs.zsh") :eval never :exports code :comments link
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/zplugs.zsh") :eval never :exports code :comments link
       #!/usr/bin/env zsh
       # this allows zplug to update itself on `zplug update`
       zplug 'zplug/zplug', hook-build:'zplug --self-manage'
@@ -106,18 +120,13 @@
       return 0 # in case zplug adds plugs ignore them
     #+END_SRC
 
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zsh/post/loads.zsh") :eval never :exports code :comments link
-      # Add custom bin files
-      if [ -d "$HOME/bin" ]; then
-	  export PATH="$HOME/bin:$PATH";
-      fi
-
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/post/loads.zsh") :eval never :exports code :comments link
       if [ -d "$HOME/.local" ]; then
 	  export PATH="$HOME/.local/bin:$PATH";
       fi
     #+END_SRC
 
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zsh/post/config.zsh") :eval never :exports code :comments link
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/post/config.zsh") :eval never :exports code :comments link
       # auto menu complete
       setopt auto_menu
 
@@ -155,7 +164,7 @@
     #+END_SRC
 
 *** tmux 连接到当前目录的实例上
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zsh/post/functions.zsh") :eval never :exports code :comments link
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/post/functions.zsh") :eval never :exports code :comments link
       #!/bin/zsh
       # tat: tmux attach
       function tat {
@@ -172,7 +181,7 @@
     #+END_SRC
 
 *** rg 命令管道相关处理，如果 rg 被输出到 terminal, 则使用 less 进行分页，否则直接输出所有结果
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zsh/post/functions.zsh") :eval never :exports code :comments link
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/post/functions.zsh") :eval never :exports code :comments link
       function rg(){
 	  # If outputting (fd 1 = stdout) directly to a terminal, page automatically:
 	  if [ -t 1 ]; then
@@ -185,7 +194,7 @@
     #+END_SRC
 
 *** 获取当前用户的某个名字的进程
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zsh/post/functions.zsh") :eval never :exports code :comments link
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/post/functions.zsh") :eval never :exports code :comments link
       function egrep(){
 	  # If outputting (fd 1 = stdout) directly to a terminal, page automatically:
 	  if [ -t 1 ]; then
@@ -198,14 +207,14 @@
     #+END_SRC
 
 *** 根据正则表达式生成随机值
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zsh/post/functions.zsh") :eval never :exports code :comments link
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/post/functions.zsh") :eval never :exports code :comments link
       function regen(){
 	  perl -e "use String::Random qw(random_regex random_string);print random_regex('$1');"
       }
     #+END_SRC
 
 *** cmake 编译
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zsh/post/alias.zsh") :eval never :exports code :comments link
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/post/alias.zsh") :eval never :exports code :comments link
       #!/bin/zsh
       mk() {
 	  if [ -d build ]; then
@@ -225,20 +234,45 @@
       alias mux=tmuxinator
     #+END_SRC
 
+*** xdg workaround
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/post/xdg.zsh") :eval never :exports code :comments link
+      #!/bin/zsh
+      alias tmux='tmux -f ${XDG_CONFIG_HOME}/tmux/tmux.conf'
+
+      if [ -s "${XDG_CONFIG_HOME}/ssh/config" ]
+      then
+          SSH_CONFIG="-F ${XDG_CONFIG_HOME}/ssh/config"
+      fi
+
+      if [ -s "${XDG_CONFIG_HOME}/ssh/id_dsa" ]
+      then
+          SSH_ID="-i ${XDG_CONFIG_HOME}/ssh/id_dsa"
+      fi
+
+      alias ssh="ssh $SSH_CONFIG $SSH_ID "
+      alias ssh-copy-id="ssh-copy-id $SSH_ID"
+
+      alias mbsync="mbsync -c ${XDG_CONFIG_HOME}/isync/config"
+    #+END_SRC
+
 *** export http proxy
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zsh/post/alias.zsh") :eval never :exports code :comments link
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/post/alias.zsh") :eval never :exports code :comments link
       pe() {
 	  export http_proxy=http://127.0.0.1:8080 https_proxy=http://127.0.0.1:8080
       }
     #+END_SRC
 
 *** 同步 emacs repo
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zsh/post/functions.zsh") :eval never :exports code :comments link
+    #+NAME: emacs_offline_home
+    #+BEGIN_SRC elisp :var offline_home=(m/resolve "${m/xdg.conf.d}/emacs/offline")
+      offline_home
+    #+END_SRC
+    
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/post/functions.zsh") :eval never :exports code :comments link :noweb yes
       function rsync_emacs() {
-	  export PKG_ROOT=${HOME}/workspace/7t/mirrors/emacs
-	  rsync --progress -ravz rsync://stable.melpa.org/packages/ ${PKG_ROOT}/melpa-stable
-	  rsync --progress -ravz rsync://melpa.org/packages/ ${PKG_ROOT}/melpa
-	  rsync --progress -ravz rsync://elpa.gnu.org/elpa/ ${PKG_ROOT}/gnu
+          rsync --progress -ravz rsync://stable.melpa.org/packages/ <<emacs_offline_home()>>/melpa-stable
+          rsync --progress -ravz rsync://melpa.org/packages/ <<emacs_offline_home()>>/melpa
+          rsync --progress -ravz rsync://elpa.gnu.org/elpa/ <<emacs_offline_home()>>/gnu
       }
     #+END_SRC
 

@@ -8,7 +8,7 @@
 #+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 *** tmux 配置
-    #+BEGIN_SRC conf :tangle (m/resolve "${m/home.d}/.tmux.conf") :results silent :comments link
+    #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/tmux/tmux.conf") :results silent :comments link
       # use ctrl-a to as prefix
       set -g prefix C-x
       unbind-key C-b
@@ -33,7 +33,7 @@
       set -g mouse on
       bind -n WheelUpPane if-shell -F -t = "#{mouse_any_flag}" "send-keys -M" "if -Ft= '#{pane_in_mode}' 'send-keys -M' 'select-pane -t=; copy-mode -e; send-keys -M'"
       bind -n WheelDownPane select-pane -t= \; send-keys -M
-      set-environment -g TMUX_PLUGIN_MANAGER_PATH "${HOME}/.config/tmux/plugins"
+      set-environment -g TMUX_PLUGIN_MANAGER_PATH "${XDG_CONFIG_HOME}/tmux/plugins"
       set -g @plugin 'tmux-plugins/tpm'
       set -g @plugin 'tmux-plugins/tmux-sensible'
       set -g @plugin 'tmux-plugins/tmux-resurrect'
@@ -43,7 +43,7 @@
       # copy to system clipboard in tmux
       set -g @plugin 'tmux-plugins/tmux-yank'
       set -g @plugin 'laktak/extrakto'
-      run '~/.tmux/tpm/tpm'
+      run '${XDG_CONFIG_HOME}/tmux/tpm/tpm'
 
 
       set -g @copy_mode_yank "M-w"
@@ -73,7 +73,7 @@
       bind t command-prompt -p "(rename-pane)" -I "#T" "select-pane -T '%%'"
     #+END_SRC
 *** tmuxinator misc config
-    #+BEGIN_SRC yaml :tangle (m/resolve "${m/home.d}/.config/tmuxinator/misc.yml") :eval never :exports code :noweb yes
+    #+BEGIN_SRC yaml :tangle (m/resolve "${m/xdg.conf.d}/tmuxinator/misc.yml") :eval never :exports code :noweb yes
       name: misc
       root: ~
 

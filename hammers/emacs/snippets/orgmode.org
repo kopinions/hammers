@@ -9,7 +9,7 @@
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
 *** 通用代码段
-    #+BEGIN_SRC text :tangle (m/resolve "${m/conf.d}/snippets/org-mode/src") :mkdirp yes :eval never :exports code
+    #+BEGIN_SRC text :tangle (m/resolve "${m/xdg.conf.d}/emacs/snippets/org-mode/src") :mkdirp yes :eval never :exports code
       # -*- mode: snippet -*-
       # name: 
       # key: <s
@@ -20,7 +20,7 @@
     #+END_SRC
 *** shell 代码段
 
-    #+BEGIN_SRC text :tangle (m/resolve "${m/conf.d}/snippets/org-mode/shell") :mkdirp yes :eval never :exports code
+    #+BEGIN_SRC text :tangle (m/resolve "${m/xdg.conf.d}/emacs/snippets/org-mode/shell") :mkdirp yes :eval never :exports code
       # -*- mode: snippet -*-
       # name: shell
       # key: <sh
@@ -32,7 +32,7 @@
 
 *** elisp 代码段
 
-    #+BEGIN_SRC text :tangle (m/resolve "${m/conf.d}/snippets/org-mode/elisp") :mkdirp yes
+    #+BEGIN_SRC text :tangle (m/resolve "${m/xdg.conf.d}/emacs/snippets/org-mode/elisp") :mkdirp yes
       # -*- mode: snippet -*-
       # name: lisp
       # key: <elisp
@@ -43,7 +43,7 @@
     #+END_SRC
 
 *** conf 代码段
-    #+BEGIN_SRC text :tangle (m/resolve "${m/conf.d}/snippets/org-mode/conf") :mkdirp yes
+    #+BEGIN_SRC text :tangle (m/resolve "${m/xdg.conf.d}/emacs/snippets/org-mode/conf") :mkdirp yes
       # -*- mode: snippet -*-
       # name: conf
       # key: <conf
@@ -54,7 +54,7 @@
     #+END_SRC
 
 *** graphviz 代码段
-    #+BEGIN_SRC text :tangle (m/resolve "${m/conf.d}/snippets/org-mode/dot") :mkdirp yes
+    #+BEGIN_SRC text :tangle (m/resolve "${m/xdg.conf.d}/emacs/snippets/org-mode/dot") :mkdirp yes
       # -*- mode: snippet -*-
       # name: dot
       # key: <dot
@@ -69,7 +69,7 @@
 
 *** blog front matter 配置
 
-    #+BEGIN_SRC text :tangle (m/resolve "${m/conf.d}/snippets/org-mode/front-matter") :mkdirp yes
+    #+BEGIN_SRC text :tangle (m/resolve "${m/xdg.conf.d}/emacs/snippets/org-mode/front-matter") :mkdirp yes
       # -*- mode: snippet -*-
       # name: front-mater
       # key: <front
@@ -121,7 +121,7 @@
     #+END_SRC
     
 *** verilog 代码段
-    #+BEGIN_SRC text :tangle (m/resolve "${m/conf.d}/snippets/org-mode/verilog") :mkdirp yes
+    #+BEGIN_SRC text :tangle (m/resolve "${m/xdg.conf.d}/emacs/snippets/org-mode/verilog") :mkdirp yes
       # -*- mode: snippet -*-
       # name: verilog
       # key: <veri
@@ -140,7 +140,7 @@
     #+END_SRC
     
 *** latex
-    #+BEGIN_SRC org :tangle (m/resolve "${m/conf.d}/snippets/org-mode/latex") :mkdirp yes
+    #+BEGIN_SRC org :tangle (m/resolve "${m/xdg.conf.d}/emacs/snippets/org-mode/latex") :mkdirp yes
       # -*- mode: snippet -*-
       # name: latex
       # key: <latex

@@ -34,5 +34,5 @@
   set print elements 0
   
   set breakpoint pending on
-  source ~/.gdb/dashboard/.gdbinit
+  source ~/.config/gdb/dashboard/.gdbinit
 #+END_SRC

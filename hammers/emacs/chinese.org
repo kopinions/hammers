@@ -9,7 +9,7 @@
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
 ** 中文字体配置
-   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/home.d}/.emacs.d/lisp/init-chinese.el") :comments link
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-chinese.el") :comments link
      (use-package cnfonts
        :ensure t
        :if (display-graphic-p)
@@ -21,7 +21,7 @@
 
 ** 输入法配置
 
-   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/home.d}/.emacs.d/lisp/init-chinese.el") :comments link
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-chinese.el") :comments link
      (use-package posframe)
      (use-package pyim
        :diminish pyim-isearch-mode
@@ -31,7 +31,7 @@
          `(:name ,(file-name-nondirectory path)
                  :file ,path))
        (defun m/dicts()
-         (mapcar 'm/dict (m/files "${m/conf.d}/pyim/dicts/*.pyim" t)))
+         (mapcar 'm/dict (m/files "${m/xdg.conf.d}/emacs/pyim/dicts/*.pyim" t)))
        :config
        ;; 激活 basedict 拼音词库，五笔用户请继续阅读 README
        (setq pyim-dicts (m/dicts))
@@ -88,8 +88,9 @@
 ** rime 输入法配置
 
 *** 安装 librime
+    #+HEADER: :var emacs_conf=(m/resolve "${m/xdg.conf.d}/emacs")
     #+BEGIN_SRC shell :exports code :results none :tangle no  :eval (or (and (eq m/os 'macos) "yes") "never") :comments link
-      cd ~/.emacs.d/3rdparty/librime
+      cd ${emacs_conf}/3rdparty/librime
       git submodule update --init
       export LIBRARY_PATH=${LIBRARY_PATH}:/usr/local/opt/icu4c/lib
       make xcode/thirdparty/boost -j `nproc`
@@ -100,13 +101,13 @@
 
 *** 安装 liberime
 
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/home.d}/.emacs.d/lisp/init-chinese.el")) "no") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-chinese.el")) "no") :comments link
       (use-package liberime
         :if (eq m/os 'macos)
         :load-path m/load-path
         :after pyim
         :init
-        (setenv "RIME_PATH" (expand-file-name "librime" (expand-file-name "3rdparty" m/conf.d)))
+        (setenv "RIME_PATH" (expand-file-name "librime" (expand-file-name "emacs/3rdparty" m/xdg.conf.d)))
         :config
         (liberime-build)
         :hook
@@ -127,8 +128,8 @@
 
 *** 修复 liberime-core.so 的链接的问题（@rpath librime not found）
 
-    #+HEADER: :var erime_path=(m/resolve "${m/conf.d}/3rdparty/liberime/src")
-    #+HEADER: :var rpath=(m/resolve "${m/conf.d}/3rdparty/librime/build/lib/Release") 
+    #+HEADER: :var erime_path=(m/resolve "${m/xdg.conf.d}/emacs/3rdparty/liberime/src")
+    #+HEADER: :var rpath=(m/resolve "${m/xdg.conf.d}/emacs/3rdparty/librime/build/lib/Release") 
     #+BEGIN_SRC shell :eval (or (and (eq m/os 'macos) "yes") "never") :exports code :results none :noweb yes 
       echo ${rpath}
       echo ${erime_path}
@@ -136,7 +137,7 @@
     #+END_SRC
     
 *** liberime 配置文件 
-    #+BEGIN_SRC yaml :tangle (m/resolve "${m/home.d}/.emacs.d/rime/default.custom.yaml") :noweb yes :eval never :exports code
+    #+BEGIN_SRC yaml :tangle (m/resolve "${m/xdg.conf.d}/emacs/rime/default.custom.yaml") :noweb yes :eval never :exports code
       patch:
         menu/page_size: 100
         speller/auto_select: false
@@ -146,6 +147,6 @@
     #+END_SRC
     
 *** 导出
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/home.d}/.emacs.d/lisp/init-chinese.el")) :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-chinese.el")) :comments link
       (provide 'init-chinese)
     #+END_SRC

@@ -11,11 +11,11 @@
 ** 基础设置
 *** 基础设置
 **** 使用 NoTabs 进行所有的编辑
-     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
        (setq-default indent-tabs-mode nil)
      #+END_SRC
 **** 启用 emacs narrow 相关的功能
-     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
        (put 'narrow-to-region 'disabled nil)
        (put 'narrow-to-page 'disabled nil)
        (put 'narrow-to-defun 'disabled nil)
@@ -24,39 +24,39 @@
        (cua-selection-mode t)
      #+END_SRC
 **** 不生成 #filename# 临时文件
-     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
        (auto-save-visited-mode)
-       (make-directory (expand-file-name "backups" m/conf.d) t)
+       (make-directory (expand-file-name "emacs/backups" m/xdg.conf.d) t)
        (setq auto-save-file-name-transforms
-	     `((".*" ,(expand-file-name "backups/" m/conf.d) t)))
+	     `((".*" ,(expand-file-name "emacs/backups/" m/xdg.conf.d) t)))
        (setq auto-save-list-file-prefix
-	     (expand-file-name "backups/" m/conf.d))
+	     (expand-file-name "emacs/backups/" m/xdg.conf.d))
      #+END_SRC
 **** 禁止备份文件
-     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
        (setq make-backup-files nil)
 					       ; stop to create the lock files
 					       ; lock files is used to prevent concurrent edit of a file
        (setq create-lockfiles nil)
      #+END_SRC
-     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
        (setq delete-by-moving-to-trash t) 
      #+END_SRC
 **** 保持光标在行尾
-     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
        (setq track-eol t)
        (setq line-move-visual nil)
      #+END_SRC
 **** 默认整行删除，包括 \n
-     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
        (setq-default kill-whole-line t)
      #+END_SRC
 
-     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
        (setq set-mark-command-repeat-pop t)
      #+END_SRC
 *** 光标位置
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
       (use-package beacon
 	:diminish beacon-mode
 	:config
@@ -86,7 +86,7 @@
     #+END_SRC
 *** 智能移动行首
 
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
       (use-package mwim
 	:bind
 	("C-a" . mwim-beginning-of-code-or-line)
@@ -95,7 +95,7 @@
 
 *** 折叠
 
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
       (use-package origami
 	:bind (("C-c f" . origami-recursively-toggle-node)
 	       ("C-c F" . origami-toggle-all-nodes))
@@ -105,7 +105,7 @@
 
 *** 回滚记录
 
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
       (use-package undo-tree
 	:ensure t
 	:config
@@ -117,7 +117,7 @@
 
 *** file-paragraph & file-region & unfill-region & unfile-paragraph
     [fill & unfill][https://www.emacswiki.org/emacs/FillParagraph]
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
       (use-package unfill
 	:config
 	(global-set-key (kbd "M-q") 'unfill-toggle))
@@ -125,13 +125,13 @@
 
 *** 上次修改的地方
 
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
       (use-package goto-last-change
 	:bind ("C-x /" . goto-last-change))
     #+END_SRC
 
 *** 使用 C-u X 输入 X 对应的 org entities
-    #+BEGIN_SRC elisp :eval never :exports code :noweb yes :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :noweb yes :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
       (defun m/org-entity-get-name (char)
 	"Return the entity name for CHAR. For example, return \"ast\" for *."
 	(let ((ll (append org-entities-user
@@ -184,7 +184,7 @@
 
 ** 剪切设置
 *** 浏览剪切历史
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
       (use-package browse-kill-ring
 	:custom
 	(browse-kill-ring-separator "\f")
@@ -197,12 +197,12 @@
     #+END_SRC
 
 ** 远程文件访问（Tramp: Transparent Remote Access Multiple Protocol）
-   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
      (setq tramp-terminal-type "tramp")
    #+END_SRC
 ** 括号设置
 *** 括号配对显示
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
       (use-package paren	
 	:custom
 	(show-paren-style 'mixed)
@@ -212,7 +212,7 @@
 	(show-paren-mode 1))
     #+END_SRC
 *** 括号自动匹配
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
       (use-package elec-pair
 	:config
 	(defun m/electric-pair-local-text-mode ()
@@ -225,13 +225,13 @@
 	 (text-mode . m/electric-pair-local-text-mode)))
     #+END_SRC
 *** 括号中内容显示
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
       (use-package rainbow-delimiters
 	:hook
 	((prog-mode . rainbow-delimiters-mode)))
     #+END_SRC
 *** 智能括号替换
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
       (use-package smartparens
 	:bind
 	(([remap backward-up-list] . sp-backward-up-sexp)
@@ -272,7 +272,7 @@
 
 ** 搜索设置
 *** 在另外的 buffer 动态显示结果
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
       (use-package swiper
 	:demand t
 	:bind 
@@ -306,7 +306,7 @@
 		(woman . ""))))
     #+END_SRC
 *** 替换
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
       (use-package anzu
 	:config
 	(setq anzu-mode-lighter "")
@@ -316,7 +316,7 @@
 	 ([remap query-replace] . anzu-query-replace)))
     #+END_SRC
 *** 使用 rg 去处理 ripgrep 结果
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
       (use-package rg
 	:after wgrep
 	:preface
@@ -363,7 +363,7 @@
 	      ("M-P" . rg-prev-file)))
     #+END_SRC
 *** 编辑搜索结果
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
       (use-package wgrep
 	:custom
 	(wgrep-enable-key "e")
@@ -372,7 +372,7 @@
     #+END_SRC
 
 ** 清除到指定地方
-   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
      (use-package avy-zap
        :bind
        ("M-z" . avy-zap-to-char-dwim)
@@ -380,7 +380,7 @@
    #+END_SRC
 ** 扩充选定区域
 
-   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
      (use-package expand-region
        :after org
        :bind
@@ -389,7 +389,7 @@
 
 ** 动态多光标
 
-   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
      (use-package multiple-cursors
        :bind (
 	      ("C-<" . mc/mark-previous-like-this)
@@ -407,7 +407,7 @@
    #+END_SRC
 
 ** 移动或者复制行
-   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
      (use-package move-dup
        :bind (("M-<up>" . move-dup-move-lines-up)
 	      ("M-<down>" . move-dup-move-lines-down)
@@ -418,7 +418,7 @@
    #+END_SRC
 
 ** 复制或剪切当前行
-   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
      (use-package whole-line-or-region
        :diminish whole-line-or-region-local-mode
        :config
@@ -426,14 +426,14 @@
    #+END_SRC
 
 ** 高亮转义字符
-   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
      (use-package highlight-escape-sequences
        :config
        (hes-mode t))
    #+END_SRC
 
 ** 智能扩展 hippie-expand
-   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
      (global-set-key (kbd "M-/") 'hippie-expand)
 
      (setq hippie-expand-try-functions-list
@@ -445,7 +445,7 @@
    #+END_SRC
 
 ** 高亮显示标示符
-   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
      (use-package symbol-overlay
        :diminish symbol-overlay-mode
        :hook
@@ -461,13 +461,13 @@
 	     ("M-p" . symbol-overlay-jump-prev)))
    #+END_SRC
 ** mode line 警告
-   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
      (use-package mode-line-bell
        :init
        (add-hook 'after-init-hook 'mode-line-bell-mode))
    #+END_SRC
 ** 回车
-   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
      (global-set-key (kbd "RET") 'newline-and-indent)
      (defun m/newline-at-end-of-line ()
        "Move to end of line, enter a newline, and reindent."
@@ -478,13 +478,13 @@
      (global-set-key (kbd "S-<return>") 'm/newline-at-end-of-line)
    #+END_SRC
 ** 驼峰或者下划线分字
-   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
      (use-package subword
        :config
        (global-subword-mode))
    #+END_SRC
 ** 位置之间向前切换或者向后切换
-   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
      (use-package backward-forward
        :bind
        ("C-," . backward-forward-previous-location)
@@ -496,7 +496,7 @@
        (backward-forward-mode t))
    #+END_SRC
 ** 显示行号
-   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
      (use-package display-line-numbers
        :custom
        (display-line-numbers-width 3)
@@ -504,7 +504,7 @@
        ((prog-mode yaml-mode systemd-mode) . display-line-numbers-mode))
    #+END_SRC
 ** 数字增加
-   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
      (defun m/increment-number-hexadecimal (&optional arg base)
        "Increment the number forward from point by 'arg'."
        (interactive "P")
@@ -550,7 +550,7 @@
    #+END_SRC
 
 ** 其他
-   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
      (use-package goto-line-preview
        :after display-line-numbers
        :bind
@@ -565,6 +565,6 @@
        (add-hook 'after-init-hook 'global-prettify-symbols-mode))
    #+END_SRC
 *** provide
-    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-editing.el") :comments link
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
       (provide 'init-editing)
     #+END_SRC

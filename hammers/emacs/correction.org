@@ -10,7 +10,7 @@
 
 ** flycheck
 
-   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-correction.el") :comments link
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-correction.el") :comments link
      (use-package flycheck
        :custom
        (flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list)
@@ -22,6 +22,6 @@
    #+END_SRC
 
 ** provide
-   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/conf.d}/lisp/init-correction.el") :comments link
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-correction.el") :comments link
      (provide 'init-correction)
    #+END_SRC
