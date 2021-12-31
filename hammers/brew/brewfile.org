@@ -164,6 +164,6 @@
       brew 'msmtp'
     #+END_SRC
     
-    #+BEGIN_SRC shell :tangle no :exports code :results output
+    #+BEGIN_SRC shell :eval (or (and (eq m/os 'macos) "yes") "never") :shebang #!/bin/bash :exports none :tangle no :results output silent :noweb yes :prologue "exec 2>&1" :epilogue ":" :comments link
       #brew bundle --global
     #+END_SRC
