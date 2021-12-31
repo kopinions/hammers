@@ -76,6 +76,15 @@
     (list (apply 'call-process program nil (current-buffer) nil args)
           (buffer-string))))
 
+(defun m/system-pipefail (program &rest args)
+  "Run PROGRAM with ARGS and return the exit code and output in a list."
+  (with-temp-buffer 
+    (if (eq 0 (apply 'call-process program nil (current-buffer) nil args))
+        (string-trim-right (buffer-string))
+      (progn
+        (message "%s" (buffer-string))
+        (throw 'm/system-pipefail (format "%s execute fail" program))))))
+
 (defun m/files (glob &optional full)
   "Give an GLOB, return files matched GLOB.  If FULL is specified, return absolute pathnames for each file."
   (interactive "M")
@@ -126,26 +135,30 @@
 	 (resolved-dest (m/resolve dest)))
     (message "copy: %s to %s" resolved-src resolved-dest)
     (if (file-directory-p resolved-dest)
-	(shell-command (format "rsync -ravz %s/ %s" resolved-src resolved-dest))
-      (shell-command (format "rsync -ravz %s %s" resolved-src resolved-dest)))
+	(m/system-pipefail "rsync" "-ravz" (format "%s/" resolved-src)  (format "%s" resolved-dest))
+      (m/system-pipefail "rsync" "-ravz" (format "%s" resolved-src)  (format "%s" resolved-dest)))
     (message "copied: %s to %s" resolved-src resolved-dest)))
 
 (defun m/clone (src dest)
   "clone the SRC to the DEST."
   (let* ((resolved-src (m/resolve src))
-	 (resolved-dest (m/resolve dest)))
+	 (resolved-dest (m/resolve dest))
+         (src-branch (m/system-pipefail "git" "-C" resolved-src "branch" "--show-current"))
+         (dest-branch (m/system-pipefail "git" "-C" resolved-dest "branch" "--show-current"))
+         (src-url (m/system-pipefail "git" "-C" resolved-src "remote" "get-url" "origin"))
+         )
     (message "clone: %s to %s" resolved-src resolved-dest)
     (if (file-directory-p resolved-dest)
 	(progn
 	  (message "repo under: %s exists, pull from %s" resolved-dest resolved-src)
-	  (shell-command (format "git -C %s  pull filelocal $(git -C %s branch --show-current)"  resolved-dest resolved-dest)))
+	  (m/system-pipefail "git" "-C" resolved-dest  "pull" "filelocal" dest-branch))
       (progn
 	(message "repo under: %s not exists, clone from  %s" resolved-dest resolved-src)
-	(shell-command (concat "mkdir -p $(dirname " resolved-dest ")"))
-	(shell-command (concat "git clone --no-hardlinks --recurse-submodule " resolved-src " " resolved-dest))
-	(shell-command (concat "git -C " resolved-dest " remote rename origin filelocal"))
-	(shell-command (format "git -C %s remote add origin $(git -C %s remote get-url origin)" resolved-dest resolved-src))
-	(shell-command (format "git -C %s checkout $(git -C %s branch --show-current)" resolved-dest resolved-src))
+        (make-directory (directory-file-name resolved-dest) t)
+	(m/system-pipefail "git" "clone" "--no-hardlinks" "--recurse-submodule" resolved-src resolved-dest)
+	(m/system-pipefail "git" "-C" resolved-dest "remote" "rename" "origin" "filelocal")
+	(m/system-pipefail "git" "-C" resolved-dest "remote" "add" "origin" src-url)
+	(m/system-pipefail "git" "-C" resolved-dest "checkout" src-branch)
 	))))
 
 (defun m/untar (src dest)
@@ -153,9 +166,10 @@
   (let* ((resolved-src (m/resolve src))
 	 (resolved-dest (m/resolve dest)))
     (message "untar: %s to %s" resolved-src resolved-dest)
-    (shell-command (concat "mkdir -p " resolved-dest))
-    (message (concat "tmp=$(mktemp -d) && tar -xJf " resolved-src " -C ${tmp} && rsync -ravz ${tmp}" resolved-dest))
-    (shell-command (concat "tmp=$(mktemp -d) && tar -xJf " resolved-src " -C ${tmp} && rsync -ravz ${tmp}/ " resolved-dest))
+    (make-directory resolved-dest t)
+    (let* ((tmp (make-temp-file "untar" t)))
+      (m/system-pipefail "tar" "-xJf" resolved-src "-C" tmp)
+      (m/system-pipefail "rsync" "-ravz" (format "%s/" tmp) resolved-dest))
     (message "untared: %s to %s" resolved-src resolved-dest)))
 
 (defun m/rsync (src dest)
@@ -163,7 +177,7 @@
   (let* ((resolved-src (m/resolve src))
 	 (resolved-dest (m/resolve dest)))
     (message "rsync: %s to %s" resolved-src resolved-dest)
-    (shell-command (concat "rsync -raz " resolved-src " " resolved-dest))
+    (m/system-pipefail "rsync" "-raz" resolved-src resolved-dest)
     (message "synced: %s to %s" resolved-src resolved-dest)))
 
 (defun m/link (src dest)
@@ -171,14 +185,14 @@
   (let* ((resolved-src (m/resolve src))
 	 (resolved-dest (m/resolve dest)))
     (message "linking: %s to %s" resolved-src resolved-dest)
-    (shell-command (concat "mkdir -p $(dirname " resolved-dest ")"))
-    (shell-command (concat "ln -sfn " resolved-src " " resolved-dest))
+    (make-directory (directory-file-name resolved-dest) t)
+    (m/system-pipefail "ln" "-sfn" resolved-src resolved-dest)
     (message "linked: %s to %s" resolved-src resolved-dest)))
 
 (defconst m/root.d (directory-file-name
-		  (if load-file-name
-		      (file-name-directory load-file-name)
-		    (file-name-directory (buffer-file-name)))))
+		    (if load-file-name
+		        (file-name-directory load-file-name)
+		      (file-name-directory (buffer-file-name)))))
 
 (defvar m/xdg.conf.d (directory-file-name (expand-file-name "~/.config")))
 (defvar m/xdg.cache.d (directory-file-name (expand-file-name "~/.cache")))
