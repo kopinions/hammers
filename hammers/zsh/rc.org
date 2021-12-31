@@ -264,15 +264,13 @@
 
 *** 同步 emacs repo
     #+NAME: emacs_offline_home
-    #+BEGIN_SRC elisp :var offline_home=(m/resolve "${m/xdg.conf.d}/emacs/offline")
-      offline_home
+    #+BEGIN_SRC shell :var offline_home=(m/resolve "${m/xdg.conf.d}/emacs/offline")
+      realpath ${offline_home}
     #+END_SRC
     
     #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/post/functions.zsh") :eval never :exports code :comments link :noweb yes
       function rsync_emacs() {
-          rsync --progress -ravz rsync://stable.melpa.org/packages/ <<emacs_offline_home()>>/melpa-stable
-          rsync --progress -ravz rsync://melpa.org/packages/ <<emacs_offline_home()>>/melpa
-          rsync --progress -ravz rsync://elpa.gnu.org/elpa/ <<emacs_offline_home()>>/gnu
+          rsync --progress -ravz rsync://mirrors.tuna.tsinghua.edu.cn/elpa/ <<emacs_offline_home()>>
       }
     #+END_SRC
 

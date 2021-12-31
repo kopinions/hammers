@@ -78,18 +78,18 @@
       (if m/offline
 	  (setq package-archives `(("gnu" . ,(expand-file-name "emacs/offline/gnu" m/xdg.conf.d))
 				   ("melpa" . ,(expand-file-name "emacs/offline/melpa" m/xdg.conf.d))
-				   ("melpa-stable" . ,(expand-file-name "emacs/offline/melpa-stable" m/xdg.conf.d))))
+				   ("stable-melpa" . ,(expand-file-name "emacs/offline/stable-melpa" m/xdg.conf.d))))
 	(let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
 			    (not (gnutls-available-p))))
 	       (proto (if no-ssl "http" "https")))
 	  (if no-ssl
 	      (setq package-archives '(("gnu"   . "http://elpa.emacs-china.org/gnu/")
 				       ("melpa" . "http://elpa.emacs-china.org/melpa/")
-				       ("melpa-stable" . "http://elpa.emacs-china.org/melpa-stable/")))
+				       ("stable-melpa" . "http://elpa.emacs-china.org/stable-melpa/")))
 	    (unless no-ssl
 	      (setq package-archives '(("gnu"   . "https://elpa.emacs-china.org/gnu/")
 				       ("melpa" . "https://elpa.emacs-china.org/melpa/")
-				       ("melpa-stable" . "https://elpa.emacs-china.org/melpa-stable/")
+				       ("stable-melpa" . "https://elpa.emacs-china.org/stable-melpa/")
 				       ))))))
 
       ;; Work-around for https://debbugs.gnu.org/cgi/bugreport.cgi?bug=34341
