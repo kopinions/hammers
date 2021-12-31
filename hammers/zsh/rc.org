@@ -55,8 +55,6 @@
       for file in ${XDG_CONFIG_HOME}/zsh/post/*.zsh; do
           source "${file}"
       done
-
-      mux start misc
     #+END_SRC
 
     #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/init/python.zsh") :eval never :exports code :comments link
