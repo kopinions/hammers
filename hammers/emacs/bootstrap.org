@@ -40,7 +40,7 @@
 	       ((or (string-prefix-p "ms" os) (string-prefix-p "windows" os)) 'windows))))
 
      (defvar m/xdg.conf.d xdg.conf.d)
-     (defvar m/xdg.data.d xdg.data.d)
+     (defvar m/xdg.cache.d xdg.cache.d)
      (defvar m/xdg.data.d xdg.data.d)
      (defvar m/home.d home.d)
    #+END_SRC
@@ -71,7 +71,7 @@
       (require 'package)
 		    ;;; Install into separate package dirs for each Emacs version, to prevent bytecode incompatibility
       (let ((versioned-package-dir
-	     (expand-file-name (format "elpa-%s.%s" emacs-major-version emacs-minor-version)
+	     (expand-file-name (format "emacs/elpa-%s.%s" emacs-major-version emacs-minor-version)
 			       m/xdg.conf.d)))
 	(setq package-user-dir versioned-package-dir))
 

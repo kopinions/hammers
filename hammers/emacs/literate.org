@@ -697,35 +697,33 @@
 
     #+BEGIN_SRC elisp :exports code :eval never :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-literate.el") :comments link
       (use-package org
-	:custom
-	(org-ditaa-jar-path (expand-file-name "emacs/ditaa.jar" m/xdg.conf.d))
-	(org-plantuml-jar-path (expand-file-name "emacs/plantuml.jar" m/xdg.conf.d))
-	:config
-	(unless (and (boundp 'org-ditaa-jar-path)
-		     (file-exists-p org-ditaa-jar-path)
-		     (not (file-directory-p org-ditaa-jar-path)))
-	  (let ((jar-name "ditaa.jar")
-		(url "https://github.com/stathissideris/ditaa/releases/download/v0.11.0/ditaa-0.11.0-standalone.jar"))
-	    (setq org-ditaa-jar-path (expand-file-name jar-name m/xdg.conf.d))
-	    (unless (file-exists-p org-ditaa-jar-path)
-	      (url-copy-file url org-ditaa-jar-path))))
+        :custom
+        (org-ditaa-jar-path (expand-file-name "emacs/ditaa.jar" m/xdg.conf.d))
+        (org-plantuml-jar-path (expand-file-name "emacs/plantuml.jar" m/xdg.conf.d))
+        :config
+        (unless (and (boundp 'org-ditaa-jar-path)
+                     (file-exists-p org-ditaa-jar-path)
+                     (not (file-directory-p org-ditaa-jar-path)))
+          (let ((jar-name "ditaa.jar")
+                (url "https://github.com/stathissideris/ditaa/releases/download/v0.11.0/ditaa-0.11.0-standalone.jar"))
+            (unless (file-exists-p org-ditaa-jar-path)
+              (url-copy-file url org-ditaa-jar-path))))
 
-	(unless (and (boundp 'org-plantuml-jar-path)
-		     (file-exists-p org-plantuml-jar-path)
-		     (not (file-directory-p org-plantuml-jar-path)))
-	  (let ((jar-name "plantuml.jar")
-		(url "https://downloads.sourceforge.net/project/plantuml/1.2020.2/plantuml.1.2020.2.jar"))
-	    (setq org-plantuml-jar-path (expand-file-name jar-name m/xdg.conf.d))
-	    (unless (file-exists-p org-plantuml-jar-path)
-	      (url-copy-file url org-plantuml-jar-path)))))
+        (unless (and (boundp 'org-plantuml-jar-path)
+                     (file-exists-p org-plantuml-jar-path)
+                     (not (file-directory-p org-plantuml-jar-path)))
+          (let ((jar-name "plantuml.jar")
+                (url "https://downloads.sourceforge.net/project/plantuml/1.2020.2/plantuml.1.2020.2.jar"))
+            (unless (file-exists-p org-plantuml-jar-path)
+              (url-copy-file url org-plantuml-jar-path)))))
 
       (use-package plantuml-mode
-	:after org
-	:config
-	(add-to-list
-	 'org-src-lang-modes '("plantuml" . plantuml))
-	(setq plantuml-jar-path org-plantuml-jar-path)
-	(setq plantuml-default-exec-mode 'jar))
+        :after org
+        :config
+        (add-to-list
+         'org-src-lang-modes '("plantuml" . plantuml))
+        (setq plantuml-jar-path org-plantuml-jar-path)
+        (setq plantuml-default-exec-mode 'jar))
     #+END_SRC
 
 *** org-mode graphiz 画图配置
