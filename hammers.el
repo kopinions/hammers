@@ -215,6 +215,7 @@
     (progn
       (m/tangles "${m/root.d}/hammers/scripts/*.org")
       (m/tangles "${m/root.d}/hammers/zsh/*.org")
+      (m/evaluates "${m/root.d}/hammers/zsh/*.org")
       (m/tangles "${m/root.d}/hammers/ssh/*.org")
       (m/tangles "${m/root.d}/hammers/direnv/*.org")
       (m/tangles "${m/root.d}/hammers/tmux/*.org")
