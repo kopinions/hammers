@@ -26,45 +26,46 @@
     #+END_SRC    
     #+BEGIN_SRC gitconfig :tangle (m/resolve "${m/xdg.conf.d}/git/config") :tangle-mode (identity #o644) :noweb yes
       [user]
-	      name = <<username()>>
-	      email = <<email()>>
+              name = <<username()>>
+              email = <<email()>>
       [alias]
-	      ignore = "!gi() { curl -L -s https://www.gitignore.io/api/$@ ;}; gi"
-	      root = "rev-parse --show-toplevel"
+              ignore = "!gi() { curl -L -s https://www.gitignore.io/api/$@ ;}; gi"
+              root = "rev-parse --show-toplevel"
       [log]
-	      abbrevCommit = true
+              abbrevCommit = true
       [tag]
-	      # Sort tags as version numbers whenever applicable, so 1.10.2 is AFTER 1.2.0.
-	      sort = version:refname
+              # Sort tags as version numbers whenever applicable, so 1.10.2 is AFTER 1.2.0.
+              sort = version:refname
       [core]
-	      ignorecase = false
-	      quotepath = false
-	      pager = less -F -X
-	      whitespace = -trailing-space
-	      editor = vim
+              ignorecase = false
+              quotepath = false
+              pager = less -F -X
+              whitespace = -trailing-space
+              editor = vim
       [color]
-	      ui = auto
+              ui = auto
       [color "branch"]
-	      current = yellow reverse
-	      local = yellow
-	      remote = green
+              current = yellow reverse
+              local = yellow
+              remote = green
       [color "diff"]
-	      meta = yellow bold
-	      frag = magenta bold
-	      old = red bold
-	      new = green bold
+              meta = yellow bold
+              frag = magenta bold
+              old = red bold
+              new = green bold
       [color "status"]
-	      added = green
-	      changed = red
-	      untracked = cyan
+              added = green
+              changed = red
+              untracked = cyan
       [pull]
-	      rebase = true
+              rebase = true
       [push]
-	      default = simple
+              default = simple
       [commit]
-	      template = ~/.config/git/commit.tmpl
+              template = ~/.config/git/commit.tmpl
       [credential]
-	      helper = store
+              helper = store --file ~/.local/share/git/credentials
+              helper = cache --timeout 30000
     #+END_SRC
 
 *** git commit template
