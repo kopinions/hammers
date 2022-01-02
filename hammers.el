@@ -143,19 +143,20 @@
   "clone the SRC to the DEST."
   (let* ((resolved-src (m/resolve src))
 	 (resolved-dest (m/resolve dest))
-         (src-branch (m/system-pipefail "git" "-C" resolved-src "branch" "--show-current"))
-         (dest-branch (m/system-pipefail "git" "-C" resolved-dest "branch" "--show-current"))
+         (src-branch (m/system-pipefail "git" "-C" resolved-src "rev-parse" "--abbrev-ref" "HEAD"))
          (src-url (m/system-pipefail "git" "-C" resolved-src "remote" "get-url" "origin"))
          )
     (message "clone: %s to %s" resolved-src resolved-dest)
     (if (file-directory-p resolved-dest)
-	(progn
-	  (message "repo under: %s exists, pull from %s" resolved-dest resolved-src)
-	  (m/system-pipefail "git" "-C" resolved-dest  "pull" "filelocal" dest-branch))
+        (let* ((dest-branch (m/system-pipefail "git" "-C" resolved-dest "rev-parse" "--abbrev-ref" "HEAD")))
+	  (progn
+	    (message "repo under: %s exists, pull from %s" resolved-dest resolved-src)
+            ;; TODO need check current dir is valid git & the git has valid filelocal remote
+	    (m/system-pipefail "git" "-C" resolved-dest  "pull" "filelocal" dest-branch)))
       (progn
 	(message "repo under: %s not exists, clone from  %s" resolved-dest resolved-src)
         (make-directory (directory-file-name resolved-dest) t)
-	(m/system-pipefail "git" "clone" "--no-hardlinks" "--recurse-submodule" resolved-src resolved-dest)
+	(m/system-pipefail "git" "clone" "--no-hardlinks" resolved-src resolved-dest)
 	(m/system-pipefail "git" "-C" resolved-dest "remote" "rename" "origin" "filelocal")
 	(m/system-pipefail "git" "-C" resolved-dest "remote" "add" "origin" src-url)
 	(m/system-pipefail "git" "-C" resolved-dest "checkout" src-branch)
