@@ -230,12 +230,21 @@
 
 ;; copy hammerspoon config
 (if (eq m/os 'macos)
-    (progn (m/evaluates "${m/root.d}/hammers/brew/*.org")
-           (m/system "defaults" "write" "org.hammerspoon.Hammerspoon MJConfigFile" "~/.config/hammerspoon/init.lua")
-	   (m/copy "${m/root.d}/hammers/hammerspoon/Spoons" "${m/xdg.conf.d}/hammerspoon/Spoons")))
+    (progn 
+      (m/copy "${m/root.d}/hammers/hammerspoon/Spoons" "${m/xdg.conf.d}/hammerspoon/Spoons")))
 
+;; eval config script inside org for macos only
+(if (eq m/os 'macos)
+    (progn
+      (m/evaluates "${m/root.d}/hammers/brew/*.org")
+      (m/evaluates "${m/root.d}/hammers/hammerspoon/*.org")))
 
-;; copy config file
+;; eval config script inside org for the linux or macos
+(if (or (eq m/os 'macos)
+	(eq m/os 'linux))
+    (progn (m/evaluates "${m/root.d}/hammers/zsh/*.org")))
+
+;; clone config file
 (if (or (eq m/os 'macos)
 	(eq m/os 'linux))
     (progn
@@ -247,6 +256,7 @@
       (m/clone "${m/root.d}/hammers/gdb/plugins/dashboard" "${m/xdg.conf.d}/gdb/dashboard")
       (m/clone "${m/root.d}/hammers/vim/bundle/Vundle" "${m/xdg.conf.d}/vim/Vundle.vim")))
 
+;; init chinese
 (if (eq m/os 'macos)
     (progn (m/clone "${m/root.d}/hammers/emacs/3rdparty/librime" "${m/xdg.conf.d}/emacs/3rdparty/librime")
 	   (m/clone "${m/root.d}/hammers/emacs/3rdparty/liberime" "${m/xdg.conf.d}/emacs/3rdparty/liberime")

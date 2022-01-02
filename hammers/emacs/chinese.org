@@ -135,7 +135,7 @@
       export RIME_PATH=${rime_path}
       export EMACS_MAJOR_VERSION=${emacs_major}
       cd ${erime_path}
-      make
+      make clean && make
       (otool -l ${erime_path}/src/liberime-core.so | grep "${rime_path}/build/lib/Release") || install_name_tool -add_rpath "${rime_path}/build/lib/Release" ${erime_path}/src/liberime-core.so
     #+END_SRC
 

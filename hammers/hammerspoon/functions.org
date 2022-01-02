@@ -7,6 +7,12 @@
 #+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil
 #+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+
+*** hammerspoon use xdg config
+    #+BEGIN_SRC shell :eval (or (and (eq m/os 'macos) "yes") "never") :shebang #!/bin/bash :exports none :tangle no :results output silent :noweb yes :prologue "exec 2>&1" :epilogue ":" :comments link
+      defaults write org.hammerspoon.Hammerspoon MJConfigFile "~/.config/hammerspoon/init.lua"
+    #+END_SRC
+
 *** 通用方法
     #+BEGIN_SRC lua :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/xdg.conf.d}/hammerspoon/functions.lua")) "no") :mkdirp yes
       local log = hs.logger.new('init.lua', 'debug')
