@@ -66,11 +66,6 @@
 
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-vcs.el") :comments link
       (use-package yagist)
-      (use-package bug-reference-github
-	:hook
-	(prog-mode . bug-reference-prog-mode))
-      (use-package github-clone)
-      (use-package github-review)
     #+END_SRC
 
 *** export 
