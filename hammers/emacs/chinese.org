@@ -136,7 +136,11 @@
       export EMACS_MAJOR_VERSION=${emacs_major}
       cd ${erime_path}
       make clean && make
-      (otool -l ${erime_path}/src/liberime-core.so | grep "${rime_path}/build/lib/Release") || install_name_tool -add_rpath "${rime_path}/build/lib/Release" ${erime_path}/src/liberime-core.so
+      otool -l ${erime_path}/src/liberime-core.so \
+          | grep "${rime_path}/build/lib" \
+          | sed -r 's#path ([a-zA-Z0-9./:]+)[[:space:]].*#\1#g' \
+          | xargs -I {} install_name_tool -delete_rpath {} ${erime_path}/src/liberime-core.so
+      install_name_tool -add_rpath "${rime_path}/build/lib/Release" ${erime_path}/src/liberime-core.so
     #+END_SRC
 
 *** liberime 配置文件 
