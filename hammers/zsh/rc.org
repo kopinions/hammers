@@ -240,8 +240,6 @@
 *** xdg workaround
     #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/post/xdg.zsh") :eval never :exports code :comments link
       #!/bin/zsh
-      alias tmux='tmux -f ${XDG_CONFIG_HOME}/tmux/tmux.conf'
-
       if [ -s "${XDG_CONFIG_HOME}/ssh/config" ]
       then
           SSH_CONFIG="-F ${XDG_CONFIG_HOME}/ssh/config"
@@ -252,9 +250,14 @@
           SSH_ID="-i ${XDG_CONFIG_HOME}/ssh/id_dsa"
       fi
 
-      alias ssh="ssh $SSH_CONFIG $SSH_ID "
-      alias ssh-copy-id="ssh-copy-id $SSH_ID"
+      if [ -s "${XDG_CONFIG_HOME}/ssh/known_hosts" ]
+      then
+          SSH_KNOWN_HOSTS="-o UserKnownHostsFile=${XDG_CONFIG_HOME}/ssh/known_hosts"
+      fi
 
+      alias tmux='tmux -f ${XDG_CONFIG_HOME}/tmux/tmux.conf'
+      alias ssh="ssh ${SSH_CONFIG} $[SSH_ID] ${SSH_KNOWN_HOSTS}"
+      alias ssh-copy-id="ssh-copy-id ${SSH_KNOWN_HOSTS} ${SSH_ID}"
       alias mbsync="mbsync -c ${XDG_CONFIG_HOME}/isync/config"
     #+END_SRC
 
