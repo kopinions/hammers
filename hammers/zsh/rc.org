@@ -250,10 +250,7 @@
           SSH_ID="-i ${XDG_CONFIG_HOME}/ssh/id_dsa"
       fi
 
-      if [ -s "${XDG_CONFIG_HOME}/ssh/known_hosts" ]
-      then
-          SSH_KNOWN_HOSTS="-o UserKnownHostsFile=${XDG_CONFIG_HOME}/ssh/known_hosts"
-      fi
+      SSH_KNOWN_HOSTS="-o UserKnownHostsFile=${XDG_CONFIG_HOME}/ssh/known_hosts"
 
       alias tmux='tmux -f ${XDG_CONFIG_HOME}/tmux/tmux.conf'
       alias ssh="ssh ${SSH_CONFIG} $[SSH_ID] ${SSH_KNOWN_HOSTS}"
