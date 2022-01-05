@@ -12,7 +12,7 @@
 *** mail box 初始化
     
     #+NAME: maildir
-    #+BEGIN_SRC shell :var maildir=(m/resolve "${m/home.d}/.mails")
+    #+BEGIN_SRC shell :var maildir=(m/resolve "${m/home.d}/mails")
       mkdir -p ${maildir}/{ding,lambda,qq,sjkyspa}
       echo ${maildir}
     #+END_SRC
@@ -80,7 +80,7 @@
     #+END_SRC
 
 *** mbsync 配置（同步邮件）
-    #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/isync/config")
+    #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/isync/config") :noweb yes
       IMAPAccount lambda
       Host imap.gmail.com
       User rising.lambda@gmail.com
@@ -97,8 +97,8 @@
 
       MaildirStore lambda-local
       SubFolders Verbatim
-      Path ~/.mails/lambda/
-      Inbox ~/.mails/lambda/INBOX
+      Path <<maildir()>>/lambda/
+      Inbox <<maildir()>>/lambda/INBOX
 
       Channel lambda-inbox
       Far :lambda-remote:
@@ -181,8 +181,8 @@
 
       MaildirStore ding-local
       SubFolders Verbatim
-      Path ~/.mails/ding/
-      Inbox ~/.mails/ding/INBOX
+      Path <<maildir()>>/ding/
+      Inbox <<maildir()>>/ding/INBOX
 
       Channel ding-inbox
       Far :ding-remote:INBOX
@@ -249,8 +249,8 @@
 
       MaildirStore qq-local
       SubFolders Verbatim
-      Path ~/.mails/qq/
-      Inbox ~/.mails/qq/INBOX
+      Path <<maildir()>>/qq/
+      Inbox <<maildir()>>/qq/INBOX
 
       Channel qq-inbox
       Far :qq-remote:"INBOX"
