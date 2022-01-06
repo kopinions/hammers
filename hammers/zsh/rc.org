@@ -166,6 +166,13 @@
       setopt chase_links              # resolve symlinks
       setopt correct                  # try to correct spelling of commands
     #+END_SRC
+**** coreutils gnu tools path  
+     #+BEGIN_SRC shell :tangle (or (and (eq m/os 'macos) (m/resolve "${m/xdg.conf.d}/zsh/post/loads.zsh")) "no") :eval never :exports code :comments link
+       COREUTILS=$(brew info coreutils | grep "PATH=")
+       if [ -n "${COREUTILS}" ]; then
+           export PATH="$(echo $COREUTILS|sed -r -E 's#.*PATH="(.*):.*#\1#g;'):${PATH}"
+       fi
+     #+END_SRC
 
 *** tmux 连接到当前目录的实例上
     #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/post/functions.zsh") :eval never :exports code :comments link
