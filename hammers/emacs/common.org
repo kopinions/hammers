@@ -54,20 +54,6 @@
 	       (buffer-string))))
    #+END_SRC
 
-** 交互设置
-   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-common.el") :comments link
-     (use-package noflet)
-     
-     (defun m/bypass-prompt (function &rest args)
-       "Call FUNCTION with ARGS, bypassing all prompts.
-     This includes both `y-or-n-p' and `yes-or-no-p'."
-       (require 'noflet)
-       (noflet
-	   ((y-or-n-p    (prompt) t)
-	    (yes-or-no-p (prompt) t))
-	 (apply function args)))
-   #+END_SRC
-
 
 ** 时间操作
    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-common.el") :noweb yes :comments link
