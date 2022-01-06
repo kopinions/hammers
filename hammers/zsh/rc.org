@@ -26,6 +26,7 @@
 
       export LESSHISTFILE="${XDG_DATA_HOME}/less/history"
       export LESSKEY="${XDG_CONFIG_HOME}/less/keys"
+      export NOTMUCH_CONFIG="${XDG_CONFIG_HOME}/notmuch/neo/config"
 
       export GEM_SPEC_CACHE=${XDG_CACHE_HOME}/rubygems/cache
 
