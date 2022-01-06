@@ -7,13 +7,20 @@
 #+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil
 #+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
-** 错误提醒相关
-   当发生错误的时候，打印错错误的堆栈信息。
+** 使用代理进行访问
    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/init.el") :comments link
      ;;(setq url-proxy-services '(("https" . "127.0.0.1:1089")
      ;;                        ("http" . "127.0.0.1:1089")))
-     (setq debug-on-error t)
-   #+END_SRC
+   #+END_SRC  
+** 错误提醒相关
+***** 当发生错误的时候，打印错错误的堆栈信息。
+      #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/init.el") :comments link
+        (setq debug-on-error t)
+      #+END_SRC
+***** 不显示 warning 信息
+      #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/init.el") :comments link
+        (setq byte-compile-warnings '(cl-functions))
+      #+END_SRC
 
 ** 版本配置
    配置文件使用了一些特性，这些特性在太久的版本上会出现不兼容。对比版本给出相应的提示信息。
