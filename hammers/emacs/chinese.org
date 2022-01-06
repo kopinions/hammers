@@ -109,7 +109,7 @@
         :init
         (setenv "RIME_PATH" (expand-file-name "librime" (expand-file-name "emacs/3rdparty" m/xdg.conf.d)))
         :config
-        (liberime-build)
+        (liberime-load)
         :hook
         (liberime-after-start . (lambda ()
                                   (let ((buf (get-buffer "*liberime message*")))
