@@ -129,49 +129,49 @@
 	  export PATH="$HOME/.local/bin:$PATH";
       fi
     #+END_SRC
-
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/post/config.zsh") :eval never :exports code :comments link
-      # auto menu complete
-      setopt auto_menu
-
-      # auto change directory
-      setopt auto_cd
-
-      #### HISTORY SEARCH
-      autoload history-search-end
-      HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND="bg=cyan,fg=white,bold"
-      HIST_STAMPS="dd.mm.yyyy" ## OH-MY-ZSH
-      setopt hist_ignore_dups  # ignore duplication command history list
-      setopt hist_ignore_space # ignore when commands starts with space
-      setopt hist_reduce_blanks
-      setopt hist_expire_dups_first
-      setopt hist_find_no_dups
-
-      # use brace
-      setopt brace_ccl
-
-      # auto directory pushd that you can get dirs list by cd -[tab]
-      setopt auto_pushd
-      setopt pushd_ignore_dups        # no duplicates in dir stack
-      setopt pushd_silent             # no dir stack after pushd or popd
-      setopt pushd_to_home            # `pushd` = `pushd $HOME`
-
-      # compacked complete list display
-      setopt list_packed
-
-      # multi redirect (e.x. echo "hello" > hoge1.txt > hoge2.txt)
-      setopt multios
-
-      setopt auto_remove_slash        # self explicit
-      setopt chase_links              # resolve symlinks
-      setopt correct                  # try to correct spelling of commands
-    #+END_SRC
 **** coreutils gnu tools path  
      #+BEGIN_SRC shell :tangle (or (and (eq m/os 'macos) (m/resolve "${m/xdg.conf.d}/zsh/post/loads.zsh")) "no") :eval never :exports code :comments link
        COREUTILS=$(brew info coreutils | grep "PATH=")
        if [ -n "${COREUTILS}" ]; then
            export PATH="$(echo $COREUTILS|sed -r -E 's#.*PATH="(.*):.*#\1#g;'):${PATH}"
        fi
+     #+END_SRC
+
+     #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/post/config.zsh") :eval never :exports code :comments link
+       # auto menu complete
+       setopt auto_menu
+
+       # auto change directory
+       setopt auto_cd
+
+       #### HISTORY SEARCH
+       autoload history-search-end
+       HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND="bg=cyan,fg=white,bold"
+       HIST_STAMPS="dd.mm.yyyy" ## OH-MY-ZSH
+       setopt hist_ignore_dups  # ignore duplication command history list
+       setopt hist_ignore_space # ignore when commands starts with space
+       setopt hist_reduce_blanks
+       setopt hist_expire_dups_first
+       setopt hist_find_no_dups
+
+       # use brace
+       setopt brace_ccl
+
+       # auto directory pushd that you can get dirs list by cd -[tab]
+       setopt auto_pushd
+       setopt pushd_ignore_dups        # no duplicates in dir stack
+       setopt pushd_silent             # no dir stack after pushd or popd
+       setopt pushd_to_home            # `pushd` = `pushd $HOME`
+
+       # compacked complete list display
+       setopt list_packed
+
+       # multi redirect (e.x. echo "hello" > hoge1.txt > hoge2.txt)
+       setopt multios
+
+       setopt auto_remove_slash        # self explicit
+       setopt chase_links              # resolve symlinks
+       setopt correct                  # try to correct spelling of commands
      #+END_SRC
 
 *** tmux 连接到当前目录的实例上

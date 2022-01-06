@@ -28,7 +28,7 @@
    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/init.el") :comments link
      (let ((minver "24.4"))
        (when (version< emacs-version minver)
-	 (error "Your Emacs is too old -- this config requires v%s or higher" minver)))
+         (error "Your Emacs is too old -- this config requires v%s or higher" minver)))
      (when (version< emacs-version "25.1")
        (message "Your Emacs is old, and some functionality in this config will be disabled. Please upgrade if possible."))
    #+END_SRC
@@ -42,9 +42,9 @@
    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/init.el") :comments link
      (defconst m/os
        (let ((os (symbol-name system-type)))
-	 (cond ((string= os "darwin") 'macos)
-	       ((string-prefix-p "gnu" os) 'linux)
-	       ((or (string-prefix-p "ms" os) (string-prefix-p "windows" os)) 'windows))))
+         (cond ((string= os "darwin") 'macos)
+               ((string-prefix-p "gnu" os) 'linux)
+               ((or (string-prefix-p "ms" os) (string-prefix-p "windows" os)) 'windows))))
 
      (defvar m/xdg.conf.d xdg.conf.d)
      (defvar m/xdg.cache.d xdg.cache.d)
@@ -73,35 +73,33 @@
     Emacs 的包管理器名为：[[http://tromey.com/elpa/][package]]. 但是 package 默认配置插件仓库包含的插件相对较少，我们需要添加一些常用的第三方插件仓库，以便与搜索与安装插件。
 
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/init.el") :comments link
-
-
       (require 'package)
-		    ;;; Install into separate package dirs for each Emacs version, to prevent bytecode incompatibility
+      ;;; Install into separate package dirs for each Emacs version, to prevent bytecode incompatibility
       (let ((versioned-package-dir
-	     (expand-file-name (format "emacs/elpa-%s.%s" emacs-major-version emacs-minor-version)
-			       m/xdg.conf.d)))
-	(setq package-user-dir versioned-package-dir))
+             (expand-file-name (format "emacs/elpa-%s.%s" emacs-major-version emacs-minor-version)
+                               m/xdg.conf.d)))
+        (setq package-user-dir versioned-package-dir))
 
       (if m/offline
-	  (setq package-archives `(("gnu" . ,(expand-file-name "emacs/offline/gnu" m/xdg.conf.d))
-				   ("melpa" . ,(expand-file-name "emacs/offline/melpa" m/xdg.conf.d))
-				   ("stable-melpa" . ,(expand-file-name "emacs/offline/stable-melpa" m/xdg.conf.d))))
-	(let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
-			    (not (gnutls-available-p))))
-	       (proto (if no-ssl "http" "https")))
-	  (if no-ssl
-	      (setq package-archives '(("gnu"   . "http://elpa.emacs-china.org/gnu/")
-				       ("melpa" . "http://elpa.emacs-china.org/melpa/")
-				       ("stable-melpa" . "http://elpa.emacs-china.org/stable-melpa/")))
-	    (unless no-ssl
-	      (setq package-archives '(("gnu"   . "https://elpa.emacs-china.org/gnu/")
-				       ("melpa" . "https://elpa.emacs-china.org/melpa/")
-				       ("stable-melpa" . "https://elpa.emacs-china.org/stable-melpa/")
-				       ))))))
+          (setq package-archives `(("gnu" . ,(expand-file-name "emacs/offline/gnu" m/xdg.conf.d))
+                                   ("melpa" . ,(expand-file-name "emacs/offline/melpa" m/xdg.conf.d))
+                                   ("stable-melpa" . ,(expand-file-name "emacs/offline/stable-melpa" m/xdg.conf.d))))
+        (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
+                            (not (gnutls-available-p))))
+               (proto (if no-ssl "http" "https")))
+          (if no-ssl
+              (setq package-archives '(("gnu"   . "http://elpa.emacs-china.org/gnu/")
+                                       ("melpa" . "http://elpa.emacs-china.org/melpa/")
+                                       ("stable-melpa" . "http://elpa.emacs-china.org/stable-melpa/")))
+            (unless no-ssl
+              (setq package-archives '(("gnu"   . "https://elpa.emacs-china.org/gnu/")
+                                       ("melpa" . "https://elpa.emacs-china.org/melpa/")
+                                       ("stable-melpa" . "https://elpa.emacs-china.org/stable-melpa/")
+                                       ))))))
 
       ;; Work-around for https://debbugs.gnu.org/cgi/bugreport.cgi?bug=34341
       (when (version= "26.2" emacs-version)
-	(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
+        (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
 
       (package-initialize)
       (package-refresh-contents)
@@ -112,24 +110,24 @@
 
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/init.el") :comments link
       (unless (and 
-	       (package-installed-p 'use-package)
-	       (package-installed-p 'diminish))
-	(package-refresh-contents)
-	(package-install 'use-package)
-	(package-install 'diminish))
+               (package-installed-p 'use-package)
+               (package-installed-p 'diminish))
+        (package-refresh-contents)
+        (package-install 'use-package)
+        (package-install 'diminish))
 
       (eval-when-compile (require 'use-package))
       (require 'diminish)
       (setq use-package-always-ensure t)
 
       (use-package auto-package-update
-	:config
-	(setq auto-package-update-delete-old-versions t)
-	(setq auto-package-update-hide-results t)
-	(auto-package-update-maybe))
+        :config
+        (setq auto-package-update-delete-old-versions t)
+        (setq auto-package-update-hide-results t)
+        (auto-package-update-maybe))
 
       (use-package use-package-ensure-system-package
-	:ensure t)
+        :ensure t)
     #+END_SRC
 
 *** 包加载路径配置
@@ -142,21 +140,21 @@
 *** 保证永远使用最新的 lisp 配置文件，或者库文件
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/init.el") :comments link
       (use-package auto-compile
-	:ensure t
-	:custom (load-prefer-newer t)
-	:config
-	(auto-compile-on-load-mode)
-	(auto-compile-on-save-mode))
+        :ensure t
+        :custom (load-prefer-newer t)
+        :config
+        (auto-compile-on-load-mode)
+        (auto-compile-on-save-mode))
     #+END_SRC
 
 ** 自定义配置聚合
 
    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/init.el") :comments link
      (defconst m/load-path (list (expand-file-name "emacs/lisp" m/xdg.conf.d)
-				 (expand-file-name "lsp-ivy" (expand-file-name "emacs/3rdparty" m/xdg.conf.d))
-				 (expand-file-name "rg.el" (expand-file-name "emacs/3rdparty" m/xdg.conf.d))
-				 (expand-file-name "librime" (expand-file-name "emacs/3rdparty" m/xdg.conf.d))
-				 (expand-file-name "liberime" (expand-file-name "emacs/3rdparty" m/xdg.conf.d))))
+                                 (expand-file-name "lsp-ivy" (expand-file-name "emacs/3rdparty" m/xdg.conf.d))
+                                 (expand-file-name "rg.el" (expand-file-name "emacs/3rdparty" m/xdg.conf.d))
+                                 (expand-file-name "librime" (expand-file-name "emacs/3rdparty" m/xdg.conf.d))
+                                 (expand-file-name "liberime" (expand-file-name "emacs/3rdparty" m/xdg.conf.d))))
      (use-package init-common
        :load-path m/load-path)
      (use-package init-os
