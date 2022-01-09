@@ -26,12 +26,11 @@
 
       export LESSHISTFILE="${XDG_DATA_HOME}/less/history"
       export LESSKEY="${XDG_CONFIG_HOME}/less/keys"
-      export NOTMUCH_CONFIG="${XDG_CONFIG_HOME}/notmuch/neo/config"
 
       export GEM_SPEC_CACHE=${XDG_CACHE_HOME}/rubygems/cache
 
       export INPUTRC=${XDG_CONFIG_HOME}/readline/inputrc
-      #export GNUPGHOME=${XDG_CONFIG_HOME}/gnupg
+      export GNUPGHOME=${XDG_CONFIG_HOME}/gnupg
 
       export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
     #+END_SRC

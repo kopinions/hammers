@@ -1,0 +1,127 @@
+#+TITLE:  gnupg 配置
+#+AUTHOR: 孙建康（rising.lambda）
+#+EMAIL:  rising.lambda@gmail.com
+
+#+DESCRIPTION: gnupg 配置文件
+#+PROPERTY:    header-args        :mkdirp yes
+#+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil
+#+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
+#+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+
+** dirmngr config 配置
+   #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/gnupg/dirmngr.conf") :tangle-mode (identity #o600) :noweb yes :comments link
+     # ╔═══════════════════════════════════════════════════════════════════════════╗
+     # ║ Since GnuPG 2.1 dirmngr takes care of OpenPGP keyservers.                 ║
+     # ║ Save this file as ~/.config/gnupg/dirmngr.conf, or somewhere else and specify    ║
+     # ║ its location with the '--options <file>' option.                          ║
+     # ╚═══════════════════════════════════════════════════════════════════════════╝
+
+
+     # This is the server to communicate with in order to receive keys (--recv-keys)
+     # from, send keys (--send-keys) to, and search for keys (--search-keys)
+     keyserver hkps://keys.openpgp.org
+   #+END_SRC
+
+** gpg config 配置
+   #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/gnupg/gpg.conf") :tangle-mode (identity #o600) :noweb yes :comments link
+     # ╔═══════════════════════════════════════════════════════════════════════════╗
+     # ║ This options file can contain any long options which are available in     ║
+     # ║ GnuPG. See gpg(1) for a full list of options.                             ║
+     # ║                                                                           ║
+     # ║ Also useful: https://riseup.net/en/gpg-best-practices                     ║
+     # ║                                                                           ║
+     # ║ Note: Since GnuPG 2.1 some keyserver options have been moved to dirmngr   ║
+     # ╚═══════════════════════════════════════════════════════════════════════════╝
+
+
+     # ┌───────────────────────────────────────────────────────────────────────────┐
+     # │ Default key and recipient                                                 │
+     # └───────────────────────────────────────────────────────────────────────────┘
+
+     # If you have more than one secret key in your keyring, you may want to
+     # uncomment the following option and set your preferred keyid.
+     #default-key C4380B57
+
+     # If you do not pass a recipient to gpg, it will ask for one. Using this option
+     # you can encrypt to a default key. Key validation will not be done in this
+     # case. The second form uses the default key as default recipient.
+     # default-recipient <user-id>
+     default-recipient-self
+
+
+     # ┌───────────────────────────────────────────────────────────────────────────┐
+     # │ Behavior                                                                  │
+     # └───────────────────────────────────────────────────────────────────────────┘
+
+     # Get rid of the copyright notice
+     no-greeting
+
+     # Disable inclusion of the version string in ASCII armored output
+     no-emit-version
+
+     # Select how to display key IDs: none|short|long|0xshort|0xlong
+     keyid-format 0xlong
+
+     # List keys with their fingerprints
+     with-fingerprint
+
+     # Display the calculated validity of the user IDs during key listings
+     list-options   show-uid-validity
+     verify-options show-uid-validity
+
+     # Because some mailers change lines starting with "From " to ">From " it is good
+     # to handle such lines in a special way when creating cleartext signatures; all
+     # other PGP versions do it this way too.  To enable full OpenPGP compliance you
+     # may want to use this option.
+     # no-escape-from-lines
+
+
+     # ┌───────────────────────────────────────────────────────────────────────────┐
+     # │ Algorithms and ciphers                                                    │
+     # └───────────────────────────────────────────────────────────────────────────┘
+
+     # List of personal digest preferences. When multiple digest are supported by
+     # all recipients, choose the strongest one
+     personal-digest-preferences SHA512 SHA384 SHA256 SHA224
+
+     # Message digest algorithm used when signing a key
+     cert-digest-algo SHA512
+
+     # List of personal cipher preferences. When multiple ciphers are supported by
+     # all recipients, choose the strongest one
+     personal-cipher-preferences AES256 AES192 AES TWOFISH CAMELLIA256 3DES
+
+     # Preference list used for new keys. It becomes the default for "setpref" in the
+     # edit menu
+     default-preference-list SHA512 SHA384 SHA256 SHA224 AES256 AES192 AES CAST5 ZLIB BZIP2 ZIP Uncompressed
+
+
+     # ┌───────────────────────────────────────────────────────────────────────────┐
+     # │ Key servers                                                               │
+     # └───────────────────────────────────────────────────────────────────────────┘
+
+     # When using --refresh-keys, if the key in question has a preferred keyserver
+     # URL, then disable use of that preferred keyserver to refresh the key from
+     keyserver-options no-honor-keyserver-url
+
+     # When searching for a key with --search-keys, include keys that are marked on
+     # the keyserver as revoked
+     keyserver-options include-revoked
+
+     # Automatically fetch keys from key server when not on the local keyring
+     auto-key-retrieve
+   #+END_SRC
+** gpg agent 配置
+   #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/gnupg/gpg-agent.conf") :tangle-mode (identity #o600) :noweb yes :comments link
+     # 7 days
+     max-cache-ttl 604800
+     # 7 days
+     default-cache-ttl 604800
+     # 8 hours 
+     allow-loopback-pinentry
+     # 7 days
+     max-cache-ttl-ssh 604800
+
+     allow-emacs-pinentry
+   #+END_SRC
+
