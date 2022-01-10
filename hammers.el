@@ -134,9 +134,7 @@
   (let* ((resolved-src (m/resolve src))
 	 (resolved-dest (m/resolve dest)))
     (message "copy: %s to %s" resolved-src resolved-dest)
-    (if (file-directory-p resolved-dest)
-	(m/system-pipefail "rsync" "-ravz" (format "%s/" resolved-src)  (format "%s" resolved-dest))
-      (m/system-pipefail "rsync" "-ravz" (format "%s" resolved-src)  (format "%s" resolved-dest)))
+    (m/system-pipefail "rsync" "-ravz"  resolved-src resolved-dest)
     (message "copied: %s to %s" resolved-src resolved-dest)))
 
 (defun m/clone (src dest)
@@ -232,7 +230,7 @@
 ;; copy hammerspoon config
 (if (eq m/os 'macos)
     (progn 
-      (m/copy "${m/root.d}/hammers/hammerspoon/Spoons" "${m/xdg.conf.d}/hammerspoon/Spoons")))
+      (m/copy "${m/root.d}/hammers/hammerspoon/Spoons" "${m/xdg.conf.d}/hammerspoon/")))
 
 ;; eval config script inside org for macos only
 (if (eq m/os 'macos)

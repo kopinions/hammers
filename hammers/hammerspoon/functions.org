@@ -38,30 +38,20 @@
 *** hammerspoon 基础配置（插件，仓库）
     #+BEGIN_SRC lua :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/xdg.conf.d}/hammerspoon/init.lua")) "no") :mkdirp yes :noweb yes :link comment
       hs.loadSpoon("SpoonInstall")
+      hs.loadSpoon("ToggleScreenRotation")
+      hs.loadSpoon("WindowHalfsAndThirds")
       spoon.SpoonInstall.use_syncinstall = true
       require('functions')
-      hs.application.enableSpotlightForNameSearches(true)
-      spoon.SpoonInstall.repos.zzspoons = {
-	 url = "https://github.com/zzamboni/zzSpoons",
-	 desc = "zzamboni's spoon repository",
-      }
-      
-      Install=spoon.SpoonInstall
-      Install:updateRepo()
-      Install:installSpoonFromRepo("WindowHalfsAndThirds")
-      Install:installSpoonFromRepo("ToggleScreenRotation")
-      
-      -- myGrid = { w = 6, h = 4 }
-      -- Install:andUse("WindowGrid",
-      -- 		 {
-      -- 		    config = { gridGeometries =
-      -- 				  { { myGrid.w .."x" .. myGrid.h } } },
-      -- 		    hotkeys = {show_grid = {hyper, "g"}},
-      -- 		    start = true
-      -- 		 }
-      
-      -- )
-      
+
+      -- spoon.SpoonInstall.repos.zzspoons = {
+      --    url = "https://github.com/zzamboni/zzSpoons",
+      --    desc = "zzamboni's spoon repository",
+      -- }
+
+      -- Install=spoon.SpoonInstall
+      -- Install:updateRepo()
+      -- Install:installSpoonFromRepo("WindowHalfsAndThirds")
+
       log = hs.logger.new('init.lua', 'debug')
     #+END_SRC
 *** hammerspoon 不同应用自动切换快捷键
