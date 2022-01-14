@@ -15,7 +15,6 @@
       export JAVA_HOME="/Library/Java/JavaVirtualMachines/openjdk-13.0.1.jdk/Contents/Home"
       export EDITOR=vim
       export DISABLE_AUTO_TITLE=true
-      export NOTMUCH_PROFILE=neo
       export XDG_CONFIG_HOME=${HOME}/.config
       export XDG_CACHE_HOME=${HOME}/.cache
       export XDG_DATA_HOME=${HOME}/.local/share
@@ -54,7 +53,6 @@
 
       export ZPLUG_LOADFILE="${XDG_CONFIG_HOME}/zsh/zplugs.zsh"
       source ${ZPLUG_HOME}/init.zsh
-      zplug install
       zplug load
 
       for file in ${XDG_CONFIG_HOME}/zsh/post/*.zsh; do
@@ -77,36 +75,14 @@
     #+END_SRC
 
     #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/init/init.zsh") :eval never :exports code :comments link
-      if [ ! "$PATH_LOADED" = "true" ]; then
-	  # Add go binaries
-	  if [ -d "$GOPATH" ]; then
-	      export PATH="$GOPATH/bin:$PATH"
-	  elif [ $commands[go] ]; then
-	      export PATH="$(go env GOPATH)/bin:$PATH"
-	      export GOPATH="$(go env GOPATH)"
-	  fi
-
-	  if [ $commands[javac] ]; then
-	      export JAVA_HOME="$(dirname $(dirname $(realpath $(which javac))))"
-	  fi
-
-	  # Add yarn global binaries
-	  if [ $commands[yarn] ]; then export PATH="$(yarn global bin):$PATH"; fi
-
-	  # Add ruby gems
-	  if [ $commands[ruby] ]; then export PATH="$(ruby -e 'puts Gem.user_dir')/bin:$PATH"; fi
-
-	  export PATH_LOADED="true"
-      fi
+      
     #+END_SRC
 
     #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/zplugs.zsh") :eval never :exports code :comments link
       #!/usr/bin/env zsh
       # this allows zplug to update itself on `zplug update`
-      zplug 'zplug/zplug', hook-build:'zplug --self-manage'
-
       zplug 'robbyrussell/oh-my-zsh', as:plugin, use:"lib/*.zsh"
-      plugins=(extract common-aliases docker docker-compose git tmux tmuxinator autojump fzf gitignore fancy-ctrl-z cp alias-finder direnv urltools)
+      plugins=(git tmux tmuxinator autojump fancy-ctrl-z direnv urltools)
       for plugin in $plugins; do
 	  zplug "plugins/$plugin", from:oh-my-zsh, as:plugin
       done
@@ -130,10 +106,7 @@
     #+END_SRC
 **** coreutils gnu tools path  
      #+BEGIN_SRC shell :tangle (or (and (eq m/os 'macos) (m/resolve "${m/xdg.conf.d}/zsh/post/loads.zsh")) "no") :eval never :exports code :comments link
-       COREUTILS=$(brew info coreutils | grep "PATH=")
-       if [ -n "${COREUTILS}" ]; then
-           export PATH="$(echo $COREUTILS|sed -r -E 's#.*PATH="(.*):.*#\1#g;'):${PATH}"
-       fi
+       export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
      #+END_SRC
 
      #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/post/config.zsh") :eval never :exports code :comments link
@@ -173,23 +146,6 @@
        setopt correct                  # try to correct spelling of commands
      #+END_SRC
 
-*** tmux 连接到当前目录的实例上
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/post/functions.zsh") :eval never :exports code :comments link
-      #!/bin/zsh
-      # tat: tmux attach
-      function tat {
-	  name=$(basename `pwd` | sed -e 's/\.//g')
-
-	  if tmux ls 2>&1 | grep "$name"; then
-	      tmux attach -t "$name"
-	  elif [ -f .envrc ]; then
-	      direnv exec . tmux new-session -s "$name"
-	  else
-	      tmux new-session -s "$name"
-	  fi
-      }
-    #+END_SRC
-
 *** rg 命令管道相关处理，如果 rg 被输出到 terminal, 则使用 less 进行分页，否则直接输出所有结果
     #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/post/functions.zsh") :eval never :exports code :comments link
       function rg(){
@@ -227,21 +183,75 @@
     #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/post/alias.zsh") :eval never :exports code :comments link
       #!/bin/zsh
       mk() {
-	  if [ -d build ]; then
-	      cmake --build build --target ${1:-all} -j `nproc`
-	  else
-	      cmake --build cmake-build-debug --target ${1:-all} -j `nproc`
-	  fi
+          if [ -d build ]; then
+              cmake --build build --target ${1:-all} -j `nproc`
+          else
+              cmake --build cmake-build-debug --target ${1:-all} -j `nproc`
+          fi
       }
 
       mkt() {
-	  if [ -d build ]; then
-	      cmake --build build --target ${1:-test} -j `nproc`
-	  else
-	      cmake --build cmake-build-debug --target ${1:-test} -j `nproc`
-	  fi
+          if [ -d build ]; then
+              cmake --build build --target ${1:-test} -j `nproc`
+          else
+              cmake --build cmake-build-debug --target ${1:-test} -j `nproc`
+          fi
       }
-      alias mux=tmuxinator
+      # Advanced Aliases.
+      # Use with caution
+      #
+
+      # ls, the common ones I use a lot shortened for rapid fire usage
+      alias ls='ls --color=auto'     #size,show type,human readable
+      alias l='ls --color=auto -lFh'     #size,show type,human readable
+      alias la='ls --color=auto -lAFh'   #long list,show almost all,show type,human readable
+      alias lr='lc --color=auto -tRFh'   #sorted by date,recursive,show type,human readable
+      alias lt='lc --color=auto -ltFh'   #long list,sorted by date,show type,human readable
+      alias ll='lc --color=auto -l'      #long list
+      alias ldot='lc --color=auto -ld .*'
+      alias lc --color=auto='lc --color=auto -1FSsh'
+      alias lart='lc --color=auto -1Fcart'
+      alias lrt='lc --color=auto -1Fcrt'
+
+      alias zshrc='${=EDITOR} ${ZDOTDIR:-$HOME}/.zshrc' # Quick access to the .zshrc file
+
+      alias grep='grep --color'
+      alias sgrep='grep -R -n -H -C 5 --exclude-dir={.git,.svn,CVS} '
+
+      alias t='tail -f'
+
+      # Command line head / tail shortcuts
+      alias -g H='| head'
+      alias -g T='| tail'
+      alias -g G='| grep'
+      alias -g L="| less"
+      alias -g M="| most"
+      alias -g LL="2>&1 | less"
+      alias -g CA="2>&1 | cat -A"
+      alias -g NE="2> /dev/null"
+      alias -g NUL="> /dev/null 2>&1"
+      alias -g P="2>&1| pygmentize -l pytb"
+
+      alias dud='du -d 1 -h'
+      alias duf='du -sh *'
+      (( $+commands[fd] )) || alias fd='find . -type d -name'
+      alias ff='find . -type f -name'
+
+      alias h='history'
+      alias hgrep="fc -El 0 | grep"
+      alias help='man'
+      alias p='ps -f'
+      alias sortnr='sort -n -r'
+      alias unexport='unset'
+
+      alias rm='rm -i'
+      alias cp='cp -i'
+      alias mv='mv -i'
+
+
+      # Make zsh know about hosts already accessed by SSH
+      zstyle -e ':completion:*:(ssh|scp|sftp|rsh|rsync):hosts' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
+
     #+END_SRC
 
 *** xdg workaround
