@@ -87,7 +87,7 @@
       SSLType IMAPS
       AuthMechs PLAIN
       #PassCmd "security find-generic-password -s lambda -w"
-      PassCmd "gpg --for-your-eyes-only --no-tty -qd ~/.authinfo.gpg |grep rising.lambda@gmail.com|awk '{print $6}'"
+      PassCmd "gpg --for-your-eyes-only --no-tty -qd ~/credentials/authinfo.gpg |grep rising.lambda@gmail.com|awk '{print $6}'"
       # To rotate:
       # > security delete-generic-password -s mbsync-gandi-password
       # > security add-generic-password -a stig@brautaset.org -s mbsync-gandi-password -w APP-SPECIFIC-PASSWORD
@@ -169,7 +169,7 @@
       User neo@sietium.com
       SSLType IMAPS
       AuthMechs LOGIN
-      PassCmd "gpg --for-your-eyes-only --no-tty -qd ~/.authinfo.gpg | grep neo@sietium.com | awk '{print $6}'"
+      PassCmd "gpg --for-your-eyes-only --no-tty -qd ~/credentials/authinfo.gpg | grep neo@sietium.com | awk '{print $6}'"
       #PassCmd "security find-generic-password -s lambda -w"
 
       # To rotate:
@@ -254,7 +254,7 @@
       SSLType IMAPS
       SSLVersions TLSv1.2
       AuthMechs LOGIN
-      PassCmd "gpg --for-your-eyes-only --no-tty -qd ~/.authinfo.gpg | grep sjkyspa@qq.com | awk '{print $6}'"
+      PassCmd "gpg --for-your-eyes-only --no-tty -qd ~/credentials/authinfo.gpg | grep sjkyspa@qq.com | awk '{print $6}'"
       # To rotate:
       # > security delete-generic-password -s mbsync-gandi-password
       # > security add-generic-password -a stig@brautaset.org -s mbsync-gandi-password -w APP-SPECIFIC-PASSWORD
@@ -427,7 +427,7 @@
       auth on
       user rising.lambda@gmail.com
       from rising.lambda@gmail.com
-      passwordeval "gpg --for-your-eyes-only --no-tty -qd ~/.authinfo.gpg |grep rising.lambda@gmail.com|awk '{print $6}'"
+      PassCmd "gpg --for-your-eyes-only --no-tty -qd ~/credentials/authinfo.gpg |grep rising.lambda@gmail.com|awk '{print $6}'"
 
       account sietium
       host smtp.qiye.aliyun.com
@@ -437,7 +437,7 @@
       auth on
       user neo@sietium.com
       from neo@sietium.com
-      passwordeval "gpg --for-your-eyes-only --no-tty -qd ~/.authinfo.gpg | grep neo@sietium.com |awk '{print $6}'"
+      PassCmd "gpg --for-your-eyes-only --no-tty -qd ~/credentials/authinfo.gpg | grep neo@sietium.com |awk '{print $6}'"
 
       account qq
       host smtp.qq.com
@@ -447,7 +447,7 @@
       auth on
       user sjkyspa@qq.com
       from sjkyspa@qq.com
-      passwordeval "gpg --for-your-eyes-only --no-tty -qd ~/.authinfo.gpg | grep sjkyspa@qq.com |awk '{print $6}'"
+      PassCmd "gpg --for-your-eyes-only --no-tty -qd ~/credentials/authinfo.gpg | grep sjkyspa@qq.com |awk '{print $6}'"
     #+END_SRC
 
 *** emacs 发送端配置
