@@ -20,62 +20,62 @@
 *** notmuch 配置
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-email.el") :comments link
       (use-package notmuch
-	:ensure-system-package (notmuch msmtp (mbsync . isync))
-	:hook
-	(notmuch-message-mode . turn-off-auto-fill)
-	:bind (("C-x m" . sb/notmuch)
-	       ("M-]" . notmuch-cycle-notmuch-buffers))
-	:custom
-	(notmuch-address-use-company nil)
-	(notmuch-hello-thousands-separator ",")
-	(notmuch-mua-cite-function (quote message-cite-original-without-signature))
-	(notmuch-fcc-dirs "sent +sent -unread -inbox")
-	(notmuch-saved-searches
-	 (quote
-	  ((:name "Inbox" :query "tag:inbox" :key "i")
-	   (:name "Flagged" :query "tag:flagged" :key "f")
-	   (:name "Drafts" :query "tag:draft" :key "d")
-	   (:name "New in Threads" :query "thread:\"{from:stig}\" and tag:new and not tag:sent" :key "t" :sort-order newest-first :search-type tree)
-	   (:name "All in Threads" :query "thread:\"{from:stig}\"" :key "T" :sort-order newest-first :search-type tree :count-query "tag:no-match")
-	   (:name "List Messages" :query "tag:lists and tag:new and not tag:sent" :key "l" :search-type tree)
-	   (:name "Recent-ish" :query "date:-4d..today and not tag:lists" :key "r" :count-query "tag:no-match" :sort-order newest-first))))
-	(notmuch-tagging-keys
-	 (quote
-	  (("a" notmuch-archive-tags "Archive")
-	   ("u" notmuch-show-mark-read-tags "Mark read")
-	   ("f"
-	    ("+flagged")
-	    "Flag")
-	   ("s"
-	    ("+spam" "-inbox")
-	    "Mark as spam")
-	   ("d"
-	    ("+deleted" "-inbox")
-	    "Delete")
-	   ("m"
-	    ("+muted")
-	    "Mute Thread"))))
+        :ensure-system-package (notmuch msmtp (mbsync . isync))
+        :hook
+        (notmuch-message-mode . turn-off-auto-fill)
+        :bind (("C-x m" . sb/notmuch)
+               ("M-]" . notmuch-cycle-notmuch-buffers))
+        :custom
+        (notmuch-address-use-company nil)
+        (notmuch-hello-thousands-separator ",")
+        (notmuch-mua-cite-function (quote message-cite-original-without-signature))
+        (notmuch-fcc-dirs "sent +sent -unread -inbox")
+        (notmuch-saved-searches
+         (quote
+          ((:name "Inbox" :query "tag:inbox" :key "i")
+           (:name "Flagged" :query "tag:flagged" :key "f")
+           (:name "Drafts" :query "tag:draft" :key "d")
+           (:name "New in Threads" :query "thread:\"{from:stig}\" and tag:new and not tag:sent" :key "t" :sort-order newest-first :search-type tree)
+           (:name "All in Threads" :query "thread:\"{from:stig}\"" :key "T" :sort-order newest-first :search-type tree :count-query "tag:no-match")
+           (:name "List Messages" :query "tag:lists and tag:new and not tag:sent" :key "l" :search-type tree)
+           (:name "Recent-ish" :query "date:-4d..today and not tag:lists" :key "r" :count-query "tag:no-match" :sort-order newest-first))))
+        (notmuch-tagging-keys
+         (quote
+          (("a" notmuch-archive-tags "Archive")
+           ("u" notmuch-show-mark-read-tags "Mark read")
+           ("f"
+            ("+flagged")
+            "Flag")
+           ("s"
+            ("+spam" "-inbox")
+            "Mark as spam")
+           ("d"
+            ("+deleted" "-inbox")
+            "Delete")
+           ("m"
+            ("+muted")
+            "Mute Thread"))))
 
-	:config
-	(defun sb/mbsync (&rest group)
-	  (interactive)
-	  (let ((group (or (and (car group) group) '("--all")))
-		(command `("mbsync" "--verbose" "--quiet" ,@group)))
-	    (message "Starting %s.." (mapconcat 'identity command " "))
-	    (apply 'start-process "mbsync" "*mbsync*" command)))
-	(defun sb/notmuch (arg)
-	  "Launch notmuch. If ran with prefix arg, launch mbsync in the
-	background, and automatically refresh the current buffer when
-	done. With two prefix args, launch mbsync with `--all` rather
-	than just for inboxes."
-	  (interactive "p")
-	  (notmuch)
-	  (if (> arg 1)
-	      (set-process-sentinel
-	       (sb/mbsync (if (eq 4 arg) "inbox" "--all"))
-	       (lambda (proc state)
-		 (message nil) ;; clear minibuffer
-		 (notmuch-poll-and-refresh-this-buffer))))))
+        :config
+        (defun sb/mbsync (&rest group)
+          (interactive)
+          (let ((group (or (and (car group) group) '("--all")))
+                (command `("mbsync" "--verbose" "--quiet" ,@group)))
+            (message "Starting %s.." (mapconcat 'identity command " "))
+            (apply 'start-process "mbsync" "*mbsync*" command)))
+        (defun sb/notmuch (arg)
+          "Launch notmuch. If ran with prefix arg, launch mbsync in the
+        background, and automatically refresh the current buffer when
+        done. With two prefix args, launch mbsync with `--all` rather
+        than just for inboxes."
+          (interactive "p")
+          (notmuch)
+          (if (> arg 1)
+              (set-process-sentinel
+               (sb/mbsync (if (eq 4 arg) "inbox" "--all"))
+               (lambda (proc state)
+                 (message nil) ;; clear minibuffer
+                 (notmuch-poll-and-refresh-this-buffer))))))
 
     #+END_SRC
 
@@ -232,6 +232,21 @@
       Expunge Both
       SyncState *
 
+      Channel ding-gb2
+      Far :ding-remote:GB2
+      Near :ding-local:GB2
+      Sync All
+      Create Both
+      Expunge Both
+      SyncState *
+
+      Channel ding-patent
+      Far :ding-remote:Patent
+      Near :ding-local:Patent
+      Sync All
+      Create Both
+      Expunge Both
+      SyncState *
 
       IMAPAccount qq
       Host imap.qq.com
@@ -298,12 +313,45 @@
       Patterns *
     #+END_SRC
 
+*** mbsync pre-sync
+    #+BEGIN_SRC shell :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/mbsync/hooks/pre-sync") :tangle-mode (identity #o755) :shebang #!/bin/bash :noweb yes :comments link
+      # Move a message file while removing its UID-part
+      function move { s=${1##*/}; s=${s%%,*}; mv -f $1 $2/$s; }
+
+      echo moving $(notmuch count --output=files --exclude=false tag:gb2 AND folder:'ding/INBOX' AND NOT tag:unread) gb2 messages to the GB2
+      for i in $(notmuch search --exclude=false --output=files tag:gb2 AND folder:'ding/INBOX' AND NOT tag:unread); do
+          move $i "<<maildir()>>/ding/GB2/cur"
+      done
+
+      # Move all deleted messages to the Trash folder
+      # echo moving $(notmuch count --output=files --exclude=false tag:deleted AND NOT folder:Trash) deleted messages to the Trash folder
+      # for i in $(notmuch search --exclude=false --output=files tag:deleted AND NOT folder:Trash); do
+      #     move $i "<<maildir()>>/ding/Trash/cur"
+      # done
+
+      # # Move all spam messages to the Spam folder
+      # echo moving $(notmuch count --output=files tag:spam AND NOT folder:Spam) spam-marked messages to the Spam folder
+      # for i in $(notmuch search --output=files tag:spam AND NOT folder:Spam); do
+      #     move $i "<<maildir()>>/ding/Spam/cur"
+      # done
+
+      # # Move all archived messages from Inbox to Archive folder
+      # echo Moving $(notmuch count --output=files folder:Inbox AND NOT tag:inbox) archived messages from Inbox to Archive folder
+      # for i in $(notmuch search --output=files folder:Inbox AND NOT tag:inbox); do
+      #     move $i "<<maildir()>>/ding/Archive/cur"
+      # done
+
+      # mbsync -a 
+
+      # notmuch new --no-hooks
+    #+END_SRC
+
 *** notmuch 配置文件
-    #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/notmuch/neo/config") :noweb yes
+    #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/notmuch/default/config") :noweb yes :comments link
       # 相对于 HOMEDIR ~ 的目录
       [database]
       path=<<maildir()>>
-      
+
       [user]
       name=neo
       primary_email=rising.lambda@gmail.com
@@ -321,83 +369,46 @@
 
     #+END_SRC
 
-*** afew 配置文件
-    #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/afew/config")
-      # ~/.config/afew/config
-      # 所有新邮件会从上至下经过所有规则
+*** notmuch hook
+**** pre hook
+     #+BEGIN_SRC shell :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/notmuch/default/hooks/pre-new") :tangle-mode (identity #o755) :shebang #!/bin/bash :noweb yes :comments link
+       
+     #+END_SRC
 
-      # 邮件所在文件夹是什么名字，就打上什么 tag
-      [FolderNameFilter]
-      # 子文件夹分隔符： /
-      # github/receipt 会被打上两个Tag： +github +receipt
-      maildir_separator = /
-      # 以下文件夹不加 tag
-      folder_blacklist = Archive INBOX \[Gmail\] All\ Mail  Trash Spam Junk
-      # 所有文件夹名先转小写再打 Tag
-      folder_lowercases = true
+**** post hook
+     #+BEGIN_SRC shell :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/notmuch/default/hooks/post-new") :tangle-mode (identity #o755) :shebang #!/bin/bash :noweb yes :comments link
+       set -e 
 
-      # 被邮件服务器打上 Spam 标记的邮件： +junk
-      [SpamFilter]
-      spam_tag = 'junk'
+       echo -n Filtering new messages
+       ## All messages 
 
-      # 有一个极其活跃的讨论串，但内容我不感兴趣
-      # 因此我给这个串 +killed
-      # 接下来这个讨论串的新增讨论都会被自动 +killed
-      [KillThreadsFilter]
+       ## Poor man's progress bar. adjust for number of steps 
+       STEPS=30
+       echo -n '   ['
+       for n in `seq $STEPS`; do
+           echo -n '.'
+       done
+       echo -ne ']\b'
+       # Backspace
+       for n in `seq $STEPS`; do
+           echo -ne '\b'
+       done
 
-      # 邮件 Headers 里的 List-Id： +lists/list-id
-      # 对订阅的邮件列表极其有用
-      # 比如 emacs-devel 邮件列表会被加上 lists/emacs-devel
-      [ListMailsFilter]
+       ## notmuch post-processing script
 
-      # 我自己已发送的邮件不打 tag
-      [ArchiveSentMailsFilter]
+       ## Generally only works with messages with the tag:new folder
+       notmuch tag +inbox +unread -new -- tag:new
+       # 需要处理下 send
+       notmuch tag +gb2 -- to:'gb02*' and folder:'ding/INBOX'
 
-      # To 给我的邮件： +to-me
-      [MeFilter]
+       echo ']'
+     #+END_SRC
 
-      # 在 INBOX 文件夹里： +inbox
-      [InboxFilter]
-
-      # 其他预置 filter 或自定义 filter：
-      # https://afew.readthedocs.io/en/latest/filters.html
-
-      # 同样的配置文件，把这段放在上一段后面即可
-      [Filter.1]
-      message = tag gbe
-      query = tag:ding AND { to:GB02_FE@sietium.com OR to:GB02_BE@sietium.com OR to:GB02_DFT@sietium.com OR GB02_ALL@sietium.com OR GB02_XIAN@sietium.com} AND tag:inbox
-      tags = +gbe;-inbox;
-      [Filter.2]
-      message = remove inbox with trash
-      query = tag:trash AND tag:inbox
-      tags = -inbox;
-      [Filter.3]
-      message = patent
-      query = tag:ding AND from:/.*@wing-ip.cn/
-      tags = +patent;-inbox;-trash;
-
-
-      [MailMover]
-      # 要列出所有涉案的本地 maildir
-      # 'lambda/Junk' 'lambda/Archive' 'lambda/Sent'
-      folders = 'lambda/INBOX' 'qq/INBOX' 'ding/INBOX' 'ding/Trash' 'ding/Archive'
-      rename = True
-
-      # xx 天之前的邮件不移动
-      max_age = 36500
-
-      # 规则：等号左边 dir 里的邮件，如果满足引号左边的搜索条件，则被移动到冒号右边的 dir
-      # 注意：如果一个邮件同时符合多个搜索条件，它会被复制多份至所有符合条件的 maildir
-      # 至于为什么，有过讨论：
-      # https://github.com/afewmail/afew/issues/242
-      # 这就是为什么这里写得这么死板
-      # 当然你可以把它当作一个 feature 加以利用
-      lambda/INBOX = 'tag:junk':'lambda/[Gmail]/Spam' 'NOT tag:inbox AND NOT tag:junk':'lambda/[Gmail]/All Mail' 'tag:inbox AND NOT tag:unread':'lambda/[Gmail]/All Mail'
-      qq/INBOX = 'tag:junk':'qq/Junk' 'NOT tag:inbox AND NOT tag:junk':'qq/Archive' 'tag:inbox AND NOT tag:unread':'qq/Archive'
-      ding/INBOX = 'tag:junk':'ding/Spam' 'NOT tag:inbox AND NOT tag:junk':'ding/Archive' 'tag:ding AND tag:inbox AND NOT tag:unread':'ding/Archive'
-      ding/Trash = 'tag:ding AND tag:unread':'ding/INBOX' 'tag:ding AND tag:gbe':'ding/Archive' 'tag:ding AND tag:patent':'ding:Archive'
-      ding/Archive = 'tag:ding AND tag:unread':'ding/INBOX'
-    #+END_SRC
+**** post insert hook
+     #+BEGIN_SRC shell :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/notmuch/default/hooks/post-insert") :tangle-mode (identity #o755) :shebang #!/bin/bash :noweb yes :comments link
+       notmuch tag +watch -inbox -new tag:new 'folder:/.*Sent.*/'
+     #+END_SRC
+     
 *** msmtp 配置（发送端）
     #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/msmtp/config")
       # default config
@@ -442,10 +453,10 @@
 *** emacs 发送端配置
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-email.el") :comments link
       (setq message-send-mail-function 'message-send-mail-with-sendmail
-	    sendmail-program "msmtp"
-	    message-sendmail-envelope-from 'header
-	    mail-envelope-from 'header
-	    mail-specify-envelope-from t)
+            sendmail-program "msmtp"
+            message-sendmail-envelope-from 'header
+            mail-envelope-from 'header
+            mail-specify-envelope-from t)
 
       (setq message-kill-buffer-on-exit t)
     #+END_SRC
