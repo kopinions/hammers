@@ -220,6 +220,7 @@
       (m/tangles "${m/root.d}/hammers/tmux/*.org")
       (m/tangles "${m/root.d}/hammers/vim/*.org")
       (m/tangles "${m/root.d}/hammers/rg/*.org")
+      (m/tangles "${m/root.d}/hammers/gnupg/*.org")
       (m/tangles "${m/root.d}/hammers/gdb/*.org")))
 
 ;; tangle brew and hammerspoon
