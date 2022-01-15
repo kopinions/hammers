@@ -7,8 +7,64 @@
 #+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil
 #+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+
+*** tmux 辅助方法
+    #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/tmux/helpers.sh") :results silent :tangle-mode (identity #o755) :shebang #!/bin/bash :noweb yes :comments link
+      command_exists() {
+          local command="$1"
+          type "$command" >/dev/null 2>&1
+      }
+
+      ccopy() {
+          # installing reattach-to-user-namespace is recommended on OS X
+          if command_exists "pbcopy"; then
+              if command_exists "reattach-to-user-namespace"; then
+                  echo "reattach-to-user-namespace pbcopy"
+              else
+                  echo "pbcopy"
+              fi
+          elif command_exists "clip.exe"; then # WSL clipboard command
+              echo "cat | clip.exe"
+          elif command_exists "wl-copy"; then # wl-clipboard: Wayland clipboard utilities
+              echo "wl-copy"
+          elif command_exists "xsel"; then
+              echo "xsel -i --clipboard"
+          elif command_exists "xclip"; then
+              echo "xclip -selection clipboard"
+          elif command_exists "putclip"; then # cygwin clipboard command
+              echo "putclip"
+          elif
+              echo ""
+      }
+
+      cpaste() {
+          # installing reattach-to-user-namespace is recommended on OS X
+          if command_exists "pbpaste"; then
+              if command_exists "reattach-to-user-namespace"; then
+                  echo "reattach-to-user-namespace pbpaste"
+              else
+                  echo "pbpaste"
+              fi
+          elif command_exists "clip.exe"; then # WSL clipboard command
+              echo "cat | clip.exe"
+          elif command_exists "wl-paste"; then # wl-clipboard: Wayland clipboard utilities
+              echo "wl-paste"
+          elif command_exists "xsel"; then
+              echo "xsel -o --clipboard"
+          elif command_exists "xclip"; then
+              echo "xclip -o -selection clipboard"
+          elif command_exists "putclip"; then # cygwin clipboard command
+              echo "putclip"
+          elif
+              echo ""
+      }
+    #+END_SRC
 *** tmux 配置
-    #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/tmux/tmux.conf") :results silent :comments link
+    #+NAME: helper
+    #+BEGIN_SRC elisp :var helper=(m/resolve "${m/xdg.conf.d}/tmux/helpers.sh")
+      helper
+    #+END_SRC
+    #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/tmux/tmux.conf") :results silent :comments link :noweb yes
       # use ctrl-a to as prefix
       set -g prefix C-x
       unbind-key C-b
@@ -27,8 +83,6 @@
 
       set -g history-limit 102400
 
-
-
       # enable mouse to scoll history
       set -g mouse on
       bind -n WheelUpPane if-shell -F -t = "#{mouse_any_flag}" "send-keys -M" "if -Ft= '#{pane_in_mode}' 'send-keys -M' 'select-pane -t=; copy-mode -e; send-keys -M'"
@@ -45,10 +99,15 @@
       set -g @plugin 'laktak/extrakto'
       run '${XDG_CONFIG_HOME}/tmux/tpm/tpm'
 
-
+      # prefix, / to search
+      set -g @copycat_search "/"
+      set -g @yank_selection 'clipboard'
+      # copy in copy-mode
       set -g @copy_mode_yank "M-w"
-      set -g @yank_line "M-w"
-      set -g @copy_mode_put "C-y"
+      # paste clipboard normal mode
+      bind-key -T prefix C-y run-shell 'zsh -c "source <<helper()>>;eval \$(cpaste)" | tmux load-buffer - && tmux paste-buffer'
+      # paste clipboard copy mode
+      bind-key -T copy-mode C-y run-shell 'zsh -c "source <<helper()>>;eval \$(cpaste)" | tmux load-buffer - && tmux paste-buffer && tmux send-keys Escape'
       set -g @yank_with_mouse on
       set -g @yank_selection_mouse 'clipboard'
 
