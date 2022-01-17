@@ -270,7 +270,7 @@
       SSH_KNOWN_HOSTS="-o UserKnownHostsFile=${XDG_CONFIG_HOME}/ssh/known_hosts"
 
       alias tmux='tmux -f ${XDG_CONFIG_HOME}/tmux/tmux.conf'
-      alias ssh="ssh ${SSH_CONFIG} $[SSH_ID] ${SSH_KNOWN_HOSTS}"
+      alias ssh="ssh ${SSH_CONFIG} ${SSH_ID} ${SSH_KNOWN_HOSTS}"
       alias ssh-copy-id="ssh-copy-id ${SSH_KNOWN_HOSTS} ${SSH_ID}"
       alias mbsync="mbsync -c ${XDG_CONFIG_HOME}/isync/config"
     #+END_SRC
