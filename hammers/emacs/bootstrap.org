@@ -88,13 +88,13 @@
                             (not (gnutls-available-p))))
                (proto (if no-ssl "http" "https")))
           (if no-ssl
-              (setq package-archives '(("gnu"   . "http://elpa.emacs-china.org/gnu/")
-                                       ("melpa" . "http://elpa.emacs-china.org/melpa/")
-                                       ("stable-melpa" . "http://elpa.emacs-china.org/stable-melpa/")))
+              (setq package-archives '(("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+                                       ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
+                                       ("stable-melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/stable-melpa/")))
             (unless no-ssl
-              (setq package-archives '(("gnu"   . "https://elpa.emacs-china.org/gnu/")
-                                       ("melpa" . "https://elpa.emacs-china.org/melpa/")
-                                       ("stable-melpa" . "https://elpa.emacs-china.org/stable-melpa/")
+              (setq package-archives '(("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+                                       ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
+                                       ("stable-melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/stable-melpa/")
                                        ))))))
 
       ;; Work-around for https://debbugs.gnu.org/cgi/bugreport.cgi?bug=34341
