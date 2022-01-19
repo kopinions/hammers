@@ -174,7 +174,12 @@
         ;; Set this to "wire" to force use of wire when logic is otherwise appropriate;
         ;; this is generally only appropriate when making a non-SystemVerilog wrapper
         ;; containing SystemVerilog cells.
-        (verilog-auto-wire-type "wire")
+        (verilog-auto-wire-type nil)
+        ;; Non-nil specifies the data type to use with ‘verilog-auto-input’ etc.
+        ;; Set this to "wire" if the Verilog code uses "`default_nettype
+        ;; none".  Note using `default_nettype none isn’t recommended practice; this
+        ;; mode is experimental.
+        (verilog-auto-declare-nettype "wire")
         :config
         (add-to-list 'auto-mode-alist '("\\.[ds]?vh?\\'" . verilog-mode)))
     #+END_SRC
