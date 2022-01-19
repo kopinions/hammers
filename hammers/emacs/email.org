@@ -315,35 +315,7 @@
 
 *** mbsync pre-sync
     #+BEGIN_SRC shell :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/mbsync/hooks/pre-sync") :tangle-mode (identity #o755) :shebang #!/bin/bash :noweb yes :comments link
-      # Move a message file while removing its UID-part
-      function move { s=${1##*/}; s=${s%%,*}; mv -f $1 $2/$s; }
 
-      echo moving $(notmuch count --output=files --exclude=false tag:gb2 AND folder:'ding/INBOX' AND NOT tag:unread) gb2 messages to the GB2
-      for i in $(notmuch search --exclude=false --output=files tag:gb2 AND folder:'ding/INBOX' AND NOT tag:unread); do
-          move $i "<<maildir()>>/ding/GB2/cur"
-      done
-
-      # Move all deleted messages to the Trash folder
-      # echo moving $(notmuch count --output=files --exclude=false tag:deleted AND NOT folder:Trash) deleted messages to the Trash folder
-      # for i in $(notmuch search --exclude=false --output=files tag:deleted AND NOT folder:Trash); do
-      #     move $i "<<maildir()>>/ding/Trash/cur"
-      # done
-
-      # # Move all spam messages to the Spam folder
-      # echo moving $(notmuch count --output=files tag:spam AND NOT folder:Spam) spam-marked messages to the Spam folder
-      # for i in $(notmuch search --output=files tag:spam AND NOT folder:Spam); do
-      #     move $i "<<maildir()>>/ding/Spam/cur"
-      # done
-
-      # # Move all archived messages from Inbox to Archive folder
-      # echo Moving $(notmuch count --output=files folder:Inbox AND NOT tag:inbox) archived messages from Inbox to Archive folder
-      # for i in $(notmuch search --output=files folder:Inbox AND NOT tag:inbox); do
-      #     move $i "<<maildir()>>/ding/Archive/cur"
-      # done
-
-      # mbsync -a 
-
-      # notmuch new --no-hooks
     #+END_SRC
 
 *** notmuch 配置文件
@@ -372,7 +344,34 @@
 *** notmuch hook
 **** pre hook
      #+BEGIN_SRC shell :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/notmuch/default/hooks/pre-new") :tangle-mode (identity #o755) :shebang #!/bin/bash :noweb yes :comments link
-       
+       # Move a message file while removing its UID-part
+       function move { s=${1##*/}; s=${s%%,*}; mv -f $1 $2/$s; }
+
+       echo moving $(notmuch count --output=files --exclude=false tag:gb2 AND folder:'ding/INBOX' AND NOT tag:unread AND NOT from:neo) gb2 messages to the GB2
+       for i in $(notmuch search --exclude=false --output=files tag:gb2 AND folder:'ding/INBOX' AND NOT tag:unread AND NOT from:neo); do
+            move $i "<<maildir()>>/ding/GB2/cur"
+       done
+
+       # # Move all deleted messages to the Trash folder
+       # echo moving $(notmuch count --output=files --exclude=false tag:deleted AND NOT folder:Trash) deleted messages to the Trash folder
+       # for i in $(notmuch search --exclude=false --output=files tag:deleted AND NOT folder:Trash); do
+       #     move $i "<<maildir()>>/ding/Trash/cur"
+       # done
+
+       # # Move all spam messages to the Spam folder
+       # echo moving $(notmuch count --output=files tag:spam AND NOT folder:Spam) spam-marked messages to the Spam folder
+       # for i in $(notmuch search --output=files tag:spam AND NOT folder:Spam); do
+       #     move $i "<<maildir()>>/ding/Spam/cur"
+       # done
+
+       # # Move all archived messages from Inbox to Archive folder
+       # echo Moving $(notmuch count --output=files folder:Inbox AND NOT tag:inbox) archived messages from Inbox to Archive folder
+       # for i in $(notmuch search --output=files folder:Inbox AND NOT tag:inbox); do
+       #     move $i "<<maildir()>>/ding/Archive/cur"
+       # done
+       mbsync -c ${XDG_CONFIG_HOME}/isync/config ding-inbox ding-drafts ding-sent ding-spam ding-archive ding-gb2 ding-patent 
+
+       notmuch new --no-hooks
      #+END_SRC
 
 **** post hook
