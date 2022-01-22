@@ -139,8 +139,6 @@
         (verilog-auto-delete-trailing-whitespace t)
         ;; Non-nil means report warning if an AUTO_TEMPLATE line is not used.
         (verilog-auto-template-warn-unused t)
-        ;; Non-nil means TAB moves to the right hand column in preparation for a comment.
-        (verilog-tab-to-comment t)
         ;; Non-nil means align ‘else’ under matching ‘if’.
         ;; Otherwise else is lined up with first character on line holding matching if.
         (verilog-align-ifelse nil)
