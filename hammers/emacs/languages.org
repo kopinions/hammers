@@ -60,6 +60,15 @@
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-languages.el") :comments link
       (use-package verilog-mode
         :ensure t
+        :preface
+        (defun m/pretty()
+          (verilog-indent-buffer)
+          (goto-char (point-min))
+          (while (re-search-forward verilog-declaration-re nil t)
+            (progn
+              (verilog-pretty-declarations)
+              (verilog-pretty-expr)
+              (forward-paragraph))))
         :custom
         ;; false tab indent mode
         ;; moudule arg one line per signal
@@ -181,7 +190,10 @@
         ;; mode is experimental.
         (verilog-auto-declare-nettype "wire")
         :config
-        (add-to-list 'auto-mode-alist '("\\.[ds]?vh?\\'" . verilog-mode)))
+        (add-to-list 'auto-mode-alist '("\\.[ds]?vh?\\'" . verilog-mode))
+        :hook
+        (verilog-auto . (lambda () (m/pretty)))
+        (verilog-mode . (lambda () (add-hook 'local-write-file-hooks (lambda () (untabify (point-min) (point-max)))))))
     #+END_SRC
 
 *** lua mode
