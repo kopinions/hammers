@@ -251,6 +251,7 @@
       ;; start copy config file
       (m/clone "${m/root.d}/hammers/emacs/3rdparty/lsp-ivy" "${m/xdg.conf.d}/emacs/3rdparty/lsp-ivy")
       (m/clone "${m/root.d}/hammers/emacs/3rdparty/rg.el" "${m/xdg.conf.d}/emacs/3rdparty/rg.el")
+      (m/clone "${m/root.d}/hammers/emacs/3rdparty/systemrdl-mode" "${m/xdg.conf.d}/emacs/3rdparty/systemrdl-mode")
       (m/clone "${m/root.d}/hammers/tmux/plugins/tpm" "${m/xdg.conf.d}/tmux/tpm")
       (m/clone "${m/root.d}/hammers/zsh/zplug" "${m/xdg.conf.d}/zsh/zplug")
       (m/clone "${m/root.d}/hammers/gdb/plugins/dashboard" "${m/xdg.conf.d}/gdb/dashboard")

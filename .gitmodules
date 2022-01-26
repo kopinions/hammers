@@ -27,3 +27,6 @@
 [submodule "hammers/emacs/3rdparty/rg.el"]
 	path = hammers/emacs/3rdparty/rg.el
 	url = https://github.com/dajva/rg.el.git
+[submodule "hammers/emacs/3rdparty/systemrdl-mode"]
+	path = hammers/emacs/3rdparty/systemrdl-mode
+	url = https://github.com/paul-donahue/systemrdl-mode.git

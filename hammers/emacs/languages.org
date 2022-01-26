@@ -194,6 +194,10 @@
         (verilog-mode . (lambda () (add-hook 'local-write-file-hooks (lambda () (untabify (point-min) (point-max)))))))
     #+END_SRC
 
+*** systemrdl
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-languages.el") :comments link
+      (use-package systemrdl-mode)
+    #+END_SRC    
 *** lua mode
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-languages.el") :comments link
       (use-package lua-mode)
