@@ -383,7 +383,6 @@
 	 :config (setq lsp-completion-provider :capf)))
 
      (use-package lsp-ivy
-       :load-path m/load-path
        :after lsp-mode
        :config
        (defun m/lsp-ivy-workspace-symbol-at-point ()

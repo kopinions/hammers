@@ -104,7 +104,6 @@
     #+BEGIN_SRC elisp :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-chinese.el")) "no") :comments link
       (use-package liberime
         :if (eq m/os 'macos)
-        :load-path m/load-path
         :after pyim
         :init
         (setenv "RIME_PATH" (expand-file-name "librime" (expand-file-name "emacs/3rdparty" m/xdg.conf.d)))

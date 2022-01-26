@@ -118,7 +118,6 @@
 
       (eval-when-compile (require 'use-package))
       (require 'diminish)
-      (setq use-package-always-ensure t)
 
       (use-package auto-package-update
         :config
@@ -133,7 +132,11 @@
 *** 包加载路径配置
     所有的自定义的配置文件都在 emacs 配置文件夹下的 lisp 目录下。所以我们需要将 lisp 目录添加到加载路径中
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/init.el") :comments link
-      (add-to-list 'load-path (expand-file-name "emacs/lisp" m/xdg.conf.d))
+      (add-to-list 'load-path (expand-file-name "emacs/lisp/" m/xdg.conf.d))
+      (add-to-list 'load-path (expand-file-name "systemrdl-mode/" (expand-file-name "emacs/3rdparty" m/xdg.conf.d)))
+      (add-to-list 'load-path (expand-file-name "lsp-ivy/" (expand-file-name "emacs/3rdparty" m/xdg.conf.d)))
+      (add-to-list 'load-path (expand-file-name "rg.el/" (expand-file-name "emacs/3rdparty" m/xdg.conf.d)))
+      (add-to-list 'load-path (expand-file-name "liberime/" (expand-file-name "emacs/3rdparty" m/xdg.conf.d)))
       (setq custom-file (expand-file-name "emacs/custom.el" m/xdg.conf.d))
     #+END_SRC
 
@@ -150,42 +153,21 @@
 ** 自定义配置聚合
 
    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/init.el") :comments link
-     (defconst m/load-path (list (expand-file-name "emacs/lisp" m/xdg.conf.d)
-                                 (expand-file-name "lsp-ivy" (expand-file-name "emacs/3rdparty" m/xdg.conf.d))
-                                 (expand-file-name "rg.el" (expand-file-name "emacs/3rdparty" m/xdg.conf.d))
-                                 (expand-file-name "librime" (expand-file-name "emacs/3rdparty" m/xdg.conf.d))
-                                 (expand-file-name "liberime" (expand-file-name "emacs/3rdparty" m/xdg.conf.d))))
-     (use-package init-common
-       :load-path m/load-path)
-     (use-package init-os
-       :load-path m/load-path)
-     (use-package init-ui
-       :load-path m/load-path)
-     (use-package init-correction
-       :load-path m/load-path)
-
-     (use-package init-literate
-       :load-path m/load-path)
-     (use-package init-vcs
-       :load-path m/load-path)
-     (use-package init-lsp
-       :load-path m/load-path)
-     (use-package init-editing
-       :load-path m/load-path)
-     (use-package init-chinese
-       :load-path m/load-path)
-     (use-package init-languages
-       :load-path m/load-path)
-     (use-package init-terminal
-       :load-path m/load-path)
-     (use-package init-completion
-       :load-path m/load-path)
-     (use-package init-project
-       :load-path m/load-path)
-     (use-package init-email
-       :load-path m/load-path)
-     (use-package init-macros
-       :load-path m/load-path)
+     (use-package init-common)
+     (use-package init-os)
+     (use-package init-ui)
+     (use-package init-correction)
+     (use-package init-literate)
+     (use-package init-vcs)
+     (use-package init-lsp)
+     (use-package init-editing)
+     (use-package init-chinese)
+     (use-package init-languages)
+     (use-package init-terminal)
+     (use-package init-completion)
+     (use-package init-project)
+     (use-package init-email)
+     (use-package init-macros)
    #+END_SRC
    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/init.el") :comments link
      (provide 'init)
