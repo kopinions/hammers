@@ -24,7 +24,7 @@
 	     (output (string-trim-right (cadr result))))
 	(if (eq status 0) output (read-string "Please input your email: ")))
     #+END_SRC    
-    #+BEGIN_SRC gitconfig :tangle (m/resolve "${m/xdg.conf.d}/git/config") :tangle-mode (identity #o644) :noweb yes
+    #+BEGIN_SRC gitconfig :tangle (m/resolve "${m/xdg.conf.d}/git/config") :tangle-mode (identity #o644) :noweb yes :link comment
       [user]
               name = <<username()>>
               email = <<email()>>
@@ -39,20 +39,23 @@
       [core]
               ignorecase = false
               quotepath = false
-              pager = less -F -X
+              pager = diff-so-fancy | less --tabs=4 -RFX
               whitespace = -trailing-space
               editor = vim
       [color]
-              ui = auto
+              ui = true
       [color "branch"]
               current = yellow reverse
               local = yellow
               remote = green
       [color "diff"]
-              meta = yellow bold
+              meta = 11
               frag = magenta bold
               old = red bold
               new = green bold
+              func = 146 bold
+              commit = yellow bold
+              whitespace = red reverse
       [color "status"]
               added = green
               changed = red
@@ -66,6 +69,13 @@
       [credential]
               helper = store --file ~/.local/share/git/credentials
               helper = cache --timeout 30000
+      [interactive]
+              diffFilter = diff-so-fancy --patch
+      [color "diff-highlight"]
+              oldNormal = red bold
+              oldHighlight = red bold 52
+              newNormal = green bold
+              newHighlight = green bold 22
     #+END_SRC
 
 *** git commit template

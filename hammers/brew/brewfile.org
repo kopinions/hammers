@@ -83,6 +83,7 @@
       ## network
       brew 'inetutils' if OS.mac?
       brew 'coreutils' if OS.mac?
+      brew 'diff-so-fancy'
       brew 'nmap', greedy: true
       brew 'axel' # multiple thread downloader
       brew 'iperf'
