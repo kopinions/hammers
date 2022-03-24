@@ -65,6 +65,7 @@
 ** 垃圾回收设置
    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/init.el") :comments link
      (setq gc-cons-threshold 100000000)
+     (add-hook 'focus-out-hook 'garbage-collect)
    #+END_SRC
 ** 包管理配置
    Emacs 通过插件机制来提高可扩展性，我们可以通过安装插件来灵活的扩展 Emacs 的功能。 插件被封装成适用于 Emacs 的安装包，被存放在插件仓库（软件包仓库）中，以便与用户下载安装。
@@ -117,6 +118,9 @@
         (package-install 'diminish))
 
       (eval-when-compile (require 'use-package))
+
+      (setq use-package-always-ensure t)
+
       (require 'diminish)
 
       (use-package auto-package-update
@@ -153,21 +157,21 @@
 ** 自定义配置聚合
 
    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/init.el") :comments link
-     (use-package init-common)
-     (use-package init-os)
-     (use-package init-ui)
-     (use-package init-correction)
-     (use-package init-literate)
-     (use-package init-vcs)
-     (use-package init-lsp)
-     (use-package init-editing)
-     (use-package init-chinese)
-     (use-package init-languages)
-     (use-package init-terminal)
-     (use-package init-completion)
-     (use-package init-project)
-     (use-package init-email)
-     (use-package init-macros)
+     (require 'init-common)
+     (require 'init-os)
+     (require 'init-ui)
+     (require 'init-correction)
+     (require 'init-literate)
+     (require 'init-vcs)
+     (require 'init-lsp)
+     (require 'init-editing)
+     (require 'init-chinese)
+     (require 'init-languages)
+     (require 'init-terminal)
+     (require 'init-completion)
+     (require 'init-project)
+     (require 'init-email)
+     (require 'init-macros)
    #+END_SRC
    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/init.el") :comments link
      (provide 'init)
