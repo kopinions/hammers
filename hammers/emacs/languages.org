@@ -196,7 +196,7 @@
 
 *** systemrdl
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-languages.el") :comments link
-      (use-package systemrdl-mode)
+      (require 'systemrdl-mode)
     #+END_SRC    
 *** lua mode
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-languages.el") :comments link
