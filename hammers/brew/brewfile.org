@@ -43,6 +43,7 @@
       cask 'unshaky', greedy: true # process the mac keyboard duplicate key problem
       cask 'the-unarchiver', greedy: true
       brew 'unar'
+      cask 'karabiner-elements'
       # usb network sharing driver
       # cask 'horndis'
       brew 'ruby'
