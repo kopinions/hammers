@@ -138,8 +138,6 @@
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/init.el") :comments link
       (add-to-list 'load-path (expand-file-name "emacs/lisp/" m/xdg.conf.d))
       (add-to-list 'load-path (expand-file-name "systemrdl-mode/" (expand-file-name "emacs/3rdparty" m/xdg.conf.d)))
-      (add-to-list 'load-path (expand-file-name "lsp-ivy/" (expand-file-name "emacs/3rdparty" m/xdg.conf.d)))
-      (add-to-list 'load-path (expand-file-name "rg.el/" (expand-file-name "emacs/3rdparty" m/xdg.conf.d)))
       (add-to-list 'load-path (expand-file-name "liberime/" (expand-file-name "emacs/3rdparty" m/xdg.conf.d)))
       (setq custom-file (expand-file-name "emacs/custom.el" m/xdg.conf.d))
     #+END_SRC
