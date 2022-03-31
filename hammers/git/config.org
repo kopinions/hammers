@@ -63,7 +63,7 @@
       [pull]
               rebase = true
       [push]
-              default = simple
+              default = current
       [commit]
               template = ~/.config/git/commit.tmpl
       [credential]
