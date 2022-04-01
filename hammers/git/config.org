@@ -30,9 +30,12 @@
               email = <<email()>>
       [alias]
               ignore = "!gi() { curl -L -s https://www.gitignore.io/api/$@ ;}; gi"
+              ignored = ls-files -o -i --exclude-standard
               root = "rev-parse --show-toplevel"
       [log]
               abbrevCommit = true
+      [init]
+              defaultBranch = master
       [tag]
               # Sort tags as version numbers whenever applicable, so 1.10.2 is AFTER 1.2.0.
               sort = version:refname
@@ -42,6 +45,8 @@
               pager = delta
               whitespace = -trailing-space
               editor = vim
+      [status]
+              submodulesummary = 1
       [color]
               ui = true
       [color "branch"]
