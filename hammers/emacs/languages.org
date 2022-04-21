@@ -191,7 +191,9 @@
         (add-to-list 'auto-mode-alist '("\\.[ds]?vh?\\'" . verilog-mode))
         :hook
         (verilog-auto . (lambda () (m/pretty)))
-        (verilog-mode . (lambda () (add-hook 'local-write-file-hooks (lambda () (untabify (point-min) (point-max)))))))
+        (verilog-mode . (lambda () (add-hook 'write-contents-hooks (lambda () (progn (untabify (point-min) (point-max)) (save-excursion (delete-trailing-whitespace))))
+                                        nil
+                                        t))))
     #+END_SRC
 
 *** systemrdl
