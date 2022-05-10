@@ -318,49 +318,50 @@
 *** 使用 rg 去处理 ripgrep 结果
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
       (use-package rg
-	:after wgrep
-	:preface
-	(defun rg-occur-hide-lines-not-matching (search-text)
-	  "Hide lines that don't match the specified regexp."
-	  (interactive "MHide lines not matched by regexp: ")
-	  (set (make-local-variable 'line-move-ignore-invisible) t)
-	  (save-excursion
-	    (goto-char (point-min))
-	    (forward-line 5)
-	    (let ((inhibit-read-only t)
-		  line)
-	      (while (not (looking-at-p "^\nrg finished "))
-		(setq line (buffer-substring-no-properties (point) (point-at-eol)))
-		(if (string-match-p search-text line)
-		    (forward-line)
-		  (when (not (looking-at-p "^\nrg finished "))
-		    (delete-region (point) (1+ (point-at-eol)))))))))
-	(defun rg-occur-hide-lines-matching  (search-text)
-	  "Hide lines matching the specified regexp."
-	  (interactive "MHide lines matching regexp: ")
-	  (set (make-local-variable 'line-move-ignore-invisible) t)
-	  (save-excursion
-	    (goto-char (point-min))
-	    (forward-line 5)
-	    (let ((inhibit-read-only t)
-		  line)
-	      (while (not (looking-at-p "^\nrg finished "))
-		(setq line (buffer-substring-no-properties (point) (point-at-eol)))
-		(if (not (string-match-p search-text line))
-		    (forward-line)
-		  (when (not (looking-at-p "^\nrg finished "))
-		    (delete-region (point) (1+ (point-at-eol)))))))))
-	:custom
-	(rg-show-header t)
-	(rg-hide-command nil)
-	(rg-command-line-flags '("--pcre2"))
-	:config
-	(rg-enable-default-bindings)
-	:bind
-	(:map rg-mode-map ("/" . rg-occur-hide-lines-not-matching)
-	      ("!" . rg-occur-hide-lines-matching)
-	      ("M-N" . rg-next-file)
-	      ("M-P" . rg-prev-file)))
+        :after wgrep
+        :preface
+        (defun rg-occur-hide-lines-not-matching (search-text)
+          "Hide lines that don't match the specified regexp."
+          (interactive "MHide lines not matched by regexp: ")
+          (set (make-local-variable 'line-move-ignore-invisible) t)
+          (save-excursion
+            (goto-char (point-min))
+            (forward-line 5)
+            (let ((inhibit-read-only t)
+                  line)
+              (while (not (looking-at-p "^\nrg finished "))
+                (setq line (buffer-substring-no-properties (point) (point-at-eol)))
+                (if (string-match-p search-text line)
+                    (forward-line)
+                  (when (not (looking-at-p "^\nrg finished "))
+                    (delete-region (point) (1+ (point-at-eol)))))))))
+        (defun rg-occur-hide-lines-matching  (search-text)
+          "Hide lines matching the specified regexp."
+          (interactive "MHide lines matching regexp: ")
+          (set (make-local-variable 'line-move-ignore-invisible) t)
+          (save-excursion
+            (goto-char (point-min))
+            (forward-line 5)
+            (let ((inhibit-read-only t)
+                  line)
+              (while (not (looking-at-p "^\nrg finished "))
+                (setq line (buffer-substring-no-properties (point) (point-at-eol)))
+                (if (not (string-match-p search-text line))
+                    (forward-line)
+                  (when (not (looking-at-p "^\nrg finished "))
+                    (delete-region (point) (1+ (point-at-eol)))))))))
+        :custom
+        (rg-show-header t)
+        (rg-hide-command nil)
+        (rg-ignore-ripgreprc nil)
+        (rg-command-line-flags '("--pcre2"))
+        :config
+        (rg-enable-default-bindings)
+        :bind
+        (:map rg-mode-map ("/" . rg-occur-hide-lines-not-matching)
+              ("!" . rg-occur-hide-lines-matching)
+              ("M-N" . rg-next-file)
+              ("M-P" . rg-prev-file)))
     #+END_SRC
 *** 编辑搜索结果
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
