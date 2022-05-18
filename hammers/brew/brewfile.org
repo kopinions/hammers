@@ -38,6 +38,8 @@
       cask 'docker', greedy: true
       brew 'openjdk'
       cask 'iterm2', greedy: true
+      # firewall for out going requests
+      cask 'lulu', greedy: true
       cask 'squirrel', greedy: true
       cask 'snipaste', greedy: true
       cask 'unshaky', greedy: true # process the mac keyboard duplicate key problem
