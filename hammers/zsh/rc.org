@@ -262,8 +262,9 @@
           SSH_CONFIG="-F ${XDG_CONFIG_HOME}/ssh/config"
       fi
 
-      if [ -s "${XDG_CONFIG_HOME}/ssh/id_dsa" ]
-      then
+      if [ -s "${XDG_CONFIG_HOME}/ssh/id_rsa" ]; then
+          SSH_ID="-i ${XDG_CONFIG_HOME}/ssh/id_rsa"
+      elif [ -s "${XDG_CONFIG_HOME}/ssh/id_dsa" ]; then
           SSH_ID="-i ${XDG_CONFIG_HOME}/ssh/id_dsa"
       fi
 
@@ -271,7 +272,17 @@
 
       alias tmux='tmux -f ${XDG_CONFIG_HOME}/tmux/tmux.conf'
       alias ssh="ssh ${SSH_CONFIG} ${SSH_ID} ${SSH_KNOWN_HOSTS}"
-      alias ssh-copy-id="ssh-copy-id ${SSH_KNOWN_HOSTS} ${SSH_ID}"
+      function sshci() {
+          USER_AT_HOST_REGEXP='([a-zA-Z0-9_.]+)@([a-zA-Z0-9_.]+)'
+          if [[ "$1" =~ ${USER_AT_HOST_REGEXP} ]]; then
+              eval "ssh-copy-id ${SSH_KNOWN_HOSTS} ${SSH_ID} $1"
+          else
+              user=$(ssh -G "$1" | awk '/^user /{print $2}')
+              hostname=$(ssh -G "$1"| awk '/^hostname /{print $2}')
+              eval "ssh-copy-id ${SSH_KNOWN_HOSTS} ${SSH_ID} ${user}@${hostname}" 
+          fi
+      }
+      alias scp="scp ${SSH_CONFIG} ${SSH_ID} ${SSH_KNOWN_HOSTS}"
       alias mbsync="mbsync -c ${XDG_CONFIG_HOME}/isync/config"
     #+END_SRC
 
