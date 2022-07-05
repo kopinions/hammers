@@ -807,7 +807,7 @@
 *** org-mode code template
     #+BEGIN_SRC org :tangle (m/resolve "${m/home.d}/agendas/snippet.tmpl") :noweb yes :mkdirp yes
       ,**** %^{purpose of the snippet} 
-	   ,#+BEGIN_SRC %^{language|shell|elisp|dot|ditaa|latex|ocaml|plantuml|org|c|c++} :eval never :exports code
+	   ,#+BEGIN_SRC %^{language|shell|elisp|dot|ditaa|latex|ocaml|plantuml|org|c|c++|java|python|tcl} :eval never :exports code
 	       %?
 	   ,#+END_SRC
     #+END_SRC
