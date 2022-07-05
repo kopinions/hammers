@@ -181,6 +181,10 @@
       (advice-add 'org-self-insert-command :before-until #'m/org-insert-org-entity-maybe)
     #+END_SRC
 
+** 加密解密设置
+   #+BEGIN_SRC elisp :eval never :exports code :noweb yes :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
+     (setq epg-gpg-home-directory (expand-file-name "gnupg" m/xdg.conf.d))
+   #+END_SRC
 
 ** 剪切设置
 *** 浏览剪切历史
