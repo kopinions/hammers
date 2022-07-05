@@ -149,6 +149,13 @@
       cask 'handbrake', greedy: true  # 视屏压缩
     #+END_SRC
 
+*** 网络相关
+    
+**** github hosts 翻墙配置
+     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       cask 'switchhosts'
+     #+END_SRC
+
 *** compile emacs
     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
       brew 'texinfo'
