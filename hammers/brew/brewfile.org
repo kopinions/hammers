@@ -41,7 +41,7 @@
       # firewall for out going requests
       cask 'lulu', greedy: true
       cask 'squirrel', greedy: true
-      cask 'snipaste', greedy: true
+      
       cask 'unshaky', greedy: true # process the mac keyboard duplicate key problem
       cask 'the-unarchiver', greedy: true
       brew 'unar'
@@ -148,13 +148,28 @@
       # video processing
       cask 'handbrake', greedy: true  # 视屏压缩
     #+END_SRC
-
+   
+*** 截图录像
+**** obs stduio (录屏)
+     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       cask 'obs', greedy: true
+     #+END_SRC
+**** snipaste 截图
+    #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       cask 'snipaste', greedy: true
+     #+END_SRC
+     
 *** 网络相关
-    
 **** github hosts 翻墙配置
      #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-       cask 'switchhosts'
+       cask 'switchhosts', greedy: true
      #+END_SRC
+
+*** 协作相关
+    #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+      brew 'tiger-vnc'
+    #+END_SRC
+
 
 *** compile emacs
     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
