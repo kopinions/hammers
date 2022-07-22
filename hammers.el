@@ -16,7 +16,7 @@
    (dot . t)
    (ditaa . t)
    (dot . t)
-   (emacs-lisp . t)
+nn   (emacs-lisp . t)
    (gnuplot . t)
    (haskell . nil)
    (latex . t)
@@ -203,6 +203,10 @@
     (if (file-exists-p filename)
 	"no"
       filename)))
+
+(message "updating submodule...")
+(m/system-pipefail "git" "submodule" "update" "--init" "--recrusive")
+(message "all submodule updated")
 
 (m/tangles "${m/root.d}/hammers/emacs/*.org")
 (m/tangles "${m/root.d}/hammers/emacs/snippets/*.org")
