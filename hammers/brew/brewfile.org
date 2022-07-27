@@ -58,7 +58,6 @@
 
       # productivity
       cask 'alfred', greedy: true
-      cask 'xmind', greedy: true
       cask 'hammerspoon', greedy: true
       cask 'appcleaner', greedy: true
       cask 'cheatsheet', greedy: true
