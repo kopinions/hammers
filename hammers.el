@@ -16,7 +16,7 @@
    (dot . t)
    (ditaa . t)
    (dot . t)
-nn   (emacs-lisp . t)
+   (emacs-lisp . t)
    (gnuplot . t)
    (haskell . nil)
    (latex . t)
