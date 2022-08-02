@@ -38,34 +38,22 @@
     
 **** 增强工具
      #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-       brew 'tig'
-       brew 'rg'
-       brew 'pup'
-       brew 'jq'
-       brew 'yq'
-       brew 'autojump'
-       brew 'git'
        brew 'hub' # github command line
-       brew 'zsh'
        brew 'tldr'
-       brew 'zsh-completions'
        brew 'tree'
-       brew 'direnv'
        brew 'bat'
        brew 'eth-p/software/bat-extras'
-       brew 'reattach-to-user-namespace' if OS.mac?
-       brew 'tmux'
-       brew 'urlview'
-       brew 'tmuxinator'
-       # code statictis
-       brew 'cloc'
-       brew 'fzf'
        brew 'watch'
      #+END_SRC
-    
+
+**** shell 工具
+***** 并行
+      #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+        brew 'parallel'
+      #+END_SRC
 
 *** 开发相关
-**** 语言相关    
+**** 语言相关
 ***** c++
       #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
         brew 'bear'
@@ -98,6 +86,15 @@
       #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
         cask 'kicad', greedy: true
       #+END_SRC 
+***** OCaml
+      #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+        brew 'dune'
+      #+END_SRC
+***** javascript
+      #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+        brew 'node'
+      #+END_SRC
+
 **** 编辑器
 ***** IDE
       #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
@@ -118,10 +115,52 @@
       #+END_SRC
 ***** vim
       #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-
-       brew 'vim'
+        brew 'vim'
       #+END_SRC
       
+**** 版本管理
+     #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       brew 'tig'
+       brew 'git'
+       brew 'git-delta'
+     #+END_SRC
+
+**** 结构化查询
+     #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       brew 'pup'
+       brew 'jq'
+       brew 'yq'
+     #+END_SRC
+
+**** 环境管理
+***** 自动设置project 环境变量
+      #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+        brew 'direnv'
+      #+END_SRC
+
+**** 搜索
+     #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       brew 'rg'
+       brew 'fzf'
+       brew 'autojump'
+     #+END_SRC
+
+**** 开发终端
+     #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       brew 'zsh'
+       brew 'reattach-to-user-namespace' if OS.mac?
+       brew 'zsh-completions'
+       brew 'tmux'
+       brew 'urlview'
+       brew 'tmuxinator'
+     #+END_SRC
+
+**** 代码分析
+***** 行数统计
+      #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+        brew 'cloc'
+      #+END_SRC
+     
 *** mac app store
     #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
       brew "mas" if OS.mac?
