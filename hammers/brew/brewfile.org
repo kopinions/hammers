@@ -20,148 +20,251 @@
       git -C "$(brew --repo homebrew/cask-drivers)" remote set-url origin https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-cask-drivers.git
     #+END_SRC
 
-*** 默认安装的软件包
+*** Brew 配置
     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
       cask_args appdir: '/Applications'
       tap 'homebrew/cask' if OS.mac?
       tap 'homebrew/bundle'
-      tap 'd12frosted/emacs-plus'
+    #+END_SRC
 
+    
+*** 命令行工具
+**** gnu 工具
+     #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       brew 'inetutils' if OS.mac?
+       brew 'coreutils' if OS.mac?
+       brew 'binutils' if OS.mac?
+     #+END_SRC
+    
+**** 增强工具
+     #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       brew 'tig'
+       brew 'rg'
+       brew 'pup'
+       brew 'jq'
+       brew 'yq'
+       brew 'autojump'
+       brew 'git'
+       brew 'hub' # github command line
+       brew 'zsh'
+       brew 'tldr'
+       brew 'zsh-completions'
+       brew 'tree'
+       brew 'direnv'
+       brew 'bat'
+       brew 'eth-p/software/bat-extras'
+       brew 'reattach-to-user-namespace' if OS.mac?
+       brew 'tmux'
+       brew 'urlview'
+       brew 'tmuxinator'
+       # code statictis
+       brew 'cloc'
+       brew 'fzf'
+       brew 'watch'
+     #+END_SRC
+    
+
+*** 开发相关
+**** 语言相关    
+***** c++
+      #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+        brew 'bear'
+        brew 'make'
+        brew 'cmake'
+        brew 'ninja'
+        brew 'gcc'
+        brew 'llvm'
+        brew 'boost'
+      #+END_SRC
+
+***** php
+      #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+        brew 'php'
+      #+END_SRC
+***** python
+      #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+        brew 'python'
+      #+END_SRC
+***** ruby
+      #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+        brew 'ruby'
+      #+END_SRC  
+***** ic
+      #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+        brew 'icarus-verilog'
+        cask 'gtkwave', greedy: true
+      #+END_SRC
+***** pcb
+      #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+        cask 'kicad', greedy: true
+      #+END_SRC 
+**** 编辑器
+***** IDE
+      #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+        cask 'clion', greedy: true, args: { appdir: "~/Applications/Versioned" }
+        cask 'sublime-text', greedy: true
+      #+END_SRC
+***** Emacs
+      #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+        tap 'd12frosted/emacs-plus'
+        brew 'emacs-plus@28', args: ["with-imagemagick", "with-native-comp"]
+        cask "mactex-no-gui", greedy: true
+        brew 'isync'
+        brew 'notmuch'
+        brew 'msmtp'
+        brew 'texinfo'
+        brew 'w3m'
+        brew 'graphviz'
+      #+END_SRC
+***** vim
+      #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+
+       brew 'vim'
+      #+END_SRC
+      
+*** mac app store
+    #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
       brew "mas" if OS.mac?
       # App Store
       mas "Reeder3", id: 880001334
       mas "ReadKit", id: 588726889
       mas "Hidden Bar", id: 1452453066
       mas "SwordSoft Screenink Free", id: 953841977
-
-      # system
-      cask 'docker', greedy: true
-      brew 'openjdk'
-      cask 'iterm2', greedy: true
-      # firewall for out going requests
-      cask 'lulu', greedy: true
-      cask 'squirrel', greedy: true
-      
-      cask 'unshaky', greedy: true # process the mac keyboard duplicate key problem
-      cask 'the-unarchiver', greedy: true
-      brew 'unar'
-      cask 'karabiner-elements'
-      # usb network sharing driver
-      # cask 'horndis'
-      brew 'ruby'
-      brew 'boost'
-
-      # ides
-      cask 'clion', greedy: true, args: { appdir: "~/Applications/Versioned" }
-
-      # virtualization
-
-      # productivity
-      cask 'alfred', greedy: true
-      cask 'hammerspoon', greedy: true
-      cask 'appcleaner', greedy: true
-      cask 'cheatsheet', greedy: true
-      cask 'drawio', greedy: true
-
-      # editor
-      cask 'sublime-text', greedy: true
-      brew 'emacs-plus@28', args: ["with-imagemagick", "with-native-comp"]
-
-      # storage
-      cask 'baidunetdisk', greedy: true
-      cask 'yinxiangbiji', greedy: true
-      # cask 'dash'
-      cask 'thunder', greedy: true
-      cask '1password', greedy: true
-      cask 'nutstore', greedy: true
-      cask 'veracrypt', greedy: true
-
-      # broswer
-      cask 'google-chrome', greedy: true
-
-      # emacs
-      cask "mactex-no-gui", greedy: true
-      # terminal apps
-      ## network
-      brew 'inetutils' if OS.mac?
-      brew 'coreutils' if OS.mac?
-      brew 'diff-so-fancy'
-      brew 'nmap', greedy: true
-      brew 'axel' # multiple thread downloader
-      brew 'iperf'
-      brew 'make'
-      brew 'cmake'
-      brew 'tig'
-      brew 'rg'
-      # html query like jq for json
-      brew 'pup'
-      brew 'jq'
-      brew 'yq'
-      brew 'autojump'
-      brew 'git'
-      brew 'hub' # github command line
-      brew 'vim'
-      brew 'zsh'
-      brew 'tldr'
-      brew 'zsh-completions'
-      brew 'graphviz'
-      brew 'tree'
-      brew 'direnv'
-      brew 'bat'
-      brew 'eth-p/software/bat-extras'
-      brew 'reattach-to-user-namespace' if OS.mac?
-      brew 'tmux'
-      brew 'urlview'
-      brew 'tmuxinator'
-      # code statictis
-      brew 'cloc'
-      brew 'fzf'
-      brew 'watch'
-
-      brew 'python'
-      brew 'ninja'
-      brew 'gcc'
-      brew 'llvm'
-      brew 'php'
-
-
-      # ic
-      brew 'icarus-verilog'
-      cask 'kicad', greedy: true
-      cask 'xquartz', greedy: true
-      cask 'gtkwave', greedy: true
-
-      # study
-      cask 'kindle', greedy: true
-      #cask 'youdaodict'
-
-      # communication
-      cask 'qq', greedy: true
-      cask 'wechat', greedy: true
-
-      # entertain
-      cask 'neteasemusic', greedy: true
-      cask 'qqmusic', greedy: true
-      cask 'vlc', greedy: true
-
-      # video processing
-      cask 'handbrake', greedy: true  # 视屏压缩
     #+END_SRC
-   
+
 *** 截图录像
 **** obs stduio (录屏)
      #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
        cask 'obs', greedy: true
      #+END_SRC
 **** snipaste 截图
-    #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
        cask 'snipaste', greedy: true
      #+END_SRC
-     
+*** 音视频
+**** 视频压缩/转码
+     #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       cask 'handbrake', greedy: true  # 视屏压缩
+     #+END_SRC
+**** 音乐播放
+     #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       cask 'neteasemusic', greedy: true
+       cask 'qqmusic', greedy: true
+     #+END_SRC
+
+**** 视频播放
+     #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       cask 'vlc', greedy: true
+     #+END_SRC
 *** 网络相关
-**** github hosts 翻墙配置
+**** 动态 hosts 文件
      #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
        cask 'switchhosts', greedy: true
+     #+END_SRC
+**** 网络工具
+     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       brew 'nmap', greedy: true
+     #+END_SRC
+**** 下载工具
+     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       brew 'axel' # multiple thread downloader
+     #+END_SRC
+**** 网络带宽测试
+     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       brew 'iperf'
+     #+END_SRC 
+**** P2P 下载
+     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       cask 'thunder', greedy: true
+     #+END_SRC
+**** 浏览器
+     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       cask 'google-chrome', greedy: true
+       cask 'firefox', greedy: true
+     #+END_SRC
+*** 系统安全
+**** 防火墙
+     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       cask 'lulu', greedy: true
+     #+END_SRC
+*** 系统增强
+**** 连续按键问题增强
+     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       cask 'unshaky', greedy: true # process the mac keyboard duplicate key problem
+     #+END_SRC
+**** 键盘映射
+     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       cask 'karabiner-elements'
+     #+END_SRC
+**** 系统控制
+     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       cask 'hammerspoon', greedy: true
+     #+END_SRC
+**** 终端
+     #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       cask 'iterm2', greedy: true
+     #+END_SRC
+**** jvm
+     #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       cask 'openjdk'
+     #+END_SRC
+**** 输入法
+     #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link      
+       cask 'squirrel', greedy: true
+     #+END_SRC
+*** 办公
+**** 阅读
+     #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       cask 'kindle', greedy: true
+     #+END_SRC
+**** 字典
+     #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       cask 'youdaodict'
+     #+END_SRC
+*** 聊天工具
+    #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+      cask 'qq', greedy: true
+      cask 'wechat', greedy: true
+    #+END_SRC
+
+*** 虚拟化
+    #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+      cask 'docker', greedy: true
+    #+END_SRC
+
+*** 效率工具
+**** 搜索/工作流（Alfred）
+     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       cask 'alfred', greedy: true
+     #+END_SRC
+**** 快捷键提示
+     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       cask 'cheatsheet', greedy: true
+     #+END_SRC
+**** 密码管理
+     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       cask '1password', greedy: true
+     #+END_SRC
+     
+*** 系统清理
+**** 软件卸载
+     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       cask 'appcleaner', greedy: true
+     #+END_SRC
+
+*** 压缩/解压
+**** unarchiver (支持 windows 转码)
+     #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       cask 'the-unarchiver', greedy: true
+     #+END_SRC
+**** rar 解压
+     #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       brew 'unar'
+     #+END_SRC
+*** 加密解密
+**** 虚拟盘
+     #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       cask 'veracrypt', greedy: true
      #+END_SRC
 
 *** 协作相关
@@ -169,24 +272,25 @@
       brew 'tiger-vnc'
     #+END_SRC
 
+*** 画图
+**** 流程图/架构/框架
+     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       cask 'drawio', greedy: true
+     #+END_SRC
+*** 存储
+**** 文件云存储
+     #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       cask 'baidunetdisk', greedy: true
+       cask 'nutstore', greedy: true
+     #+END_SRC
+**** 笔记云存储
+     #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       cask 'yinxiangbiji', greedy: true
+     #+END_SRC
 
-*** compile emacs
-    #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-      brew 'texinfo'
-    #+END_SRC
-
-*** emacs related tools
-    #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-      brew 'w3m'
-    #+END_SRC
+     
     
-*** emacs email package
-    #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-      brew 'isync'
-      brew 'notmuch'
-      brew 'msmtp'
-    #+END_SRC
     
-    #+BEGIN_SRC shell :eval (or (and (eq m/os 'macos) "yes") "never") :shebang #!/bin/bash :exports none :tangle no :results output silent :noweb yes :prologue "exec 2>&1" :epilogue ":" :comments link
-      #brew bundle --global
-    #+END_SRC
+     #+BEGIN_SRC shell :eval (or (and (eq m/os 'macos) "yes") "never") :shebang #!/bin/bash :exports none :tangle no :results output silent :noweb yes :prologue "exec 2>&1" :epilogue ":" :comments link
+       #brew bundle --global
+     #+END_SRC
