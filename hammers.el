@@ -205,7 +205,7 @@
       filename)))
 
 (message "updating submodule...")
-(m/system-pipefail "git" "submodule" "update" "--init" "--recrusive")
+(m/system-pipefail "git" "submodule" "update" "--init" "--recursive")
 (message "all submodule updated")
 
 (m/tangles "${m/root.d}/hammers/emacs/*.org")
