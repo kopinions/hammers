@@ -180,6 +180,16 @@
      #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
        cask 'snipaste', greedy: true
      #+END_SRC
+**** 音频捕捉分发
+     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       brew 'blackhole-16ch' if OS.mac?
+     #+END_SRC
+     配置步骤
+
+     1. Open ~Audio Midi Setup~
+     2. create ~Mulit-Output Device~
+     3. Enable ~Built-in Output~ and ~BlackHole~ (一定要保证 Builtin device 在最上面，不然会有问题，另外除了声音源，不设置漂移，其他均启用)
+     4. 设置 ~Multi-Output Device~ 为声音输出
 *** 音视频
 **** 视频压缩/转码
      #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
