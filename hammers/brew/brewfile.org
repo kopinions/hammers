@@ -88,7 +88,7 @@
       #+END_SRC 
 ***** OCaml
       #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-        brew 'dune'
+        brew 'opam'
       #+END_SRC
 ***** javascript
       #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
