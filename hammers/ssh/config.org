@@ -12,10 +12,10 @@
       ForwardX11 yes
       RequestTTY yes
       Host vpn.seoul
-      HostName 8.8.8.8
+      HostName vps.kopinions.com
       User ec2-user
       Port 22
-      IdentityFile ~/.config/ssh/keys/vpn.seoul.pem
+      IdentityFile ~/.config/ssh/keys/seoul.vpn.pem
     #+END_SRC
 *** ubuntu parallels
     #+BEGIN_SRC conf :tangle (tangle-if-absent "${m/xdg.conf.d}/ssh/config") exports code :eval never :comments link

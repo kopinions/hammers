@@ -34,6 +34,7 @@
        brew 'inetutils' if OS.mac?
        brew 'coreutils' if OS.mac?
        brew 'binutils' if OS.mac?
+       brew 'moreutils' if OS.mac?
      #+END_SRC
     
 **** 增强工具
@@ -49,7 +50,7 @@
 **** shell 工具
 ***** 并行
       #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-        brew 'parallel'
+        brew 'parallel', greedy: true, link: true
       #+END_SRC
 
 *** 开发相关
@@ -84,7 +85,7 @@
       #+END_SRC
 ***** pcb
       #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-        cask 'kicad', greedy: true
+        cask 'kicad', greedy: true, args: {force:true}
       #+END_SRC 
 ***** OCaml
       #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
@@ -104,7 +105,7 @@
 ***** Emacs
       #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
         tap 'd12frosted/emacs-plus'
-        brew 'emacs-plus@28', args: ["with-imagemagick", "with-native-comp"]
+        brew 'emacs-plus@29', args: ["with-imagemagick", "with-native-comp"]
         cask "mactex-no-gui", greedy: true
         brew 'isync'
         brew 'notmuch'
@@ -182,7 +183,7 @@
      #+END_SRC
 **** 音频捕捉分发
      #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-       brew 'blackhole-16ch' if OS.mac?
+       brew 'blackhole-16ch', greedy:true if OS.mac? 
      #+END_SRC
      配置步骤
 
@@ -216,11 +217,11 @@
      #+END_SRC
 **** 下载工具
      #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-       brew 'axel' # multiple thread downloader
+       brew 'axel', greedy: true # multiple thread downloader
      #+END_SRC
 **** 网络带宽测试
      #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-       brew 'iperf'
+       brew 'iperf', greedy: true
      #+END_SRC 
 **** P2P 下载
      #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
@@ -243,7 +244,7 @@
      #+END_SRC
 **** 键盘映射
      #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-       cask 'karabiner-elements'
+       cask 'karabiner-elements', greedy: true
      #+END_SRC
 **** 系统控制
      #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
@@ -268,7 +269,7 @@
      #+END_SRC
 **** 字典
      #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-       cask 'youdaodict'
+       cask 'youdaodict', greedy: true
      #+END_SRC
 *** 聊天工具
     #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
