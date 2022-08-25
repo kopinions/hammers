@@ -95,6 +95,12 @@
       #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
         brew 'node'
       #+END_SRC
+***** markdown/orgmode
+****** markdown/orgmode/xxx 格式转换工具
+       #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+         brew 'pandoc'
+       #+END_SRC
+       pandoc 支持将 markdown, org, html 等等转换到 pdf, docx 等等格式
 
 **** 编辑器
 ***** IDE
