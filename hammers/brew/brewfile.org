@@ -105,7 +105,7 @@
 **** 编辑器
 ***** IDE
       #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-        cask 'clion', greedy: true, args: { appdir: "~/Applications/Versioned" }
+        cask 'clion', greedy: true
         cask 'sublime-text', greedy: true
       #+END_SRC
 ***** Emacs
@@ -189,7 +189,7 @@
      #+END_SRC
 **** 音频捕捉分发
      #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-       brew 'blackhole-16ch', greedy:true if OS.mac? 
+       cask 'blackhole-16ch', greedy:true if OS.mac? 
      #+END_SRC
      配置步骤
 
@@ -262,7 +262,7 @@
      #+END_SRC
 **** jvm
      #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-       cask 'openjdk'
+       brew 'openjdk'
      #+END_SRC
 **** 输入法
      #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link      
@@ -316,6 +316,10 @@
 **** rar 解压
      #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
        brew 'unar'
+     #+END_SRC
+**** 并发 gzip 压缩解压
+     #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       brew 'pigz'
      #+END_SRC
 *** 加密解密
 **** 虚拟盘
