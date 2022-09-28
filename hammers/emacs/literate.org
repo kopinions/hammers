@@ -391,7 +391,7 @@
 	    "* %? :NOTE:\n" :clock-resume t)
 	   ("c" "code snippet" plain (file ,(expand-file-name "snippets.org" org-agenda-dir))
 	    ,(concat "%[" (expand-file-name "snippet.tmpl" org-agenda-dir) "]")
-	    :tree-type week)
+	    :tree-type week :empty-lines-before 1)
 	   ("v" "vocabulary" table-line (file+headline ,(expand-file-name "vocabulary.org" org-agenda-dir) "vocabularies")
 	    "|%?||||")
 	   ("a" "acronym" table-line (file+headline ,(expand-file-name "vocabulary.org" org-agenda-dir) "acronyms")
