@@ -130,7 +130,7 @@
     #+HEADER: :var erime_path=(m/resolve "${m/xdg.conf.d}/emacs/3rdparty/liberime")
     #+HEADER: :var rime_path=(m/resolve "${m/xdg.conf.d}/emacs/3rdparty/librime")
     #+HEADER: :var emacs_major=(format "%d" emacs-major-version)
-    #+BEGIN_SRC shell :eval (or (and (eq m/os 'macos) "yes") "never") :shebang #!/bin/bash :exports none :tangle no :results output silent :noweb yes :prologue "exec 2>&1" :epilogue ":" :comments link
+    #+BEGIN_SRC shell :eval never :shebang #!/bin/bash :exports none :tangle no :results output silent :noweb yes :prologue "exec 2>&1" :epilogue ":" :comments link
       export RIME_PATH=${rime_path}
       export EMACS_MAJOR_VERSION=${emacs_major}
       cd ${erime_path}
