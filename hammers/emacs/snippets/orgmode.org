@@ -139,13 +139,13 @@
       # --
       ,#+BEGIN_SRC verilog :exports code :eval never :noweb yes
       module $1($2)
-	  always @*
-	    begin
-	      $0
-	    end
-	  always @(posedge clk)
-	    begin
-	    end
+        always @*
+        begin
+          $0
+        end
+        always @(posedge clk)
+        begin
+        end
       endmodule
       ,#+END_SRC
     #+END_SRC
