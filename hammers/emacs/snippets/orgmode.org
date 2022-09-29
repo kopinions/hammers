@@ -57,6 +57,7 @@
     #+BEGIN_SRC text :tangle (m/resolve "${m/xdg.conf.d}/emacs/snippets/org-mode/dot") :mkdirp yes
       # -*- mode: snippet -*-
       # name: dot
+      # expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
       # key: <dot
       # --
       ,#+BEGIN_SRC dot :exports results :file $1 :eval yes :noweb yes
@@ -73,6 +74,7 @@
       # -*- mode: snippet -*-
       # name: front-mater
       # key: <front
+      # expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
       # --
       ,#+TITLE: $1
       ,#+AUTHOR: 孙建康（rising.lambda）
@@ -91,7 +93,7 @@
       ,#+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
       ,#+BIND:        org-preview-latex-image-directory "$7"
       ,#+OPTIONS:     tex:imagemagick
-      
+
       ,#+LaTeX_CLASS: article
       ,#+LaTeX_CLASS_OPTIONS: [12pt]
       ,#+LaTeX_CLASS_OPTIONS: [koma,a5paper,landscape,twocolumn,utopia,10pt,listings-sv,microtype,paralist]
@@ -125,6 +127,7 @@
       # -*- mode: snippet -*-
       # name: verilog
       # key: <veri
+      # expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
       # --
       ,#+BEGIN_SRC verilog :exports code :eval never :noweb yes
       module $1($2)
