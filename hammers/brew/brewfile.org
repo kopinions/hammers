@@ -65,6 +65,10 @@
         brew 'llvm'
         brew 'boost'
       #+END_SRC
+****** macos x11 开发
+      #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+        cask 'xquartz'
+      #+END_SRC
 
 ***** php
       #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
