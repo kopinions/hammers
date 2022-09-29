@@ -60,11 +60,12 @@
       # expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
       # key: <dot
       # --
-      ,#+BEGIN_SRC dot :exports results :file $1 :eval yes :noweb yes
-	digraph G {
-	      node [shape=$1];
-	      $0
-	}
+      ,#+HEADER: :file $1
+      ,#+BEGIN_SRC dot :post attr(width="$2", data=*this*) :results drawer
+        digraph G {
+          dpi = 180
+          $0
+        }
       ,#+END_SRC
     #+END_SRC
 
@@ -118,8 +119,15 @@
       ,#+LATEX_HEADER: \setlist[enumerate,itemize]{noitemsep,nolistsep,leftmargin=*}
       # I always include this for my bibliographies
       ,#+LATEX_HEADER: \usepackage[notes,isbn=false,backend=biber]{biblatex-chicago}
-      
-      $0
+      ,#+NAME: attr
+      ,#+BEGIN_SRC sh :var data="" :var width="\\textwidth" :results output :exports none
+        echo "#+ATTR_LATEX: :width $width"
+        echo "#+ATTR_ORG: :width $width"
+        echo "$data"
+      ,#+END_SRC
+    #+END_SRC
+
+    $0
     #+END_SRC
     
 *** verilog 代码段
