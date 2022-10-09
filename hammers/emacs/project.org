@@ -11,36 +11,37 @@
 *** ibuffer
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-project.el") :comments link
       (use-package ibuffer
-	:bind ("C-x C-b" . ibuffer))
+        :bind ("C-x C-b" . ibuffer))
     #+END_SRC
 
 
 *** projectile 
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-project.el") :comments link
       (use-package projectile
-	:diminish projectile-mode
-	:after counsel
-	:custom
-	(projectile-sort-order 'recently-active)
-	:bind
-	(
-	 ("C-c p b" . counsel-projectile-switch-to-buffer)
-	 ("C-c p p" . counsel-projectile-switch-project)
-	 ("C-c p f" . counsel-projectile-find-file)
-	 ("C-c p s" . projectile-save-project-buffers)
-	 ("C-c p d" . counsel-projectile-find-dir)
-	 ("C-c p c" . projectile-compile-project)
-	 ("C-c p r" . rg-project)
-	 ("C-c p %" . projectile-replace-regexp)
-	 ("C-c p g" . projectile-grep))
-	:config
-	(setq projectile-enable-caching t)
-	(setq projectile-mode-line-prefix "ρ")
-	(use-package ibuffer-projectile
-	  :after ibuffer)
-	(use-package counsel-projectile
-	  :after counsel)
-	(projectile-mode))
+        :diminish projectile-mode
+        :after counsel
+        :custom
+        (projectile-sort-order 'recently-active)
+        :bind
+        (
+         ("C-c p b" . counsel-projectile-switch-to-buffer)
+         ("C-c p p" . counsel-projectile-switch-project)
+         ("C-c p f" . counsel-projectile-find-file)
+         ("C-c p k" . projectile-kill-buffers)
+         ("C-c p s" . projectile-save-project-buffers)
+         ("C-c p d" . counsel-projectile-find-dir)
+         ("C-c p c" . projectile-compile-project)
+         ("C-c p r" . rg-project)
+         ("C-c p %" . projectile-replace-regexp)
+         ("C-c p g" . projectile-grep))
+        :config
+        (setq projectile-enable-caching t)
+        (setq projectile-mode-line-prefix "ρ")
+        (use-package ibuffer-projectile
+          :after ibuffer)
+        (use-package counsel-projectile
+          :after counsel)
+        (projectile-mode))
     #+END_SRC
 
 *** export
