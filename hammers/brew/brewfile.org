@@ -211,6 +211,11 @@
        cask 'neteasemusic', greedy: true
        cask 'qqmusic', greedy: true
      #+END_SRC
+**** 格式转换
+***** flac to alac
+      #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+        brew 'xld'
+      #+END_SRC
 
 **** 视频播放
      #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
