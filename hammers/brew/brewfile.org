@@ -66,9 +66,9 @@
         brew 'boost'
       #+END_SRC
 ****** macos x11 开发
-      #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-        cask 'xquartz'
-      #+END_SRC
+       #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+         cask 'xquartz'
+       #+END_SRC
 
 ***** php
       #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
@@ -201,11 +201,17 @@
      2. create ~Mulit-Output Device~
      3. Enable ~Built-in Output~ and ~BlackHole~ (一定要保证 Builtin device 在最上面，不然会有问题，另外除了声音源，不设置漂移，其他均启用)
      4. 设置 ~Multi-Output Device~ 为声音输出
+**** 图片处理
+     #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       brew 'tlk/imagemagick-x11/imagemagick'
+     #+END_SRC
 *** 音视频
 **** 视频压缩/转码
      #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
        cask 'handbrake', greedy: true  # 视屏压缩
+       brew 'ffmpeg'
      #+END_SRC
+     
 **** 音乐播放
      #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
        cask 'neteasemusic', greedy: true
@@ -215,6 +221,10 @@
 ***** flac to alac
       #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
         brew 'xld'
+      #+END_SRC
+***** 元信息编辑
+      #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+        brew 'exiftool' # exchange image format
       #+END_SRC
 
 **** 视频播放
@@ -253,6 +263,10 @@
        cask 'lulu', greedy: true
      #+END_SRC
 *** 系统增强
+**** 键盘布局更改
+     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       cask 'ukelele', greedy: true
+     #+END_SRC
 **** 连续按键问题增强
      #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
        cask 'unshaky', greedy: true # process the mac keyboard duplicate key problem

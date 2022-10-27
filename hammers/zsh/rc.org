@@ -32,6 +32,7 @@
       export GNUPGHOME=${XDG_CONFIG_HOME}/gnupg
 
       export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
+      export DISPLAY=:0
     #+END_SRC
 
 *** zsh xdg 配置
