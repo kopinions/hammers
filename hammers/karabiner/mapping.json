@@ -1,0 +1,41 @@
+{
+  "title": "Neo's Personal Configurations",
+  "rules": [
+    {
+      "description": "Change Cmd-backslash to Ctrl-Alt-F12 to fill with 1password",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "backslash",
+            "modifiers": {
+              "optional": [
+                "any"
+              ],
+              "mandatory": [
+                "left_gui"
+              ]
+            }
+          },
+          "to": [
+            {
+              "key_code": "f12",
+              "modifiers": [
+                "left_control",
+                "left_shift"
+              ]
+            }
+          ],
+          "conditions": [
+            {
+              "type": "frontmost_application_unless",
+              "bundle_identifiers": [
+                "org.gnu.Emacs"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,140 @@
+*** 系统快捷键配置
+    1. ctrl-shift-f12 to 1password
+    2. 
+*** karabiner 配置
+**** cmd-\ to Ctrl-Shift-F12 to enable 1password except emacs
+     #+NAME: cmd_backslash
+     #+BEGIN_SRC json :eval never :exports code :noweb yes
+       {
+           "description": "Change Cmd-backslash to Ctrl-Alt-F12 to fill with 1password",
+           "manipulators": [
+               {
+               "type": "basic",
+               "from": {
+                   "key_code": "backslash",
+                   "modifiers": {
+                       "optional": [
+                           "any"
+                       ],
+                       "mandatory": [
+                           "left_gui"
+                       ]
+                   }
+               },
+               "to": [
+                   {
+                   "key_code": "f12",
+                   "modifiers": [
+                       "left_control",
+                       "left_shift"
+                   ]
+               }
+               ],
+               "conditions": [
+                   {
+                   "type": "frontmost_application_unless",
+                   "bundle_identifiers": [
+                       "org.gnu.Emacs"
+                   ]
+               }
+               ]
+           }
+           ]
+       }
+     #+END_SRC
+**** cmd-space mapping Ctrl-Alt-Shift-Cmd-S to switch input method except emacs
+     #+NAME: cmd_space
+     #+BEGIN_SRC json :eval never :exports code :noweb yes
+       {
+           "description": "Change cmd-space to Ctrl-Alt-Shift-Gui to change input method, except emacs",
+           "manipulators": [
+               {
+               "type": "basic",
+               "from": {
+                   "key_code": "spacebar",
+                   "modifiers": {
+                       "optional": [
+                           "any"
+                       ],
+                       "mandatory": [
+                           "left_gui"
+                       ]
+                   }
+               },
+               "to": [
+                   {
+                   "key_code": "s",
+                   "modifiers": [
+                       "left_control",
+                       "left_alt",
+                       "left_shift",
+                       "left_gui"
+                   ]
+               }
+               ],
+               "conditions": [
+                   {
+                   "type": "frontmost_application_unless",
+                   "bundle_identifiers": [
+                       "org.gnu.Emacs"
+                   ]
+               }
+               ]
+           }
+           ]
+       }
+     #+END_SRC
+
+**** cmd-shift-a mapping to Alt-Shift-Cmd-1 to capture by snipaste except emacs
+     #+NAME: cmd_shift_a
+     #+BEGIN_SRC json :eval never :exports code :noweb yes
+       {
+           "description": "Change Option-space to cmd-shift-option-4 to active alfred",
+           "manipulators": [
+               {
+               "type": "basic",
+               "from": {
+                   "key_code": "a",
+                   "modifiers": {
+                       "optional": [
+                           "any"
+                       ],
+                       "mandatory": [
+                           "left_gui",
+                           "left_control"
+                       ]
+                   }
+               },
+               "to": [
+                   {
+                   "key_code": "1",
+                   "modifiers": [
+                       "left_alt",
+                       "left_shift",
+                       "left_gui"
+                   ]
+               }
+               ],
+               "conditions": [
+                   {
+                   "type": "frontmost_application_unless",
+                   "bundle_identifiers": [
+                       "org.gnu.Emacs"
+                   ]
+               }
+               ]
+           }
+           ]
+       }
+     #+END_SRC
+**** 将所有配置合并到配置文件中
+     #+BEGIN_SRC json :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/karabiner/assets/complex_modifications/macos.json") :noweb yes
+       {
+           "title": "Neo's Personal Configurations",
+           "rules": [
+                   <<cmd_backslash>>,
+                   <<cmd_space>>,
+                   <<cmd_shift_a>>
+           ]
+       }
+     #+END_SRC

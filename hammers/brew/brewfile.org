@@ -46,6 +46,10 @@
        brew 'bat'
        brew 'eth-p/software/bat-extras'
        brew 'watch'
+       # macos window manager
+       brew 'koekeishiya/formulae/yabai'
+       # simple hotkey deamon for macos
+       brew 'koekeishiya/formulae/skhd'
      #+END_SRC
 
 **** shell 工具
