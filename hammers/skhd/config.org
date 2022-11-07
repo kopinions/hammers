@@ -9,81 +9,90 @@
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
 ** skhd 配置
-    #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/skhd/skhdrc") :tangle-mode (identity #o755) :comments link
-      #  NOTE(koekeishiya): A list of all built-in modifier and literal keywords can
-      #                     be found at https://github.com/koekeishiya/skhd/issues/1
-      #
-      #                     A hotkey is written according to the following rules:
-      #
-      #                       hotkey       = <mode> '<' <action> | <action>
-      #
-      #                       mode         = 'name of mode' | <mode> ',' <mode>
-      #
-      #                       action       = <keysym> '[' <proc_map_lst> ']' | <keysym> '->' '[' <proc_map_lst> ']'
-      #                                      <keysym> ':' <command>          | <keysym> '->' ':' <command>
-      #                                      <keysym> ';' <mode>             | <keysym> '->' ';' <mode>
-      #
-      #                       keysym       = <mod> '-' <key> | <key>
-      #
-      #                       mod          = 'modifier keyword' | <mod> '+' <mod>
-      #
-      #                       key          = <literal> | <keycode>
-      #
-      #                       literal      = 'single letter or built-in keyword'
-      #
-      #                       keycode      = 'apple keyboard kVK_<Key> values (0x3C)'
-      #
-      #                       proc_map_lst = * <proc_map>
-      #
-      #                       proc_map     = <string> ':' <command> | <string>     '~' |
-      #                                      '*'      ':' <command> | '*'          '~'
-      #
-      #                       string       = '"' 'sequence of characters' '"'
-      #
-      #                       command      = command is executed through '$SHELL -c' and
-      #                                      follows valid shell syntax. if the $SHELL environment
-      #                                      variable is not set, it will default to '/bin/bash'.
-      #                                      when bash is used, the ';' delimeter can be specified
-      #                                      to chain commands.
-      #
-      #                                      to allow a command to extend into multiple lines,
-      #                                      prepend '\' at the end of the previous line.
-      #
-      #                                      an EOL character signifies the end of the bind.
-      #
-      #                       ->           = keypress is not consumed by skhd
-      #
-      #                       *            = matches every application not specified in <proc_map_lst>
-      #
-      #                       ~            = application is unbound and keypress is forwarded per usual, when specified in a <proc_map>
-      #
-      #  NOTE(koekeishiya): A mode is declared according to the following rules:
-      #
-      #                       mode_decl = '::' <name> '@' ':' <command> | '::' <name> ':' <command> |
-      #                                   '::' <name> '@'               | '::' <name>
-      #
-      #                       name      = desired name for this mode,
-      #
-      #                       @         = capture keypresses regardless of being bound to an action
-      #
-      #                       command   = command is executed through '$SHELL -c' and
-      #                                   follows valid shell syntax. if the $SHELL environment
-      #                                   variable is not set, it will default to '/bin/bash'.
-      #                                   when bash is used, the ';' delimeter can be specified
-      #                                   to chain commands.
-      #
-      #                                   to allow a command to extend into multiple lines,
-      #                                   prepend '\' at the end of the previous line.
-      #
-      #                                   an EOL character signifies the end of the bind.
+   #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/skhd/skhdrc") :tangle-mode (identity #o755) :comments link
+     #  NOTE(koekeishiya): A list of all built-in modifier and literal keywords can
+     #                     be found at https://github.com/koekeishiya/skhd/issues/1
+     #
+     #                     A hotkey is written according to the following rules:
+     #
+     #                       hotkey       = <mode> '<' <action> | <action>
+     #
+     #                       mode         = 'name of mode' | <mode> ',' <mode>
+     #
+     #                       action       = <keysym> '[' <proc_map_lst> ']' | <keysym> '->' '[' <proc_map_lst> ']'
+     #                                      <keysym> ':' <command>          | <keysym> '->' ':' <command>
+     #                                      <keysym> ';' <mode>             | <keysym> '->' ';' <mode>
+     #
+     #                       keysym       = <mod> '-' <key> | <key>
+     #
+     #                       mod          = 'modifier keyword' | <mod> '+' <mod>
+     #
+     #                       key          = <literal> | <keycode>
+     #
+     #                       literal      = 'single letter or built-in keyword'
+     #
+     #                       keycode      = 'apple keyboard kVK_<Key> values (0x3C)'
+     #
+     #                       proc_map_lst = * <proc_map>
+     #
+     #                       proc_map     = <string> ':' <command> | <string>     '~' |
+     #                                      '*'      ':' <command> | '*'          '~'
+     #
+     #                       string       = '"' 'sequence of characters' '"'
+     #
+     #                       command      = command is executed through '$SHELL -c' and
+     #                                      follows valid shell syntax. if the $SHELL environment
+     #                                      variable is not set, it will default to '/bin/bash'.
+     #                                      when bash is used, the ';' delimeter can be specified
+     #                                      to chain commands.
+     #
+     #                                      to allow a command to extend into multiple lines,
+     #                                      prepend '\' at the end of the previous line.
+     #
+     #                                      an EOL character signifies the end of the bind.
+     #
+     #                       ->           = keypress is not consumed by skhd
+     #
+     #                       *            = matches every application not specified in <proc_map_lst>
+     #
+     #                       ~            = application is unbound and keypress is forwarded per usual, when specified in a <proc_map>
+     #
+     #  NOTE(koekeishiya): A mode is declared according to the following rules:
+     #
+     #                       mode_decl = '::' <name> '@' ':' <command> | '::' <name> ':' <command> |
+     #                                   '::' <name> '@'               | '::' <name>
+     #
+     #                       name      = desired name for this mode,
+     #
+     #                       @         = capture keypresses regardless of being bound to an action
+     #
+     #                       command   = command is executed through '$SHELL -c' and
+     #                                   follows valid shell syntax. if the $SHELL environment
+     #                                   variable is not set, it will default to '/bin/bash'.
+     #                                   when bash is used, the ';' delimeter can be specified
+     #                                   to chain commands.
+     #
+     #                                   to allow a command to extend into multiple lines,
+     #                                   prepend '\' at the end of the previous line.
+     #
+     #                                   an EOL character signifies the end of the bind.
 
-      # make floating window fill screen
-      ctrl + alt + cmd - up:  yabai -m window --grid 1:1:0:0:1:1
-      # make floating window left half of screen
-      ctrl + alt + cmd - left:  yabai -m window --grid 1:2:0:0:1:1
-      # make floating window right half of screen
-      ctrl + alt + cmd - right: yabai -m window --grid 1:2:1:0:1:1
-      # make floating window to display 1
-      ctrl + alt + cmd - 1: yabai -m window --display 1; yabai -m display --focus 1;
-      ctrl + alt + cmd - 2: yabai -m window --display 2; yabai -m display --focus 2;
-    #+END_SRC
+     # make floating window fill screen
+     ctrl + alt + cmd - up:  yabai -m window --grid 1:1:0:0:1:1
+     # make floating window left half of screen
+     ctrl + alt + cmd - left:  yabai -m window --grid 1:2:0:0:1:1
+     # make floating window right half of screen
+     ctrl + alt + cmd - right: yabai -m window --grid 1:2:1:0:1:1
+     # make floating window to display 1
+     ctrl + alt + cmd - 1: yabai -m window --display 1; yabai -m display --focus 1;
+     ctrl + alt + cmd - 2: yabai -m window --display 2; yabai -m display --focus 2;
+     hyper - t: yabai -m window --toggle float; yabai -m window --grid 4:4:1:1:2:2;    
+     hyper - w : yabai -m window --warp north; 
+     hyper - a : yabai -m window --warp west;
+     hyper - s : yabai -m window --warp south;
+     hyper - d : yabai -m window --warp east;
+     hyper - r : yabai -m space --rotate 270
+     hyper - z : yabai -m window --toggle zoom-parent
+     hyper - f : yabai -m window --toggle zoom-fullscreen
+     hyper - c : yabai -m window --focus prev || yabai -m window --focus last
+   #+END_SRC

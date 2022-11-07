@@ -89,16 +89,13 @@
      #+NAME: cmd_shift_a
      #+BEGIN_SRC json :eval never :exports code :noweb yes
        {
-           "description": "Change Option-space to cmd-shift-option-4 to active alfred",
+           "description": "Change Ctrl-Shift-A to capture by snipaste",
            "manipulators": [
                {
                "type": "basic",
                "from": {
                    "key_code": "a",
                    "modifiers": {
-                       "optional": [
-                           "any"
-                       ],
                        "mandatory": [
                            "left_gui",
                            "left_control"
@@ -127,6 +124,43 @@
            ]
        }
      #+END_SRC
+
+**** tab to hyper when held down
+     #+NAME: tab_to_hyper
+     #+BEGIN_SRC json :eval never :exports code :noweb yes
+       {
+           "description": "Map Tab to Hyper when held",
+           "manipulators": [
+               {
+               "type": "basic",
+               "from": {
+                   "key_code": "tab",
+                   "modifiers": {
+                       "optional": [
+                           "any"
+                       ]
+                   }
+               },
+               "to_if_alone": [
+                   {
+                   "key_code": "tab"
+               }
+               ],
+               "to_if_held_down": [
+                   {
+                   "key_code": "left_shift",
+                   "modifiers": [
+                       "left_command",
+                       "left_control",
+                       "left_option"
+                   ]
+               }
+               ]
+           }
+           ]
+       }
+     #+END_SRC
+
 **** 将所有配置合并到配置文件中
      #+BEGIN_SRC json :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/karabiner/assets/complex_modifications/macos.json") :noweb yes
        {
@@ -134,7 +168,8 @@
            "rules": [
                    <<cmd_backslash>>,
                    <<cmd_space>>,
-                   <<cmd_shift_a>>
+                   <<cmd_shift_a>>,
+                   <<tab_to_hyper>>
            ]
        }
      #+END_SRC
