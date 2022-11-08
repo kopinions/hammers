@@ -83,9 +83,13 @@
      ctrl + alt + cmd - left:  yabai -m window --grid 1:2:0:0:1:1
      # make floating window right half of screen
      ctrl + alt + cmd - right: yabai -m window --grid 1:2:1:0:1:1
+     # make floating window center
+     ctrl + alt + cmd - c: yabai -m window --grid 4:4:1:1:2:2
      # make floating window to display 1
      ctrl + alt + cmd - 1: yabai -m window --display 1; yabai -m display --focus 1;
+     # make floating window to display 2
      ctrl + alt + cmd - 2: yabai -m window --display 2; yabai -m display --focus 2;
+
      hyper - t: yabai -m window --toggle float; yabai -m window --grid 4:4:1:1:2:2;    
      hyper - w : yabai -m window --warp north; 
      hyper - a : yabai -m window --warp west;

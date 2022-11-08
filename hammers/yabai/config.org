@@ -55,6 +55,9 @@
       yabai -m rule --add label="About This Mac" app="System Information" title="About This Mac" manage=off
       yabai -m rule --add title='Settings$' manage=off
 
+      # microsoft
+      yabai -m rule --add app='Microsoft PowerPoint$' manage=off
+
 
       yabai -m config window_placement second_child
       yabai -m config window_topmost off
@@ -77,7 +80,7 @@
       yabai -m config mouse_action1 move
 
 
-      yabai -m config layout bsp
+      yabai -m config layout float
       yabai -m config top_padding 0
       yabai -m config bottom_padding 0
       yabai -m config left_padding 0
