@@ -85,7 +85,13 @@
       yabai -m config bottom_padding 0
       yabai -m config left_padding 0
       yabai -m config right_padding 0
-      yabai -m config window_gap 0
+      yabai -m config window_gap 06
+      yabai -m config insert_feedback_color 0xffd75f5f
+      yabai -m config window_shadow on
+      yabai -m config window_animation_duration 0.0
+      yabai -m config window_opacity_duration 0.0
+      yabai -m config active_window_opacity 1.0
+      yabai -m config normal_window_opacity 0.90
 
 
       echo "yabai configuration loaded..."
