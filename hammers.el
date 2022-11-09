@@ -230,7 +230,10 @@
 ;; tangle brew and hammerspoon
 (if (eq m/os 'macos)
     (progn (m/tangles "${m/root.d}/hammers/brew/*.org")
-	   (m/tangles "${m/root.d}/hammers/hammerspoon/*.org")))
+	   (m/tangles "${m/root.d}/hammers/hammerspoon/*.org")
+	   (m/tangles "${m/root.d}/hammers/yabai/*.org")
+	   (m/tangles "${m/root.d}/hammers/karabiner/*.org")
+	   (m/tangles "${m/root.d}/hammers/skhd/*.org")))
 
 ;; copy hammerspoon config
 (if (eq m/os 'macos)

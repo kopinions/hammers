@@ -24,7 +24,8 @@
     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
       cask_args appdir: '/Applications'
       tap 'homebrew/cask' if OS.mac?
-      tap 'homebrew/bundle'
+      tap 'homebrew/bundle' if OS.mac?
+      tap 'koekeishiya/formulae' if OS.mac?
     #+END_SRC
 
     
