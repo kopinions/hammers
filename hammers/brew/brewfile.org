@@ -37,6 +37,7 @@
        brew 'binutils' if OS.mac?
        brew 'moreutils' if OS.mac?
        brew 'findutils' if OS.mac?
+       brew 'gawk' if OS.mac?
      #+END_SRC
     
 **** 增强工具
