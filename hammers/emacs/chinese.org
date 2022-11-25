@@ -91,6 +91,7 @@
     #+HEADER: :var emacs_conf=(m/resolve "${m/xdg.conf.d}/emacs")
     #+BEGIN_SRC shell :eval (or (and (eq m/os 'macos) "yes") "never") :shebang #!/bin/bash :exports none :tangle no :results output silent :noweb yes :prologue "exec 2>&1" :epilogue ":" :comments link
       cd ${emacs_conf}/3rdparty/librime
+      git clean -fdx
       git submodule update --init
       export LIBRARY_PATH=${LIBRARY_PATH}:/usr/local/opt/icu4c/lib
       make xcode/thirdparty/boost -j `nproc`
