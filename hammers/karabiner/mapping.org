@@ -162,11 +162,11 @@
        }
      #+END_SRC
      
-**** Swap Option&Command for Vmware Horizon
+**** Command-Tab to Option-Tab for Vmware Horizon
      #+NAME: map_command_tab_to_option_tab_under_vmware_horizon
      #+BEGIN_SRC json :eval never :exports code :noweb yes
        {
-         "description": "Change Option to Command for Vmware Horizon",
+         "description": "Change Option-Tab to Command-Tab for Vmware Horizon",
          "manipulators": [
            {
              "type": "basic",
@@ -174,7 +174,7 @@
                "key_code": "tab",
                "modifiers": {
                  "optional": [
-                   "shift"
+                   "any"
                  ],
                  "mandatory": [
                    "left_option"
@@ -204,7 +204,7 @@
      #+NAME: map_option_tab_to_command_tab_under_vmware_horizon
      #+BEGIN_SRC json :eval never :exports code :noweb yes
        {
-         "description": "Change Command to Option for Vmware Horizon",
+         "description": "Change Command-Tab to Option-Tab for Vmware Horizon",
          "manipulators": [
            {
              "type": "basic",
@@ -212,7 +212,7 @@
                "key_code": "tab",
                "modifiers": {
                  "optional": [
-                   "shift"
+                   "any"
                  ],
                  "mandatory": [
                    "left_command"
