@@ -103,7 +103,7 @@
 *** git commit template
     #+BEGIN_SRC org :tangle (m/resolve "${m/xdg.conf.d}/git/commit.tmpl") :noweb yes :link comment
       type
-      # Type(<scope>): <subject>
+      # Type: <subject>
 
       # <body>
 
