@@ -15,9 +15,14 @@
       export JAVA_HOME="/Library/Java/JavaVirtualMachines/openjdk-13.0.1.jdk/Contents/Home"
       export EDITOR=vim
       export DISABLE_AUTO_TITLE=true
+
       export XDG_CONFIG_HOME=${HOME}/.config
       export XDG_CACHE_HOME=${HOME}/.cache
       export XDG_DATA_HOME=${HOME}/.local/share
+      mkdir -p ${XDG_CACHE_HOME} ${XDG_DATA_HOME} ${XDG_CONFIG_HOME}
+      mkdir -p ${XDG_DATA_HOME}/{zsh,less,git}
+
+
       export HOMEBREW_BUNDLE_FILE=${XDG_CONFIG_HOME}/homebrew-bundle/Brewfile
       export RIPGREP_CONFIG_PATH=${XDG_CONFIG_HOME}/ripgrep/config
       export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
@@ -33,12 +38,10 @@
 
       export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
       export DISPLAY=:0
+
     #+END_SRC
 
-*** zsh xdg 配置
-    #+BEGIN_SRC shell :eval yes :shebang #!/bin/bash :exports none :tangle no :results output silent :noweb yes :prologue "exec 2>&1" :epilogue ":" :comments link
-      mkdir -p ${XDG_DATA_HOME}/{zsh,less,git}
-    #+END_SRC
+
 *** zshrc 配置
     #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/.zshrc") :eval never :exports code :comments link
       export ZPLUG_HOME=${XDG_CONFIG_HOME}/zsh/zplug
@@ -46,6 +49,7 @@
       export ZPLUG_CACHE_DIR=${XDG_CACHE_HOME}/zplug
       export HISTFILE=${XDG_DATA_HOME}/zsh/history
 
+      mkdir -p ${XDG_DATA_HOME}/zsh/
 
       [[ $TERM == "tramp" ]] && unsetopt zle && PS1='$ '&& return
       for file in $(find ${XDG_CONFIG_HOME}/zsh/init -name "*.zsh"|sort); do
@@ -111,30 +115,50 @@
      #+END_SRC
 
      #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/post/config.zsh") :eval never :exports code :comments link
-       # auto menu complete
-       setopt auto_menu
+       # Changing Directories
+       # http://zsh.sourceforge.net/Doc/Release/Options.html#Changing-Directories
+       setopt auto_cd                 # if a command isn't valid, but is a directory, cd to that dir
+       setopt auto_pushd              # make cd push the old directory onto the directory stack
+       setopt pushd_ignore_dups       # don’t push multiple copies of the same directory onto the directory stack
+       setopt pushd_minus             # exchanges the meanings of ‘+’ and ‘-’ when specifying a directory in the
+       setopt pushd_silent            # no dir stack after pushd or popd
 
-       # auto change directory
-       setopt auto_cd
+
+       # Completions
+       # http://zsh.sourceforge.net/Doc/Release/Options.html#Completion-2
+       setopt always_to_end           # move cursor to the end of a completed word
+       setopt auto_list               # automatically list choices on ambious complemention
+       setopt auto_menu               # auto menu complete
+       setopt auto_param_slash        # if completed parameter is a directory, add a trailing slash
+       setopt complete_in_word        # complete from both ends of a word
+       unsetopt menu_complete         # don't autoselect the first completion entry
+
+       # Expansion and Globbing
+       # http://zsh.sourceforge.net/Doc/Release/Options.html#Expansion-and-Globbing
+       setopt extended_glob           # use more awesome globbing features
+       setopt glob_dots               # include dotfiles when globbing
+
 
        #### HISTORY SEARCH
        autoload history-search-end
        HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND="bg=cyan,fg=white,bold"
        HIST_STAMPS="dd.mm.yyyy" ## OH-MY-ZSH
-       setopt hist_ignore_dups  # ignore duplication command history list
-       setopt hist_ignore_space # ignore when commands starts with space
+       setopt extended_history        # write the history file in the ':start:elapsed;command' format
+       setopt appendhistory           # append to history file
+       setopt hist_ignore_dups        # ignore duplication command history list
+       setopt hist_ignore_space       # ignore when commands starts with space
+       setopt hist_reduce_blanks      # remove superfluous blanks from each command line being added to the history list
+       setopt share_history
+       setopt inc_append_history
        setopt hist_reduce_blanks
        setopt hist_expire_dups_first
-       setopt hist_find_no_dups
+       setopt hist_find_no_dups       # don't display a previously found event
+       setopt hist_ignore_all_dups    # delete an old recorded event if a new event is a duplicate
+       setopt hist_save_no_dups       # don't write a duplicate event to the history file
+       setopt hist_verify             # don't execute immediately upon history expansion
 
        # use brace
        setopt brace_ccl
-
-       # auto directory pushd that you can get dirs list by cd -[tab]
-       setopt auto_pushd
-       setopt pushd_ignore_dups        # no duplicates in dir stack
-       setopt pushd_silent             # no dir stack after pushd or popd
-       setopt pushd_to_home            # `pushd` = `pushd $HOME`
 
        # compacked complete list display
        setopt list_packed
@@ -144,7 +168,37 @@
 
        setopt auto_remove_slash        # self explicit
        setopt chase_links              # resolve symlinks
-       setopt correct                  # try to correct spelling of commands
+
+       # Input/Output
+       # http://zsh.sourceforge.net/Doc/Release/Options.html#Input_002fOutput
+       unsetopt clobber               # must use >| to truncate existing files
+       unsetopt correct               # don't try to correct the spelling of commands
+       unsetopt correct_all           # don't try to correct the spelling of all arguments in a line
+       unsetopt flow_control          # disable start/stop characters in shell editor
+       setopt interactive_comments    # enable comments in interactive shell
+       unsetopt mail_warning          # don't print a warning message if a mail file has been accessed
+       setopt path_dirs               # perform path search even on command names with slashes
+       setopt rc_quotes               # allow 'Henry''s Garage' instead of 'Henry'\''s Garage'
+       unsetopt rm_star_silent        # ask for confirmation for `rm *' or `rm path/*'
+
+       # Job Control
+       # http://zsh.sourceforge.net/Doc/Release/Options.html#Job-Control
+       setopt auto_resume            # attempt to resume existing job before creating a new process
+       unsetopt bg_nice              # don't run all background jobs at a lower priority
+       unsetopt check_jobs           # don't report on jobs when shell exit
+       unsetopt hup                  # don't kill jobs on shell exit
+       setopt long_list_jobs         # list jobs in the long format by default
+       setopt notify                 # report status of background jobs immediately
+
+       # Prompting
+       # http://zsh.sourceforge.net/Doc/Release/Options.html#Prompting
+       setopt prompt_subst           # expand parameters in prompt variables
+
+       # Zle
+       # http://zsh.sourceforge.net/Doc/Release/Options.html#Zle
+       unsetopt beep                 # be quiet!
+       setopt combining_chars        # combine zero-length punctuation characters (accents) with the base character
+       setopt emacs                  # use emacs keybindings in the shell
      #+END_SRC
 
 *** rg 命令管道相关处理，如果 rg 被输出到 terminal, 则使用 less 进行分页，否则直接输出所有结果
