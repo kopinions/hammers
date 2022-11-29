@@ -243,13 +243,17 @@
      #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
        cask 'switchhosts', greedy: true
      #+END_SRC
-**** 网络工具
+**** 网络扫描
      #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
        brew 'nmap', greedy: true
      #+END_SRC
 **** 下载工具
      #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
        brew 'axel', greedy: true # multiple thread downloader
+     #+END_SRC
+**** ftp 上传/下载
+     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       brew 'lftp', greedy: true
      #+END_SRC
 **** 网络带宽测试
      #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
