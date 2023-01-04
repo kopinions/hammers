@@ -32,6 +32,8 @@
                  :file ,path))
        (defun m/dicts()
          (mapcar 'm/dict (m/files "${m/xdg.conf.d}/emacs/pyim/dicts/*.pyim" t)))
+       :custom
+       (pyim-outcome-trigger nil)
        :config
        ;; 激活 basedict 拼音词库，五笔用户请继续阅读 README
        (setq pyim-dicts (m/dicts))
@@ -123,7 +125,7 @@
                                    5 1
                                    (ignore-errors (lambda ()
                                                     (liberime-select-schema "luna_pinyin_simp")
-                                                    (setq pyim-default-scheme 'rime-quanpin)))))))
+                                                    (setq pyim-default-scheme 'rime)))))))
     #+END_SRC
 
 *** 修复 liberime-core.so 的链接的问题（@rpath librime not found）

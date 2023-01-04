@@ -77,8 +77,6 @@
 	(org-list-dt ((t (:foreground "#bd93f9"))))
 	(org-document-title ((t (:foreground "#f1fa8c" :weight bold))))
 	(org-footnote ((t (:foreground "#76e0f3"))))
-	;; 当通过 org-previous/next-item 在 plain list 中导航的时候，循环导航 
-	(org-list-use-circular-motion t)
 
 	;; do not scale outline header
 	;; (org-level-1 ((t (:inherit outline-1 :height 1.0))))
