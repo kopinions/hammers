@@ -111,7 +111,7 @@
     #+END_SRC
 **** coreutils gnu tools path  
      #+BEGIN_SRC shell :tangle (or (and (eq m/os 'macos) (m/resolve "${m/xdg.conf.d}/zsh/post/loads.zsh")) "no") :eval never :exports code :comments link
-       export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+       export PATH="$(find -L /usr/local/opt -maxdepth 3 -mindepth 3 -type d -name gnubin | paste -s -d: -):$PATH"
      #+END_SRC
 
      #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/post/config.zsh") :eval never :exports code :comments link
