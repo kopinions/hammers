@@ -162,38 +162,35 @@
        }
      #+END_SRC
      
-**** Command-Tab to Option-Tab for Vmware Horizon
-     #+NAME: map_command_tab_to_option_tab_under_vmware_horizon
+**** Swap Option and Command for some apps
+     #+NAME: map_option_to_command_under_apps
      #+BEGIN_SRC json :eval never :exports code :noweb yes
        {
-         "description": "Change Option-Tab to Command-Tab for Vmware Horizon",
+         "description": "Map Option to Command for some apps",
          "manipulators": [
            {
              "type": "basic",
              "from": {
-               "key_code": "tab",
+               "key_code": "left_option",
                "modifiers": {
                  "optional": [
                    "any"
-                 ],
-                 "mandatory": [
-                   "left_option"
                  ]
                }
              },
              "to": [
                {
-                 "key_code": "tab",
-                 "modifiers": [
-                   "left_command"
-                 ]
+                 "key_code": "left_command"
                }
              ],
              "conditions": [
                {
                  "type": "frontmost_application_if",
                  "bundle_identifiers": [
-                   "com.vmware.horizon"
+                   "com.vmware.horizon",
+                   "com.parallels.desktop.console",
+                   "com.youqu.todesk.mac",
+                   "com.oray.sunlogin.macclient"
                  ]
                }
              ]
@@ -201,29 +198,67 @@
          ]
        }
      #+END_SRC
-     #+NAME: map_option_tab_to_command_tab_under_vmware_horizon
+     #+NAME: map_command_to_option_under_apps
      #+BEGIN_SRC json :eval never :exports code :noweb yes
        {
-         "description": "Change Command-Tab to Option-Tab for Vmware Horizon",
+         "description": "Map Command to Option for some apps",
          "manipulators": [
            {
              "type": "basic",
              "from": {
-               "key_code": "tab",
+               "key_code": "left_command",
                "modifiers": {
                  "optional": [
                    "any"
-                 ],
-                 "mandatory": [
-                   "left_command"
                  ]
                }
              },
              "to": [
                {
-                 "key_code": "tab",
+                 "key_code": "left_option"
+               }
+             ],
+             "conditions": [
+               {
+                 "type": "frontmost_application_if",
+                 "bundle_identifiers": [
+                   "com.vmware.horizon",
+                   "com.parallels.desktop.console",
+                   "com.youqu.todesk.mac",
+                   "com.oray.sunlogin.macclient"
+                 ]
+               }
+             ]
+           }
+         ]
+       }
+     #+END_SRC
+
+**** Swap Option-Space and Command-Space for some apps
+     #+NAME: map_ctrl_command_space_to_option_space_under_apps
+     #+BEGIN_SRC json :eval never :exports code :noweb yes
+       {
+         "description": "Map Command-Space to Option-Space for some apps",
+         "manipulators": [
+           {
+             "type": "basic",
+             "from": {
+               "key_code": "spacebar",
+               "modifiers": {
+                 "optional": [
+                   "any"
+                 ],
+                 "mandatory": [
+                   "left_command",
+                   "left_control"
+                 ]
+               }
+             },
+             "to": [
+               {
+                 "key_code": "spacebar",
                  "modifiers": [
-                   "left_alt"
+                   "left_option"
                  ]
                }
              ],
@@ -231,7 +266,10 @@
                {
                  "type": "frontmost_application_if",
                  "bundle_identifiers": [
-                   "com.vmware.horizon"
+                   "com.vmware.horizon",
+                   "com.parallels.desktop.console",
+                   "com.youqu.todesk.mac",
+                   "com.oray.sunlogin.macclient"
                  ]
                }
              ]
@@ -264,8 +302,9 @@
                  <<cmd_space>>,
                  <<cmd_shift_a>>,
                  <<right_command_to_hyper>>,
-                 <<map_command_tab_to_option_tab_under_vmware_horizon>>,
-                 <<map_option_tab_to_command_tab_under_vmware_horizon>>
+                 <<map_command_to_option_under_apps>>,
+                 <<map_option_to_command_under_apps>>,
+                 <<map_command_space_to_option_space_under_apps>>
               ]
             },
             "devices": [
