@@ -81,7 +81,10 @@
                  "type": "frontmost_application_unless",
                  "bundle_identifiers": [
                    "org.gnu.Emacs",
-                   "com.vmware.horizon"
+                   "com.vmware.horizon",
+                   "com.parallels.desktop.console",
+                   "com.youqu.todesk.mac",
+                   "com.oray.sunlogin.macclient"
                  ]
                }
              ]
@@ -235,7 +238,50 @@
      #+END_SRC
 
 **** Swap Option-Space and Command-Space for some apps
-     #+NAME: map_ctrl_command_space_to_option_space_under_apps
+     #+NAME: map_option_space_to_alfred_shortcut_for_apps
+     #+BEGIN_SRC json :eval never :exports code :noweb yes
+       {
+         "description": "Map Option-Space to alfred shortcut for some apps",
+         "manipulators": [
+           {
+             "type": "basic",
+             "from": {
+               "key_code": "spacebar",
+               "modifiers": {
+                 "optional": [
+                   "any"
+                 ],
+                 "mandatory": [
+                   "left_option"
+                 ]
+               }
+             },
+             "to": [
+               {
+                 "key_code": "a",
+                 "modifiers": [
+                   "left_control",
+                   "left_option",
+                   "left_command"
+                 ]
+               }
+             ],
+             "conditions": [
+               {
+                 "type": "frontmost_application_unless",
+                 "bundle_identifiers": [
+                   "com.vmware.horizon",
+                   "com.parallels.desktop.console",
+                   "com.youqu.todesk.mac",
+                   "com.oray.sunlogin.macclient"
+                 ]
+               }
+             ]
+           }
+         ]
+       }
+     #+END_SRC
+     #+NAME: map_ctrl_command_space_to_alfred_shortcut_for_apps
      #+BEGIN_SRC json :eval never :exports code :noweb yes
        {
          "description": "Map Command-Space to Option-Space for some apps",
@@ -256,9 +302,11 @@
              },
              "to": [
                {
-                 "key_code": "spacebar",
+                 "key_code": "a",
                  "modifiers": [
-                   "left_option"
+                   "left_control",
+                   "left_option",
+                   "left_command"
                  ]
                }
              ],
@@ -304,7 +352,8 @@
                  <<right_command_to_hyper>>,
                  <<map_command_to_option_under_apps>>,
                  <<map_option_to_command_under_apps>>,
-                 <<map_command_space_to_option_space_under_apps>>
+                 <<map_ctrl_command_space_to_alfred_shortcut_for_apps>>,
+                 <<map_option_space_to_alfred_shortcut_for_apps>>
               ]
             },
             "devices": [
