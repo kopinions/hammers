@@ -195,6 +195,17 @@
                    "com.youqu.todesk.mac",
                    "com.oray.sunlogin.macclient"
                  ]
+               },
+               {
+                 "type": "device_if",
+                 "description": "Flico Keyboard",
+                 "identifiers": [
+                   {
+                     "is_keyboard": true,
+                     "vendor_id": "04b4",
+                     "product_id": "120d"
+                   }
+                 ]
                }
              ]
            }
@@ -230,13 +241,116 @@
                    "com.youqu.todesk.mac",
                    "com.oray.sunlogin.macclient"
                  ]
+               },
+               {
+                 "type": "device_if",
+                 "description": "Flico Keyboard",
+                 "identifiers": [
+                   {
+                     "is_keyboard": true,
+                     "vendor_id": "1204",
+                     "product_id": "4621"
+                   }
+                 ]
                }
              ]
            }
          ]
        }
      #+END_SRC
-
+**** maping Option to Command for Flico keyboard
+     #+NAME: map_option_to_command_under_external_keyboard
+     #+BEGIN_SRC json :eval never :exports code :noweb yes
+       {
+         "description": "Map Option to Command for external keyboard",
+         "manipulators": [
+           {
+             "type": "basic",
+             "from": {
+               "key_code": "left_option",
+               "modifiers": {
+                 "optional": [
+                   "any"
+                 ]
+               }
+             },
+             "to": [
+               {
+                 "key_code": "left_command"
+               }
+             ],
+             "conditions": [
+               {
+                 "type": "frontmost_application_unless",
+                 "bundle_identifiers": [
+                   "com.vmware.horizon",
+                   "com.parallels.desktop.console",
+                   "com.youqu.todesk.mac",
+                   "com.oray.sunlogin.macclient"
+                 ]
+               },
+               {
+                 "type": "device_if",
+                 "description": "May be all external keyboard",
+                 "identifiers": [
+                   {
+                     "is_keyboard": true,
+                     "vendor_id": 1204,
+                     "product_id": 4621
+                   }
+                 ]
+               }
+             ]
+           }
+         ]
+       }
+     #+END_SRC
+     #+NAME: map_command_to_option_under_external_keyboard
+     #+BEGIN_SRC json :eval never :exports code :noweb yes
+       {
+         "description": "Map Command to Option for external keyboard",
+         "manipulators": [
+           {
+             "type": "basic",
+             "from": {
+               "key_code": "left_command",
+               "modifiers": {
+                 "optional": [
+                   "any"
+                 ]
+               }
+             },
+             "to": [
+               {
+                 "key_code": "left_option"
+               }
+             ],
+             "conditions": [
+               {
+                 "type": "frontmost_application_unless",
+                 "bundle_identifiers": [
+                   "com.vmware.horizon",
+                   "com.parallels.desktop.console",
+                   "com.youqu.todesk.mac",
+                   "com.oray.sunlogin.macclient"
+                 ]
+               },
+               {
+                 "type": "device_if",
+                 "description": "Maybe all external keyboard",
+                 "identifiers": [
+                   {
+                     "is_keyboard": true,
+                     "vendor_id": 1204,
+                     "product_id": 4621
+                   }
+                 ]
+               }
+             ]
+           }
+         ]
+       }
+     #+END_SRC
 **** Swap Option-Space and Command-Space for some apps
      #+NAME: map_option_space_to_alfred_shortcut_for_apps
      #+BEGIN_SRC json :eval never :exports code :noweb yes
@@ -352,8 +466,10 @@
                  <<right_command_to_hyper>>,
                  <<map_command_to_option_under_apps>>,
                  <<map_option_to_command_under_apps>>,
+                 <<map_command_to_option_under_external_keyboard>>,
+                 <<map_option_to_command_under_external_keyboard>>,
                  <<map_ctrl_command_space_to_alfred_shortcut_for_apps>>,
-                 <<map_option_space_to_alfred_shortcut_for_apps>>
+                 <<map_option_space_to_alfred_shortcut_for_apps>>      
               ]
             },
             "devices": [
