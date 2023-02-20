@@ -198,12 +198,15 @@
                },
                {
                  "type": "device_if",
-                 "description": "Flico Keyboard",
+                 "description": "Internal or Macos compatiable Keyboard",
                  "identifiers": [
                    {
                      "is_keyboard": true,
-                     "vendor_id": "04b4",
-                     "product_id": "120d"
+                     "vendor_id": 1452,
+                     "product_id": 591
+                   },
+                   {
+                     "is_built_in_keyboard": true
                    }
                  ]
                }
@@ -212,6 +215,7 @@
          ]
        }
      #+END_SRC
+     
      #+NAME: map_command_to_option_under_apps
      #+BEGIN_SRC json :eval never :exports code :noweb yes
        {
@@ -244,12 +248,15 @@
                },
                {
                  "type": "device_if",
-                 "description": "Flico Keyboard",
+                 "description": "Internal or Macos compatiable Keyboard",
                  "identifiers": [
                    {
                      "is_keyboard": true,
-                     "vendor_id": "1204",
-                     "product_id": "4621"
+                     "vendor_id": 1452,
+                     "product_id": 591
+                   },
+                   {
+                     "is_built_in_keyboard": true
                    }
                  ]
                }
@@ -258,7 +265,7 @@
          ]
        }
      #+END_SRC
-**** maping Option to Command for Flico keyboard
+**** maping Option to Command for External keyboard
      #+NAME: map_option_to_command_under_external_keyboard
      #+BEGIN_SRC json :eval never :exports code :noweb yes
        {
