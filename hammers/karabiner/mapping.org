@@ -379,7 +379,7 @@
              },
              "to": [
                {
-                 "key_code": "a",
+                 "key_code": "f12",
                  "modifiers": [
                    "left_control",
                    "left_option",
@@ -423,7 +423,7 @@
              },
              "to": [
                {
-                 "key_code": "a",
+                 "key_code": "f12",
                  "modifiers": [
                    "left_control",
                    "left_option",
