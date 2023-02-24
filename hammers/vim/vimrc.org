@@ -12,10 +12,10 @@
   let mapleader=";"
 
   " #################vundel config start #####################
-  set viminfo+=n~/.config/vim/viminfo
-  set rtp+=~/.config/vim/Vundle.vim
+  set viminfo+=n$XDG_CONFIG_HOME/vim/viminfo
+  set rtp+=$XDG_CONFIG_HOME/vim/Vundle.vim
 
-  call vundle#begin('~/.config/vim/plugins')
+  call vundle#begin($XDG_CONFIG_HOME + '/vim/plugins')
   Plugin 'ctrlp.vim'
   "Plugin 'Valloric/YouCompleteMe'
   Plugin 'dyng/ctrlsf.vim'
@@ -109,6 +109,8 @@
 
   set wildignore+=.DS_Store,.git,.hg,.svn
   set wildignore+=*~,*.swp,*.tmp,*.swo
+
+  colorscheme industry
 
   hi CursorColumn ctermfg=White ctermbg=234 cterm=none guifg=white guibg=yellow gui=bold
 
