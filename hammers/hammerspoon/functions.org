@@ -58,6 +58,82 @@
     #+BEGIN_SRC elisp :var capture=(m/resolve "${m/xdg.conf.d}/emacs/bin/capture")
       capture
     #+END_SRC
+*** hammerspoon 根据不同应用自动切换输入法
+    #+BEGIN_SRC lua :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/xdg.conf.d}/hammerspoon/init.lua")) "no") :mkdirp yes :noweb yes :link comment
+      apps = {
+         {
+            name = 'Emacs',
+            im = 'EN'
+         },
+         {
+            name = 'Google Chrome',
+            im = 'EN'
+         },
+         {
+            name = 'Wechat',
+            im = 'CN'
+         },
+         {
+            name = 'DingTalk',
+            im = 'CN'
+         },
+         {
+            name = 'OmniFocus',
+            im = 'CN'
+         },
+         {
+            name = 'Numbers',
+            im = 'CN'
+         },
+         {
+            name = 'Pages',
+            im = 'CN'
+         },
+         {
+            name = 'Keynote',
+            im = 'CN'
+         },
+         {
+            name = 'Xmind',
+            im = 'CN'
+         },
+         {
+            name = 'MacDown',
+            im = 'CN'
+         },
+         {
+            name = 'Microsoft Word',
+            im = 'CN'
+         }
+      }
+
+      function ims(name, etype, app)
+         if (etype == hs.application.watcher.activated) then
+            config = filter(
+               function(item)
+                  return string.match(name:lower(), item.name:lower())
+               end,
+               apps)
+
+            if next(config) ~= nil then
+               local current = hs.keycodes.currentSourceID()
+
+               if (current ~= "im.rime.inputmethod.Squirrel.Rime" and string.match (config [1].im, "CN")) then
+                  hs.keycodes.currentSourceID("com.apple.keylayout.US")
+                  hs.keycodes.currentSourceID("im.rime.inputmethod.Squirrel.Rime")
+               elseif (current ~= "com.apple.keylayout.US" and string.match (config [1].im, "EN")) then
+                  hs.keycodes.currentSourceID("com.apple.keylayout.US")
+               end
+            else
+               hs.keycodes.currentSourceID("com.apple.keylayout.US")
+            end
+         end
+      end
+
+      -- auto change the im for the application
+      imWatcher = hs.application.watcher.new(ims)
+      imWatcher:start()
+    #+END_SRC
 *** 通过服务监听配置番茄
     #+BEGIN_SRC lua :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/xdg.conf.d}/hammerspoon/init.lua")) "no") :mkdirp yes :noweb yes :link comment 
       pomodoro = require("pomodoro").new()
