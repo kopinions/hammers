@@ -125,7 +125,11 @@
                    {
                    "type": "frontmost_application_unless",
                    "bundle_identifiers": [
-                       "org.gnu.Emacs"
+                       "org.gnu.Emacs",
+                       "com.vmware.horizon",
+                       "com.parallels.desktop.console",
+                       "com.youqu.todesk.mac",
+                       "com.oray.sunlogin.macclient"
                    ]
                }
                ]
