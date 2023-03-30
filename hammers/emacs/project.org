@@ -14,7 +14,12 @@
         :bind ("C-x C-b" . ibuffer))
     #+END_SRC
 
-
+*** envrc
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-project.el") :comments link
+      (use-package envrc
+        :config
+        (envrc-global-mode))
+    #+END_SRC
 *** projectile 
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-project.el") :comments link
       (use-package projectile
