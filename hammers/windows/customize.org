@@ -1,0 +1,63 @@
+#+TITLE:  Windows 个性化配置
+#+AUTHOR: 孙建康（rising.lambda）
+#+EMAIL:  rising.lambda@gmail.com
+
+#+DESCRIPTION: windows 个性化相关配置
+#+PROPERTY:    header-args        :mkdirp yes
+#+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil
+#+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
+#+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+
+*** Disable Win-* shortcut
+    #+BEGIN_SRC powershell :eval never :exports code :tangle (or (and (eq m/os 'win) (m/resolve "${m/home.d}/.local/bin/wincus.ps1")) (m/resolve "${m/home.d}/.local/bin/wincus.ps1"))) :tangle-mode (identity #o755) :noweb yes :comments link
+      $explorer_path = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer';
+
+      try{  
+          Get-ItemProperty -Path $explorer_path -Name NoWinKeys -ErrorAction Stop  
+      }  
+      catch [System.Management.Automation.ItemNotFoundException] {  
+          New-Item -Path $explorer_path -Force
+          New-ItemProperty -Path $explorer_path -Name NoWinKeys -Value 1 -PropertyType DWord  
+      }  
+      catch {  
+          New-ItemProperty -Path $explorer_path -Name NoWinKeys -Value 1 -PropertyType DWord  
+      }  
+    #+END_SRC
+
+*** remove xbox under windows 11 
+    #+BEGIN_SRC powershell :eval never :exports code :tangle (or (and (eq m/os 'win) (m/resolve "${m/home.d}/.local/bin/wincus.ps1")) (m/resolve "${m/home.d}/.local/bin/wincus.ps1"))) :tangle-mode (identity #o755) :noweb yes :comments link
+      Get-ProvisionedAppxPackage -Online | `
+        Where-Object { $_.PackageName -match "xbox" } | `
+        ForEach-Object { Remove-ProvisionedAppxPackage -Online -PackageName $_.PackageName }
+    #+END_SRC
+
+*** reverse mouse direction
+    #+BEGIN_SRC powershell :eval never :exports code :tangle (or (and (eq m/os 'win) (m/resolve "${m/home.d}/.local/bin/wincus.ps1")) (m/resolve "${m/home.d}/.local/bin/wincus.ps1"))) :tangle-mode (identity #o755) :noweb yes :comments link
+       Get-ItemProperty HKLM:\SYSTEM\CurrentControlSet\Enum\HID\*\*\Device` Parameters FlipFlopWheel -EA 0 | ForEach-Object { Set-ItemProperty $_.PSPath FlipFlopWheel 1 }
+    #+END_SRC
+
+*** maclike keymapping with powershell
+    #+BEGIN_SRC powershell :eval never :exports code :tangle (or (and (eq m/os 'win) (m/resolve "${m/home.d}/.local/bin/wincus.ps1")) (m/resolve "${m/home.d}/.local/bin/wincus.ps1"))) :tangle-mode (identity #o755) :noweb yes :comments link
+      # 00,00,00,00,00,00 : is the start prefix
+      # 06,00,00,00       : is number of remapping keys + 1(5+1)
+      # 1d,00,3a,00       : map capslock to control
+      # 5b,e0,38,00       : map LWin -> LAlt
+      # 5c,e0,38,e0       : map RWin -> RAlt
+      # 38,00,5b,e0       : map LAlt -> LWin 
+      # 38,e0,5c,e0       : map LAlt -> LWin 
+      # 00,00,00,00       :in the end is end prefix
+      $hexified = "00,00,00,00,00,00,00,00,06,00,00,00,1d,00,3a,00,5b,e0,38,00,5c,e0,38,e0,38,00,5b,e0,38,e0,5c,e0,00,00,00,00".Split(',') | % { "0x$_"};
+      $keyboard_layout_path = 'HKLM:\System\CurrentControlSet\Control\Keyboard Layout';
+      $scancode_map = Get-ItemProperty -Path $keyboard_layout_path -Name "Scancode Map" -ErrorAction Ignore
+
+      if ( -not $scancode_map )
+      {
+          New-ItemProperty -Path $keyboard_layout_path -Name "Scancode Map" -PropertyType Binary -Value ([byte[]]$hexified);
+      }
+      else
+      {
+          Set-ItemProperty -LiteralPath $keyboard_layout_path -Name "Scancode Map" -Value ([byte[]]$hexified);
+      }
+
+    #+END_SRC  
+    
