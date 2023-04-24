@@ -238,6 +238,11 @@
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-languages.el") :comments link
       (use-package dockerfile-mode)
     #+END_SRC
+    
+*** csh-mode
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-languages.el") :comments link
+      (require 'csh-mode)
+    #+END_SRC
 *** provide
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-languages.el") :comments link
       (provide 'init-languages)

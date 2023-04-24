@@ -139,6 +139,7 @@
       (add-to-list 'load-path (expand-file-name "emacs/lisp/" m/xdg.conf.d))
       (add-to-list 'load-path (expand-file-name "systemrdl-mode/" (expand-file-name "emacs/3rdparty" m/xdg.conf.d)))
       (add-to-list 'load-path (expand-file-name "liberime/" (expand-file-name "emacs/3rdparty" m/xdg.conf.d)))
+      (add-to-list 'load-path (expand-file-name "modes/" (expand-file-name "emacs/3rdparty" m/xdg.conf.d)))
       (setq custom-file (expand-file-name "emacs/custom.el" m/xdg.conf.d))
     #+END_SRC
 
