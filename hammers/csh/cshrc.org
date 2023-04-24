@@ -1,0 +1,93 @@
+#+TITLE:  csh 配置
+#+AUTHOR: 孙建康（rising.lambda）
+#+EMAIL:  rising.lambda@gmail.com
+
+#+DESCRIPTION: csh 配置文件
+#+PROPERTY:    header-args        :mkdirp yes
+#+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil
+#+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
+#+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+
+*** csh 环境变量配置
+    #+NAME: zshenv
+    #+BEGIN_SRC csh :tangle (m/resolve "${m/home.d}/.login") :eval never :exports code :comments link
+      setenv LANG en_US.UTF-8
+      setenv JAVA_HOME "/Library/Java/JavaVirtualMachines/openjdk-13.0.1.jdk/Contents/Home"
+      setenv EDITOR vim
+      setenv DISABLE_AUTO_TITLE true
+
+      setenv XDG_CONFIG_HOME ${HOME}/.config
+      setenv XDG_CACHE_HOME ${HOME}/.cache
+      setenv XDG_DATA_HOME ${HOME}/.local/share
+
+      setenv RIPGREP_CONFIG_PATH ${XDG_CONFIG_HOME}/ripgrep/config
+      setenv VIMINIT 'let $MYVIMRC "$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
+      setenv VIMDOTDIR "$XDG_CONFIG_HOME/vim"
+
+      setenv LESSHISTFILE "${XDG_DATA_HOME}/less/history"
+      setenv LESSKEY "${XDG_CONFIG_HOME}/less/keys"
+
+      setenv GEM_SPEC_CACHE ${XDG_CACHE_HOME}/rubygems/cache
+
+      setenv INPUTRC ${XDG_CONFIG_HOME}/readline/inputrc
+      setenv GNUPGHOME ${XDG_CONFIG_HOME}/gnupg
+
+      setenv ZDOTDIR "${XDG_CONFIG_HOME}/zsh"
+      setenv DISPLAY :0
+    #+END_SRC
+
+
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/post/loads.zsh") :eval never :exports code :comments link
+      if [ -d "$HOME/.local" ]; then
+	  export PATH="$HOME/.local/bin:$PATH";
+      fi
+    #+END_SRC
+
+
+*** rg 命令管道相关处理，如果 rg 被输出到 terminal, 则使用 less 进行分页，否则直接输出所有结果
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/post/functions.zsh") :eval never :exports code :comments link
+      function rg(){
+	  # If outputting (fd 1 = stdout) directly to a terminal, page automatically:
+	  if [ -t 1 ]; then
+	      command rg --pretty "$@" \
+		  | less --no-init --quit-if-one-screen --RAW-CONTROL-CHARS
+	  else
+	      command rg "$@"
+	  fi
+      }
+    #+END_SRC
+
+
+*** xdg workaround
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/post/xdg.zsh") :eval never :exports code :comments link
+      #!/bin/zsh
+      if [ -s "${XDG_CONFIG_HOME}/ssh/config" ]
+      then
+          SSH_CONFIG="-F ${XDG_CONFIG_HOME}/ssh/config"
+      fi
+
+      if [ -s "${XDG_CONFIG_HOME}/ssh/id_rsa" ]; then
+          SSH_ID="-i ${XDG_CONFIG_HOME}/ssh/id_rsa"
+      elif [ -s "${XDG_CONFIG_HOME}/ssh/id_dsa" ]; then
+          SSH_ID="-i ${XDG_CONFIG_HOME}/ssh/id_dsa"
+      fi
+
+      SSH_KNOWN_HOSTS="-o UserKnownHostsFile=${XDG_CONFIG_HOME}/ssh/known_hosts"
+
+      alias tmux='tmux -f ${XDG_CONFIG_HOME}/tmux/tmux.conf'
+      alias ssh="ssh ${SSH_CONFIG} ${SSH_ID} ${SSH_KNOWN_HOSTS}"
+      function sshci() {
+          USER_AT_HOST_REGEXP='([a-zA-Z0-9_.]+)@([a-zA-Z0-9_.]+)'
+          if [[ "$1" =~ ${USER_AT_HOST_REGEXP} ]]; then
+              eval "ssh-copy-id ${SSH_KNOWN_HOSTS} ${SSH_ID} $1"
+          else
+              user=$(ssh -G "$1" | awk '/^user /{print $2}')
+              hostname=$(ssh -G "$1"| awk '/^hostname /{print $2}')
+              eval "ssh-copy-id ${SSH_KNOWN_HOSTS} ${SSH_ID} ${user}@${hostname}" 
+          fi
+      }
+      alias scp="scp ${SSH_CONFIG} ${SSH_ID} ${SSH_KNOWN_HOSTS}"
+      alias mbsync="mbsync -c ${XDG_CONFIG_HOME}/isync/config"
+    #+END_SRC
+
+
