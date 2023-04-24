@@ -730,9 +730,6 @@
 	:after org
 	:config
 	(setq graphviz-dot-indent-width 4))
-      (use-package company-graphviz-dot
-	:after company
-	:ensure nil)
     #+END_SRC
 *** org mode 可以拖拽下载
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-literate.el") :comments link
