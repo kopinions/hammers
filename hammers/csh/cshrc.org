@@ -9,7 +9,7 @@
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
 *** csh 环境变量配置
-    #+NAME: zshenv
+    #+NAME: csh_login
     #+BEGIN_SRC csh :tangle (m/resolve "${m/home.d}/.login") :eval never :exports code :comments link
       setenv LANG en_US.UTF-8
       setenv JAVA_HOME "/Library/Java/JavaVirtualMachines/openjdk-13.0.1.jdk/Contents/Home"
@@ -19,6 +19,8 @@
       setenv XDG_CONFIG_HOME ${HOME}/.config
       setenv XDG_CACHE_HOME ${HOME}/.cache
       setenv XDG_DATA_HOME ${HOME}/.local/share
+      mkdir -p ${XDG_CACHE_HOME} ${XDG_DATA_HOME} ${XDG_CONFIG_HOME}
+      mkdir -p ${XDG_DATA_HOME}/{csh,less,git}
 
       setenv RIPGREP_CONFIG_PATH ${XDG_CONFIG_HOME}/ripgrep/config
       setenv VIMINIT 'let $MYVIMRC "$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
@@ -32,62 +34,151 @@
       setenv INPUTRC ${XDG_CONFIG_HOME}/readline/inputrc
       setenv GNUPGHOME ${XDG_CONFIG_HOME}/gnupg
 
-      setenv ZDOTDIR "${XDG_CONFIG_HOME}/zsh"
       setenv DISPLAY :0
+      source ${XDG_CONFIG_HOME}/csh/cshrc
     #+END_SRC
 
 
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/post/loads.zsh") :eval never :exports code :comments link
-      if [ -d "$HOME/.local" ]; then
-	  export PATH="$HOME/.local/bin:$PATH";
-      fi
+    
+*** cshrc
+    #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/cshrc") :eval never :exports code :comments link
+      foreach file (`find ${XDG_CONFIG_HOME}/csh/init -name "*.csh"|sort`)
+           source "${file}"
+      end
+
+      foreach file (`find ${XDG_CONFIG_HOME}/csh/post -name "*.csh"`)
+         source "${file}"
+      end
     #+END_SRC
 
-
-*** rg 命令管道相关处理，如果 rg 被输出到 terminal, 则使用 less 进行分页，否则直接输出所有结果
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/post/functions.zsh") :eval never :exports code :comments link
-      function rg(){
-	  # If outputting (fd 1 = stdout) directly to a terminal, page automatically:
-	  if [ -t 1 ]; then
-	      command rg --pretty "$@" \
-		  | less --no-init --quit-if-one-screen --RAW-CONTROL-CHARS
-	  else
-	      command rg "$@"
-	  fi
-      }
+*** csh alias
+    #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/alias.csh") :eval never :exports code :comments link
+      # set called = ($_);
+      # echo $called
+      # if ( "$called" != "" ) then  ### called by source 
+      #     set filepath=`readlink -f "$called[2]"|xargs dirname`
+      # else                         ### called by direct execution of the script
+      #     set filepath=`readlink -f $0|xargs dirname`
+      # endif
+      set filepath = `/usr/sbin/lsof +p $$ | grep -oE /.\*/init/alias.csh|xargs dirname`
+      foreach file (`find  $filepath/alias  -name "*.csh"`)
+         source "${file}"
+      end
     #+END_SRC
+**** git alias
+     #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/alias/git.csh") :eval never :exports code :comments link
+       alias gst 'git status'
+       alias ga 'git add'
+       alias gc 'git commit'
+       alias gp 'git push'
+    #+END_SRC
+
+*** Keybindings related config
+    #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/keybinding.csh") :eval never :exports code :comments link
+      if ( "$shell" =~ *tcsh ) then
+        # csh does not know bindkey
+        bindkey      i-search-back
+        bindkey      i-search-fwd
+        bindkey      backward-delete-word
+        bindkey      backward-kill-line
+        bindkey ^[[3~  delete-char
+        bindkey [1~  beginning-of-line
+        bindkey [4~  end-of-line
+      endif
+    #+END_SRC
+
+*** User Interface related config    
+    #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/ui.csh") :eval never :exports code :comments link
+      # Enable color display for the built-in ls-F and it passes --color=auto to ls.
+      set color
+
+      # Display colorful NLS messages.
+      set colorcat
+      setenv TERM xterm-256color
+      if ( "$shell" =~ *tcsh ) then
+          set prompt="%n@%m [%T] (%?) %~> "
+      else
+          # in csh (to make cwd up-to-date in the prompt)
+          alias doprompt 'set prompt="`whoami`@`hostname` `pwd`> "'
+          doprompt
+          alias cd 'chdir \!*; doprompt'
+      endif
+    #+END_SRC
+
+*** History related config
+    #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/history.csh") :eval never :exports code :comments link
+      set histdup='prev'
+
+      set history=10000
+      set savehist=($history merge)
+      if ( "$shell" =~ *tcsh ) then
+          set histfile = ${XDG_DATA_HOME}/csh/history
+          # Save history (to above file)
+          history -S
+      endif
+    #+END_SRC
+
+*** Misc config
+    #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/misc.csh") :eval never :exports code :comments link
+      # Do not ignore EOF (^D).
+      unset ignoreeof
+
+      # Insure that files are not accidentally destroyed.
+      set noclobber
+    #+END_SRC
+
+*** home local related config 
+    #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/post/local.csh") :eval never :exports code :comments link
+      if ( -d "$HOME/.local" ) then
+           set path = ( "$HOME/.local/bin" $path )
+      endif
+    #+END_SRC
+
+*** autojump releated config
+    #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/post/autojump.csh") :eval never :exports code :comments link
+      # set user installation paths
+      if (-d ~/.autojump/bin) then
+          set path = (~/.autojump/bin path)
+      endif
+
+      # prepend autojump to cwdcmd (run after every change of working directory)
+      if (`alias cwdcmd` !~ *autojump*) then
+          alias cwdcmd 'autojump --add $cwd >/dev/null;' `alias cwdcmd`
+      endif
+
+      #default autojump command
+      alias j 'cd `autojump -- \!:1`'
+    #+END_SRC
+
+*** direnv related config
+    #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/post/direnv.csh") :eval never :exports code :comments link
+      if (`command -v direnv >& /dev/null`) then
+          alias precmd 'eval `direnv export tcsh`' what is this command do in tcsh
+      endif
+    #+END_SRC
+    
 
 
 *** xdg workaround
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/post/xdg.zsh") :eval never :exports code :comments link
-      #!/bin/zsh
-      if [ -s "${XDG_CONFIG_HOME}/ssh/config" ]
-      then
-          SSH_CONFIG="-F ${XDG_CONFIG_HOME}/ssh/config"
-      fi
+    #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/post/xdg.csh") :eval never :exports code :comments link
+      #!/bin/csh
+      if ( -s "${XDG_CONFIG_HOME}/ssh/config" ) then
+          set SSH_CONFIG="-F ${XDG_CONFIG_HOME}/ssh/config"
+      endif
 
-      if [ -s "${XDG_CONFIG_HOME}/ssh/id_rsa" ]; then
-          SSH_ID="-i ${XDG_CONFIG_HOME}/ssh/id_rsa"
-      elif [ -s "${XDG_CONFIG_HOME}/ssh/id_dsa" ]; then
-          SSH_ID="-i ${XDG_CONFIG_HOME}/ssh/id_dsa"
-      fi
+      if ( -s "${XDG_CONFIG_HOME}/ssh/id_rsa" ) then
+          set SSH_ID="-i ${XDG_CONFIG_HOME}/ssh/id_rsa"
+      else if ( -s "${XDG_CONFIG_HOME}/ssh/id_dsa" ) then
+          set SSH_ID="-i ${XDG_CONFIG_HOME}/ssh/id_dsa"
+      endif
 
-      SSH_KNOWN_HOSTS="-o UserKnownHostsFile=${XDG_CONFIG_HOME}/ssh/known_hosts"
+      set SSH_KNOWN_HOSTS="-o UserKnownHostsFile=${XDG_CONFIG_HOME}/ssh/known_hosts"
 
-      alias tmux='tmux -f ${XDG_CONFIG_HOME}/tmux/tmux.conf'
-      alias ssh="ssh ${SSH_CONFIG} ${SSH_ID} ${SSH_KNOWN_HOSTS}"
-      function sshci() {
-          USER_AT_HOST_REGEXP='([a-zA-Z0-9_.]+)@([a-zA-Z0-9_.]+)'
-          if [[ "$1" =~ ${USER_AT_HOST_REGEXP} ]]; then
-              eval "ssh-copy-id ${SSH_KNOWN_HOSTS} ${SSH_ID} $1"
-          else
-              user=$(ssh -G "$1" | awk '/^user /{print $2}')
-              hostname=$(ssh -G "$1"| awk '/^hostname /{print $2}')
-              eval "ssh-copy-id ${SSH_KNOWN_HOSTS} ${SSH_ID} ${user}@${hostname}" 
-          fi
-      }
-      alias scp="scp ${SSH_CONFIG} ${SSH_ID} ${SSH_KNOWN_HOSTS}"
-      alias mbsync="mbsync -c ${XDG_CONFIG_HOME}/isync/config"
+      alias tmux 'tmux -f ${XDG_CONFIG_HOME}/tmux/tmux.conf'
+      alias ssh "ssh ${SSH_CONFIG} ${SSH_ID} ${SSH_KNOWN_HOSTS}"
+
+      alias scp "scp ${SSH_CONFIG} ${SSH_ID} ${SSH_KNOWN_HOSTS}"
+      alias mbsync "mbsync -c ${XDG_CONFIG_HOME}/isync/config"
     #+END_SRC
 
 
