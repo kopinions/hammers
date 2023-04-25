@@ -227,6 +227,11 @@
       (m/tangles "${m/root.d}/hammers/gnupg/*.org")
       (m/tangles "${m/root.d}/hammers/gdb/*.org")))
 
+ (if (or (eq m/os 'macos)
+	(eq m/os 'linux))
+    (progn
+     (m/copy "${m/root.d}/hammers/emacs/3rdparty/modes/" "${m/xdg.conf.d}/emacs/3rdparty/modes")))
+
 ;; tangle brew and hammerspoon
 (if (eq m/os 'macos)
     (progn (m/tangles "${m/root.d}/hammers/brew/*.org")
@@ -257,7 +262,6 @@
     (progn
       ;; start copy config file
       (m/clone "${m/root.d}/hammers/emacs/3rdparty/systemrdl-mode" "${m/xdg.conf.d}/emacs/3rdparty/systemrdl-mode")
-      (m/copy "${m/root.d}/hammers/emacs/3rdparty/modes/" "${m/xdg.conf.d}/emacs/3rdparty/modes")
       (m/clone "${m/root.d}/hammers/tmux/plugins/tpm" "${m/xdg.conf.d}/tmux/tpm")
       (m/clone "${m/root.d}/hammers/zsh/zplug" "${m/xdg.conf.d}/zsh/zplug")
       (m/clone "${m/root.d}/hammers/gdb/plugins/dashboard" "${m/xdg.conf.d}/gdb/dashboard")
