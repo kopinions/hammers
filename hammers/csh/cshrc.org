@@ -8,9 +8,9 @@
 #+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 
-*** csh 环境变量配置
-    #+NAME: csh_login
-    #+BEGIN_SRC csh :tangle (m/resolve "${m/home.d}/.login") :eval never :exports code :comments link
+    
+*** cshrc
+    #+BEGIN_SRC csh :tangle (m/resolve "${m/home.d}/.cshrc") :eval never :exports code :comments link
       setenv LANG en_US.UTF-8
       setenv JAVA_HOME "/Library/Java/JavaVirtualMachines/openjdk-13.0.1.jdk/Contents/Home"
       setenv EDITOR vim
@@ -23,7 +23,7 @@
       mkdir -p ${XDG_DATA_HOME}/{csh,less,git}
 
       setenv RIPGREP_CONFIG_PATH ${XDG_CONFIG_HOME}/ripgrep/config
-      setenv VIMINIT 'let $MYVIMRC "$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
+      setenv VIMINIT 'source "$XDG_CONFIG_HOME/vim/vimrc"'
       setenv VIMDOTDIR "$XDG_CONFIG_HOME/vim"
 
       setenv LESSHISTFILE "${XDG_DATA_HOME}/less/history"
@@ -36,12 +36,7 @@
 
       setenv DISPLAY :0
       source ${XDG_CONFIG_HOME}/csh/cshrc
-    #+END_SRC
-
-
-    
-*** cshrc
-    #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/cshrc") :eval never :exports code :comments link
+      
       foreach file (`find ${XDG_CONFIG_HOME}/csh/init -name "*.csh"|sort`)
            source "${file}"
       end
@@ -51,6 +46,11 @@
       end
     #+END_SRC
 
+*** csh completion & list
+    #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/completion.csh") :eval never :exports code :comments link
+      set autolist
+    #+END_SRC
+    
 *** csh alias
     #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/alias.csh") :eval never :exports code :comments link
       # set called = ($_);
@@ -72,18 +72,35 @@
        alias gc 'git commit'
        alias gp 'git push'
     #+END_SRC
+**** proxy alias
+     #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/alias/misc.csh") :eval never :exports code :comments link
+       alias pe 'setenv http_proxy http://127.0.0.1:8080; setenv https_proxy http://127.0.0.1:8080'
+    #+END_SRC
 
 *** Keybindings related config
     #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/keybinding.csh") :eval never :exports code :comments link
       if ( "$shell" =~ *tcsh ) then
-        # csh does not know bindkey
-        bindkey      i-search-back
-        bindkey      i-search-fwd
-        bindkey      backward-delete-word
-        bindkey      backward-kill-line
-        bindkey ^[[3~  delete-char
-        bindkey [1~  beginning-of-line
-        bindkey [4~  end-of-line
+          # csh does not know bindkey
+          bindkey      i-search-back
+          bindkey      i-search-fwd
+          bindkey      backward-delete-word
+          bindkey      backward-kill-line
+          bindkey ^[[3~  delete-char
+          bindkey [1~  beginning-of-line
+          bindkey [4~  end-of-line
+          bindkey -k up history-search-backward
+          bindkey -k down history-search-forward
+          bindkey "^[j" history-search-backward
+          bindkey "^[k" history-search-forward
+          bindkey "^r" i-search-back
+          bindkey "^[h" backward-word
+          bindkey "^[l" forward-word
+          bindkey "\e[1~" beginning-of-line  # Home
+          bindkey "\e[7~" beginning-of-line  # Home rxvt
+          bindkey "\e[2~" overwrite-mode     # Ins
+          bindkey "\e[3~" delete-char        # Delete
+          bindkey "\e[4~" end-of-line        # End
+          bindkey "\e[8~" end-of-line        # End rxvt
       endif
     #+END_SRC
 
@@ -109,7 +126,7 @@
     #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/history.csh") :eval never :exports code :comments link
       set histdup='prev'
 
-      set history=10000
+      set history=1000000
       set savehist=($history merge)
       if ( "$shell" =~ *tcsh ) then
           set histfile = ${XDG_DATA_HOME}/csh/history
@@ -152,12 +169,10 @@
 
 *** direnv related config
     #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/post/direnv.csh") :eval never :exports code :comments link
-      if (`command -v direnv >& /dev/null`) then
-          alias precmd 'eval `direnv export tcsh`' what is this command do in tcsh
+      if (`command -v direnv` != "") then
+          alias precmd 'eval `direnv export tcsh`' # what is this command do in tcsh
       endif
     #+END_SRC
-    
-
 
 *** xdg workaround
     #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/post/xdg.csh") :eval never :exports code :comments link

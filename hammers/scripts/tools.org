@@ -109,9 +109,15 @@
       echo ${result}
     #+END_SRC
 
-*** upload to sietium ftp
-    #+BEGIN_SRC shell :eval never :exports code :tangle (or (and (or (eq m/os 'macos) (eq m/os 'liunx)) (m/resolve "${m/home.d}/.local/bin/supload")) "no") :tangle-mode (identity #o755) :noweb yes
+*** upload to ftp
+    #+BEGIN_SRC shell :eval never :exports code :tangle (or (and (or (eq m/os 'macos) (eq m/os 'liunx)) (m/resolve "${m/home.d}/.local/bin/fupload")) "no") :tangle-mode (identity #o755) :noweb yes
       #!/bin/bash
-      curl --ftp-create-dirs -T $1 -u ftpuser ftp://10.10.10.10/neo/
+      if [ -z "${FTP_USER}" -o -z "${FTP_PASSWD}" -o -z "${FTP_ADDR}" -o -z "${FTP_ROOT}" ]; then
+          echo "make sure the env FTP_USER, FTP_PASSWD, FTP_ADDR, FTP_ROOT exists"
+          exit 1
+      fi
+      for file in "$@"; do
+          curl --ftp-create-dirs -T $file -u "${FTP_USER}:${FTP_PASSWD}" ftp://${FTP_ADDR}/${FTP_ROOT}/
+      done
     #+END_SRC
 
