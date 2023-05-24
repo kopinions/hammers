@@ -111,23 +111,58 @@
       endif
     #+END_SRC
 
-*** User Interface related config    
-    #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/ui.csh") :eval never :exports code :comments link
-      # Enable color display for the built-in ls-F and it passes --color=auto to ls.
-      set color
+*** User Interface related config
+    
+**** Status bar
+     #+NAME: statusbarrc
+     #+BEGIN_SRC sh :var statusbarrc_path=(m/resolve "${m/xdg.conf.d}/csh/init/statusbar.csh")
+       echo "set statusbarrc=\"$statusbarrc_path\""
+     #+END_SRC
+     #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/statusbar.csh") :eval never :exports code :comments link
+       set txtred = "%{\e[0;30;31m%}"
+       set txtgrn = "%{\e[0;30;32m%}"
+       set txtylw = "%{\e[0;30;33m%}"
+       set txtblu = "%{\e[0;30;34m%}"
+       set txtpur = "%{\e[0;30;35m%}"
+       set txtcyn = "%{\e[0;30;36m%}"
+       set txtwht = "%{\e[0;30;37m%}"
+       set txtrst = "%{\e[0m%}"
+       set who    = "${txtred}`whoami`${txtrst}"
+       set host   = "${txtylw}%M${txtrst}"
+       set apwd   = "${txtgrn}%C${txtrst}"
+       set datetime = "${txtpur}%P %Y/%W/%D${txtrst}"
+       set at     = "${txtwht}@${txtrst}"
+       #set gitrev = `sh -c 'git rev-parse --abbrev-ref HEAD 2> /dev/null'`
+       set gitrev = `git branch |& grep '*' |& sed 's/^\* *//g'`
+       #set sh_in_use = `ps | grep --color=none $$ | awk '{print $(NF)}'`
+       set sh_in_use = "${txtblu}(`echo $0 | sed 's/-//'`)${txtrst}"
+       set promptchars = ">#"
+       if ( "${gitrev}" != "" ) then
+           set gitprompt = "${txtcyn}${gitrev}${txtrst}"
+           set prompt = "${apwd} ($gitprompt) %L%# "
+       else
+           set prompt = "${apwd} %L%# "
+       endif
+       #alias precmd "source `lsof +p $$ |& grep -oE /.\*statusbar.csh` >& /dev/null"
+     #+END_SRC     
+     # #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/ui.csh") :eval never :exports code :comments link
+     #   # Enable color display for the built-in ls-F and it passes --color=auto to ls.
+     #   set color
 
-      # Display colorful NLS messages.
-      set colorcat
-      setenv TERM xterm-256color
-      if ( "$shell" =~ *tcsh ) then
-          set prompt="%n@%m [%T] (%?) %~> "
-      else
-          # in csh (to make cwd up-to-date in the prompt)
-          alias doprompt 'set prompt="`whoami`@`hostname` `pwd`> "'
-          doprompt
-          alias cd 'chdir \!*; doprompt'
-      endif
-    #+END_SRC
+     #   # Display colorful NLS messages.
+     #   set colorcat
+     #   setenv TERM xterm-256color
+     #   if ( "$shell" =~ *tcsh ) then
+     #       set prompt="%n@%m [%T] (%?) %~> "
+     #   else
+     #       # in csh (to make cwd up-to-date in the prompt)
+     #       alias doprompt 'set prompt="`whoami`@`hostname` `pwd`> "'
+     #       doprompt
+     #       alias cd 'chdir \!*; doprompt'
+     #   endif
+     # #+END_SRC
+
+    
 
 *** History related config
     #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/history.csh") :eval never :exports code :comments link
@@ -175,9 +210,10 @@
     #+END_SRC
 
 *** direnv related config
-    #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/post/direnv.csh") :eval never :exports code :comments link
+    #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/post/direnv.csh") :eval never :exports code :comments link :noweb yes 
       if (`command -v direnv` != "") then
-          alias precmd 'eval `direnv export tcsh`' # what is this command do in tcsh
+          <<statusbarrc()>>
+          alias precmd 'eval `direnv export tcsh`; source "$statusbarrc" >& /dev/null' # what is this command do in tcsh
       endif
     #+END_SRC
 
