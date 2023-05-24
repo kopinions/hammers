@@ -65,12 +65,19 @@
          source "${file}"
       end
     #+END_SRC
+**** common
+     #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/alias/common.csh") :eval never :exports code :comments link
+       alias ll 'ls -l'      #long list
+       alias lrt 'ls -ltrch'
+     #+END_SRC
+     
 **** git alias
      #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/alias/git.csh") :eval never :exports code :comments link
        alias gst 'git status'
        alias ga 'git add'
        alias gc 'git commit'
        alias gp 'git push'
+       alias grt 'cd `git rev-parse --show-toplevel || echo .`'
     #+END_SRC
 **** proxy alias
      #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/alias/misc.csh") :eval never :exports code :comments link
