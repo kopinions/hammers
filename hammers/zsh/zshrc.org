@@ -37,8 +37,6 @@
       export GNUPGHOME=${XDG_CONFIG_HOME}/gnupg
 
       export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
-      export DISPLAY=:0
-
     #+END_SRC
 
 
@@ -81,6 +79,15 @@
 
     #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/init/init.zsh") :eval never :exports code :comments link
       
+    #+END_SRC
+
+*** PATH related config
+    
+**** //usr/local/bin/
+     #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/init/usr_local_bin.zsh") :eval never :exports code :comments link
+        if [ -d "/usr/local/bin" ]; then
+            export PATH="/usr/local/bin:$PATH"
+        fi
     #+END_SRC
 
     #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/zplugs.zsh") :eval never :exports code :comments link
