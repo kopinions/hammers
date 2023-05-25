@@ -10,7 +10,7 @@
 
     
 *** cshrc
-    #+BEGIN_SRC csh :tangle (m/resolve "${m/home.d}/.cshrc") :eval never :exports code :comments link
+    #+BEGIN_SRC sh :tangle (m/resolve "${m/home.d}/.cshrc") :eval never :exports code :comments link
       setenv LANG en_US.UTF-8
       setenv JAVA_HOME "/Library/Java/JavaVirtualMachines/openjdk-13.0.1.jdk/Contents/Home"
       setenv EDITOR vim
@@ -34,9 +34,6 @@
       setenv INPUTRC ${XDG_CONFIG_HOME}/readline/inputrc
       setenv GNUPGHOME ${XDG_CONFIG_HOME}/gnupg
 
-      setenv DISPLAY :0
-      source ${XDG_CONFIG_HOME}/csh/cshrc
-      
       foreach file (`find ${XDG_CONFIG_HOME}/csh/init -name "*.csh"|sort`)
            source "${file}"
       end
@@ -47,32 +44,30 @@
     #+END_SRC
 
 *** csh completion & list
-    #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/completion.csh") :eval never :exports code :comments link
+    #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/completion.csh") :eval never :exports code :comments link
       set autolist
     #+END_SRC
     
 *** csh alias
-    #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/alias.csh") :eval never :exports code :comments link
-      # set called = ($_);
-      # echo $called
-      # if ( "$called" != "" ) then  ### called by source 
-      #     set filepath=`readlink -f "$called[2]"|xargs dirname`
-      # else                         ### called by direct execution of the script
-      #     set filepath=`readlink -f $0|xargs dirname`
-      # endif
-      set filepath = `/usr/sbin/lsof +p $$ | grep -oE /.\*/init/alias.csh|xargs dirname`
-      foreach file (`find  $filepath/alias  -name "*.csh"`)
+     #+NAME: csh_conf_root
+     #+BEGIN_SRC sh :var csh_conf_root=(m/resolve "${m/xdg.conf.d}/csh") :results output
+       echo "set csh_conf_root=\"$csh_conf_root\""
+     #+END_SRC
+    #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/alias.csh") :eval never :exports code :comments link :noweb tangle
+      <<csh_conf_root()>>
+      foreach file (`find  $csh_conf_root/init/alias  -name "*.csh"`)
          source "${file}"
       end
     #+END_SRC
 **** common
-     #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/alias/common.csh") :eval never :exports code :comments link
-       alias ll 'ls -l'      #long list
-       alias lrt 'ls -ltrch'
+     #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/alias/common.csh") :eval never :exports code :comments link
+       alias ll 'ls-F -l '      #long list
+       alias ls 'ls-F'      #long list
+       alias lrt 'ls-F -ltrch'
      #+END_SRC
      
 **** git alias
-     #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/alias/git.csh") :eval never :exports code :comments link
+     #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/alias/git.csh") :eval never :exports code :comments link
        alias gst 'git status'
        alias ga 'git add'
        alias gc 'git commit'
@@ -80,12 +75,12 @@
        alias grt 'cd `git rev-parse --show-toplevel || echo .`'
     #+END_SRC
 **** proxy alias
-     #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/alias/misc.csh") :eval never :exports code :comments link
+     #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/alias/misc.csh") :eval never :exports code :comments link
        alias pe 'setenv http_proxy http://127.0.0.1:8080; setenv https_proxy http://127.0.0.1:8080'
     #+END_SRC
 
 *** Keybindings related config
-    #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/keybinding.csh") :eval never :exports code :comments link
+    #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/keybinding.csh") :eval never :exports code :comments link
       if ( "$shell" =~ *tcsh ) then
           # csh does not know bindkey
           bindkey      i-search-back
@@ -115,10 +110,10 @@
     
 **** Status bar
      #+NAME: statusbarrc
-     #+BEGIN_SRC sh :var statusbarrc_path=(m/resolve "${m/xdg.conf.d}/csh/init/statusbar.csh")
+     #+BEGIN_SRC sh :var statusbarrc_path=(m/resolve "${m/xdg.conf.d}/csh/init/statusbar.csh") :results output
        echo "set statusbarrc=\"$statusbarrc_path\""
      #+END_SRC
-     #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/statusbar.csh") :eval never :exports code :comments link
+     #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/statusbar.csh") :eval never :exports code :comments link
        set txtred = "%{\e[0;30;31m%}"
        set txtgrn = "%{\e[0;30;32m%}"
        set txtylw = "%{\e[0;30;33m%}"
@@ -144,28 +139,79 @@
            set prompt = "${apwd} %L%# "
        endif
        #alias precmd "source `lsof +p $$ |& grep -oE /.\*statusbar.csh` >& /dev/null"
-     #+END_SRC     
-     # #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/ui.csh") :eval never :exports code :comments link
-     #   # Enable color display for the built-in ls-F and it passes --color=auto to ls.
-     #   set color
+     #+END_SRC
+     
+**** Color related
+     #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/uicolor.csh") :eval never :exports code :comments link
+       # Enable color display for the built-in ls-F and it passes --color=auto to ls.
+       set color
 
-     #   # Display colorful NLS messages.
-     #   set colorcat
-     #   setenv TERM xterm-256color
-     #   if ( "$shell" =~ *tcsh ) then
-     #       set prompt="%n@%m [%T] (%?) %~> "
-     #   else
-     #       # in csh (to make cwd up-to-date in the prompt)
-     #       alias doprompt 'set prompt="`whoami`@`hostname` `pwd`> "'
-     #       doprompt
-     #       alias cd 'chdir \!*; doprompt'
-     #   endif
-     # #+END_SRC
+       # Display colorful NLS messages.
+       set colorcat
+       setenv TERM xterm-256color
 
-    
+       set noglob
+       set base_colors = 'no=00:fi=00:di=01;34:or=05:41:ln=01;36:pi=40;33:so=40;33:bd=40;33:cd=40;33:ex=01;32'
+       # Executable scripts
+       set lsexts = (js lua php pl py rb sh)
+       set lscolor = '00;32'
+       foreach lsext (${lsexts})
+           set base_colors = "${base_colors}:*.${lsext}=${lscolor}"
+       end
+
+       # Source files
+       set lsexts = (c cc cpp h hh java js lua php pl pm rb sh)
+       set lscolor = '00;33'
+       foreach lsext (${lsexts})
+           set base_colors = "${base_colors}:*.${lsext}=${lscolor}"
+       end
+
+       # Archive files
+       set lsexts = (arj bz2 class deb gz pkg rar rpm tar tgz xz z zip Z)
+       set lscolor = '00;31'
+       foreach lsext (${lsexts})
+           set base_colors = "${base_colors}:*.${lsext}=${lscolor}"
+       end
+
+       # Audio files
+       set lsexts = (mp3 mp4a ogg wav)
+       set lscolor = '00;33'
+       foreach lsext (${lsexts})
+           set base_colors = "${base_colors}:*.${lsext}=${lscolor}"
+       end
+
+       # Image files
+       set lsexts = (bmp gif jpeg jpg pic png xbm xcf xpm xwd)
+       set lscolor = '00;35'
+       foreach lsext (${lsexts})
+           set base_colors = "${base_colors}:*.${lsext}=${lscolor}"
+       end
+
+       # Video files
+       set lsexts = (avi flac mpeg mpg)
+       set lscolor = '00;36'
+       foreach lsext (${lsexts})
+           set base_colors = "${base_colors}:*.${lsext}=${lscolor}"
+       end
+
+       # Doc files
+       set lsexts = (abw doc gnumeric htm html pdf ps rtf tex txt xls org)
+       set lscolor = '01;37'
+       foreach lsext (${lsexts})
+           set base_colors = "${base_colors}:*.${lsext}=${lscolor}"
+       end
+
+       setenv LS_COLORS "${base_colors}"
+
+       setenv LSCOLORS 'exfxcxdxbxegedabagacad'
+       unset base_colors
+       unset lsexts
+       unset lscolor
+       set color = (ls-F)
+     #+END_SRC
 
 *** History related config
-    #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/history.csh") :eval never :exports code :comments link
+    #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/history.csh") :eval never :exports code :comments link
       set histdup='prev'
 
       set history=1000000
@@ -178,7 +224,7 @@
     #+END_SRC
 
 *** Misc config
-    #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/misc.csh") :eval never :exports code :comments link
+    #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/misc.csh") :eval never :exports code :comments link
       # Do not ignore EOF (^D).
       unset ignoreeof
 
@@ -186,15 +232,23 @@
       set noclobber
     #+END_SRC
 
-*** home local related config 
-    #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/post/local.csh") :eval never :exports code :comments link
-      if ( -d "$HOME/.local" ) then
-           set path = ( "$HOME/.local/bin" $path )
-      endif
-    #+END_SRC
+*** PATH related config
+**** home local related config 
+     #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/post/local.csh") :eval never :exports code :comments link
+       if ( -d "$HOME/.local" ) then
+            set path = ( "$HOME/.local/bin" $path )
+       endif
+     #+END_SRC
+
+**** /usr/local/bin related config
+     #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/post/local.csh") :eval never :exports code :comments link
+       if ( -d "/usr/local/bin" ) then
+            set path = ( "/usr/local/bin" $path )
+       endif
+     #+END_SRC
 
 *** autojump releated config
-    #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/post/autojump.csh") :eval never :exports code :comments link
+    #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/post/autojump.csh") :eval never :exports code :comments link
       # set user installation paths
       if (-d ~/.autojump/bin) then
           set path = (~/.autojump/bin path)
@@ -210,7 +264,7 @@
     #+END_SRC
 
 *** direnv related config
-    #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/post/direnv.csh") :eval never :exports code :comments link :noweb yes 
+    #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/post/direnv.csh") :eval never :exports code  :noweb tangle 
       if (`command -v direnv` != "") then
           <<statusbarrc()>>
           alias precmd 'eval `direnv export tcsh`; source "$statusbarrc" >& /dev/null' # what is this command do in tcsh
@@ -218,7 +272,7 @@
     #+END_SRC
 
 *** xdg workaround
-    #+BEGIN_SRC csh :tangle (m/resolve "${m/xdg.conf.d}/csh/post/xdg.csh") :eval never :exports code :comments link
+    #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/post/xdg.csh") :eval never :exports code :comments link
       #!/bin/csh
       if ( -s "${XDG_CONFIG_HOME}/ssh/config" ) then
           set SSH_CONFIG="-F ${XDG_CONFIG_HOME}/ssh/config"
