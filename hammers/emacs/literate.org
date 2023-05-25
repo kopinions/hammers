@@ -54,74 +54,84 @@
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-literate.el") :comments link
       (setq org-agenda-dir (expand-file-name "agendas" m/home.d))
       (use-package org
-	:diminish org-mode
-	:custom
-	(org-src-fontify-natively t)
-	(org-src-tab-acts-natively t)
-	(org-descriptive-links nil)
-	(org-special-ctrl-a/e t)
-	(org-use-sub-superscripts '{})
-	(org-export-with-sub-superscripts '{})
-	(org-confirm-babel-evaluate nil)
-	(org-startup-folded 'content)
-	(org-edit-timestamp-down-means-later t)
-	(org-hide-emphasis-markers t)
-	(org-catch-invisible-edits 'show)
-	(org-export-coding-system 'utf-8)
-	(org-pretty-entities t)
-	(org-fast-tag-selection-single-key 'expert)
-	(org-image-actual-width nil)
-	(org-adapt-indentation t)
-	:custom-face
-	(org-link ((t (:foreground "#ebe087" :underline t))))
-	(org-list-dt ((t (:foreground "#bd93f9"))))
-	(org-document-title ((t (:foreground "#f1fa8c" :weight bold))))
-	(org-footnote ((t (:foreground "#76e0f3"))))
+        :preface
+        (defun org-toggle-emphasis ()
+          "Toggle hiding/showing of org emphasize markers."
+          (interactive)
+          (if org-hide-emphasis-markers
+              (set-variable 'org-hide-emphasis-markers nil)
+            (set-variable 'org-hide-emphasis-markers t))
+          (org-mode-restart)
+          )
+        :diminish org-mode
+        :custom
+        (org-src-fontify-natively t)
+        (org-src-tab-acts-natively t)
+        (org-descriptive-links nil)
+        (org-special-ctrl-a/e t)
+        (org-use-sub-superscripts '{})
+        (org-export-with-sub-superscripts '{})
+        (org-confirm-babel-evaluate nil)
+        (org-startup-folded 'showeverything)
+        (org-edit-timestamp-down-means-later t)
+        (org-hide-emphasis-markers t)
+        (org-catch-invisible-edits 'show)
+        (org-export-coding-system 'utf-8)
+        (org-pretty-entities t)
+        (org-fast-tag-selection-single-key 'expert)
+        (org-image-actual-width nil)
+        (org-adapt-indentation t)
+        :custom-face
+        (org-link ((t (:foreground "#ebe087" :underline t))))
+        (org-list-dt ((t (:foreground "#bd93f9"))))
+        (org-document-title ((t (:foreground "#f1fa8c" :weight bold))))
+        (org-footnote ((t (:foreground "#76e0f3"))))
 
-	;; do not scale outline header
-	;; (org-level-1 ((t (:inherit outline-1 :height 1.0))))
-	;; (org-level-2 ((t (:inherit outline-2 :height 1.0))))
-	;; (org-level-3 ((t (:inherit outline-3 :height 1.0))))
-	;; (org-level-4 ((t (:inherit outline-4 :height 1.0))))
-	;; (org-level-5 ((t (:inherit outline-5 :height 1.0))))
-	:bind 
-	(("C-c b" . org-switchb)
-	 ("C-x C-l" . org-store-link)
-	 :map org-mode-map
-	 ("C-c n" . org-narrow-to-subtree)
-	 ("C-c b" . org-narrow-to-block)
-	 ("C-c {" . sp-wrap-curly)
-	 ("C-c (" . sp-wrap-round)
-	 ("C-c [" . sp-wrap-square)
-	 ("C-c w" . widen)
-	 ("S-<up>" . org-previous-item)
-	 ("S-<down>" . org-next-item)
-	 )
-	:hook
-	(org-mode . (lambda ()
-		      (dolist (key '("C-'" "C-," "C-."))
-			(unbind-key key org-mode-map))))
-	:config
-	(advice-add 'org-refile :after (lambda (&rest _) (org-save-all-org-buffers)))
-	;; load babel languages
-	(org-babel-do-load-languages
-	 'org-babel-load-languages
-	 '((R . t)
-	   (dot . t)
-	   (ditaa . t)
-	   (emacs-lisp . t)
-	   (gnuplot . t)
-	   (haskell . nil)
-	   (latex . t)
-	   (ocaml . nil)
-	   (octave . t)
-	   (plantuml . t)
-	   (python . t)
-	   (ruby . t)
-	   (screen . nil)
-	   (shell . t)
-	   (sql . t)
-	   (sqlite . t))))
+        ;; do not scale outline header
+        ;; (org-level-1 ((t (:inherit outline-1 :height 1.0))))
+        ;; (org-level-2 ((t (:inherit outline-2 :height 1.0))))
+        ;; (org-level-3 ((t (:inherit outline-3 :height 1.0))))
+        ;; (org-level-4 ((t (:inherit outline-4 :height 1.0))))
+        ;; (org-level-5 ((t (:inherit outline-5 :height 1.0))))
+        :bind 
+        (("C-c b" . org-switchb)
+         ("C-x C-l" . org-store-link)
+         :map org-mode-map
+         ("C-c n" . org-narrow-to-subtree)
+         ("C-c b" . org-narrow-to-block)
+         ("C-c {" . sp-wrap-curly)
+         ("C-c (" . sp-wrap-round)
+         ("C-c [" . sp-wrap-square)
+         ("C-c w" . widen)
+         ("C-c e" . org-toggle-emphasis)
+         ("S-<up>" . org-previous-item)
+         ("S-<down>" . org-next-item)
+         )
+        :hook
+        (org-mode . (lambda ()
+                      (dolist (key '("C-'" "C-," "C-."))
+                        (unbind-key key org-mode-map))))
+        :config
+        (advice-add 'org-refile :after (lambda (&rest _) (org-save-all-org-buffers)))
+        ;; load babel languages
+        (org-babel-do-load-languages
+         'org-babel-load-languages
+         '((R . t)
+           (dot . t)
+           (ditaa . t)
+           (emacs-lisp . t)
+           (gnuplot . t)
+           (haskell . nil)
+           (latex . t)
+           (ocaml . nil)
+           (octave . t)
+           (plantuml . t)
+           (python . t)
+           (ruby . t)
+           (screen . nil)
+           (shell . t)
+           (sql . t)
+           (sqlite . t))))
 
     #+END_SRC
 
@@ -338,8 +348,7 @@
 	 ("C-c a" . org-agenda)
 	 :map org-mode-map
 	 ("C-c i" . org-clock-in)
-	 ("C-c o" . org-clock-out)
-	 ("C-c e" . org-set-effort))
+	 ("C-c o" . org-clock-out))
 	:hook
 	(org-agenda-after-show . org-show-entry)
 	(org-agenda-mode . hl-line-mode)
