@@ -74,6 +74,8 @@
        alias ga 'git add'
        alias gc 'git commit'
        alias gp 'git push'
+       alias gd 'git diff'
+       alias gco 'git checkout'
        alias grt 'cd `git rev-parse --show-toplevel || echo .`'
     #+END_SRC
 **** proxy alias
