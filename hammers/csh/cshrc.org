@@ -260,7 +260,7 @@
 
       # prepend autojump to cwdcmd (run after every change of working directory)
       if (`alias cwdcmd` !~ *autojump*) then
-          alias cwdcmd 'autojump --add $cwd >/dev/null;' `alias cwdcmd`
+          alias cwdcmd 'autojump --add $cwd >/dev/null;'
       endif
 
       #default autojump command
