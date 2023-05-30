@@ -34,6 +34,8 @@
       setenv INPUTRC ${XDG_CONFIG_HOME}/readline/inputrc
       setenv GNUPGHOME ${XDG_CONFIG_HOME}/gnupg
 
+      umask 022
+
       foreach file (`find ${XDG_CONFIG_HOME}/csh/init -name "*.csh"|sort`)
            source "${file}"
       end

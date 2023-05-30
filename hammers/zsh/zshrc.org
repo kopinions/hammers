@@ -47,6 +47,8 @@
       export ZPLUG_CACHE_DIR=${XDG_CACHE_HOME}/zplug
       export HISTFILE=${XDG_DATA_HOME}/zsh/history
 
+      umask 022
+      
       mkdir -p ${XDG_DATA_HOME}/zsh/
 
       [[ $TERM == "tramp" ]] && unsetopt zle && PS1='$ '&& return
