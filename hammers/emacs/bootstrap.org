@@ -63,6 +63,10 @@
      (global-unset-key (kbd "M-`"))
    #+END_SRC
 
+** 文件大小提醒
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/init.el") :comments link
+   (setq large-file-warning-threshold 50000000)
+   #+END_SRC
 ** 是否开启离线模式
    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/init.el") :comments link
      (defvar m/offline 
