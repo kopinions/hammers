@@ -19,9 +19,6 @@
       export XDG_CONFIG_HOME=${HOME}/.config
       export XDG_CACHE_HOME=${HOME}/.cache
       export XDG_DATA_HOME=${HOME}/.local/share
-      mkdir -p ${XDG_CACHE_HOME} ${XDG_DATA_HOME} ${XDG_CONFIG_HOME}
-      mkdir -p ${XDG_DATA_HOME}/{zsh,less,git}
-
 
       export HOMEBREW_BUNDLE_FILE=${XDG_CONFIG_HOME}/homebrew-bundle/Brewfile
       export RIPGREP_CONFIG_PATH=${XDG_CONFIG_HOME}/ripgrep/config
@@ -37,59 +34,63 @@
       export GNUPGHOME=${XDG_CONFIG_HOME}/gnupg
 
       export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
-    #+END_SRC
-
-
-*** zshrc 配置
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/.zshrc") :eval never :exports code :comments link
       export ZPLUG_HOME=${XDG_CONFIG_HOME}/zsh/zplug
       export ZPLUG_REPOS=${XDG_CONFIG_HOME}/zplug/repos
+      export ZPLUG_LOADFILE="${XDG_CONFIG_HOME}/zsh/zplugs.zsh"
       export ZPLUG_CACHE_DIR=${XDG_CACHE_HOME}/zplug
       export HISTFILE=${XDG_DATA_HOME}/zsh/history
 
-      umask 022
-      
-      mkdir -p ${XDG_DATA_HOME}/zsh/
+    #+END_SRC
 
-      [[ $TERM == "tramp" ]] && unsetopt zle && PS1='$ '&& return
-      for file in $(find ${XDG_CONFIG_HOME}/zsh/init -name "*.zsh"|sort); do
+*** zprofile 环境变量配置
+    #+NAME: zprofile
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/.zprofile") :eval never :exports code :comments link
+      mkdir -p ${XDG_CACHE_HOME} ${XDG_DATA_HOME} ${XDG_CONFIG_HOME}
+      mkdir -p ${XDG_DATA_HOME}/{zsh,less,git}
+
+      umask 022
+
+      typeset -U path
+
+      for file in $(find ${XDG_CONFIG_HOME}/zsh/profiles -name "*.zsh"|sort -Vr); do
           source "${file}"
       done
 
-      export ZPLUG_LOADFILE="${XDG_CONFIG_HOME}/zsh/zplugs.zsh"
+      export PATH
+    #+END_SRC
+
+*** zshrc 配置
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/.zshrc") :eval never :exports code :comments link
+      [[ $TERM == "tramp" ]] && unsetopt zle && PS1='$ '&& return
       source ${ZPLUG_HOME}/init.zsh
       zplug load
-
-      for file in ${XDG_CONFIG_HOME}/zsh/post/*.zsh; do
+      for file in ${XDG_CONFIG_HOME}/zsh/rcs/*.zsh; do
           source "${file}"
       done
+      export PATH
     #+END_SRC
 
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/init/python.zsh") :eval never :exports code :comments link
-      export PATH="/usr/local/opt/python/libexec/bin:$PATH"
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/profiles/000-python.zsh") :eval never :exports code :comments link
+      path=('/usr/local/opt/python/libexec/bin' $path)
     #+END_SRC
 
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/init/ruby.zsh") :eval never :exports code :comments link
-      export PATH="/usr/local/opt/ruby/bin:$PATH"
-    #+END_SRCS
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/profiles/001-ruby.zsh") :eval never :exports code :comments link
+      path=('/usr/local/opt/ruby/bin' $path)
+    #+END_SRC
 
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/init/brew.zsh") :eval never :exports code :comments link
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/profiles/002-brew.zsh") :eval never :exports code :comments link
       if [ -d "/usr/local/Cellar" ]; then
 	  eval $(/usr/local/bin/brew shellenv);
       fi
     #+END_SRC
 
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/init/init.zsh") :eval never :exports code :comments link
-      
-    #+END_SRC
-
 *** PATH related config
     
 **** //usr/local/bin/
-     #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/init/usr_local_bin.zsh") :eval never :exports code :comments link
-        if [ -d "/usr/local/bin" ]; then
-            export PATH="/usr/local/bin:$PATH"
-        fi
+     #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/profiles/000-usr_local_bin.zsh") :eval never :exports code :comments link
+       if [ -d "/usr/local/bin" ]; then
+           path=('/usr/local/bin' $path)
+       fi
     #+END_SRC
 
     #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/zplugs.zsh") :eval never :exports code :comments link
@@ -113,17 +114,17 @@
       return 0 # in case zplug adds plugs ignore them
     #+END_SRC
 
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/post/loads.zsh") :eval never :exports code :comments link
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/profiles/000-home-local.zsh") :eval never :exports code :comments link
       if [ -d "$HOME/.local" ]; then
-	  export PATH="$HOME/.local/bin:$PATH";
+          path=("$HOME/.local/bin" $path)
       fi
     #+END_SRC
 **** coreutils gnu tools path  
-     #+BEGIN_SRC shell :tangle (or (and (eq m/os 'macos) (m/resolve "${m/xdg.conf.d}/zsh/post/loads.zsh")) "no") :eval never :exports code :comments link
-       export PATH="$(find -L /usr/local/opt -maxdepth 3 -mindepth 3 -type d -name gnubin | paste -s -d: -):$PATH"
+     #+BEGIN_SRC shell :tangle (or (and (eq m/os 'macos) (m/resolve "${m/xdg.conf.d}/zsh/profiles/004-brew-coreutils.zsh")) "no") :eval never :exports code :comments link
+       path=("$(find -L /usr/local/opt -maxdepth 3 -mindepth 3 -type d -name gnubin | paste -s -d: -)" $path)
      #+END_SRC
 
-     #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/post/config.zsh") :eval never :exports code :comments link
+     #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/config.zsh") :eval never :exports code :comments link
        # Changing Directories
        # http://zsh.sourceforge.net/Doc/Release/Options.html#Changing-Directories
        setopt auto_cd                 # if a command isn't valid, but is a directory, cd to that dir
@@ -211,7 +212,7 @@
      #+END_SRC
 
 *** rg 命令管道相关处理，如果 rg 被输出到 terminal, 则使用 less 进行分页，否则直接输出所有结果
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/post/functions.zsh") :eval never :exports code :comments link
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/functions.zsh") :eval never :exports code :comments link
       function rg(){
 	  # If outputting (fd 1 = stdout) directly to a terminal, page automatically:
 	  if [ -t 1 ]; then
@@ -224,7 +225,7 @@
     #+END_SRC
 
 *** 获取当前用户的某个名字的进程
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/post/functions.zsh") :eval never :exports code :comments link
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/functions.zsh") :eval never :exports code :comments link
       function egrep(){
 	  # If outputting (fd 1 = stdout) directly to a terminal, page automatically:
 	  if [ -t 1 ]; then
@@ -237,14 +238,14 @@
     #+END_SRC
 
 *** 根据正则表达式生成随机值
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/post/functions.zsh") :eval never :exports code :comments link
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/functions.zsh") :eval never :exports code :comments link
       function regen(){
 	  perl -e "use String::Random qw(random_regex random_string);print random_regex('$1');"
       }
     #+END_SRC
 
 *** cmake 编译
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/post/alias.zsh") :eval never :exports code :comments link
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/alias.zsh") :eval never :exports code :comments link
       #!/bin/zsh
       mk() {
           if [ -d build ]; then
@@ -273,9 +274,9 @@
       alias lt='lc --color=auto -ltFh'   #long list,sorted by date,show type,human readable
       alias ll='lc --color=auto -l'      #long list
       alias ldot='lc --color=auto -ld .*'
-      alias lc --color=auto='lc --color=auto -1FSsh'
-      alias lart='lc --color=auto -1Fcart'
-      alias lrt='lc --color=auto -1Fcrt'
+      alias lc='ls --color=auto -1FSsh'
+      alias lart='ls --color=auto -1Fcart'
+      alias lrt='ls --color=auto -1Fcrt'
 
       alias zshrc='${=EDITOR} ${ZDOTDIR:-$HOME}/.zshrc' # Quick access to the .zshrc file
 
@@ -319,7 +320,7 @@
     #+END_SRC
 
 *** xdg workaround
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/post/xdg.zsh") :eval never :exports code :comments link
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/xdg.zsh") :eval never :exports code :comments link
       #!/bin/zsh
       if [ -s "${XDG_CONFIG_HOME}/ssh/config" ]
       then
@@ -351,7 +352,7 @@
     #+END_SRC
 
 *** export http proxy
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/post/alias.zsh") :eval never :exports code :comments link
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/alias.zsh") :eval never :exports code :comments link
       pe() {
 	  export http_proxy=http://127.0.0.1:8080 https_proxy=http://127.0.0.1:8080
       }
@@ -363,7 +364,7 @@
       realpath ${offline_home}
     #+END_SRC
     
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/post/functions.zsh") :eval never :exports code :comments link :noweb yes
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/functions.zsh") :eval never :exports code :comments link :noweb yes
       function rsync_emacs() {
           rsync --progress -ravz rsync://mirrors.tuna.tsinghua.edu.cn/elpa/ <<emacs_offline_home()>>
       }
