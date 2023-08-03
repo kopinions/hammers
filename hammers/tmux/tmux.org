@@ -69,6 +69,7 @@
       set -g prefix C-x
       unbind-key C-b
 
+      set -gw default-command "${SHELL}"
       # emacs 类似快捷键
       set -gw mode-keys emacs
 
