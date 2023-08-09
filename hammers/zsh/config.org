@@ -11,14 +11,19 @@
 *** zshenv 环境变量配置
     #+NAME: zshenv
     #+BEGIN_SRC shell :tangle (m/resolve "${m/home.d}/.zshenv") :eval never :exports code :comments link
+      export XDG_CONFIG_HOME=${HOME}/.config
+      export XDG_CACHE_HOME=${HOME}/.cache
+      export XDG_DATA_HOME=${HOME}/.local/share
+      export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
+    #+END_SRC
+
+*** zprofile 环境变量配置
+    #+NAME: zprofile
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/.zprofile") :eval never :exports code :comments link
       export LANG=en_US.UTF-8
       export JAVA_HOME="/Library/Java/JavaVirtualMachines/openjdk-13.0.1.jdk/Contents/Home"
       export EDITOR=vim
       export DISABLE_AUTO_TITLE=true
-
-      export XDG_CONFIG_HOME=${HOME}/.config
-      export XDG_CACHE_HOME=${HOME}/.cache
-      export XDG_DATA_HOME=${HOME}/.local/share
 
       export HOMEBREW_BUNDLE_FILE=${XDG_CONFIG_HOME}/homebrew-bundle/Brewfile
       export RIPGREP_CONFIG_PATH=${XDG_CONFIG_HOME}/ripgrep/config
@@ -33,18 +38,11 @@
       export INPUTRC=${XDG_CONFIG_HOME}/readline/inputrc
       export GNUPGHOME=${XDG_CONFIG_HOME}/gnupg
 
-      export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
       export ZPLUG_HOME=${XDG_CONFIG_HOME}/zsh/zplug
       export ZPLUG_REPOS=${XDG_CONFIG_HOME}/zplug/repos
       export ZPLUG_LOADFILE="${XDG_CONFIG_HOME}/zsh/zplugs.zsh"
       export ZPLUG_CACHE_DIR=${XDG_CACHE_HOME}/zplug
-      export HISTFILE=${XDG_DATA_HOME}/zsh/history
 
-    #+END_SRC
-
-*** zprofile 环境变量配置
-    #+NAME: zprofile
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/.zprofile") :eval never :exports code :comments link
       mkdir -p ${XDG_CACHE_HOME} ${XDG_DATA_HOME} ${XDG_CONFIG_HOME}
       mkdir -p ${XDG_DATA_HOME}/{zsh,less,git}
 
@@ -153,6 +151,8 @@
        autoload history-search-end
        HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND="bg=cyan,fg=white,bold"
        HIST_STAMPS="dd.mm.yyyy" ## OH-MY-ZSH
+       HISTFILE=${XDG_DATA_HOME}/zsh/history
+       
        setopt extended_history        # write the history file in the ':start:elapsed;command' format
        setopt appendhistory           # append to history file
        setopt hist_ignore_dups        # ignore duplication command history list
@@ -181,7 +181,6 @@
 
        # Input/Output
        # http://zsh.sourceforge.net/Doc/Release/Options.html#Input_002fOutput
-       unsetopt clobber               # must use >| to truncate existing files
        unsetopt correct               # don't try to correct the spelling of commands
        unsetopt correct_all           # don't try to correct the spelling of all arguments in a line
        unsetopt flow_control          # disable start/stop characters in shell editor
