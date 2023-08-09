@@ -209,6 +209,10 @@
        unsetopt beep                 # be quiet!
        setopt combining_chars        # combine zero-length punctuation characters (accents) with the base character
        setopt emacs                  # use emacs keybindings in the shell
+
+
+       # do not offer same directory when completing for "cd"
+       zstyle ':completion:*' ignore-parents 'parent pwd directory'
      #+END_SRC
 
 *** rg 命令管道相关处理，如果 rg 被输出到 terminal, 则使用 less 进行分页，否则直接输出所有结果
