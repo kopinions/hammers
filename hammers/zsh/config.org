@@ -121,8 +121,8 @@
      #+BEGIN_SRC shell :tangle (or (and (eq m/os 'macos) (m/resolve "${m/xdg.conf.d}/zsh/profiles/004-brew-coreutils.zsh")) "no") :eval never :exports code :comments link
        path=("$(find -L /usr/local/opt -maxdepth 3 -mindepth 3 -type d -name gnubin | paste -s -d: -)" $path)
      #+END_SRC
-
-     #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/config.zsh") :eval never :exports code :comments link
+**** zsh config file
+     #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/000-config.zsh") :eval never :exports code :comments link
        # Changing Directories
        # http://zsh.sourceforge.net/Doc/Release/Options.html#Changing-Directories
        setopt auto_cd                 # if a command isn't valid, but is a directory, cd to that dir
@@ -215,7 +215,7 @@
      #+END_SRC
 
 *** rg 命令管道相关处理，如果 rg 被输出到 terminal, 则使用 less 进行分页，否则直接输出所有结果
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/functions.zsh") :eval never :exports code :comments link
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/001-functions.zsh") :eval never :exports code :comments link
       function rg(){
 	  # If outputting (fd 1 = stdout) directly to a terminal, page automatically:
 	  if [ -t 1 ]; then
@@ -228,7 +228,7 @@
     #+END_SRC
 
 *** 获取当前用户的某个名字的进程
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/functions.zsh") :eval never :exports code :comments link
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/001-functions.zsh") :eval never :exports code :comments link
       function egrep(){
 	  # If outputting (fd 1 = stdout) directly to a terminal, page automatically:
 	  if [ -t 1 ]; then
@@ -241,14 +241,14 @@
     #+END_SRC
 
 *** 根据正则表达式生成随机值
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/functions.zsh") :eval never :exports code :comments link
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/001-functions.zsh") :eval never :exports code :comments link
       function regen(){
 	  perl -e "use String::Random qw(random_regex random_string);print random_regex('$1');"
       }
     #+END_SRC
 
 *** cmake 编译
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/alias.zsh") :eval never :exports code :comments link
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/002-alias.zsh") :eval never :exports code :comments link
       #!/bin/zsh
       mk() {
           if [ -d build ]; then
@@ -319,11 +319,10 @@
 
       # Make zsh know about hosts already accessed by SSH
       zstyle -e ':completion:*:(ssh|scp|sftp|rsh|rsync):hosts' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
-
     #+END_SRC
 
 *** xdg workaround
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/xdg.zsh") :eval never :exports code :comments link
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/003-xdg.zsh") :eval never :exports code :comments link
       #!/bin/zsh
       if [ -s "${XDG_CONFIG_HOME}/ssh/config" ]
       then
@@ -355,7 +354,7 @@
     #+END_SRC
 
 *** export http proxy
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/alias.zsh") :eval never :exports code :comments link
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/002-alias.zsh") :eval never :exports code :comments link
       pe() {
 	  export http_proxy=http://127.0.0.1:8080 https_proxy=http://127.0.0.1:8080
       }
@@ -367,9 +366,8 @@
       realpath ${offline_home}
     #+END_SRC
     
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/functions.zsh") :eval never :exports code :comments link :noweb yes
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/001-functions.zsh") :eval never :exports code :comments link :noweb yes
       function rsync_emacs() {
           rsync --progress -ravz rsync://mirrors.tuna.tsinghua.edu.cn/elpa/ <<emacs_offline_home()>>
       }
     #+END_SRC
-
