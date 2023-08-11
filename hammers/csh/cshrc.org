@@ -260,11 +260,11 @@
 
       # prepend autojump to cwdcmd (run after every change of working directory)
       if (`alias cwdcmd` !~ *autojump*) then
-          alias cwdcmd 'autojump --add $cwd >/dev/null;'
+          alias cwdcmd 'setenv AUTOJUMP_SOURCED 1;autojump --add $cwd >/dev/null;'
       endif
 
       #default autojump command
-      alias j 'cd `autojump -- \!:1`'
+      alias j 'setenv AUTOJUMP_SOURCED 1; cd `autojump -- \!:1`'
     #+END_SRC
 
 *** direnv related config
