@@ -69,13 +69,8 @@
         brew 'cmake'
         brew 'ninja'
         brew 'gcc'
-        brew 'llvm'
         brew 'boost'
       #+END_SRC
-****** macos x11 开发
-       #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-         cask 'xquartz'
-       #+END_SRC
 
 ***** php
       #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
@@ -85,27 +80,7 @@
       #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
         brew 'python'
       #+END_SRC
-***** ruby
-      #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-        brew 'ruby'
-      #+END_SRC  
-***** ic
-      #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-        brew 'icarus-verilog'
-        cask 'gtkwave', greedy: true
-      #+END_SRC
-***** pcb
-      #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-        cask 'kicad', greedy: true, args: {force:true}
-      #+END_SRC 
-***** OCaml
-      #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-        brew 'opam'
-      #+END_SRC
-***** javascript
-      #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-        brew 'node'
-      #+END_SRC
+
 ***** markdown/orgmode
 ****** markdown/orgmode/xxx 格式转换工具
        #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
@@ -173,11 +148,6 @@
        brew 'tmuxinator'
      #+END_SRC
 
-**** 代码分析
-***** 行数统计
-      #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-        brew 'cloc'
-      #+END_SRC
      
 *** mac app store
     #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
@@ -247,18 +217,8 @@
      #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
        brew 'nmap', greedy: true
      #+END_SRC
-**** 下载工具
-     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-       brew 'axel', greedy: true # multiple thread downloader
-     #+END_SRC
-**** ftp 上传/下载
-     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-       brew 'lftp', greedy: true
-     #+END_SRC
-**** 网络带宽测试
-     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-       brew 'iperf', greedy: true
-     #+END_SRC 
+
+ 
 **** P2P 下载
      #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
        cask 'thunder', greedy: true
@@ -294,19 +254,12 @@
      #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
        cask 'iterm2', greedy: true
      #+END_SRC
-**** jvm
-     #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-       brew 'openjdk'
-     #+END_SRC
+
 **** 输入法
      #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link      
        cask 'squirrel', greedy: true
      #+END_SRC
 *** 办公
-**** 阅读
-     #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-       cask 'kindle', greedy: true
-     #+END_SRC
 **** 字典
      #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
        cask 'youdaodict', greedy: true
@@ -333,7 +286,7 @@
      #+END_SRC
 **** 密码管理
      #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-       cask '1password', greedy: true
+       cask '1password', greedy: false
      #+END_SRC
      
 *** 系统清理
@@ -361,11 +314,6 @@
        cask 'veracrypt', greedy: true
      #+END_SRC
 
-*** 协作相关
-    #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-      brew 'tiger-vnc'
-    #+END_SRC
-
 *** 画图
 **** 流程图/架构/框架
      #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
@@ -381,8 +329,6 @@
      #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
        cask 'yinxiangbiji', greedy: true
      #+END_SRC
-
-     
     
     
      #+BEGIN_SRC shell :eval (or (and (eq m/os 'macos) "yes") "never") :shebang #!/bin/bash :exports none :tangle no :results output silent :noweb yes :prologue "exec 2>&1" :epilogue ":" :comments link
