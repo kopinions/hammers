@@ -134,6 +134,7 @@
   (let* ((resolved-src (m/resolve src))
 	 (resolved-dest (m/resolve dest)))
     (message "copy: %s to %s" resolved-src resolved-dest)
+    (make-directory (directory-file-name resolved-dest) t)
     (m/system-pipefail "rsync" "-ravz"  resolved-src resolved-dest)
     (message "copied: %s to %s" resolved-src resolved-dest)))
 
@@ -176,6 +177,7 @@
   (let* ((resolved-src (m/resolve src))
 	 (resolved-dest (m/resolve dest)))
     (message "rsync: %s to %s" resolved-src resolved-dest)
+    (make-directory (directory-file-name resolved-dest) t)
     (m/system-pipefail "rsync" "-raz" resolved-src resolved-dest)
     (message "synced: %s to %s" resolved-src resolved-dest)))
 
