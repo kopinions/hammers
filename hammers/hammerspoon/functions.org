@@ -118,9 +118,9 @@
             if next(config) ~= nil then
                local current = hs.keycodes.currentSourceID()
 
-               if (current ~= "im.rime.inputmethod.Squirrel.Rime" and string.match (config [1].im, "CN")) then
-                  hs.keycodes.currentSourceID("com.apple.keylayout.US")
-                  hs.keycodes.currentSourceID("im.rime.inputmethod.Squirrel.Rime")
+               if (current ~= "im.rime.inputmethod.Squirrel.Hans" and string.match (config [1].im, "CN")) then
+                  -- hs.keycodes.currentSourceID("com.apple.keylayout.US")
+                  hs.keycodes.currentSourceID("im.rime.inputmethod.Squirrel.Hans")
                elseif (current ~= "com.apple.keylayout.US" and string.match (config [1].im, "EN")) then
                   hs.keycodes.currentSourceID("com.apple.keylayout.US")
                end
