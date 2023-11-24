@@ -59,6 +59,58 @@
       #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
         brew 'parallel', greedy: true, link: true
       #+END_SRC
+*** 效率工具
+**** 搜索/工作流（Alfred）
+     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       cask 'alfred', greedy: true
+     #+END_SRC
+**** 快捷键提示
+     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       cask 'cheatsheet', greedy: true
+     #+END_SRC
+
+*** 系统增强
+**** 键盘布局更改
+     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       cask 'ukelele', greedy: true
+     #+END_SRC
+**** 连续按键问题增强
+     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       cask 'unshaky', greedy: true # process the mac keyboard duplicate key problem
+     #+END_SRC
+**** 键盘映射
+     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       cask 'karabiner-elements', greedy: true
+     #+END_SRC
+**** 系统控制
+     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       cask 'hammerspoon', greedy: true
+     #+END_SRC
+**** 终端
+     #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       cask 'iterm2', greedy: true
+     #+END_SRC
+**** 将一个目录挂载到其他地方
+     #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       cask 'iterm2', greedy: true
+     #+END_SRC
+     
+**** 输入法
+     #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link      
+       cask 'squirrel', greedy: true
+     #+END_SRC
+
+*** 存储
+**** 文件云存储
+     #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       cask 'baidunetdisk', greedy: true
+       cask 'nutstore', greedy: true
+     #+END_SRC
+**** 笔记云存储
+     #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       cask 'yinxiangbiji', greedy: true
+     #+END_SRC
+    
 
 *** 开发相关
 **** 语言相关
@@ -233,32 +285,7 @@
      #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
        cask 'lulu', greedy: true
      #+END_SRC
-*** 系统增强
-**** 键盘布局更改
-     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-       cask 'ukelele', greedy: true
-     #+END_SRC
-**** 连续按键问题增强
-     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-       cask 'unshaky', greedy: true # process the mac keyboard duplicate key problem
-     #+END_SRC
-**** 键盘映射
-     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-       cask 'karabiner-elements', greedy: true
-     #+END_SRC
-**** 系统控制
-     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-       cask 'hammerspoon', greedy: true
-     #+END_SRC
-**** 终端
-     #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-       cask 'iterm2', greedy: true
-     #+END_SRC
 
-**** 输入法
-     #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link      
-       cask 'squirrel', greedy: true
-     #+END_SRC
 *** 办公
 **** 字典
      #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
@@ -275,19 +302,6 @@
       cask 'docker', greedy: true
     #+END_SRC
 
-*** 效率工具
-**** 搜索/工作流（Alfred）
-     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-       cask 'alfred', greedy: true
-     #+END_SRC
-**** 快捷键提示
-     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-       cask 'cheatsheet', greedy: true
-     #+END_SRC
-**** 密码管理
-     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-       cask '1password', greedy: false
-     #+END_SRC
      
 *** 系统清理
 **** 软件卸载
@@ -319,17 +333,6 @@
      #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
        cask 'drawio', greedy: true
      #+END_SRC
-*** 存储
-**** 文件云存储
-     #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-       cask 'baidunetdisk', greedy: true
-       cask 'nutstore', greedy: true
-     #+END_SRC
-**** 笔记云存储
-     #+BEGIN_SRC  conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
-       cask 'yinxiangbiji', greedy: true
-     #+END_SRC
-    
     
      #+BEGIN_SRC shell :eval (or (and (eq m/os 'macos) "yes") "never") :shebang #!/bin/bash :exports none :tangle no :results output silent :noweb yes :prologue "exec 2>&1" :epilogue ":" :comments link
        #brew bundle --global
