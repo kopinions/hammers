@@ -197,7 +197,8 @@
                    "com.vmware.horizon",
                    "com.parallels.desktop.console",
                    "com.youqu.todesk.mac",
-                   "com.oray.sunlogin.macclient"
+                   "com.oray.sunlogin.macclient",
+                   "com.microsoft.rdc.macos"
                  ]
                },
                {
@@ -247,7 +248,8 @@
                    "com.vmware.horizon",
                    "com.parallels.desktop.console",
                    "com.youqu.todesk.mac",
-                   "com.oray.sunlogin.macclient"
+                   "com.oray.sunlogin.macclient",
+                   "com.microsoft.rdc.macos"
                  ]
                },
                {
@@ -297,7 +299,8 @@
                    "com.vmware.horizon",
                    "com.parallels.desktop.console",
                    "com.youqu.todesk.mac",
-                   "com.oray.sunlogin.macclient"
+                   "com.oray.sunlogin.macclient",
+                   "com.microsoft.rdc.macos"
                  ]
                },
                {
@@ -343,7 +346,8 @@
                    "com.vmware.horizon",
                    "com.parallels.desktop.console",
                    "com.youqu.todesk.mac",
-                   "com.oray.sunlogin.macclient"
+                   "com.oray.sunlogin.macclient",
+                   "com.microsoft.rdc.macos"
                  ]
                },
                {
@@ -398,7 +402,8 @@
                    "com.vmware.horizon",
                    "com.parallels.desktop.console",
                    "com.youqu.todesk.mac",
-                   "com.oray.sunlogin.macclient"
+                   "com.oray.sunlogin.macclient",
+                   "com.microsoft.rdc.macos"
                  ]
                }
              ]
@@ -442,7 +447,8 @@
                    "com.vmware.horizon",
                    "com.parallels.desktop.console",
                    "com.youqu.todesk.mac",
-                   "com.oray.sunlogin.macclient"
+                   "com.oray.sunlogin.macclient",
+                   "com.microsoft.rdc.macos"
                  ]
                }
              ]
