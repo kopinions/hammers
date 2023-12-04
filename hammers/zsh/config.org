@@ -20,11 +20,9 @@
 *** zprofile 环境变量配置
     #+NAME: zprofile
     #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/.zprofile") :eval never :exports code :comments link
-      if echo $SHELL | grep -E -q ".*/zsh$"; then
-          echo "sourcing profile" > /dev/null
-      else
-          # no zsh, exit
-          exit 0
+      if echo $SHELL | grep -vE -q ".*/zsh$"; then
+          # not zsh, exit
+          return
       fi
       export LANG=en_US.UTF-8
       export JAVA_HOME="/Library/Java/JavaVirtualMachines/openjdk-13.0.1.jdk/Contents/Home"
