@@ -13,7 +13,7 @@
     
     #+NAME: maildir
     #+BEGIN_SRC shell :var maildir=(m/resolve "${m/home.d}/mails")
-      mkdir -p ${maildir}/{ding,lambda,qq,sjkyspa}
+      mkdir -p ${maildir}/{sietium,lambda}
       echo ${maildir}
     #+END_SRC
 
@@ -87,7 +87,7 @@
       SSLType IMAPS
       AuthMechs PLAIN
       #PassCmd "security find-generic-password -s lambda -w"
-      PassCmd "gpg --for-your-eyes-only --no-tty -qd ~/credentials/authinfo.gpg |grep rising.lambda@gmail.com|awk '{print $6}'"
+      PassCmd "gpg --for-your-eyes-only --no-tty -qd ~/credentials/authinfo.gpg 2>/dev/null | grep rising.lambda@gmail.com|awk '{print $6}'"
       # To rotate:
       # > security delete-generic-password -s mbsync-gandi-password
       # > security add-generic-password -a stig@brautaset.org -s mbsync-gandi-password -w APP-SPECIFIC-PASSWORD
@@ -164,153 +164,108 @@
       SyncState *
       Patterns Trash
 
-      IMAPAccount ding
+      IMAPAccount sietium
       Host imap.qiye.aliyun.com
       User neo@sietium.com
       SSLType IMAPS
       AuthMechs LOGIN
-      PassCmd "gpg --for-your-eyes-only --no-tty -qd ~/credentials/authinfo.gpg | grep neo@sietium.com | awk '{print $6}'"
+      PassCmd "gpg --for-your-eyes-only --no-tty -qd ~/credentials/authinfo.gpg 2>/dev/null | grep neo@sietium.com | awk '{print $6}'"
       #PassCmd "security find-generic-password -s lambda -w"
 
       # To rotate:
       # > security delete-generic-password -s mbsync-gandi-password
       # > security add-generic-password -a stig@brautaset.org -s mbsync-gandi-password -w APP-SPECIFIC-PASSWORD
 
-      IMAPStore ding-remote
-      Account ding
+      IMAPStore sietium-remote
+      Account sietium
 
-      MaildirStore ding-local
+      MaildirStore sietium-local
       SubFolders Verbatim
-      Path <<maildir()>>/ding/
-      Inbox <<maildir()>>/ding/INBOX
+      Path <<maildir()>>/sietium/
+      Inbox <<maildir()>>/sietium/INBOX
 
-      Channel ding-inbox
-      Far :ding-remote:INBOX
-      Near :ding-local:INBOX
+      Channel sietium-inbox
+      Far :sietium-remote:INBOX
+      Near :sietium-local:INBOX
       Sync All
       Create Both
       Expunge Both
       SyncState *
 
-      Channel ding-drafts
-      Far :ding-remote:Drafts
-      Near :ding-local:Drafts
+      Channel sietium-drafts
+      Far :sietium-remote:Drafts
+      Near :sietium-local:Drafts
       Sync All
       Create Both
       Expunge Both
       SyncState *
 
-      Channel ding-trash
-      Far :ding-remote:Trash
-      Near :ding-local:Trash
+      Channel sietium-trash
+      Far :sietium-remote:Trash
+      Near :sietium-local:Trash
       Sync All
       Create Both
       Expunge Both
       SyncState *
 
-      Channel ding-sent
-      Far :ding-remote:Sent
-      Near :ding-local:Sent
+      Channel sietium-sent
+      Far :sietium-remote:Sent
+      Near :sietium-local:Sent
       Sync All
       Create Both
       Expunge Both
       SyncState *
 
-      Channel ding-spam
-      Far :ding-remote:Spam
-      Near :ding-local:Spam
+      Channel sietium-spam
+      Far :sietium-remote:Spam
+      Near :sietium-local:Spam
       Sync All
       Create Both
       Expunge Both
       SyncState *
 
-      Channel ding-archive
-      Far :ding-remote:Archive
-      Near :ding-local:Archive
+      Channel sietium-archive
+      Far :sietium-remote:Archive
+      Near :sietium-local:Archive
       Sync All
       Create Both
       Expunge Both
       SyncState *
 
-      Channel ding-gb2
-      Far :ding-remote:GB2
-      Near :ding-local:GB2
+      Channel sietium-gb2
+      Far :sietium-remote:GB2
+      Near :sietium-local:GB2
       Sync All
       Create Both
       Expunge Both
       SyncState *
 
-      Channel ding-patent
-      Far :ding-remote:Patent
-      Near :ding-local:Patent
+      Channel sietium-patent
+      Far :sietium-remote:Patent
+      Near :sietium-local:Patent
       Sync All
       Create Both
       Expunge Both
       SyncState *
 
-      IMAPAccount qq
-      Host imap.qq.com
-      User sjkyspa@qq.com
-      SSLType IMAPS
-      SSLVersions TLSv1.2
-      AuthMechs LOGIN
-      PassCmd "gpg --for-your-eyes-only --no-tty -qd ~/credentials/authinfo.gpg | grep sjkyspa@qq.com | awk '{print $6}'"
-      # To rotate:
-      # > security delete-generic-password -s mbsync-gandi-password
-      # > security add-generic-password -a stig@brautaset.org -s mbsync-gandi-password -w APP-SPECIFIC-PASSWORD
+      Group sietium
+      Channel sietium-inbox
+      Channel sietium-drafts
+      Channel sietium-trash
+      Channel sietium-sent
+      Channel sietium-spam
+      Channel sietium-archive
+      Channel sietium-gb2
+      Channel sietium-patent
 
-      IMAPStore qq-remote
-      Account qq
-
-      MaildirStore qq-local
-      SubFolders Verbatim
-      Path <<maildir()>>/qq/
-      Inbox <<maildir()>>/qq/INBOX
-
-      Channel qq-inbox
-      Far :qq-remote:"INBOX"
-      Near :qq-local:"INBOX"
-      Sync All
-      Create Both
-      Expunge Both
-      SyncState *
-      Patterns *
-
-      Channel qq-drafts
-      Far :qq-remote:"Drafts"
-      Near :qq-local:"Drafts"
-      Sync All
-      Create Both
-      Expunge Both
-      SyncState *
-      Patterns *
-
-      Channel qq-spam
-      Far :qq-remote:"Junk"
-      Near :qq-local:"Spam"
-      Sync All
-      Create Both
-      Expunge Both
-      SyncState *
-      Patterns *
-
-      Channel qq-sent
-      Far :qq-remote:"Sent Messages"
-      Near :qq-local:"Sent"
-      Sync All
-      Create Both
-      Expunge Both
-      SyncState *
-      Patterns *
-
-      Channel qq-archive
-      Far :qq-remote:"Archive"
-      Near :qq-local:"Archive"
-      Sync All
-      Create Both
-      Expunge Both
-      SyncState *
-      Patterns *
+      Group lambda
+      Channel lambda-inbox
+      Channel lambda-starred
+      Channel lambda-snoozed
+      Channel lambda-sent
+      Channel lambda-spam
+      Channel lambda-drafts
+      Channel lambda-trash
     #+END_SRC
 
 *** mbsync pre-sync
@@ -327,7 +282,7 @@
       [user]
       name=neo
       primary_email=rising.lambda@gmail.com
-      other_email=sjkyspa@gmail.com;neo@sietium.com;sjkyspa@qq.com
+      other_email=neo@sietium.com
 
       [new]
       tags=new;
@@ -345,31 +300,31 @@
 **** pre hook
      #+BEGIN_SRC shell :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/notmuch/default/hooks/pre-new") :tangle-mode (identity #o755) :shebang #!/bin/bash :noweb yes :comments link
        # Move a message file while removing its UID-part
-       function move { s=${1##*/}; s=${s%%,*}; mv -f $1 $2/$s; }
+       function move { s=${1##*/}; s=${s%%,*}; echo "mv -f $1 $2/$s"; }
 
-       echo moving $(notmuch count --output=files --exclude=false tag:gb2 AND folder:'ding/INBOX' AND NOT tag:unread AND NOT from:neo) gb2 messages to the GB2
-       for i in $(notmuch search --exclude=false --output=files tag:gb2 AND folder:'ding/INBOX' AND NOT tag:unread AND NOT from:neo); do
-            move $i "<<maildir()>>/ding/GB2/cur"
+       echo "moving $(notmuch count --output=files --exclude=false tag:gb2 AND folder:sietium/INBOX AND NOT tag:unread AND NOT from:neo) gb2 messages to the GB2"
+       for i in $(notmuch search --exclude=false --output=files tag:gb2 AND folder:sietium/INBOX AND NOT tag:unread AND NOT from:neo); do
+            move $i "<<maildir()>>/sietium/GB2/cur"
        done
 
        # # Move all deleted messages to the Trash folder
        # echo moving $(notmuch count --output=files --exclude=false tag:deleted AND NOT folder:Trash) deleted messages to the Trash folder
        # for i in $(notmuch search --exclude=false --output=files tag:deleted AND NOT folder:Trash); do
-       #     move $i "<<maildir()>>/ding/Trash/cur"
+       #     move $i "<<maildir()>>/sietium/Trash/cur"
        # done
 
        # # Move all spam messages to the Spam folder
        # echo moving $(notmuch count --output=files tag:spam AND NOT folder:Spam) spam-marked messages to the Spam folder
        # for i in $(notmuch search --output=files tag:spam AND NOT folder:Spam); do
-       #     move $i "<<maildir()>>/ding/Spam/cur"
+       #     move $i "<<maildir()>>/sietium/Spam/cur"
        # done
 
        # # Move all archived messages from Inbox to Archive folder
        # echo Moving $(notmuch count --output=files folder:Inbox AND NOT tag:inbox) archived messages from Inbox to Archive folder
        # for i in $(notmuch search --output=files folder:Inbox AND NOT tag:inbox); do
-       #     move $i "<<maildir()>>/ding/Archive/cur"
+       #     move $i "<<maildir()>>/sietium/Archive/cur"
        # done
-       mbsync -c ${XDG_CONFIG_HOME}/isync/config ding-inbox ding-drafts ding-sent ding-spam ding-archive ding-gb2 ding-patent 
+       mbsync -c ${XDG_CONFIG_HOME}/isync/config sietium-inbox sietium-drafts sietium-sent sietium-spam sietium-archive sietium-gb2 sietium-patent 
 
        notmuch new --no-hooks
      #+END_SRC
@@ -398,7 +353,7 @@
        ## Generally only works with messages with the tag:new folder
        notmuch tag +inbox +unread -new -- tag:new
        # 需要处理下 send
-       notmuch tag +gb2 -- to:'gb02*' and folder:'ding/INBOX'
+       notmuch tag +gb2 -- to:'gb02*' and folder:'sietium/INBOX'
 
        echo ']'
      #+END_SRC
@@ -426,27 +381,17 @@
       auth on
       user rising.lambda@gmail.com
       from rising.lambda@gmail.com
-      PassCmd "gpg --for-your-eyes-only --no-tty -qd ~/credentials/authinfo.gpg |grep rising.lambda@gmail.com|awk '{print $6}'"
+      PassCmd "gpg --for-your-eyes-only --no-tty -qd ~/credentials/authinfo.gpg 2>/dev/null | grep rising.lambda@gmail.com|awk '{print $6}'"
 
       account sietium
       host smtp.qiye.aliyun.com
-      port 587
+      port 465
       tls on
       tls_starttls on
       auth on
       user neo@sietium.com
       from neo@sietium.com
-      PassCmd "gpg --for-your-eyes-only --no-tty -qd ~/credentials/authinfo.gpg | grep neo@sietium.com |awk '{print $6}'"
-
-      account qq
-      host smtp.qq.com
-      port 587
-      tls on
-      tls_starttls on
-      auth on
-      user sjkyspa@qq.com
-      from sjkyspa@qq.com
-      PassCmd "gpg --for-your-eyes-only --no-tty -qd ~/credentials/authinfo.gpg | grep sjkyspa@qq.com |awk '{print $6}'"
+      PassCmd "gpg --for-your-eyes-only --no-tty -qd ~/credentials/authinfo.gpg 2>/dev/null | grep neo@sietium.com |awk '{print $6}'"
     #+END_SRC
 
 *** emacs 发送端配置
