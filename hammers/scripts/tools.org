@@ -203,3 +203,347 @@
       bash -x ${script}
       popd
     #+END_SRC
+
+*** GreenVPN v2ray
+    #+BEGIN_SRC shell :eval never :exports code :tangle (or (and (or (eq m/os 'macos) (eq m/os 'liunx)) (m/resolve "${m/home.d}/.local/bin/gv2ray")) "no") :tangle-mode (identity #o755) :noweb yes
+      #!/bin/bash
+      FILEPATH=$(realpath $(dirname $0))
+      PROJECT_PATH=$(realpath "${FILEPATH}/..")
+      set -eo pipefail
+      export PATH="/usr/local/opt/gnu-getopt/bin:$PATH"
+      GETOPT_ARGS=`getopt -o:s:dh -l debug,help, -- "$@"`
+      eval set -- "$GETOPT_ARGS"
+
+      usage() {
+          >&2 echo "Usage: $0 -h|--help -d|--debug server_name"
+      }
+
+      while [ -n "$1" ]
+      do
+          case "$1" in
+              -d|--debug)
+                  set -x;
+                  debug=1;
+                  shift;
+                  ;;
+              -h|--help)
+                  usage;
+                  exit 0;
+                  ;;
+              --)
+                  shift;
+                  break;
+                  ;;
+          esac
+      done
+
+      # get session id
+      if [ -z "${GREEN_USER}" -o -z "${GREEN_PASSWORD}" ]; then
+          echo "make sure the env GREEN_USER, GREEN_PASSWORD exists"
+          exit 1
+      fi
+
+
+      if [ "$#" -ne 1 ]; then
+          >&2 echo "Please specify the server name to connect"
+          usage
+          exit 1
+      fi
+
+      server_name=$1
+      device_id="$(route -n get default|awk -F':' '/interface/{print $2}'|xargs ifconfig|awk '/ether/{print $2}'|sed 's/://g'|md5sum|cut -c1-32|tr -d '\n')"
+      local_ip="$(route -n get default|awk -F':' '/interface/{print $2}'|xargs ifconfig|awk '/inet /{print $2}' | tr -d '\n')"
+      public_ip="$(curl -s ifconfig.me)"
+
+      session=$(curl -s -X POST \
+                     -d 'domain=GreenVPN' \
+                     -d 'version=4.0' \
+                     -d 'deviceId='"$device_id" \
+                     -d 'account='"$GREEN_USER" \
+                     -d 'password='"$GREEN_PASSWORD" \
+                     -d 'terminal=Unkonwn' \
+                     -d 'language=en' \
+                     -d 'account='"$GREEN_USER" \
+                     -d 'platform=10' \
+                     https://www.wzjsq.xyz/Win/1.0/UserLogin \
+                    | sed 's/ //g' \
+                    | base64 -d \
+                    | openssl enc -d -des-ede3-ecb -K $(echo -n a0soxa1gtryc9kjf8gdxaeyf|xxd -p) \
+                    | yq -p xml '.root.+@session')
+
+      # get server id
+      remote_id=$(curl -s -X POST \
+                       -d 'domain=GreenVPN' \
+                       -d 'version=4.0' \
+                       -d 'deviceId='"$device_id" \
+                       -d 'terminal=Unkonwn' \
+                       -d 'language=en' \
+                       -d 'account='"$GREEN_USER" \
+                       -d 'platform=10' \
+                       https://www.wzjsq.xyz/Win/1.0/ServerList \
+                      | sed 's/ //g' \
+                      | base64 -d \
+                      | openssl enc -d -des-ede3-ecb -K $(echo -n a0soxa1gtryc9kjf8gdxaeyf|xxd -p) \
+                      | yq -p xml '.root.list.server[].node |= ([] + . )|[.root.list.server[].node[]]|[.[]|{"name":.+@name, "id":.+@id, "ip":.+@ip}]|unique_by(.name)|.[]|select(.name == '"\"$server_name\""')|.id')
+
+      # make v2ray config
+      v2ray_json=$(mktemp)
+      curl -s -X POST \
+           -d 'domain=GreenVPN' \
+           -d 'version=4.0' \
+           -d 'deviceId='"$device_id" \
+           -d 'platform=10' \
+           -d 'protocol=8' \
+           -d 'terminal=Unkonwn' \
+           -d 'language=en' \
+           -d 'account='"$GREEN_USER" \
+           -d 'password='"$GREEN_PASSWORD" \
+           -d 'session='"$session" \
+           -d 'isoCode=CN' \
+           -d 'clientIp='"$public_ip" \
+           -d 'remoteId='"$remote_id" \
+           -d 'obscure=0' \
+           https://www.wzjsq.xyz/Win/1.0/MakeV2ray \
+          | sed 's/ //g' \
+          | base64 -d \
+          | openssl enc -d -des-ede3-ecb -K $(echo -n a0soxa1gtryc9kjf8gdxaeyf|xxd -p) \
+          | yq -p xml '.root.+content|sub(" ", "")|@base64d|from_json' \
+          | jq > $v2ray_json
+      vconfig=$(mktemp)
+      cat $v2ray_json | yq -p json '.outbound.settings.vnext[0]|{"server": {"address":.address, "port":.port}, "credentials": {"id": .users[0].id, "email": .users[0].email, "flow": .users[0].flow, "encryption": .users[0].encryption}}' > $vconfig
+
+      yq -p yaml -o yaml '(.outbounds.[]|select(.type=="vless")).server = load("'"$vconfig"'").server|(.outbounds.[]|select(.type=="vless")).credentials = load("'"$vconfig"'").credentials' config.yaml | erb -T - -r ${FILEPATH}/vars.rb ${FILEPATH}/config.json.erb | jq
+    #+END_SRC
+
+    #+BEGIN_SRC ruby :eval never :exports code :tangle (or (and (or (eq m/os 'macos) (eq m/os 'liunx)) (m/resolve "${m/home.d}/.local/bin/vars.rb")) "no") :noweb yes
+      require 'yaml'
+      data = STDIN.read
+      $config = YAML.load(data)
+      def config()
+        return $config
+      end
+    #+END_SRC
+    #+BEGIN_SRC ruby :eval never :exports code :tangle (or (and (or (eq m/os 'macos) (eq m/os 'liunx)) (m/resolve "${m/home.d}/.local/bin/config.json.erb")) "no") :noweb yes
+      {
+        "log": {
+          "loglevel": "info"
+        },
+        "dns": {
+          "hosts": {
+            "geosite:category-ads-all": "127.0.0.1"
+          },
+          "servers": [
+            {
+              "address": "8.8.8.8",
+              "port": 53,
+              "domains": [
+                "geosite:geolocation-!cn"
+              ]
+            },
+            {
+              "address": "223.5.5.5",
+              "port": 53,
+              "domains": [
+                "geosite:cn"
+              ]
+            },
+            "localhost"
+          ]
+        },
+        "inbounds": [
+          {
+            "port": 53,
+            "tag": "dns-in",
+            "protocol": "dokodemo-door",
+            "settings": {
+              "address": "8.8.8.8",
+              "port": 53,
+              "network": "tcp,udp"
+            }
+          },
+          {
+            "port": 10240,
+            "tag": "vclient_http",
+            "protocol": "http",
+            "sniffing": {
+              "enabled": true
+            }
+          },
+          {
+            "port": 10241,
+            "protocol": "socks",
+            "tag": "vclient_socks",
+            "settings": {
+              "udp": true
+            }
+          },
+          {
+            "port": 10242,
+            "tag": "ssclient_socks",
+            "protocol": "socks",
+            "settings": {
+              "auth": "noauth"
+            },
+            "sniffing": {
+              "enabled": true,
+              "destOverride": ["http", "tls"]
+            }
+          }
+        ],
+        "outbounds": [
+      <%- config['outbounds'].each do |outbound| -%>
+         {
+            "tag": "<%=outbound['tag']%>",
+            "protocol": "<%=outbound['type']%>",
+            "settings": {
+              <%- if "shadowsocks" == outbound['type'] -%>
+              "servers": [
+                {
+                  "address": "<%=outbound['server']['address']%>",
+                  "method": "<%=outbound['credentials']['method']%>",
+                  "password": "<%=outbound['credentials']['password']%>",
+                  "port": <%=outbound['server']['port']%>
+                }
+              ]<% end -%>
+              <%- if "vless" == outbound['type'] -%>
+              "vnext": [
+                {
+                  "address": "<%=outbound['server']['address']%>",
+                  "port": <%=outbound['server']['port']%>,
+                  "users": [
+                    {
+                      "id": "<%=outbound['credentials']['id']%>",
+                      "email": "<%=outbound['credentials']['email']%>",
+                      "flow": "<%=outbound['credentials']['flow']%>",
+                      "encryption": "<%=outbound['credentials']['encryption']%>"
+                    }
+                  ]
+                }
+              ]<% end %> <%# end of vless %>
+            } <%- if "vless" == outbound['type'] -%>,
+             "streamSettings": {
+              "network": "tcp",
+              "security": "xtls",
+              "xtlsSettings": {
+                  "allowInsecure": true
+              }
+            }<% end %>
+         },
+      <%- end -%>
+          {
+            "tag": "direct",
+            "protocol": "freedom"
+          },
+          {
+            "protocol": "blackhole",
+            "tag": "blocked"
+          },
+          {
+            "tag": "dns-out",
+            "protocol": "dns",
+            "settings": {
+              "network": "udp",
+              "address": "8.8.8.8",
+              "port": 53
+            }
+          }
+        ],
+        "routing": {
+          "domainStrategy": "IPIfNonMatch",
+          "rules": [
+            {
+              "type": "field",
+              "domain": [
+                "geosite:category-ads-all"
+              ],
+              "outboundTag": "blocked"
+            },
+            {
+              "type": "field",
+              "protocol": [
+                "bittorrent"
+              ],
+              "outboundTag": "direct"
+            },
+            {
+              "type": "field",
+              "domain": [
+                "geosite:speedtest",
+                "geosite:cn",
+                "akamai.com",
+                "charter.com",
+                "dslr.net",
+                "dslreports.com",
+                "fast.com",
+                "fastly.com",
+                "fdcservers.net",
+                "i3d.net",
+                "nflxvideo.net",
+                "ooklaserver.net",
+                "spectrum.com",
+                "speedtest.net",
+                "speedtestcustom.com"
+              ],
+              "outboundTag": "direct"
+            },
+            {
+              "type": "field",
+              "ip": [
+                "8.8.8.8"
+              ],
+              "outboundTag": "vserver"
+            },
+            {
+              "type": "field",
+              "domain": [
+                "geosite:cn"
+              ],
+              "outboundTag": "direct"
+            },
+            {
+              "type": "field",
+              "ip": [
+                "223.5.5.5"
+              ],
+              "outboundTag": "direct"
+            },
+            {
+              "type": "field",
+              "outboundTag": "direct",
+              "ip": [
+                "geoip:cn",
+                "geoip:private"
+              ]
+            },
+            {
+              "type": "field",
+              "inboundTag": ["dns-in"],
+              "outboundTag": "dns-out"
+            },
+            {
+              "type": "field",
+              "inboundTag": ["ssclient_socks"],
+              "outboundTag": "ssserver"
+            },
+            {
+              "type": "field",
+              "inboundTag": ["vclient_socks"],
+              "outboundTag": "vserver"
+            },
+            {
+              "type": "field",
+              "inboundTag": ["vclient_http"],
+              "outboundTag": "vserver"
+            }
+          ]
+        },
+        "policy": {
+          "system": {
+            "statsInboundUplink": true,
+            "statsInboundDownlink": true
+          }
+        }
+      }
+    #+END_SRC
+    
+
