@@ -230,9 +230,6 @@
     #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/misc.csh") :eval never :exports code :comments link
       # Do not ignore EOF (^D).
       unset ignoreeof
-
-      # Insure that files are not accidentally destroyed.
-      set noclobber
     #+END_SRC
 
 *** PATH related config
