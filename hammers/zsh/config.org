@@ -72,6 +72,10 @@
       export PATH
     #+END_SRC
 
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/profiles/000-sys.zsh") :eval never :exports code :comments link
+      path=('/sbin' '/usr/sbin' $path)
+    #+END_SRC
+
     #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/profiles/000-python.zsh") :eval never :exports code :comments link
       path=('/usr/local/opt/python/libexec/bin' $path)
     #+END_SRC
@@ -92,6 +96,10 @@
      #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/profiles/000-usr_local_bin.zsh") :eval never :exports code :comments link
        if [ -d "/usr/local/bin" ]; then
            path=('/usr/local/bin' $path)
+       fi
+
+       if [ -d "/usr/local/sbin" ]; then
+           path=('/usr/local/sbin' $path)
        fi
     #+END_SRC
 
