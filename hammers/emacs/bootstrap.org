@@ -58,6 +58,7 @@
      (defvar m/xdg.cache.d xdg.cache.d)
      (defvar m/xdg.data.d xdg.data.d)
      (defvar m/home.d home.d)
+     (defvar m/mail.d (expand-file-name m/home.d "mails"))
    #+END_SRC
 
    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/init.el") :comments link

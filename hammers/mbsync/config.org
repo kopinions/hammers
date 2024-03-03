@@ -1,0 +1,248 @@
+#+TITLE: Mailbox mbsync 配置
+#+AUTHOR: 孙建康（rising.lambda）
+#+EMAIL:  rising.lambda@gmail.com
+#+DATE: 2024-03-03
+#+UPDATED: 2024-03-03
+#+LAYOUT: post
+#+EXCERPT:  
+#+DESCRIPTION: 
+#+TAGS: 
+#+CATEGORIES: 
+#+PROPERTY:    header-args        :comments org
+#+PROPERTY:    header-args        :mkdirp yes
+#+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil \n:nil ^:nil *:t <:t -:t f:t |:t ::t
+#+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
+#+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+#+BIND:        org-preview-latex-image-directory ""
+#+OPTIONS:     tex:imagemagick
+
+#+LaTeX_CLASS: article
+#+LaTeX_CLASS_OPTIONS: [12pt]
+#+LaTeX_CLASS_OPTIONS: [koma,a5paper,landscape,twocolumn,utopia,10pt,listings-sv,microtype,paralist]
+# No need for a table of contents, unless your paper is quite long.
+# Use fancy looking fonts. If you don't have MinionPro installed,
+# a good alternative is the Palatino-style pxfonts.
+# See: [[http://www.tug.dk/FontCatalogue/pxfonts/][http://www.tug.dk/FontCatalogue/pxfonts/]]
+#+LATEX_HEADER:\usepackage{xeCJK}
+#+LATEX_HEADER: \usepackage[scaled=.875]{inconsolata}
+#+LATEX_HEADER: \usepackage[T1]{fontenc}
+#+LATEX_HEADER: \usepackage[scaled]{beraserif}
+#+LATEX_HEADER: \usepackage[scaled]{berasans}
+#+LATEX_HEADER: \usepackage[scaled]{beramono}
+# Set the spacing to double, as required in most papers.
+#+LATEX_HEADER: \usepackage{setspace}
+#+LATEX_HEADER: \doublespacing
+# Fix the margins
+#+LATEX_HEADER: \usepackage[margin=1in]{geometry}
+# This line makes lists work better:
+# It eliminates whitespace before/within a list and pushes it tt the left margin
+#+LATEX_HEADER: \usepackage{enumitem}
+#+LATEX_HEADER: \setlist[enumerate,itemize]{noitemsep,nolistsep,leftmargin=*}
+# I always include this for my bibliographies
+#+LATEX_HEADER: \usepackage[notes,isbn=false,backend=biber]{biblatex-chicago}
+#+NAME: attr
+#+BEGIN_SRC sh :var data="" :var width="\textwidth" :results output :exports none
+  echo "#+ATTR_LATEX: :width $width"
+  echo "#+ATTR_ORG: :width $width"
+  echo "$data"
+#+END_SRC
+
+*** mail box 初始化
+    #+NAME: maildir
+    #+BEGIN_SRC shell :var maildir=(m/resolve "${m/mail.d}")
+      mkdir -p ${maildir}/{sietium,lambda}
+      echo ${maildir}
+    #+END_SRC
+*** mbsync 配置（同步邮件）
+    #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/isync/config") :noweb yes
+      IMAPAccount lambda
+      Host imap.gmail.com
+      User rising.lambda@gmail.com
+      SSLType IMAPS
+      AuthMechs PLAIN
+      #PassCmd "security find-generic-password -s lambda -w"
+      PassCmd "gpg --for-your-eyes-only --no-tty -qd ~/credentials/authinfo.gpg 2>/dev/null | grep rising.lambda@gmail.com|awk '{print $6}'"
+      # To rotate:
+      # > security delete-generic-password -s mbsync-gandi-password
+      # > security add-generic-password -a stig@brautaset.org -s mbsync-gandi-password -w APP-SPECIFIC-PASSWORD
+
+      IMAPStore lambda-remote
+      Account lambda
+
+      MaildirStore lambda-local
+      SubFolders Verbatim
+      Path <<maildir()>>/lambda/
+      Inbox <<maildir()>>/lambda/INBOX
+
+      Channel lambda-inbox
+      Far :lambda-remote:
+      Near :lambda-local:
+      Sync All
+      Create Both
+      Expunge Both
+      SyncState *
+      Patterns INBOX
+
+      Channel lambda-starred
+      Far :lambda-remote:
+      Near :lambda-local:
+      Sync All
+      Create Both
+      Expunge Both
+      SyncState *
+      Patterns Starred
+
+      Channel lambda-snoozed
+      Far :lambda-remote:
+      Near :lambda-local:
+      Sync All
+      Create Both
+      Expunge Both
+      SyncState *
+      Patterns Snoozed
+
+      Channel lambda-sent
+      Far :lambda-remote:
+      Near :lambda-local:
+      Sync All
+      Create Both
+      Expunge Both
+      SyncState *
+      Patterns Sent
+
+      Channel lambda-spam
+      Far :lambda-remote:
+      Near :lambda-local:
+      Sync All
+      Create Both
+      Expunge Both
+      SyncState *
+      Patterns Spam
+
+      Channel lambda-drafts
+      Far :lambda-remote:
+      Near :lambda-local:
+      Sync All
+      Create Both
+      Expunge Both
+      SyncState *
+      Patterns Drafts
+
+
+      Channel lambda-trash
+      Far :lambda-remote:
+      Near :lambda-local:
+      Sync All
+      Create Both
+      Expunge Both
+      SyncState *
+      Patterns Trash
+
+      IMAPAccount sietium
+      Host imap.qiye.aliyun.com
+      User neo@sietium.com
+      SSLType IMAPS
+      AuthMechs LOGIN
+      PassCmd "gpg --for-your-eyes-only --no-tty -qd ~/credentials/authinfo.gpg 2>/dev/null | grep neo@sietium.com | awk '{print $6}'"
+      #PassCmd "security find-generic-password -s lambda -w"
+
+      # To rotate:
+      # > security delete-generic-password -s mbsync-gandi-password
+      # > security add-generic-password -a stig@brautaset.org -s mbsync-gandi-password -w APP-SPECIFIC-PASSWORD
+
+      IMAPStore sietium-remote
+      Account sietium
+
+      MaildirStore sietium-local
+      SubFolders Verbatim
+      Path <<maildir()>>/sietium/
+      Inbox <<maildir()>>/sietium/INBOX
+
+      Channel sietium-inbox
+      Far :sietium-remote:INBOX
+      Near :sietium-local:INBOX
+      Sync All
+      Create Both
+      Expunge Both
+      SyncState *
+
+      Channel sietium-drafts
+      Far :sietium-remote:Drafts
+      Near :sietium-local:Drafts
+      Sync All
+      Create Both
+      Expunge Both
+      SyncState *
+
+      Channel sietium-trash
+      Far :sietium-remote:Trash
+      Near :sietium-local:Trash
+      Sync All
+      Create Both
+      Expunge Both
+      SyncState *
+
+      Channel sietium-sent
+      Far :sietium-remote:Sent
+      Near :sietium-local:Sent
+      Sync All
+      Create Both
+      Expunge Both
+      SyncState *
+
+      Channel sietium-spam
+      Far :sietium-remote:Spam
+      Near :sietium-local:Spam
+      Sync All
+      Create Both
+      Expunge Both
+      SyncState *
+
+      Channel sietium-archive
+      Far :sietium-remote:Archive
+      Near :sietium-local:Archive
+      Sync All
+      Create Both
+      Expunge Both
+      SyncState *
+
+      Channel sietium-gb2
+      Far :sietium-remote:GB2
+      Near :sietium-local:GB2
+      Sync All
+      Create Both
+      Expunge Both
+      SyncState *
+
+      Channel sietium-patent
+      Far :sietium-remote:Patent
+      Near :sietium-local:Patent
+      Sync All
+      Create Both
+      Expunge Both
+      SyncState *
+
+      Group sietium
+      Channel sietium-inbox
+      Channel sietium-drafts
+      Channel sietium-trash
+      Channel sietium-sent
+      Channel sietium-spam
+      Channel sietium-archive
+      Channel sietium-gb2
+      Channel sietium-patent
+
+      Group lambda
+      Channel lambda-inbox
+      Channel lambda-starred
+      Channel lambda-snoozed
+      Channel lambda-sent
+      Channel lambda-spam
+      Channel lambda-drafts
+      Channel lambda-trash
+    #+END_SRC
+
+*** mbsync pre-sync
+    #+BEGIN_SRC shell :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/mbsync/hooks/pre-sync") :tangle-mode (identity #o755) :shebang #!/bin/bash :noweb yes :comments link
+
+    #+END_SRC

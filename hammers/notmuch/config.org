@@ -1,0 +1,143 @@
+#+TITLE: notmuch 配置文件
+#+AUTHOR: 孙建康（rising.lambda）
+#+EMAIL:  rising.lambda@gmail.com
+#+DATE: 2024-03-03
+#+UPDATED: 2024-03-03
+#+LAYOUT: post
+#+EXCERPT:  
+#+DESCRIPTION: 
+#+TAGS: 
+#+CATEGORIES: 
+#+PROPERTY:    header-args        :comments org
+#+PROPERTY:    header-args        :mkdirp yes
+#+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil \n:nil ^:nil *:t <:t -:t f:t |:t ::t
+#+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
+#+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+#+BIND:        org-preview-latex-image-directory ""
+#+OPTIONS:     tex:imagemagick
+
+#+LaTeX_CLASS: article
+#+LaTeX_CLASS_OPTIONS: [12pt]
+#+LaTeX_CLASS_OPTIONS: [koma,a5paper,landscape,twocolumn,utopia,10pt,listings-sv,microtype,paralist]
+# No need for a table of contents, unless your paper is quite long.
+# Use fancy looking fonts. If you don't have MinionPro installed,
+# a good alternative is the Palatino-style pxfonts.
+# See: [[http://www.tug.dk/FontCatalogue/pxfonts/][http://www.tug.dk/FontCatalogue/pxfonts/]]
+#+LATEX_HEADER:\usepackage{xeCJK}
+#+LATEX_HEADER: \usepackage[scaled=.875]{inconsolata}
+#+LATEX_HEADER: \usepackage[T1]{fontenc}
+#+LATEX_HEADER: \usepackage[scaled]{beraserif}
+#+LATEX_HEADER: \usepackage[scaled]{berasans}
+#+LATEX_HEADER: \usepackage[scaled]{beramono}
+# Set the spacing to double, as required in most papers.
+#+LATEX_HEADER: \usepackage{setspace}
+#+LATEX_HEADER: \doublespacing
+# Fix the margins
+#+LATEX_HEADER: \usepackage[margin=1in]{geometry}
+# This line makes lists work better:
+# It eliminates whitespace before/within a list and pushes it tt the left margin
+#+LATEX_HEADER: \usepackage{enumitem}
+#+LATEX_HEADER: \setlist[enumerate,itemize]{noitemsep,nolistsep,leftmargin=*}
+# I always include this for my bibliographies
+#+LATEX_HEADER: \usepackage[notes,isbn=false,backend=biber]{biblatex-chicago}
+#+NAME: attr
+#+BEGIN_SRC sh :var data="" :var width="\textwidth" :results output :exports none
+  echo "#+ATTR_LATEX: :width $width"
+  echo "#+ATTR_ORG: :width $width"
+  echo "$data"
+#+END_SRC
+
+#+NAME: maildir
+#+BEGIN_SRC shell :var maildir=(m/resolve "${m/mail.d}")
+  mkdir -p ${maildir}/{sietium,lambda}
+  echo ${maildir}
+#+END_SRC
+
+*** notmuch 配置文件
+    #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/notmuch/default/config") :noweb yes :comments link
+      # 相对于 HOMEDIR ~ 的目录
+      [database]
+      path=<<maildir()>>
+
+      [user]
+      name=neo
+      primary_email=rising.lambda@gmail.com
+      other_email=neo@sietium.com
+
+      [new]
+      tags=new;
+      ignore=.mbsyncstate;.mbsyncstate.journal;.mbsyncstate.lock;.mbsyncstate.new;.uidvalidity;.isyncuidmap.db
+
+      [search]
+      exclude_tags=deleted;spam;
+
+      [maildir]
+      synchronize_flags=true
+
+    #+END_SRC
+
+*** pre hook
+    #+BEGIN_SRC shell :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/notmuch/default/hooks/pre-new") :tangle-mode (identity #o755) :shebang #!/bin/bash :noweb yes :comments link
+      # Move a message file while removing its UID-part
+      function move { s=${1##*/}; s=${s%%,*}; echo "mv -f $1 $2/$s"; }
+
+      echo "moving $(notmuch count --output=files --exclude=false tag:gb2 AND folder:sietium/INBOX AND NOT tag:unread AND NOT from:neo) gb2 messages to the GB2"
+      for i in $(notmuch search --exclude=false --output=files tag:gb2 AND folder:sietium/INBOX AND NOT tag:unread AND NOT from:neo); do
+          move $i "<<maildir()>>/sietium/GB2/cur"
+      done
+
+      # # Move all deleted messages to the Trash folder
+      # echo moving $(notmuch count --output=files --exclude=false tag:deleted AND NOT folder:Trash) deleted messages to the Trash folder
+      # for i in $(notmuch search --exclude=false --output=files tag:deleted AND NOT folder:Trash); do
+      #     move $i "<<maildir()>>/sietium/Trash/cur"
+      # done
+
+      # # Move all spam messages to the Spam folder
+      # echo moving $(notmuch count --output=files tag:spam AND NOT folder:Spam) spam-marked messages to the Spam folder
+      # for i in $(notmuch search --output=files tag:spam AND NOT folder:Spam); do
+      #     move $i "<<maildir()>>/sietium/Spam/cur"
+      # done
+
+      # # Move all archived messages from Inbox to Archive folder
+      # echo Moving $(notmuch count --output=files folder:Inbox AND NOT tag:inbox) archived messages from Inbox to Archive folder
+      # for i in $(notmuch search --output=files folder:Inbox AND NOT tag:inbox); do
+      #     move $i "<<maildir()>>/sietium/Archive/cur"
+      # done
+      mbsync -c ${XDG_CONFIG_HOME}/isync/config sietium-inbox sietium-drafts sietium-sent sietium-spam sietium-archive sietium-gb2 sietium-patent 
+
+      notmuch new --no-hooks
+    #+END_SRC
+
+*** post hook
+    #+BEGIN_SRC shell :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/notmuch/default/hooks/post-new") :tangle-mode (identity #o755) :shebang #!/bin/bash :noweb yes :comments link
+      set -e 
+
+      echo -n Filtering new messages
+      ## All messages 
+
+      ## Poor man's progress bar. adjust for number of steps 
+      STEPS=30
+      echo -n '   ['
+      for n in `seq $STEPS`; do
+          echo -n '.'
+      done
+      echo -ne ']\b'
+      # Backspace
+      for n in `seq $STEPS`; do
+          echo -ne '\b'
+      done
+
+      ## notmuch post-processing script
+
+      ## Generally only works with messages with the tag:new folder
+      notmuch tag +inbox +unread -new -- tag:new
+      # 需要处理下 send
+      notmuch tag +gb2 -- to:'gb02*' and folder:'sietium/INBOX'
+
+      echo ']'
+    #+END_SRC
+
+*** post insert hook
+    #+BEGIN_SRC shell :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/notmuch/default/hooks/post-insert") :tangle-mode (identity #o755) :shebang #!/bin/bash :noweb yes :comments link
+      notmuch tag +watch -inbox -new tag:new 'folder:/.*Sent.*/'
+    #+END_SRC
