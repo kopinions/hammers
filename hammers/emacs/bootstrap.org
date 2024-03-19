@@ -42,7 +42,6 @@
    #+END_SRC
 
 ** 系统变量配置
-
    #+HEADER: :var xdg.conf.d=(or (and (boundp 'm/xdg.conf.d) (file-directory-p m/xdg.conf.d) m/xdg.conf.d) (directory-file-name (expand-file-name "~/.config")))
    #+HEADER: :var xdg.cache.d=(or (and (boundp 'm/xdg.cache.d) (file-directory-p m/xdg.cache.d) m/xdg.cache.d) (directory-file-name (expand-file-name "~/.cache")))
    #+HEADER: :var xdg.data.d=(or (and (boundp 'm/xdg.data.d) (file-directory-p m/xdg.data.d) m/xdg.data.d) (directory-file-name (expand-file-name "~/.local/share")))
@@ -67,11 +66,20 @@
    #+END_SRC
 
 ** 加载机器相关配置文件
+   机器相关的配置可以放在 ${m/emacs.d}/machine-local.el 中，示例代码如下
+   #+BEGIN_SRC elisp :eval never :exports code :noweb yes
+     (setq lsp-clangd-binary-path "/path/to/clangd")
+     (provide 'machine-local)
+   #+END_SRC
+
+
+   如果不存在这样的文件，则不会进行加载
+   
    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/init.el") :comments link
-     (let* ((context-file (expand-file-name "machine-local.el" m/emacs.d)))
+     (let* ((context-file (expand-file-name "machine-local.el" m/emacs.d))
+            (load-path (list (file-name-directory context-file))))
        (if (and (file-exists-p context-file) (file-readable-p context-file))
-           (let* ((load-path (file-name-directory context-file)))
-             (require 'machine-local))))
+           (require 'machine-local)))
    #+END_SRC
 
 ** 文件大小提醒
