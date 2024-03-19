@@ -54,6 +54,16 @@
 #+END_SRC
 
 *** notmuch 配置文件
+    notmuch 的配置文件搜索路径顺序为
+
+    - File specified by notmuch --config global option; see notmuch.
+
+    - File specified by NOTMUCH_CONFIG environment variable.
+
+    - $XDG_CONFIG_HOME/notmuch/<profile>/config where <profile> is defined by NOTMUCH_PROFILE environment variable if set, $XDG_CONFIG_HOME/notmuch/default/config otherwise.
+
+    - $HOME/.notmuch-config.<profile> where <profile> is defined by NOTMUCH_PROFILE environment variable if set, $HOME/.notmuch-config otherwise.
+
     #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/notmuch/default/config") :noweb yes :comments link
       # 相对于 HOMEDIR ~ 的目录
       [database]
@@ -73,68 +83,18 @@
 
       [maildir]
       synchronize_flags=true
-
     #+END_SRC
 
 *** pre hook
     #+BEGIN_SRC shell :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/notmuch/default/hooks/pre-new") :tangle-mode (identity #o755) :shebang #!/bin/bash :noweb yes :comments link
-      # Move a message file while removing its UID-part
-      function move { s=${1##*/}; s=${s%%,*}; echo "mv -f $1 $2/$s"; }
-
-      echo "moving $(notmuch count --output=files --exclude=false tag:gb2 AND folder:sietium/INBOX AND NOT tag:unread AND NOT from:neo) gb2 messages to the GB2"
-      for i in $(notmuch search --exclude=false --output=files tag:gb2 AND folder:sietium/INBOX AND NOT tag:unread AND NOT from:neo); do
-          move $i "<<maildir()>>/sietium/GB2/cur"
-      done
-
-      # # Move all deleted messages to the Trash folder
-      # echo moving $(notmuch count --output=files --exclude=false tag:deleted AND NOT folder:Trash) deleted messages to the Trash folder
-      # for i in $(notmuch search --exclude=false --output=files tag:deleted AND NOT folder:Trash); do
-      #     move $i "<<maildir()>>/sietium/Trash/cur"
-      # done
-
-      # # Move all spam messages to the Spam folder
-      # echo moving $(notmuch count --output=files tag:spam AND NOT folder:Spam) spam-marked messages to the Spam folder
-      # for i in $(notmuch search --output=files tag:spam AND NOT folder:Spam); do
-      #     move $i "<<maildir()>>/sietium/Spam/cur"
-      # done
-
-      # # Move all archived messages from Inbox to Archive folder
-      # echo Moving $(notmuch count --output=files folder:Inbox AND NOT tag:inbox) archived messages from Inbox to Archive folder
-      # for i in $(notmuch search --output=files folder:Inbox AND NOT tag:inbox); do
-      #     move $i "<<maildir()>>/sietium/Archive/cur"
-      # done
-      mbsync -c ${XDG_CONFIG_HOME}/isync/config sietium-inbox sietium-drafts sietium-sent sietium-spam sietium-archive sietium-gb2 sietium-patent 
+      mbsync -c ${XDG_CONFIG_HOME}/isync/config sietium
 
       notmuch new --no-hooks
     #+END_SRC
 
 *** post hook
     #+BEGIN_SRC shell :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/notmuch/default/hooks/post-new") :tangle-mode (identity #o755) :shebang #!/bin/bash :noweb yes :comments link
-      set -e 
-
-      echo -n Filtering new messages
-      ## All messages 
-
-      ## Poor man's progress bar. adjust for number of steps 
-      STEPS=30
-      echo -n '   ['
-      for n in `seq $STEPS`; do
-          echo -n '.'
-      done
-      echo -ne ']\b'
-      # Backspace
-      for n in `seq $STEPS`; do
-          echo -ne '\b'
-      done
-
-      ## notmuch post-processing script
-
-      ## Generally only works with messages with the tag:new folder
-      notmuch tag +inbox +unread -new -- tag:new
-      # 需要处理下 send
-      notmuch tag +gb2 -- to:'gb02*' and folder:'sietium/INBOX'
-
-      echo ']'
+      afew --tag --new -d -v -v -v
     #+END_SRC
 
 *** post insert hook
