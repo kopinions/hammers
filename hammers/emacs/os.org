@@ -12,30 +12,45 @@
 *** 键位设置
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-os.el") :comments link
       (when (eq m/os 'macos)
-	(setq mac-command-modifier 'meta)
-	(setq mac-option-modifier 'super))
+        (setq mac-command-modifier 'meta)
+        (setq mac-option-modifier 'super))
     #+END_SRC
 ** linux
 *** 键位设置
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-os.el") :comments link
       (when (eq m/os 'linux)
-	(setq x-super-keysym 'super
-	      x-meta-keysym 'meta))
+        (setq x-super-keysym 'super
+              x-meta-keysym 'meta))
     #+END_SRC
 *** 剪切板管理
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-os.el") :comments link
       (use-package xclip
-	:if (eq m/os 'linux)
-	:config
-	(xclip-mode 1))
+        :if (eq m/os 'linux)
+        :config
+        (xclip-mode 1))
     #+END_SRC
 *** 环境变量
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-os.el") :comments link
       (use-package exec-path-from-shell
-	:config
-	(when (memq m/os '(macos linux))
-	  (exec-path-from-shell-initialize)))
+        :config
+        (when (memq m/os '(macos linux))
+          (exec-path-from-shell-initialize)))
     #+END_SRC
+    
+** 编辑历史相关配置
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-os.el") :comments link
+     (use-package recentf
+       :custom
+       (recentf-max-menu-items 30)
+       (recentf-max-saved-items 200)
+       :config
+       (recentf-mode 1))
+
+     (use-package savehist
+       :config
+       (savehist-mode 1))
+   #+END_SRC
+   
 ** emacs server
    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-os.el") :comments link
      (use-package server
