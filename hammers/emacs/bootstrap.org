@@ -41,7 +41,7 @@
        (message "Your Emacs is old, and some functionality in this config will be disabled. Please upgrade if possible."))
    #+END_SRC
 
-** 系统配置
+** 系统变量配置
 
    #+HEADER: :var xdg.conf.d=(or (and (boundp 'm/xdg.conf.d) (file-directory-p m/xdg.conf.d) m/xdg.conf.d) (directory-file-name (expand-file-name "~/.config")))
    #+HEADER: :var xdg.cache.d=(or (and (boundp 'm/xdg.cache.d) (file-directory-p m/xdg.cache.d) m/xdg.cache.d) (directory-file-name (expand-file-name "~/.cache")))
@@ -58,11 +58,20 @@
      (defvar m/xdg.cache.d xdg.cache.d)
      (defvar m/xdg.data.d xdg.data.d)
      (defvar m/home.d home.d)
-     (defvar m/mail.d (expand-file-name m/home.d "mails"))
+     (defvar m/emacs.d (expand-file-name "emacs" m/xdg.conf.d))
+     (defvar m/mail.d (expand-file-name "mails" m/home.d))
    #+END_SRC
 
    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/init.el") :comments link
      (global-unset-key (kbd "M-`"))
+   #+END_SRC
+
+** 加载机器相关配置文件
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/init.el") :comments link
+     (let* ((context-file (expand-file-name "machine-local.el" m/emacs.d)))
+       (if (and (file-exists-p context-file) (file-readable-p context-file))
+           (let* ((load-path (file-name-directory context-file)))
+             (require 'machine-local))))
    #+END_SRC
 
 ** 文件大小提醒
