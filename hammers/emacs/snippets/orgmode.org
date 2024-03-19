@@ -14,7 +14,7 @@
       # name: 
       # key: <s
       # --
-      ,#+BEGIN_SRC $1 :eval never :exports code :noweb yes
+      ,#+BEGIN_SRC $1 :eval never :exports code :noweb yes :mkdirp yes
       $0
       ,#+END_SRC
     #+END_SRC
@@ -25,7 +25,7 @@
       # name: shell
       # key: <sh
       # --
-      ,#+BEGIN_SRC shell :eval never :exports code :noweb yes :comments link
+      ,#+BEGIN_SRC shell :eval never :exports code :noweb yes :comments link :mkdirp yes :prologue "exec 2>&1" :epilogue ":"
       $0
       ,#+END_SRC
     #+END_SRC
@@ -37,7 +37,7 @@
       # name: lisp
       # key: <elisp
       # --
-      ,#+BEGIN_SRC elisp :eval never :exports code :noweb yes
+      ,#+BEGIN_SRC elisp :eval never :exports code :noweb yes :mkdirp yes
       $0
       ,#+END_SRC
     #+END_SRC
@@ -61,7 +61,7 @@
       # key: <dot
       # --
       ,#+HEADER: :file $1
-      ,#+BEGIN_SRC dot :post attr(width="$2", data=*this*) :results drawer
+      ,#+BEGIN_SRC dot :post attr(width="$2", data=*this*) :results drawer :mkdirp yes
         digraph G {
           dpi = 180
           $0
@@ -137,7 +137,7 @@
       # key: <veri
       # expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
       # --
-      ,#+BEGIN_SRC verilog :exports code :eval never :noweb yes
+      ,#+BEGIN_SRC verilog :exports code :eval never :noweb yes :mkdirp yes
       module $1($2)
         always @*
         begin
@@ -158,7 +158,7 @@
       # --
       ,#+HEADER: :imagemagick yes :iminoptions -density 300 -trim -background '#$1'  :imoutoptions -opaque none  -density 300 -quality 100 -flatten -trim  -sharpen 0x1.0 -geometry $2
       ,#+HEADER: :fit yes
-      ,#+BEGIN_SRC latex  :file $3 :exports results :noweb yes
+      ,#+BEGIN_SRC latex  :file $3 :exports results :noweb yes :mkdirp yes
         $0
       ,#+END_SRC
     #+END_SRC
