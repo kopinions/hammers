@@ -10,6 +10,11 @@
 
 *** notmuch 配置
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-email.el") :comments link
+      (use-package pinentry
+        :config
+        (setq epa-pinentry-mode 'loopback)
+        (pinentry-start))
+
       (use-package notmuch
         :ensure-system-package (notmuch msmtp (mbsync . isync))
         :hook
@@ -56,9 +61,9 @@
             (apply 'start-process "mbsync" "*mbsync*" command)))
         (defun sb/notmuch (arg)
           "Launch notmuch. If ran with prefix arg, launch mbsync in the
-        background, and automatically refresh the current buffer when
-        done. With two prefix args, launch mbsync with `--all` rather
-        than just for inboxes."
+          background, and automatically refresh the current buffer when
+          done. With two prefix args, launch mbsync with `--all` rather
+          than just for inboxes."
           (interactive "p")
           (notmuch)
           (if (> arg 1)
