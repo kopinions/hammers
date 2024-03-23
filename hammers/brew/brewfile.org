@@ -120,6 +120,8 @@
         brew 'bear'
         brew 'make'
         brew 'cmake'
+        brew 'automake'
+        brew 'autoconf'
         brew 'ninja'
         brew 'gcc'
         brew 'boost'
@@ -270,7 +272,10 @@
      #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
        brew 'nmap', greedy: true
      #+END_SRC
-
+**** 代理
+     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
+       brew 'proxychains-ng', greedy: true
+     #+END_SRC
  
 **** P2P 下载
      #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/homebrew-bundle/Brewfile") :exports code :results none :eval never :comments link
