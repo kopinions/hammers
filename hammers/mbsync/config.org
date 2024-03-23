@@ -58,7 +58,7 @@
       IMAPAccount lambda
       Host imap.gmail.com
       User rising.lambda@gmail.com
-      SSLType IMAPS
+      TLSType IMAPS
       AuthMechs PLAIN
       #PassCmd "security find-generic-password -s lambda -w"
       PassCmd "gpg --for-your-eyes-only --no-tty -qd ~/credentials/authinfo.gpg 2>/dev/null | grep rising.lambda@gmail.com|awk '{print $6}'"
@@ -81,7 +81,7 @@
       Create Both
       Expunge Both
       SyncState *
-      Patterns INBOX
+      Patterns *
 
       Channel lambda-starred
       Far :lambda-remote:
@@ -141,7 +141,7 @@
       IMAPAccount sietium
       Host imap.qiye.aliyun.com
       User neo@sietium.com
-      SSLType IMAPS
+      TLSType IMAPS
       AuthMechs LOGIN
       PassCmd "gpg --for-your-eyes-only --no-tty -qd ~/credentials/authinfo.gpg 2>/dev/null | grep neo@sietium.com | awk '{print $6}'"
       #PassCmd "security find-generic-password -s lambda -w"
