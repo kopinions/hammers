@@ -54,19 +54,59 @@
      [SpamFilter]
      [KillThreadsFilter]
      [ListMailsFilter]
+   #+END_SRC
+** 发送邮件形相关配置
+   1. 对于所有来自配置邮箱地址的邮件，添加 sent 标签
+   2. 将发送的邮件的 new tag 删除掉，避免 InboxFilter 添加 inbox tag
+   #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/afew/config") :noweb yes :comments link :mkdirp yes
+     [SentMailsFilter]
+     sent_tag = sent
      [ArchiveSentMailsFilter]
-     [InboxFilter]
+   #+END_SRC
+** 文件夹相关标签配置
+   #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/afew/config") :noweb yes :comments link :mkdirp yes
+     [Filter.0]
+     message = Tag lambda for lambda maildir
+     query = folder:/lambda/
+     tags = +lambda
+   #+END_SRC
+   
+   #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/afew/config") :noweb yes :comments link :mkdirp yes
+     [Filter.1]
+     message = Tag sietium for sietium maildir
+     query = folder:/sietium/
+     tags = +sietium
+
+     [FolderNameFilter.1]
+     folder_explicit_list = sietium/GB2
+     folder_transforms = sietium/GB2:gb2
+     folder_lowercases = true
+   #+END_SRC
+** 归档相关标签配置
+   #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/afew/config") :noweb yes :comments link :mkdirp yes
+     [Filter.10]
+     message = Remove inbox for Non inbox folder for sietium
+     query = folder:/sietium/ AND NOT folder:sietium/INBOX
+     tags = -inbox
+     [Filter.11]
+     message = Remove inbox for Non inbox folder for lambda
+     query = folder:/lambda/ AND NOT folder:lambda/INBOX
+     tags = -inbox
    #+END_SRC
 ** 邮件移动配置
    #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/afew/config") :noweb yes :comments link :mkdirp yes
      [MailMover]
-     folders = INBOX Junk
-     rename = False
-     max_age = 15
+     folders = sietium/INBOX lambda/INBOX
+     rename = True
+     max_age = 7
 
      # rules
-     INBOX = 'tag:spam':Junk 'NOT tag:inbox':Archive
-     Junk = 'NOT tag:spam AND tag:inbox':INBOX 'NOT tag:spam':Archive
+     sietium/INBOX = 'tag:spam':sietium/Spam 'NOT tag:inbox':sietium/Archive 'tag:gb2':sietium/GB2 'tag:sent':sietium/Sent
+     lambda/INBOX = 'tag:spam':lambda/[Gmail]/Spam 'NOT tag:inbox':'lambda/[Gmail]/All Mail'
+   #+END_SRC
+** 所有剩下的邮件先放在 Inbox
+   #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/afew/config") :noweb yes :comments link :mkdirp yes
+     [InboxFilter]
    #+END_SRC
 
    
