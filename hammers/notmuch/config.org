@@ -98,5 +98,5 @@
 
 *** post insert hook
     #+BEGIN_SRC shell :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/notmuch/default/hooks/post-insert") :tangle-mode (identity #o755) :shebang #!/bin/bash :noweb yes :comments link
-      notmuch tag +watch -inbox -new tag:new 'folder:/.*Sent.*/'
+      # notmuch tag +sent -new tag:new 'folder:/.*Sent.*/'
     #+END_SRC
