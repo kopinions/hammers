@@ -65,15 +65,15 @@
       auth on
       user rising.lambda@gmail.com
       from rising.lambda@gmail.com
-      PassCmd "gpg --for-your-eyes-only --no-tty -qd ~/credentials/authinfo.gpg 2>/dev/null | grep rising.lambda@gmail.com|awk '{print $6}'"
+      passwordeval "gpg --for-your-eyes-only --no-tty -qd ~/credentials/authinfo.gpg 2>/dev/null | grep rising.lambda@gmail.com|awk '{print $6}'"
 
       account sietium
       host smtp.qiye.aliyun.com
       port 465
       tls on
-      tls_starttls on
+      tls_starttls off
       auth on
       user neo@sietium.com
       from neo@sietium.com
-      PassCmd "gpg --for-your-eyes-only --no-tty -qd ~/credentials/authinfo.gpg 2>/dev/null | grep neo@sietium.com |awk '{print $6}'"
+      passwordeval "gpg --for-your-eyes-only --no-tty -qd ~/credentials/authinfo.gpg 2>/dev/null | grep neo@sietium.com |awk '{print $6}'"
     #+END_SRC
