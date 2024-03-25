@@ -81,7 +81,7 @@
       Create Both
       Expunge Both
       SyncState *
-      Patterns *
+      Patterns INBOX
 
       Channel lambda-starred
       Far :lambda-remote:
@@ -90,7 +90,25 @@
       Create Both
       Expunge Both
       SyncState *
-      Patterns Starred
+      Patterns [Gmail]/Starred
+
+      Channel lambda-all
+      Far :lambda-remote:
+      Near :lambda-local:
+      Sync All
+      Create Both
+      Expunge Both
+      SyncState *
+      Patterns [Gmail]/All\ Mail
+
+      Channel lambda-important
+      Far :lambda-remote:
+      Near :lambda-local:
+      Sync All
+      Create Both
+      Expunge Both
+      SyncState *
+      Patterns [Gmail]/Important
 
       Channel lambda-snoozed
       Far :lambda-remote:
@@ -99,7 +117,7 @@
       Create Both
       Expunge Both
       SyncState *
-      Patterns Snoozed
+      Patterns [Gmail]/Snoozed
 
       Channel lambda-sent
       Far :lambda-remote:
@@ -108,7 +126,7 @@
       Create Both
       Expunge Both
       SyncState *
-      Patterns Sent
+      Patterns [Gmail]/Sent\ Mail
 
       Channel lambda-spam
       Far :lambda-remote:
@@ -117,7 +135,7 @@
       Create Both
       Expunge Both
       SyncState *
-      Patterns Spam
+      Patterns [Gmail]/Spam
 
       Channel lambda-drafts
       Far :lambda-remote:
@@ -126,8 +144,7 @@
       Create Both
       Expunge Both
       SyncState *
-      Patterns Drafts
-
+      Patterns [Gmail]/Drafts
 
       Channel lambda-trash
       Far :lambda-remote:
@@ -136,7 +153,7 @@
       Create Both
       Expunge Both
       SyncState *
-      Patterns Trash
+      Patterns [Gmail]/Trash
 
       IMAPAccount sietium
       Host imap.qiye.aliyun.com
@@ -240,9 +257,12 @@
       Channel lambda-spam
       Channel lambda-drafts
       Channel lambda-trash
+      Channel lambda-important
+      Channel lambda-all
+
     #+END_SRC
 
 *** mbsync pre-sync
-    #+BEGIN_SRC shell :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/mbsync/hooks/pre-sync") :tangle-mode (identity #o755) :shebang #!/bin/bash :noweb yes :comments link
+    #+BEGIN_SRC shell :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/isync/hooks/pre-sync") :tangle-mode (identity #o755) :shebang #!/bin/bash :noweb yes :comments link
 
     #+END_SRC
