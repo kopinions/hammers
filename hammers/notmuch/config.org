@@ -64,6 +64,12 @@
 
     - $HOME/.notmuch-config.<profile> where <profile> is defined by NOTMUCH_PROFILE environment variable if set, $HOME/.notmuch-config otherwise.
 
+    这里想使用 NOTMUCH_CONFIG 环境变量来制定配置，因为 afew 工具需要依赖环境变量来找到这个配置文件。所以需要配置 zsh 环境变量，以便于读取
+
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/006-notmuch.zsh") :eval never :exports code :comments link :mkdirp yes
+      export NOTMUCH_CONFIG=${XDG_CONFIG_HOME}/notmuch/default/config
+    #+END_SRC
+
     #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/notmuch/default/config") :noweb yes :comments link
       # 相对于 HOMEDIR ~ 的目录
       [database]
