@@ -53,14 +53,23 @@
            ("m"
             ("+muted")
             "Mute Thread"))))
-
+        :bind
+        (:map notmuch-hello-mode-map
+              ("o" . sb/afew))
         :config
         (defun sb/mbsync (&rest group)
           (interactive)
-          (let ((group (or (and (car group) group) '("--all")))
-                (command `("mbsync" "--verbose" "--quiet" ,@group)))
+          (let* ((group (or (and (car group) group) '("--all")))
+                (config (expand-file-name "config" (expand-file-name "isync" (or (getenv "XDG_CONFIG_HOME") m/xdg.conf.d))))
+                (command `("mbsync" "-c" ,config "--verbose" "--quiet" ,@group)))
             (message "Starting %s.." (mapconcat 'identity command " "))
             (apply 'start-process "mbsync" "*mbsync*" command)))
+        (defun sb/afew (&rest group)
+          (interactive)
+          (let ((group (or (and (car group) group) '("--all")))
+                (command `("afew" "-m" "-v" "-v" ,@group)))
+            (message "Starting %s.." (mapconcat 'identity command " "))
+            (apply 'start-process "afew" "*afew*" command)))
         (defun sb/notmuch (arg)
           "Launch notmuch. If ran with prefix arg, launch mbsync in the
           background, and automatically refresh the current buffer when
