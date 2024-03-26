@@ -33,7 +33,7 @@
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-os.el") :comments link
       (use-package exec-path-from-shell
         :custom
-        (exec-path-from-shell-variables '("PATH" "MANPATH" "XDG_CONFIG_HOME" "XDG_DATA_HOME" "XDG_CACHE_HOME" "GNUPGHOME"))
+        (exec-path-from-shell-variables '("PATH" "MANPATH" "XDG_CONFIG_HOME" "XDG_DATA_HOME" "XDG_CACHE_HOME" "GNUPGHOME" "PROXYCHAINS_CONF_FILE"))
         :config
         (when (memq m/os '(macos linux))
           (exec-path-from-shell-initialize)))
