@@ -1,0 +1,116 @@
+#+TITLE: MIME 类型相关配置
+#+AUTHOR: 孙建康（rising.lambda）
+#+EMAIL:  rising.lambda@gmail.com
+#+DATE: 2024-03-22
+#+UPDATED: 2024-03-22
+#+LAYOUT: post
+#+EXCERPT:  
+#+DESCRIPTION: 
+#+TAGS: 
+#+CATEGORIES: 
+#+PROPERTY:    header-args        :comments org
+#+PROPERTY:    header-args        :mkdirp yes
+#+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil \n:nil ^:nil *:t <:t -:t f:t |:t ::t
+#+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
+#+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+#+BIND:        org-preview-latex-image-directory ""
+#+OPTIONS:     tex:imagemagick
+
+#+LaTeX_CLASS: article
+#+LaTeX_CLASS_OPTIONS: [12pt]
+#+LaTeX_CLASS_OPTIONS: [koma,a5paper,landscape,twocolumn,utopia,10pt,listings-sv,microtype,paralist]
+# No need for a table of contents, unless your paper is quite long.
+# Use fancy looking fonts. If you don't have MinionPro installed,
+# a good alternative is the Palatino-style pxfonts.
+# See: [[http://www.tug.dk/FontCatalogue/pxfonts/][http://www.tug.dk/FontCatalogue/pxfonts/]]
+#+LATEX_HEADER:\usepackage{xeCJK}
+#+LATEX_HEADER: \usepackage[scaled=.875]{inconsolata}
+#+LATEX_HEADER: \usepackage[T1]{fontenc}
+#+LATEX_HEADER: \usepackage[scaled]{beraserif}
+#+LATEX_HEADER: \usepackage[scaled]{berasans}
+#+LATEX_HEADER: \usepackage[scaled]{beramono}
+# Set the spacing to double, as required in most papers.
+#+LATEX_HEADER: \usepackage{setspace}
+#+LATEX_HEADER: \doublespacing
+# Fix the margins
+#+LATEX_HEADER: \usepackage[margin=1in]{geometry}
+# This line makes lists work better:
+# It eliminates whitespace before/within a list and pushes it tt the left margin
+#+LATEX_HEADER: \usepackage{enumitem}
+#+LATEX_HEADER: \setlist[enumerate,itemize]{noitemsep,nolistsep,leftmargin=*}
+# I always include this for my bibliographies
+#+LATEX_HEADER: \usepackage[notes,isbn=false,backend=biber]{biblatex-chicago}
+#+NAME: attr
+#+BEGIN_SRC sh :var data="" :var width="\textwidth" :results output :exports none
+  echo "#+ATTR_LATEX: :width $width"
+  echo "#+ATTR_ORG: :width $width"
+  echo "$data"
+#+END_SRC
+
+*** mime.types 配置文件路径
+    mime.types 配置文件的搜索顺序如下
+    - ~/.mime.types
+    - /etc/mime.types
+    - /usr/etc/mime.types
+    - /usr/local/etc/mime.types
+    - /usr/local/www/conf/mime.types
+    - ~/.mime-types
+    - /etc/mime-types
+    - /usr/etc/mime-types
+    - /usr/local/etc/mime-types
+    - /usr/local/www/conf/mime-types
+
+    这里想遵循 XDG 的配置，所以这里会将配置文件放在 XDG_CONFIG_HOME/mime/types. 所以需要配置 zsh 环境变量，以便于读取
+    XDG_CONFIG_HOME 下的配置文件
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/006-mime.zsh") :eval never :exports code :comments link :mkdirp yes
+      export MIMETYPES=${XDG_CONFIG_HOME}/mime/types
+    #+END_SRC
+
+*** mailcap
+        
+    - ~/.mailcap
+    - ~/mail.cap
+    - ~/etc/mail.cap
+
+    这里想遵循 XDG 的配置，所以这里会将配置文件放在 XDG_CONFIG_HOME/mime/caps. 所以需要配置 zsh 环境变量，以便于读取
+    XDG_CONFIG_HOME 下的配置文件
+    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/006-mime.zsh") :eval never :exports code :comments link :mkdirp yes
+      export MAILCAPS=${XDG_CONFIG_HOME}/mime/caps
+    #+END_SRC
+
+*** mime.types 配置文件内容
+    #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/mime/types") :noweb yes :comments link :mkdirp yes
+      #MIME type                                                                             Extensions
+      application/vnd.openxmlformats-officedocument.spreadsheetml.sheet                      xlsx
+    #+END_SRC
+
+*** mailcap 配置文件
+    #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/mime/caps") :noweb yes :comments link :mkdirp yes
+      # images
+      image/bmp;                open %s; nametemplate=%s.bmp; 
+      image/gif;                open %s; nametemplate=%s.gif;
+      image/ilbm;               open %s; nametemplate=%s.ilbm;
+      image/jpg;                open %s; nametemplate=%s.jpg;
+      image/jpeg;               open %s; nametemplate=%s.jpeg;
+      image/png;                open %s; nametemplate=%s.png;
+      image/tiff;               open %s; nametemplate=%s.tiff;
+      image/x-png;              open %s; nametemplate=%s.x-png;
+      image/x-ilbm;             open %s; nametemplate=%s.x-ilbm;
+
+      text/html;                w3m -dump -o document_charset=%{charset} '%s'; nametemplate=%s.html; copiousoutput
+      application/pdf;          open %s; nametemplate=%s.pdf;
+      image/pdf;                open %s; nametemplate=%s.pdf;
+
+      # word, excel
+      # wordview is in the catdoc package
+      application/rtf;                                                                open %s; nametemplate=%s.docx;
+      application/msword;                                                             open %s; nametemplate=%s.docx;
+      application/vnd.oasis.opendocument.text;                                        open %s; nametemplate=%s.docx;
+
+      application/excel;                                                              open %s; nametemplate=%s.xls
+      application/msexcel;                                                            open %s; nametemplate=%s.xls
+      application/vnd.ms-excel;                                                       open %s; nametemplate=%s.xls
+      application/x-msexcel;                                                          open %s; nametemplate=%s.xls
+      application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;              open %s; nametemplate=%s.xlsx
+      application/xls;                                                                open %s; nametemplate=%s.xlsx;
+    #+END_SRC

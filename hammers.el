@@ -222,6 +222,7 @@
       (m/tangles "${m/root.d}/hammers/msmtp/*.org")
       (m/tangles "${m/root.d}/hammers/proxychains/*.org")
       (m/tangles "${m/root.d}/hammers/notmuch/*.org")
+      (m/tangles "${m/root.d}/hammers/mime/*.org")
       (m/tangles "${m/root.d}/hammers/mbsync/*.org")
       (m/tangles "${m/root.d}/hammers/zsh/*.org")
       (m/evaluates "${m/root.d}/hammers/zsh/*.org")
