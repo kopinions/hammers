@@ -22,7 +22,8 @@
         :bind (("C-x m" . sb/notmuch)
                ("M-]" . notmuch-cycle-notmuch-buffers))
         :custom
-        (notmuch-address-use-company nil)
+        (notmuch-address-use-company t)
+        (notmuch-archive-tags '("-inbox" "+archived"))
         (notmuch-hello-thousands-separator ",")
         (notmuch-mua-cite-function (quote message-cite-original-without-signature))
         (notmuch-fcc-dirs '(("rising.lambda@gmail.com" . "\"lambda/[Gmail]/Sent Mail\"")
