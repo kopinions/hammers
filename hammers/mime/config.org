@@ -82,6 +82,9 @@
     #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/mime/types") :noweb yes :comments link :mkdirp yes
       #MIME type                                                                             Extensions
       application/vnd.openxmlformats-officedocument.spreadsheetml.sheet                      xlsx
+      application/vnd.ms-excel                                                               xls
+      application/vnd.openxmlformats-officedocument.wordprocessingml.document                docx
+      application/msword                                                                     doc
     #+END_SRC
 
 *** mailcap 配置文件
@@ -104,7 +107,8 @@
       # word, excel
       # wordview is in the catdoc package
       application/rtf;                                                                open %s; nametemplate=%s.docx;
-      application/msword;                                                             open %s; nametemplate=%s.docx;
+      application/msword;                                                             open %s; nametemplate=%s.doc;
+      application/vnd.openxmlformats-officedocument.wordprocessingml.document;        open %s; nametemplate=%s.docx;
       application/vnd.oasis.opendocument.text;                                        open %s; nametemplate=%s.docx;
 
       application/excel;                                                              open %s; nametemplate=%s.xls
