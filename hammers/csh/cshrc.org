@@ -293,7 +293,6 @@
       alias ssh "ssh ${SSH_CONFIG} ${SSH_ID} ${SSH_KNOWN_HOSTS}"
 
       alias scp "scp ${SSH_CONFIG} ${SSH_ID} ${SSH_KNOWN_HOSTS}"
-      alias mbsync "mbsync -c ${XDG_CONFIG_HOME}/isync/config"
     #+END_SRC
 
 

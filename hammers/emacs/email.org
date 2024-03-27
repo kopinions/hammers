@@ -63,7 +63,7 @@
         (defun sb/mbsync (&rest group)
           (interactive)
           (let* ((group (or (and (car group) group) '("--all")))
-                 (config (expand-file-name "config" (expand-file-name "isync" (or (getenv "XDG_CONFIG_HOME") m/xdg.conf.d))))
+                 (config (expand-file-name "config" (expand-file-name "mbsync" (or (getenv "XDG_CONFIG_HOME") m/xdg.conf.d))))
                  (command `("mbsync" "-c" ,config "--verbose" "--quiet" ,@group)))
             (message "Starting %s.." (mapconcat 'identity command " "))
             (apply 'start-process "mbsync" "*mbsync*" command)))

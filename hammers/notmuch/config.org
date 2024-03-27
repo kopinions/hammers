@@ -93,7 +93,7 @@
 
 *** pre hook
     #+BEGIN_SRC shell :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/notmuch/default/hooks/pre-new") :tangle-mode (identity #o755) :shebang #!/bin/bash :noweb yes :comments link
-      proxychains4 -q mbsync -c ${XDG_CONFIG_HOME}/isync/config -a
+      proxychains4 -q mbsync -c ${XDG_CONFIG_HOME}/mbsync/config -a
       notmuch new --no-hooks
     #+END_SRC
 

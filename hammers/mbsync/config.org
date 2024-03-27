@@ -55,7 +55,7 @@
     #+END_SRC
 *** mbsync 配置（同步邮件）
 **** sjkyspa
-     #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/isync/config") :noweb yes
+     #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/mbsync/config") :noweb yes
        IMAPAccount sjkyspa
        Host imap.gmail.com
        User sjkyspa@gmail.com
@@ -169,7 +169,7 @@
      #+END_SRC
 
 **** lambda
-     #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/isync/config") :noweb yes
+     #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/mbsync/config") :noweb yes
        IMAPAccount lambda
        Host imap.gmail.com
        User rising.lambda@gmail.com
@@ -283,7 +283,7 @@
      #+END_SRC
      
 **** sietium
-     #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/isync/config") :noweb yes
+     #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/mbsync/config") :noweb yes
        IMAPAccount sietium
        Host imap.qiye.aliyun.com
        User neo@sietium.com
@@ -380,6 +380,6 @@
      #+END_SRC
 
 *** mbsync pre-sync
-    #+BEGIN_SRC shell :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/isync/hooks/pre-sync") :tangle-mode (identity #o755) :shebang #!/bin/bash :noweb yes :comments link
+    #+BEGIN_SRC shell :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/mbsync/hooks/pre-sync") :tangle-mode (identity #o755) :shebang #!/bin/bash :noweb yes :comments link
 
     #+END_SRC

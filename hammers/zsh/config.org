@@ -14,6 +14,7 @@
       export XDG_CONFIG_HOME=${HOME}/.config
       export XDG_CACHE_HOME=${HOME}/.cache
       export XDG_DATA_HOME=${HOME}/.local/share
+      export XDG_STATE_HOME=${HOME}/.local/state
       export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
     #+END_SRC
 
@@ -362,7 +363,6 @@
           fi
       }
       alias scp="scp ${SSH_CONFIG} ${SSH_ID} ${SSH_KNOWN_HOSTS}"
-      alias mbsync="mbsync -c ${XDG_CONFIG_HOME}/isync/config"
     #+END_SRC
 
 *** export http proxy
