@@ -73,7 +73,7 @@
     #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/notmuch/default/config") :noweb yes :comments link
       # 相对于 HOMEDIR ~ 的目录
       [database]
-      path=<<maildir()>>
+      mail_root=<<maildir()>>
 
       [user]
       name=neo
