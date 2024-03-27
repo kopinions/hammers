@@ -17,6 +17,8 @@
 
       (use-package notmuch
         :ensure-system-package (notmuch msmtp (mbsync . isync))
+        :init
+        (setq notmuch-multipart/alternative-discouraged '("text/plain" "multipart/related"))
         :hook
         (notmuch-message-mode . turn-off-auto-fill)
         :bind (("C-x m" . sb/notmuch)
@@ -60,8 +62,8 @@
         (defun sb/mbsync (&rest group)
           (interactive)
           (let* ((group (or (and (car group) group) '("--all")))
-                (config (expand-file-name "config" (expand-file-name "isync" (or (getenv "XDG_CONFIG_HOME") m/xdg.conf.d))))
-                (command `("mbsync" "-c" ,config "--verbose" "--quiet" ,@group)))
+                 (config (expand-file-name "config" (expand-file-name "isync" (or (getenv "XDG_CONFIG_HOME") m/xdg.conf.d))))
+                 (command `("mbsync" "-c" ,config "--verbose" "--quiet" ,@group)))
             (message "Starting %s.." (mapconcat 'identity command " "))
             (apply 'start-process "mbsync" "*mbsync*" command)))
         (defun sb/afew (&rest group)
