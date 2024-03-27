@@ -73,6 +73,13 @@
    
    #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/afew/config") :noweb yes :comments link :mkdirp yes
      [Filter.1]
+     message = Tag sjkyspa for sjkyspa maildir
+     query = folder:/sjkyspa/
+     tags = +sjkyspa
+   #+END_SRC
+   
+   #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/afew/config") :noweb yes :comments link :mkdirp yes
+     [Filter.2]
      message = Tag sietium for sietium maildir
      query = folder:/sietium/
      tags = +sietium
@@ -92,17 +99,22 @@
      message = Remove inbox for Non inbox folder for lambda
      query = folder:/lambda/ AND NOT folder:lambda/INBOX
      tags = -inbox
+     [Filter.12]
+     message = Remove inbox for Non inbox folder for sjkyspa
+     query = folder:/sjkyspa/ AND NOT folder:sjkyspa/INBOX
+     tags = -inbox
    #+END_SRC
 ** 邮件移动配置
    #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/afew/config") :noweb yes :comments link :mkdirp yes
      [MailMover]
-     folders = sietium/INBOX lambda/INBOX
+     folders = sietium/INBOX lambda/INBOX sjkyspa/INBOX
      rename = True
      max_age = 7
 
      # rules
      sietium/INBOX = 'tag:spam':sietium/Spam 'NOT tag:inbox':sietium/Archive 'tag:gb2':sietium/GB2 'tag:sent':sietium/Sent
      lambda/INBOX = 'tag:spam':lambda/[Gmail]/Spam 'NOT tag:inbox':'lambda/[Gmail]/All Mail'
+     sjkyspa/INBOX = 'tag:spam':sjkyspa/[Gmail]/Spam 'NOT tag:inbox':'sjkyspa/[Gmail]/All Mail'
    #+END_SRC
 ** 所有剩下的邮件先放在 Inbox
    #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/afew/config") :noweb yes :comments link :mkdirp yes

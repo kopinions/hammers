@@ -78,7 +78,7 @@
       [user]
       name=neo
       primary_email=rising.lambda@gmail.com
-      other_email=neo@sietium.com
+      other_email=neo@sietium.com;sjkyspa@gmail.com
 
       [new]
       tags=new;

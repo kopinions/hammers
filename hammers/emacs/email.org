@@ -29,7 +29,8 @@
         (notmuch-hello-thousands-separator ",")
         (notmuch-mua-cite-function (quote message-cite-original-without-signature))
         (notmuch-fcc-dirs '(("rising.lambda@gmail.com" . "\"lambda/[Gmail]/Sent Mail\"")
-                           ("neo@sietium.com" . "sietium/Sent")))
+                            ("sjkyspa@gmail.com" . "\"sjkyspa/[Gmail]/Sent Mail\"")
+                            ("neo@sietium.com" . "sietium/Sent")))
         (notmuch-saved-searches
          (quote
           ((:name "Inbox" :query "tag:inbox" :key "i")
