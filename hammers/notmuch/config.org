@@ -53,6 +53,11 @@
   echo ${maildir}
 #+END_SRC
 
+#+NAME: xdg_data_d
+#+BEGIN_SRC shell :var xdg_data_d=(m/resolve "${m/xdg.data.d}")
+  echo ${xdg_data_d}
+#+END_SRC
+
 *** notmuch 配置文件
     notmuch 的配置文件搜索路径顺序为
 
@@ -73,6 +78,7 @@
     #+BEGIN_SRC conf :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/notmuch/default/config") :noweb yes :comments link
       # 相对于 HOMEDIR ~ 的目录
       [database]
+      path=<<xdg_data_d()>>/notmuch/default
       mail_root=<<maildir()>>
 
       [user]
@@ -93,13 +99,13 @@
 
 *** pre hook
     #+BEGIN_SRC shell :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/notmuch/default/hooks/pre-new") :tangle-mode (identity #o755) :shebang #!/bin/bash :noweb yes :comments link
-      proxychains4 -q mbsync -c ${XDG_CONFIG_HOME}/mbsync/config -a
+      proxychains4 -q mbsync -c ${XDG_CONFIG_HOME}/mbsync/config -V -a
       notmuch new --no-hooks
     #+END_SRC
 
 *** post hook
     #+BEGIN_SRC shell :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/notmuch/default/hooks/post-new") :tangle-mode (identity #o755) :shebang #!/bin/bash :noweb yes :comments link
-      afew --tag --new
+      afew -C ${XDG_CONFIG_HOME}/notmuch/default/config --tag --new
     #+END_SRC
 
 *** post insert hook
