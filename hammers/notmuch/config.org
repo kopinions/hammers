@@ -99,16 +99,98 @@
 
 *** pre hook
     #+BEGIN_SRC shell :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/notmuch/default/hooks/pre-new") :tangle-mode (identity #o755) :shebang #!/bin/bash :noweb yes :comments link
-      proxychains4 -q mbsync -c ${XDG_CONFIG_HOME}/mbsync/config -V -a
+      proxychains4 -q mbsync -c ${XDG_CONFIG_HOME}/mbsync/config -a
       notmuch new --no-hooks
     #+END_SRC
-
 *** post hook
     #+BEGIN_SRC shell :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/notmuch/default/hooks/post-new") :tangle-mode (identity #o755) :shebang #!/bin/bash :noweb yes :comments link
-      afew -C ${XDG_CONFIG_HOME}/notmuch/default/config --tag --new
+      # Move a message file while removing its UID-part
+      function move { 
+          flag=$(echo $1 | grep -q -F ':' && echo ${1##*:} || echo ""); 
+          basename=${1##*/}; 
+          target="${basename%%,*}${flag:+:${flag}}"; 
+          echo "mv -f $1 $2/${target}"; 
+          mv -f "$1" "$2/${target}";
+      }
+
+      echo "tagging: -inbox for $(notmuch count --output=files --exclude=false tag:inbox AND NOT folder:/.*\/INBOX/) messages"
+      notmuch tag -inbox tag:inbox AND NOT folder:/.*\/INBOX/
+
+      echo "tagging: +sietium for $(notmuch count --output=files --exclude=false folder:/sietium/ AND NOT tag:sietium) messages"
+      notmuch tag +sietium folder:/sietium/ AND NOT tag:sietium
+
+      echo "tagging: +lambda for $(notmuch count --output=files --exclude=false folder:/lambda/ AND NOT tag:lambda) messages"
+      notmuch tag +lambda folder:/lambda/ AND NOT tag:lambda
+
+      echo "tagging: +sjkyspa for $(notmuch count --output=files --exclude=false folder:/sjkyspa/ AND NOT tag:sjkyspa) messages"
+      notmuch tag +sjkyspa folder:/sjkyspa/ AND NOT tag:sjkyspa
+
+      echo "tagging: +inbox -new for $(notmuch count --output=files --exclude=false folder:/.*\/INBOX/ tag:new AND NOT tag:killed AND NOT tag:spam) new messages"
+      notmuch tag +inbox -new tag:new AND NOT tag:killed AND NOT tag:spam
+
+      echo "tagging: -new for $(notmuch count --output=files --exclude=false tag:sent AND tag:new ) sent messages"
+      notmuch tag -new tag:sent AND tag:new
+
+      # Note mail sent specifically to me
+      echo "tagging: +to-me for $(notmuch count --output=files --exclude=false to:neo@sietium.com AND NOT tag:to-me) sent to me messages @sietium"
+      notmuch tag +to-me to:neo@sietium.com AND NOT tag:to-me
+      echo "tagging: +to-me for $(notmuch count --output=files --exclude=false to:rising.lambda@gmail.com AND NOT tag:to-me) sent to me messages @lambda"
+      notmuch tag +to-me to:rising.lambda@gmail.com AND NOT tag:to-me
+      echo "tagging: +to-me for $(notmuch count --output=files --exclude=false to:sjkyspa@gmail.com AND NOT tag:to-me) sent to me messages @sjkyspa"
+      notmuch tag +to-me to:sjkyspa@gmail.com AND NOT tag:to-me
+
+      # And note all mail sent from me
+      echo "tagging: +sent for $(notmuch count --output=files --exclude=false from:neo@sietium.com AND NOT tag:sent) sent messages @sietium"
+      notmuch tag +sent from:neo@sietium.com AND NOT tag:sent
+      echo "tagging: +sent for $(notmuch count --output=files --exclude=false from:rising.lambda@gmail.com AND NOT tag:sent) sent messages @lambda"
+      notmuch tag +sent from:rising.lambda@gmail.com AND NOT tag:sent
+      echo "tagging: +sent for $(notmuch count --output=files --exclude=false from:sjkyspa@gmail.com AND NOT tag:sent) sent messages @sjkyspa"
+      notmuch tag +sent from:sjkyspa@gmail.com AND NOT tag:sent
+
+      echo "moving $(notmuch count --output=files --exclude=false folder:sietium/INBOX AND tag:spam) spam messages to the sietium/Spam"
+      for i in $(notmuch search --exclude=false --output=files folder:sietium/INBOX AND tag:spam); do
+          move $i "<<maildir()>>/sietium/Spam/cur"
+      done
+      echo "moving $(notmuch count --output=files --exclude=false folder:sietium/INBOX AND NOT tag:inbox) messages to the sietium/Archive"
+      for i in $(notmuch search --exclude=false --output=files folder:sietium/INBOX AND NOT tag:inbox); do
+          move $i "<<maildir()>>/sietium/Archive/cur"
+      done
+
+      echo "moving $(notmuch count --output=files --exclude=false folder:sietium/INBOX AND tag:sent) messages to the sietium/Sent"
+      for i in $(notmuch search --exclude=false --output=files folder:sietium/INBOX AND tag:sent); do
+          move $i "<<maildir()>>/sietium/Sent/cur"
+      done
+
+      echo "moving $(notmuch count --output=files --exclude=false folder:lambda/INBOX AND tag:spam) spam messages to the lambda/[Gmail]/Spam"
+      for i in $(notmuch search --exclude=false --output=files folder:lambda/INBOX AND tag:spam); do
+          move $i "<<maildir()>>/lambda/[Gmail]/Spam/cur"
+      done
+      echo "moving $(notmuch count --output=files --exclude=false folder:lambda/INBOX AND NOT tag:inbox) messages to the lambda/[Gmail]/All Mail"
+      for i in $(notmuch search --exclude=false --output=files folder:lambda/INBOX AND NOT tag:inbox); do
+          move $i "<<maildir()>>/lambda/[Gmail]/All\ Mail/cur"
+      done
+
+      echo "moving $(notmuch count --output=files --exclude=false folder:lambda/INBOX AND tag:sent) messages to the lambda/[Gmail]/Send Mail"
+      for i in $(notmuch search --exclude=false --output=files folder:lambda/INBOX AND tag:sent); do
+          move $i "<<maildir()>>/lambda/[Gmail]/Sent\ Mail"
+      done
+
+      echo "moving $(notmuch count --output=files --exclude=false folder:sjkyspa/INBOX AND tag:spam) spam messages to the sjkyspa/[Gmail]/Spam"
+      for i in $(notmuch search --exclude=false --output=files folder:sjkyspa/INBOX AND tag:spam); do
+          move $i "<<maildir()>>/sjkyspa/[Gmail]/Spam/cur"
+      done
+      echo "moving $(notmuch count --output=files --exclude=false folder:sjkyspa/INBOX AND NOT tag:inbox) messages to the sjkyspa/[Gmail]/All Mail"
+      for i in $(notmuch search --exclude=false --output=files folder:sjkyspa/INBOX AND NOT tag:inbox); do
+          move $i "<<maildir()>>/sjkyspa/[Gmail]/All\ Mail/cur"
+      done
+
+      echo "moving $(notmuch count --output=files --exclude=false folder:sjkyspa/INBOX AND  tag:sent) messages to the sjkyspa/[Gmail]/Send Mail"
+      for i in $(notmuch search --exclude=false --output=files folder:sjkyspa/INBOX AND tag:sent); do
+          move $i "<<maildir()>>/sjkyspa/[Gmail]/Sent\ Mail"
+      done
     #+END_SRC
 
 *** post insert hook
     #+BEGIN_SRC shell :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/notmuch/default/hooks/post-insert") :tangle-mode (identity #o755) :shebang #!/bin/bash :noweb yes :comments link
-      # notmuch tag +sent -new tag:new 'folder:/.*Sent.*/'
+      #notmuch tag +sent -new tag:new 'folder:/.*Sent.*/'
     #+END_SRC

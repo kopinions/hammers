@@ -21,8 +21,10 @@
         (setq notmuch-multipart/alternative-discouraged '("text/plain" "multipart/related"))
         :hook
         (notmuch-message-mode . turn-off-auto-fill)
-        :bind (("C-x m" . sb/notmuch)
-               ("M-]" . notmuch-cycle-notmuch-buffers))
+        :bind
+        (
+         ("C-x m" . sb/notmuch)
+         ("M-]" . notmuch-cycle-notmuch-buffers))
         :custom
         (notmuch-address-use-company t)
         (notmuch-archive-tags '("-inbox" "+archived"))
@@ -56,9 +58,6 @@
            ("m"
             ("+muted")
             "Mute Thread"))))
-        :bind
-        (:map notmuch-hello-mode-map
-              ("o" . sb/afew))
         :config
         (defun sb/mbsync (&rest group)
           (interactive)
@@ -67,12 +66,6 @@
                  (command `("mbsync" "-c" ,config "--verbose" "--quiet" ,@group)))
             (message "Starting %s.." (mapconcat 'identity command " "))
             (apply 'start-process "mbsync" "*mbsync*" command)))
-        (defun sb/afew (&rest group)
-          (interactive)
-          (let ((group (or (and (car group) group) '("--all")))
-                (command `("afew" "-m" "-v" "-v" ,@group)))
-            (message "Starting %s.." (mapconcat 'identity command " "))
-            (apply 'start-process "afew" "*afew*" command)))
         (defun sb/notmuch (arg)
           "Launch notmuch. If ran with prefix arg, launch mbsync in the
           background, and automatically refresh the current buffer when
