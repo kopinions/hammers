@@ -18,18 +18,52 @@
       (use-package notmuch
         :ensure-system-package (notmuch msmtp (mbsync . isync))
         :init
-        (setq notmuch-multipart/alternative-discouraged '("text/plain" "multipart/related"))
+        (defun sb/notmuch (arg)
+          "Launch notmuch. If ran with prefix arg, launch mbsync in the
+          background, and automatically refresh the current buffer when
+          done. With two prefix args, launch mbsync with `--all` rather
+          than just for inboxes."
+          (interactive "p")
+          (notmuch)
+          (if (> arg 1)
+              (set-process-sentinel
+               (sb/mbsync "--all")
+               (lambda (proc state)
+                 (message nil) ;; clear minibuffer
+                 (notmuch-poll-and-refresh-this-buffer)))))
+        (defun sb/notmuch-poll (arg)
+          "Launch notmuch. If ran with prefix arg, launch mbsync in the
+          background, and automatically refresh the current buffer when
+          done. With two prefix args, launch mbsync with `--all` rather
+          than just for inboxes."
+          (interactive "p")
+          (notmuch)
+          (set-process-sentinel
+           (sb/mbsync "--all")
+           (lambda (proc state)
+             (message nil) ;; clear minibuffer
+             (notmuch-poll-and-refresh-this-buffer))))
+        (defun sb/mbsync (&rest group)
+          (interactive)
+          (let* ((group (or (and (car group) group) '("--all")))
+                 (config (expand-file-name "config" (expand-file-name "mbsync" (or (getenv "XDG_CONFIG_HOME") m/xdg.conf.d))))
+                 (command `("proxychains4" "-q" "mbsync" "-c" ,config "--verbose" "--quiet" ,@group)))
+            (message "Starting %s.." (mapconcat 'identity command " "))
+            (apply 'start-process "mbsync" "*mbsync*" command)))
         :hook
         (notmuch-message-mode . turn-off-auto-fill)
         :bind
         (
          ("C-x m" . sb/notmuch)
-         ("M-]" . notmuch-cycle-notmuch-buffers))
+         ("M-]" . notmuch-cycle-notmuch-buffers)
+         :map notmuch-hello-mode-map
+         ("G" . sb/notmuch-poll))
         :custom
         (notmuch-address-use-company t)
         (notmuch-archive-tags '("-inbox" "+archived"))
         (notmuch-hello-thousands-separator ",")
         (notmuch-mua-cite-function (quote message-cite-original-without-signature))
+        (notmuch-multipart/alternative-discouraged '("text/plain" "multipart/related" "text/x-amp-html"))
         (notmuch-fcc-dirs '(("rising.lambda@gmail.com" . "\"lambda/[Gmail]/Sent Mail\"")
                             ("sjkyspa@gmail.com" . "\"sjkyspa/[Gmail]/Sent Mail\"")
                             ("neo@sietium.com" . "sietium/Sent")))
@@ -57,28 +91,7 @@
             "Delete")
            ("m"
             ("+muted")
-            "Mute Thread"))))
-        :config
-        (defun sb/mbsync (&rest group)
-          (interactive)
-          (let* ((group (or (and (car group) group) '("--all")))
-                 (config (expand-file-name "config" (expand-file-name "mbsync" (or (getenv "XDG_CONFIG_HOME") m/xdg.conf.d))))
-                 (command `("mbsync" "-c" ,config "--verbose" "--quiet" ,@group)))
-            (message "Starting %s.." (mapconcat 'identity command " "))
-            (apply 'start-process "mbsync" "*mbsync*" command)))
-        (defun sb/notmuch (arg)
-          "Launch notmuch. If ran with prefix arg, launch mbsync in the
-          background, and automatically refresh the current buffer when
-          done. With two prefix args, launch mbsync with `--all` rather
-          than just for inboxes."
-          (interactive "p")
-          (notmuch)
-          (if (> arg 1)
-              (set-process-sentinel
-               (sb/mbsync (if (eq 4 arg) "inbox" "--all"))
-               (lambda (proc state)
-                 (message nil) ;; clear minibuffer
-                 (notmuch-poll-and-refresh-this-buffer))))))
+            "Mute Thread")))))
     #+END_SRC
 
 *** emacs 发送端配置
