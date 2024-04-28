@@ -188,6 +188,11 @@
       for i in $(notmuch search --exclude=false --output=files folder:sjkyspa/INBOX AND tag:sent); do
           move $i "<<maildir()>>/sjkyspa/[Gmail]/Sent Mail"
       done
+
+      echo "delete $(notmuch count --output=files --exclude=false tag:delete) messages"
+      for i in $(notmuch search --exclude=false --output=files tag:delete); do
+          rm -rf ${i}
+      done
     #+END_SRC
 
 *** post insert hook

@@ -39,15 +39,16 @@
           (interactive "p")
           (notmuch)
           (set-process-sentinel
-           (sb/mbsync "--all")
+           (sb/mbsync (if (eq 4 arg) "sietium" "--all"))
            (lambda (proc state)
              (message nil) ;; clear minibuffer
              (notmuch-poll-and-refresh-this-buffer))))
         (defun sb/mbsync (&rest group)
           (interactive)
-          (let* ((group (or (and (car group) group) '("--all")))
+          (let* ((wrapper (if (string-equal (car group) "--all") '("proxychains4" "-q") '()))
+                 (group (or (and (car group) group) '("--all")))
                  (config (expand-file-name "config" (expand-file-name "mbsync" (or (getenv "XDG_CONFIG_HOME") m/xdg.conf.d))))
-                 (command `("proxychains4" "-q" "mbsync" "-c" ,config "--verbose" "--quiet" ,@group)))
+                 (command `(,@wrapper "mbsync" "-c" ,config "--verbose" "--quiet" ,@group)))
             (message "Starting %s.." (mapconcat 'identity command " "))
             (apply 'start-process "mbsync" "*mbsync*" command)))
         :hook
