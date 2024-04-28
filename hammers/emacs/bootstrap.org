@@ -159,6 +159,9 @@
         (setq auto-package-update-hide-results t)
         (auto-package-update-maybe))
 
+       
+      (use-package gnu-elpa-keyring-update)
+
       (use-package use-package-ensure-system-package
         :ensure t)
     #+END_SRC
