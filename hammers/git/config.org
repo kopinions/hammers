@@ -32,6 +32,7 @@
               ignore = "!gi() { curl -L -s https://www.gitignore.io/api/$@ ;}; gi"
               ignored = ls-files -o -i --exclude-standard
               root = "rev-parse --show-toplevel"
+              children = "!f() { git rev-list --all --not $1^@ --children | grep $(git rev-parse $1); }; f" # reachable children of a ref
       [log]
               abbrevCommit = true
       [init]
@@ -88,19 +89,19 @@
               minus-style = syntax "#3f0001"
 
       [delta "decorations"]
-          commit-decoration-style = bold yellow box ul
-          file-style = bold yellow ul
-          file-decoration-style = none
-          hunk-header-decoration-style = cyan box ul
+              commit-decoration-style = bold yellow box ul
+              file-style = bold yellow ul
+              file-decoration-style = none
+              hunk-header-decoration-style = cyan box ul
 
       [delta "line-numbers"]
-          line-numbers-left-style = cyan
-          line-numbers-right-style = cyan
-          line-numbers-minus-style = 124
-          line-numbers-plus-style = 28
+              line-numbers-left-style = cyan
+              line-numbers-right-style = cyan
+              line-numbers-minus-style = 124
+              line-numbers-plus-style = 28
       [oh-my-zsh]
-          hide-status = 1
-          hide-dirty = 1
+              hide-status = 1
+              hide-dirty = 1
     #+END_SRC
 
 *** git commit template
