@@ -18,7 +18,7 @@
       (use-package notmuch
         :ensure-system-package (notmuch msmtp (mbsync . isync))
         :init
-        (defun sb/notmuch (arg)
+        (defun mail/notmuch (arg)
           "Launch notmuch. If ran with prefix arg, launch mbsync in the
                 background, and automatically refresh the current buffer when
                 done. With two prefix args, launch mbsync with `--all` rather
@@ -27,11 +27,11 @@
           (notmuch)
           (if (> arg 1)
               (set-process-sentinel
-               (sb/mbsync "--all")
+               (mail/sync "--all")
                (lambda (proc state)
                  (message nil) ;; clear minibuffer
                  (notmuch-poll-and-refresh-this-buffer)))))
-        (defun sb/notmuch-poll (arg)
+        (defun mail/notmuch-poll (arg)
           "Launch notmuch. If ran with prefix arg, launch mbsync in the
                 background, and automatically refresh the current buffer when
                 done. With two prefix args, launch mbsync with `--all` rather
@@ -39,14 +39,14 @@
           (interactive "p")
           (notmuch)
           (set-process-sentinel
-           (sb/mbsync (if (eq 4 arg) "sietium" "--all"))
+           (mail/sync (if (eq 4 arg) "sietium" "--all"))
            (lambda (proc state)
              (message nil) ;; clear minibuffer
              (notmuch-poll-and-refresh-this-buffer))))
-        (defun nm/delete (&rest group)
+        (defun mail/delete (&rest group)
           (interactive)
           (notmuch-show-add-tag (list "+delete" "-inbox")))
-        (defun sb/mbsync (&rest group)
+        (defun mail/sync (&rest group)
           (interactive)
           (let* ((wrapper (if (string-equal (car group) "--all") '("proxychains4" "-q") '()))
                  (group (or (and (car group) group) '("--all")))
@@ -58,12 +58,12 @@
         (notmuch-message-mode . turn-off-auto-fill)
         :bind
         (
-         ("C-x m" . sb/notmuch)
+         ("C-x m" . mail/notmuch)
          ("M-]" . notmuch-cycle-notmuch-buffers)
          :map notmuch-hello-mode-map
-         ("G" . sb/notmuch-poll)
+         ("G" . mail/notmuch-poll)
          :map notmuch-show-mode-map
-         ("d" . nm/delete))
+         ("d" . mail/delete))
         :custom
         (notmuch-address-use-company t)
         (notmuch-archive-tags '("-inbox" "+archived"))
