@@ -20,9 +20,9 @@
         :init
         (defun sb/notmuch (arg)
           "Launch notmuch. If ran with prefix arg, launch mbsync in the
-          background, and automatically refresh the current buffer when
-          done. With two prefix args, launch mbsync with `--all` rather
-          than just for inboxes."
+                background, and automatically refresh the current buffer when
+                done. With two prefix args, launch mbsync with `--all` rather
+                than just for inboxes."
           (interactive "p")
           (notmuch)
           (if (> arg 1)
@@ -33,9 +33,9 @@
                  (notmuch-poll-and-refresh-this-buffer)))))
         (defun sb/notmuch-poll (arg)
           "Launch notmuch. If ran with prefix arg, launch mbsync in the
-          background, and automatically refresh the current buffer when
-          done. With two prefix args, launch mbsync with `--all` rather
-          than just for inboxes."
+                background, and automatically refresh the current buffer when
+                done. With two prefix args, launch mbsync with `--all` rather
+                than just for inboxes."
           (interactive "p")
           (notmuch)
           (set-process-sentinel
@@ -43,6 +43,9 @@
            (lambda (proc state)
              (message nil) ;; clear minibuffer
              (notmuch-poll-and-refresh-this-buffer))))
+        (defun nm/delete (&rest group)
+          (interactive)
+          (notmuch-show-add-tag (list "+delete" "-inbox")))
         (defun sb/mbsync (&rest group)
           (interactive)
           (let* ((wrapper (if (string-equal (car group) "--all") '("proxychains4" "-q") '()))
@@ -58,7 +61,9 @@
          ("C-x m" . sb/notmuch)
          ("M-]" . notmuch-cycle-notmuch-buffers)
          :map notmuch-hello-mode-map
-         ("G" . sb/notmuch-poll))
+         ("G" . sb/notmuch-poll)
+         :map notmuch-show-mode-map
+         ("d" . nm/delete))
         :custom
         (notmuch-address-use-company t)
         (notmuch-archive-tags '("-inbox" "+archived"))
