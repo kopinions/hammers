@@ -18,7 +18,7 @@
       (use-package notmuch
         :ensure-system-package (notmuch msmtp (mbsync . isync))
         :init
-        (defun mail/notmuch (arg)
+        (defun mailbox/show (arg)
           "Launch notmuch. If ran with prefix arg, launch mbsync in the
                 background, and automatically refresh the current buffer when
                 done. With two prefix args, launch mbsync with `--all` rather
@@ -27,11 +27,11 @@
           (notmuch)
           (if (> arg 1)
               (set-process-sentinel
-               (mail/sync "--all")
+               (mailbox/sync "--all")
                (lambda (proc state)
                  (message nil) ;; clear minibuffer
                  (notmuch-poll-and-refresh-this-buffer)))))
-        (defun mail/notmuch-poll (arg)
+        (defun mailbox/poll (arg)
           "Launch notmuch. If ran with prefix arg, launch mbsync in the
                 background, and automatically refresh the current buffer when
                 done. With two prefix args, launch mbsync with `--all` rather
@@ -39,14 +39,22 @@
           (interactive "p")
           (notmuch)
           (set-process-sentinel
-           (mail/sync (if (eq 4 arg) "sietium" "--all"))
+           (mailbox/sync (if (eq 4 arg) "sietium" "--all"))
            (lambda (proc state)
              (message nil) ;; clear minibuffer
              (notmuch-poll-and-refresh-this-buffer))))
-        (defun mail/delete (&rest group)
+        (defun view/delete (&rest group)
           (interactive)
-          (notmuch-show-add-tag (list "+delete" "-inbox")))
-        (defun mail/sync (&rest group)
+          (notmuch-show-add-tag (list "+delete" "-inbox" "-unread"))
+          (unless (notmuch-show-next-open-message)
+            (notmuch-show-next-thread t)))
+        (defun search/delete  (&optional undelete beg end)
+          (interactive (cons current-prefix-arg (notmuch-interactive-region)))
+          (notmuch-search-tag
+           (notmuch-tag-change-list '("-inbox" "+delete" "-unread") undelete) beg end)
+          (when (eq beg end)
+            (notmuch-search-next-thread)))
+        (defun mailbox/sync (&rest group)
           (interactive)
           (let* ((wrapper (if (string-equal (car group) "--all") '("proxychains4" "-q") '()))
                  (group (or (and (car group) group) '("--all")))
@@ -58,12 +66,15 @@
         (notmuch-message-mode . turn-off-auto-fill)
         :bind
         (
-         ("C-x m" . mail/notmuch)
+         ("C-x m" . mailbox/show)
          ("M-]" . notmuch-cycle-notmuch-buffers)
          :map notmuch-hello-mode-map
-         ("G" . mail/notmuch-poll)
+         ("G" . mailbox/poll)
          :map notmuch-show-mode-map
-         ("d" . mail/delete))
+         ("d" . view/delete)
+         :map notmuch-search-mode-map
+         ("d" . search/delete)
+         )
         :custom
         (notmuch-address-use-company t)
         (notmuch-archive-tags '("-inbox" "+archived"))
@@ -93,7 +104,7 @@
             ("+spam" "-inbox")
             "Mark as spam")
            ("d"
-            ("+deleted" "-inbox")
+            ("+deleted" "-inbox" "-unread")
             "Delete")
            ("m"
             ("+muted")
