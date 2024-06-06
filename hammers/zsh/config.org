@@ -18,368 +18,408 @@
       export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
     #+END_SRC
 
-*** zprofile 环境变量配置
-    #+NAME: zprofile
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/.zprofile") :eval never :exports code :comments link
-      if echo $SHELL | grep -vE -q ".*/zsh$"; then
-          # not zsh, exit
-          return
-      fi
-      export LANG=en_US.UTF-8
-      export JAVA_HOME="/Library/Java/JavaVirtualMachines/openjdk-13.0.1.jdk/Contents/Home"
-      export EDITOR=vim
-      export DISABLE_AUTO_TITLE=true
+*** zprofile 配置
+**** .zprofile
+     #+NAME: zprofile
+     #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/.zprofile") :eval never :exports code :comments link
+       if echo $SHELL | grep -vE -q ".*/zsh$"; then
+           # not zsh, exit
+           return
+       fi
+       export LANG=en_US.UTF-8
+       export EDITOR=vi
+       export DISABLE_AUTO_TITLE=true
 
-      export HOMEBREW_BUNDLE_FILE=${XDG_CONFIG_HOME}/homebrew-bundle/Brewfile
-      export RIPGREP_CONFIG_PATH=${XDG_CONFIG_HOME}/ripgrep/config
-      export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
-      export VIMDOTDIR="$XDG_CONFIG_HOME/vim"
 
-      export LESSHISTFILE="${XDG_DATA_HOME}/less/history"
-      export LESSKEY="${XDG_CONFIG_HOME}/less/keys"
+       mkdir -p ${XDG_CACHE_HOME} ${XDG_DATA_HOME} ${XDG_CONFIG_HOME} ${XDG_STATE_HOME}
 
-      export GEM_SPEC_CACHE=${XDG_CACHE_HOME}/rubygems/cache
+       path=( /usr/bin /bin )
 
-      export INPUTRC=${XDG_CONFIG_HOME}/readline/inputrc
-      export GNUPGHOME=${XDG_CONFIG_HOME}/gnupg
+       typeset -U path
 
-      export ZPLUG_HOME=${XDG_CONFIG_HOME}/zsh/zplug
-      export ZPLUG_REPOS=${XDG_CONFIG_HOME}/zplug/repos
-      export ZPLUG_LOADFILE="${XDG_CONFIG_HOME}/zsh/zplugs.zsh"
-      export ZPLUG_CACHE_DIR=${XDG_CACHE_HOME}/zplug
-
-      mkdir -p ${XDG_CACHE_HOME} ${XDG_DATA_HOME} ${XDG_CONFIG_HOME}
-      mkdir -p ${XDG_DATA_HOME}/{zsh,less,git}
-
-      umask 022
-
-      typeset -U path
-
-      for file in $(find ${XDG_CONFIG_HOME}/zsh/profiles -name "*.zsh"|sort -Vr); do
-          source "${file}"
-      done
-
-      export PATH
-    #+END_SRC
-
-*** zshrc 配置
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/.zshrc") :eval never :exports code :comments link
-      [[ $TERM == "tramp" ]] && unsetopt zle && PS1='$ '&& return
-      source ${ZPLUG_HOME}/init.zsh
-      zplug load
-      for file in ${XDG_CONFIG_HOME}/zsh/rcs/*.zsh; do
-          source "${file}"
-      done
-      export PATH
-    #+END_SRC
-
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/profiles/000-sys.zsh") :eval never :exports code :comments link
-      path=('/sbin' '/usr/sbin' $path)
-    #+END_SRC
-
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/profiles/000-python.zsh") :eval never :exports code :comments link
-      path=('/usr/local/opt/python/libexec/bin' $path)
-    #+END_SRC
-
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/profiles/001-ruby.zsh") :eval never :exports code :comments link
-      path=('/usr/local/opt/ruby/bin' $path)
-    #+END_SRC
-
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/profiles/002-brew.zsh") :eval never :exports code :comments link
-      if [ -d "/usr/local/Cellar" ]; then
-	  eval $(/usr/local/bin/brew shellenv);
-      fi
-    #+END_SRC
-
-*** PATH related config
-    
-**** //usr/local/bin/
-     #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/profiles/000-usr_local_bin.zsh") :eval never :exports code :comments link
-       if [ -d "/usr/local/bin" ]; then
-           path=('/usr/local/bin' $path)
+       if [ -x /usr/bin/id ]; then
+           if [ -z $EUID ]; then
+               EUID=`/usr/bin/id -u`
+               UID=`/usr/bin/id -ru`
+           fi
+           USER="`/usr/bin/id -un`"
+           LOGNAME=$USER
+           MAIL="/var/spool/mail/$USER"
        fi
 
-       if [ -d "/usr/local/sbin" ]; then
-           path=('/usr/local/sbin' $path)
+       if [ "$EUID" = "0" ]; then
+           path=( /usr/sbin $path )
+           path=( /usr/local/sbin $path )
+       else
+           path=( $path /usr/sbin )
+           path=( $path /usr/local/sbin )
        fi
-    #+END_SRC
 
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/zplugs.zsh") :eval never :exports code :comments link
-      #!/usr/bin/env zsh
-      # this allows zplug to update itself on `zplug update`
-      zplug 'robbyrussell/oh-my-zsh', as:plugin, use:"lib/*.zsh"
-      plugins=(git tmux tmuxinator autojump fancy-ctrl-z direnv urltools)
-      for plugin in $plugins; do
-	  zplug "plugins/$plugin", from:oh-my-zsh, as:plugin
-      done
-
-      zplug 'themes/robbyrussell', from:oh-my-zsh, use:robbyrussel.zsh-theme, as:theme
-
-      zplug 'junegunn/fzf', use:"shell/*.zsh",  defer:2
-
-      #### ZSH MAGIC
-      zplug 'zsh-users/zsh-autosuggestions'
-      zplug 'zsh-users/zsh-completions'
-      zplug 'zsh-users/zsh-syntax-highlighting', defer:2
-      zplug 'zsh-users/zsh-history-substring-search', defer:3
-      return 0 # in case zplug adds plugs ignore them
-    #+END_SRC
-
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/profiles/000-home-local.zsh") :eval never :exports code :comments link
-      if [ -d "$HOME/.local" ]; then
-          path=("$HOME/.local/bin" $path)
-      fi
-    #+END_SRC
-**** coreutils gnu tools path  
-     #+BEGIN_SRC shell :tangle (or (and (eq m/os 'macos) (m/resolve "${m/xdg.conf.d}/zsh/profiles/004-brew-coreutils.zsh")) "no") :eval never :exports code :comments link
-       path=("$(find -L /usr/local/opt -maxdepth 3 -mindepth 3 -type d -name gnubin | paste -s -d: -)" $path)
-     #+END_SRC
-**** zsh config file
-     #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/000-config.zsh") :eval never :exports code :comments link
-       # Changing Directories
-       # http://zsh.sourceforge.net/Doc/Release/Options.html#Changing-Directories
-       setopt auto_cd                 # if a command isn't valid, but is a directory, cd to that dir
-       setopt auto_pushd              # make cd push the old directory onto the directory stack
-       setopt pushd_ignore_dups       # don’t push multiple copies of the same directory onto the directory stack
-       setopt pushd_minus             # exchanges the meanings of ‘+’ and ‘-’ when specifying a directory in the
-       setopt pushd_silent            # no dir stack after pushd or popd
+       if [ $UID -gt 199 -a "`/usr/bin/id -gn`" = "`/usr/bin/id -un`" ]; then
+           umask 002
+       else
+           umask 022
+       fi
 
 
-       # Completions
-       # http://zsh.sourceforge.net/Doc/Release/Options.html#Completion-2
-       setopt always_to_end           # move cursor to the end of a completed word
-       setopt auto_list               # automatically list choices on ambious complemention
-       setopt auto_menu               # auto menu complete
-       setopt auto_param_slash        # if completed parameter is a directory, add a trailing slash
-       setopt complete_in_word        # complete from both ends of a word
-       unsetopt menu_complete         # don't autoselect the first completion entry
+       for file in $(find ${XDG_CONFIG_HOME}/zsh/profiles -name "*.zsh"|sort -Vr); do
+           source "${file}"
+       done
 
-       # Expansion and Globbing
-       # http://zsh.sourceforge.net/Doc/Release/Options.html#Expansion-and-Globbing
-       setopt extended_glob           # use more awesome globbing features
-       setopt glob_dots               # include dotfiles when globbing
-
-
-       #### HISTORY SEARCH
-       autoload history-search-end
-       HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND="bg=cyan,fg=white,bold"
-       HIST_STAMPS="dd.mm.yyyy" ## OH-MY-ZSH
-       HISTFILE=${XDG_DATA_HOME}/zsh/history
-       
-       setopt extended_history        # write the history file in the ':start:elapsed;command' format
-       setopt appendhistory           # append to history file
-       setopt hist_ignore_dups        # ignore duplication command history list
-       setopt hist_ignore_space       # ignore when commands starts with space
-       setopt hist_reduce_blanks      # remove superfluous blanks from each command line being added to the history list
-       setopt share_history
-       setopt inc_append_history
-       setopt hist_reduce_blanks
-       setopt hist_expire_dups_first
-       setopt hist_find_no_dups       # don't display a previously found event
-       setopt hist_ignore_all_dups    # delete an old recorded event if a new event is a duplicate
-       setopt hist_save_no_dups       # don't write a duplicate event to the history file
-       setopt hist_verify             # don't execute immediately upon history expansion
-
-       # use brace
-       setopt brace_ccl
-
-       # compacked complete list display
-       setopt list_packed
-
-       # multi redirect (e.x. echo "hello" > hoge1.txt > hoge2.txt)
-       setopt multios
-
-       setopt auto_remove_slash        # self explicit
-       setopt chase_links              # resolve symlinks
-
-       # Input/Output
-       # http://zsh.sourceforge.net/Doc/Release/Options.html#Input_002fOutput
-       unsetopt correct               # don't try to correct the spelling of commands
-       unsetopt correct_all           # don't try to correct the spelling of all arguments in a line
-       unsetopt flow_control          # disable start/stop characters in shell editor
-       setopt interactive_comments    # enable comments in interactive shell
-       unsetopt mail_warning          # don't print a warning message if a mail file has been accessed
-       setopt path_dirs               # perform path search even on command names with slashes
-       setopt rc_quotes               # allow 'Henry''s Garage' instead of 'Henry'\''s Garage'
-       unsetopt rm_star_silent        # ask for confirmation for `rm *' or `rm path/*'
-
-       # Job Control
-       # http://zsh.sourceforge.net/Doc/Release/Options.html#Job-Control
-       setopt auto_resume            # attempt to resume existing job before creating a new process
-       unsetopt bg_nice              # don't run all background jobs at a lower priority
-       unsetopt check_jobs           # don't report on jobs when shell exit
-       unsetopt hup                  # don't kill jobs on shell exit
-       setopt long_list_jobs         # list jobs in the long format by default
-       setopt notify                 # report status of background jobs immediately
-
-       # Prompting
-       # http://zsh.sourceforge.net/Doc/Release/Options.html#Prompting
-       setopt prompt_subst           # expand parameters in prompt variables
-
-       # Zle
-       # http://zsh.sourceforge.net/Doc/Release/Options.html#Zle
-       unsetopt beep                 # be quiet!
-       setopt combining_chars        # combine zero-length punctuation characters (accents) with the base character
-       setopt emacs                  # use emacs keybindings in the shell
-
-
-       # do not offer same directory when completing for "cd"
-       zstyle ':completion:*' ignore-parents 'parent pwd directory'
+       export PATH USER LOGNAME MAIL
      #+END_SRC
 
-*** rg 命令管道相关处理，如果 rg 被输出到 terminal, 则使用 less 进行分页，否则直接输出所有结果
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/001-functions.zsh") :eval never :exports code :comments link
-      function rg(){
-	  # If outputting (fd 1 = stdout) directly to a terminal, page automatically:
-	  if [ -t 1 ]; then
-	      command rg --pretty "$@" \
-		  | less --no-init --quit-if-one-screen --RAW-CONTROL-CHARS
-	  else
-	      command rg "$@"
-	  fi
-      }
-    #+END_SRC
+**** profiles
+****** sbin
+       #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/profiles/100-sys.zsh") :eval never :exports code :comments link
+         path=('/sbin' '/usr/sbin' $path)
+       #+END_SRC
+      
+****** brew related
+       #+BEGIN_SRC shell :tangle (or (and (eq m/os 'macos) (m/resolve "${m/xdg.conf.d}/zsh/profiles/100-python.zsh")) "no")  :eval never :exports code :comments link
+         path=('/usr/local/opt/python/libexec/bin' $path)
+       #+END_SRC
 
-*** 获取当前用户的某个名字的进程
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/001-functions.zsh") :eval never :exports code :comments link
-      function egrep(){
-	  # If outputting (fd 1 = stdout) directly to a terminal, page automatically:
-	  if [ -t 1 ]; then
-	      command rg --pretty "$@" \
-		  | less --no-init --quit-if-one-screen --RAW-CONTROL-CHARS
-	  else
-	      command rg "$@"
-	  fi
-      }
-    #+END_SRC
+       #+BEGIN_SRC shell :tangle (or (and (eq m/os 'macos) (m/resolve "${m/xdg.conf.d}/zsh/profiles/100-ruby.zsh")) "no") :eval never :exports code :comments link
+         path=('/usr/local/opt/ruby/bin' $path)
+       #+END_SRC
 
-*** 根据正则表达式生成随机值
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/001-functions.zsh") :eval never :exports code :comments link
-      function regen(){
-	  perl -e "use String::Random qw(random_regex random_string);print random_regex('$1');"
-      }
-    #+END_SRC
+       #+BEGIN_SRC shell :tangle (or (and (eq m/os 'macos) (m/resolve "${m/xdg.conf.d}/zsh/profiles/100-brew.zsh")) "no") :eval never :exports code :comments link
+         if [ -d "/usr/local/Cellar" ]; then
+             eval $(/usr/local/bin/brew shellenv);
+         fi
+       #+END_SRC
+****** //usr/local/bin/
+       #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/profiles/100-usr_local_bin.zsh") :eval never :exports code :comments link
+         if [ -d "/usr/local/bin" ]; then
+             path=('/usr/local/bin' $path)
+         fi
+       #+END_SRC
+****** xdg config related
+******* vim xdg related
+        #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/profiles/000-vim.zsh") :eval never :exports code :comments link
+          mkdir -p $XDG_CONFIG_HOME/vim
+          export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
+          export VIMDOTDIR="$XDG_CONFIG_HOME/vim"
+          export EDITOR=vim
+        #+END_SRC
 
-*** cmake 编译
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/002-alias.zsh") :eval never :exports code :comments link
-      #!/bin/zsh
-      mk() {
-          if [ -d build ]; then
-              cmake --build build --target ${1:-all} -j `nproc`
-          else
-              cmake --build cmake-build-debug --target ${1:-all} -j `nproc`
-          fi
-      }
+******* zplug xdg related (zsh pkg manager)
+        #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/profiles/000-zplug.zsh") :eval never :exports code :comments link
+          export ZPLUG_HOME=${XDG_CONFIG_HOME}/zplug/src
+          export ZPLUG_REPOS=${XDG_CONFIG_HOME}/zplug/repos
+          export ZPLUG_LOADFILE="${XDG_CONFIG_HOME}/zplug/zplugs.zsh"
+          export ZPLUG_CACHE_DIR=${XDG_CACHE_HOME}/zplug
+        #+END_SRC
 
-      mkt() {
-          if [ -d build ]; then
-              cmake --build build --target ${1:-test} -j `nproc`
-          else
-              cmake --build cmake-build-debug --target ${1:-test} -j `nproc`
-          fi
-      }
-      # Advanced Aliases.
-      # Use with caution
-      #
+******* misc xdg related
+        #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/profiles/000-miscxdg.zsh") :eval never :exports code :comments link
+          mkdir -p ${XDG_DATA_HOME}/{less,git}
 
-      # ls, the common ones I use a lot shortened for rapid fire usage
-      alias ls='ls --color=auto'     #size,show type,human readable
-      alias l='ls --color=auto -lFh'     #size,show type,human readable
-      alias la='ls --color=auto -lAFh'   #long list,show almost all,show type,human readable
-      alias lr='lc --color=auto -tRFh'   #sorted by date,recursive,show type,human readable
-      alias lt='lc --color=auto -ltFh'   #long list,sorted by date,show type,human readable
-      alias ll='lc --color=auto -l'      #long list
-      alias ldot='lc --color=auto -ld .*'
-      alias lc='ls --color=auto -1FSsh'
-      alias lart='ls --color=auto -1Fcart'
-      alias lrt='ls --color=auto -1Fcrt'
+          export HOMEBREW_BUNDLE_FILE=${XDG_CONFIG_HOME}/homebrew-bundle/Brewfile
+          export RIPGREP_CONFIG_PATH=${XDG_CONFIG_HOME}/ripgrep/config
+          export LESSHISTFILE="${XDG_DATA_HOME}/less/history"
+          export LESSKEY="${XDG_CONFIG_HOME}/less/keys"
 
-      alias zshrc='${=EDITOR} ${ZDOTDIR:-$HOME}/.zshrc' # Quick access to the .zshrc file
+          export GEM_SPEC_CACHE=${XDG_CACHE_HOME}/rubygems/cache
 
-      alias grep='grep --color'
-      alias sgrep='grep -R -n -H -C 5 --exclude-dir={.git,.svn,CVS} '
-
-      alias t='tail -f'
-
-      # Command line head / tail shortcuts
-      alias -g H='| head'
-      alias -g T='| tail'
-      alias -g G='| grep'
-      alias -g L="| less"
-      alias -g M="| most"
-      alias -g LL="2>&1 | less"
-      alias -g CA="2>&1 | cat -A"
-      alias -g NE="2> /dev/null"
-      alias -g NUL="> /dev/null 2>&1"
-      alias -g P="2>&1| pygmentize -l pytb"
-
-      alias dud='du -d 1 -h'
-      alias duf='du -sh *'
-      (( $+commands[fd] )) || alias fd='find . -type d -name'
-      alias ff='find . -type f -name'
-
-      alias h='history'
-      alias hgrep="fc -El 0 | grep"
-      alias help='man'
-      alias p='ps -f'
-      alias sortnr='sort -n -r'
-      alias unexport='unset'
-
-      alias rm='rm -i'
-      alias cp='cp -i'
-      alias mv='mv -i'
+          export INPUTRC=${XDG_CONFIG_HOME}/readline/inputrc
+          export GNUPGHOME=${XDG_CONFIG_HOME}/gnupg
+        #+END_SRC
 
 
-      # Make zsh know about hosts already accessed by SSH
-      zstyle -e ':completion:*:(ssh|scp|sftp|rsh|rsync):hosts' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
-    #+END_SRC
-
-*** xdg workaround
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/003-xdg.zsh") :eval never :exports code :comments link
-      #!/bin/zsh
-      if [ -s "${XDG_CONFIG_HOME}/ssh/config" ]
-      then
-          SSH_CONFIG="-F ${XDG_CONFIG_HOME}/ssh/config"
-      fi
-
-      if [ -s "${XDG_CONFIG_HOME}/ssh/id_rsa" ]; then
-          SSH_ID="-i ${XDG_CONFIG_HOME}/ssh/id_rsa"
-      elif [ -s "${XDG_CONFIG_HOME}/ssh/id_dsa" ]; then
-          SSH_ID="-i ${XDG_CONFIG_HOME}/ssh/id_dsa"
-      fi
-
-      SSH_KNOWN_HOSTS="-o UserKnownHostsFile=${XDG_CONFIG_HOME}/ssh/known_hosts"
-
-      alias tmux='tmux -f ${XDG_CONFIG_HOME}/tmux/tmux.conf'
-      alias ssh="ssh ${SSH_CONFIG} ${SSH_ID} ${SSH_KNOWN_HOSTS}"
-      function sshci() {
-          USER_AT_HOST_REGEXP='([a-zA-Z0-9_.]+)@([a-zA-Z0-9_.]+)'
-          if [[ "$1" =~ ${USER_AT_HOST_REGEXP} ]]; then
-              eval "ssh-copy-id ${SSH_KNOWN_HOSTS} ${SSH_ID} $1"
-          else
-              user=$(ssh -G "$1" | awk '/^user /{print $2}')
-              hostname=$(ssh -G "$1"| awk '/^hostname /{print $2}')
-              eval "ssh-copy-id ${SSH_KNOWN_HOSTS} ${SSH_ID} ${user}@${hostname}" 
-          fi
-      }
-      alias scp="scp ${SSH_CONFIG} ${SSH_ID} ${SSH_KNOWN_HOSTS}"
-    #+END_SRC
-
-*** export http proxy
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/002-alias.zsh") :eval never :exports code :comments link
-      pe() {
-	  export http_proxy=http://127.0.0.1:8080 https_proxy=http://127.0.0.1:8080
-      }
-    #+END_SRC
-
-*** 同步 emacs repo
-    #+NAME: emacs_offline_home
-    #+BEGIN_SRC shell :var offline_home=(m/resolve "${m/xdg.conf.d}/emacs/offline")
-      realpath ${offline_home}
-    #+END_SRC
+*** zshrc (run commands)  配置
+**** zshrc
+     #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/.zshrc") :eval never :exports code :comments link
+       [[ $TERM == "tramp" ]] && unsetopt zle && PS1='$ '&& return
+       source ${ZPLUG_HOME}/init.zsh
+       zplug load
+       # enable load non owner complemention
+       compinit -u
+       for file in $(find ${XDG_CONFIG_HOME}/zsh/rcs -name "*.zsh"|sort -Vr); do
+           source "${file}"
+       done
+       export PATH
+     #+END_SRC
     
-    #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/001-functions.zsh") :eval never :exports code :comments link :noweb yes
-      function rsync_emacs() {
-          rsync --progress -ravz rsync://mirrors.tuna.tsinghua.edu.cn/elpa/ <<emacs_offline_home()>>
-      }
-    #+END_SRC
+**** zplug(package manager)
+     #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zplug/zplugs.zsh") :eval never :exports code :comments link
+       #!/usr/bin/env zsh
+       # this allows zplug to update itself on `zplug update`
+       zplug 'robbyrussell/oh-my-zsh', as:plugin, use:"lib/*.zsh"
+       plugins=(git tmux tmuxinator autojump fancy-ctrl-z direnv urltools)
+       for plugin in $plugins; do
+           zplug "plugins/$plugin", from:oh-my-zsh, as:plugin
+       done
+
+       zplug 'themes/robbyrussell', from:oh-my-zsh, use:robbyrussel.zsh-theme, as:theme
+
+       zplug 'junegunn/fzf', use:"shell/*.zsh",  defer:2
+
+       #### ZSH MAGIC
+       zplug 'zsh-users/zsh-autosuggestions'
+       zplug 'zsh-users/zsh-completions'
+       zplug 'zsh-users/zsh-syntax-highlighting', defer:2
+       zplug 'zsh-users/zsh-history-substring-search', defer:3
+       return 0 # in case zplug adds plugs ignore them
+     #+END_SRC
+
+     #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/profiles/000-home-local.zsh") :eval never :exports code :comments link
+       if [ -d "$HOME/.local" ]; then
+           path=("$HOME/.local/bin" $path)
+       fi
+     #+END_SRC
+***** coreutils gnu tools path  
+      #+BEGIN_SRC shell :tangle (or (and (eq m/os 'macos) (m/resolve "${m/xdg.conf.d}/zsh/profiles/004-brew-coreutils.zsh")) "no") :eval never :exports code :comments link
+        path=("$(find -L /usr/local/opt -maxdepth 3 -mindepth 3 -type d -name gnubin | paste -s -d: -)" $path)
+      #+END_SRC
+***** zsh config file
+      #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/000-config.zsh") :eval never :exports code :comments link
+        # Changing Directories
+        # http://zsh.sourceforge.net/Doc/Release/Options.html#Changing-Directories
+        setopt auto_cd                 # if a command isn't valid, but is a directory, cd to that dir
+        setopt auto_pushd              # make cd push the old directory onto the directory stack
+        setopt pushd_ignore_dups       # don’t push multiple copies of the same directory onto the directory stack
+        setopt pushd_minus             # exchanges the meanings of ‘+’ and ‘-’ when specifying a directory in the
+        setopt pushd_silent            # no dir stack after pushd or popd
+
+
+        # Completions
+        # http://zsh.sourceforge.net/Doc/Release/Options.html#Completion-2
+        setopt always_to_end           # move cursor to the end of a completed word
+        setopt auto_list               # automatically list choices on ambious complemention
+        setopt auto_menu               # auto menu complete
+        setopt auto_param_slash        # if completed parameter is a directory, add a trailing slash
+        setopt complete_in_word        # complete from both ends of a word
+        unsetopt menu_complete         # don't autoselect the first completion entry
+
+        # Expansion and Globbing
+        # http://zsh.sourceforge.net/Doc/Release/Options.html#Expansion-and-Globbing
+        setopt extended_glob           # use more awesome globbing features
+        setopt glob_dots               # include dotfiles when globbing
+
+
+        #### HISTORY SEARCH
+        autoload history-search-end
+        HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND="bg=cyan,fg=white,bold"
+        HIST_STAMPS="dd.mm.yyyy" ## OH-MY-ZSH
+        HISTFILE=${XDG_DATA_HOME}/zsh/history
+
+        setopt extended_history        # write the history file in the ':start:elapsed;command' format
+        setopt appendhistory           # append to history file
+        setopt hist_ignore_dups        # ignore duplication command history list
+        setopt hist_ignore_space       # ignore when commands starts with space
+        setopt hist_reduce_blanks      # remove superfluous blanks from each command line being added to the history list
+        setopt share_history
+        setopt inc_append_history
+        setopt hist_reduce_blanks
+        setopt hist_expire_dups_first
+        setopt hist_find_no_dups       # don't display a previously found event
+        setopt hist_ignore_all_dups    # delete an old recorded event if a new event is a duplicate
+        setopt hist_save_no_dups       # don't write a duplicate event to the history file
+        setopt hist_verify             # don't execute immediately upon history expansion
+
+        # use brace
+        setopt brace_ccl
+
+        # compacked complete list display
+        setopt list_packed
+
+        # multi redirect (e.x. echo "hello" > hoge1.txt > hoge2.txt)
+        setopt multios
+
+        setopt auto_remove_slash        # self explicit
+        setopt chase_links              # resolve symlinks
+
+        # Input/Output
+        # http://zsh.sourceforge.net/Doc/Release/Options.html#Input_002fOutput
+        unsetopt correct               # don't try to correct the spelling of commands
+        unsetopt correct_all           # don't try to correct the spelling of all arguments in a line
+        unsetopt flow_control          # disable start/stop characters in shell editor
+        setopt interactive_comments    # enable comments in interactive shell
+        unsetopt mail_warning          # don't print a warning message if a mail file has been accessed
+        setopt path_dirs               # perform path search even on command names with slashes
+        setopt rc_quotes               # allow 'Henry''s Garage' instead of 'Henry'\''s Garage'
+        unsetopt rm_star_silent        # ask for confirmation for `rm *' or `rm path/*'
+
+        # Job Control
+        # http://zsh.sourceforge.net/Doc/Release/Options.html#Job-Control
+        setopt auto_resume            # attempt to resume existing job before creating a new process
+        unsetopt bg_nice              # don't run all background jobs at a lower priority
+        unsetopt check_jobs           # don't report on jobs when shell exit
+        unsetopt hup                  # don't kill jobs on shell exit
+        setopt long_list_jobs         # list jobs in the long format by default
+        setopt notify                 # report status of background jobs immediately
+
+        # Prompting
+        # http://zsh.sourceforge.net/Doc/Release/Options.html#Prompting
+        setopt prompt_subst           # expand parameters in prompt variables
+
+        # Zle
+        # http://zsh.sourceforge.net/Doc/Release/Options.html#Zle
+        unsetopt beep                 # be quiet!
+        setopt combining_chars        # combine zero-length punctuation characters (accents) with the base character
+        setopt emacs                  # use emacs keybindings in the shell
+
+
+        # do not offer same directory when completing for "cd"
+        zstyle ':completion:*' ignore-parents 'parent pwd directory'
+      #+END_SRC
+
+**** xdg workaround
+     #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/003-xdg.zsh") :eval never :exports code :comments link
+       #!/bin/zsh
+       if [ -s "${XDG_CONFIG_HOME}/ssh/config" ]
+       then
+           SSH_CONFIG="-F ${XDG_CONFIG_HOME}/ssh/config"
+       fi
+
+       if [ -s "${XDG_CONFIG_HOME}/ssh/id_rsa" ]; then
+           SSH_ID="-i ${XDG_CONFIG_HOME}/ssh/id_rsa"
+       elif [ -s "${XDG_CONFIG_HOME}/ssh/id_dsa" ]; then
+           SSH_ID="-i ${XDG_CONFIG_HOME}/ssh/id_dsa"
+       fi
+
+       SSH_KNOWN_HOSTS="-o UserKnownHostsFile=${XDG_CONFIG_HOME}/ssh/known_hosts"
+
+       alias tmux='tmux -f ${XDG_CONFIG_HOME}/tmux/tmux.conf'
+       alias ssh="ssh ${SSH_CONFIG} ${SSH_ID} ${SSH_KNOWN_HOSTS}"
+       function sshci() {
+           USER_AT_HOST_REGEXP='([a-zA-Z0-9_.]+)@([a-zA-Z0-9_.]+)'
+           if [[ "$1" =~ ${USER_AT_HOST_REGEXP} ]]; then
+               eval "ssh-copy-id ${SSH_KNOWN_HOSTS} ${SSH_ID} $1"
+           else
+               user=$(ssh -G "$1" | awk '/^user /{print $2}')
+               hostname=$(ssh -G "$1"| awk '/^hostname /{print $2}')
+               eval "ssh-copy-id ${SSH_KNOWN_HOSTS} ${SSH_ID} ${user}@${hostname}" 
+           fi
+       }
+       alias scp="scp ${SSH_CONFIG} ${SSH_ID} ${SSH_KNOWN_HOSTS}"
+     #+END_SRC
+
+**** alias
+***** rg 命令管道相关处理，如果 rg 被输出到 terminal, 则使用 less 进行分页，否则直接输出所有结果
+      #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/001-functions.zsh") :eval never :exports code :comments link
+        function rg(){
+            # If outputting (fd 1 = stdout) directly to a terminal, page automatically:
+            if [ -t 1 ]; then
+                command rg --pretty "$@" \
+                    | less --no-init --quit-if-one-screen --RAW-CONTROL-CHARS
+            else
+                command rg "$@"
+            fi
+        }
+      #+END_SRC
+
+***** 获取当前用户的某个名字的进程
+      #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/001-functions.zsh") :eval never :exports code :comments link
+        function egrep(){
+            # If outputting (fd 1 = stdout) directly to a terminal, page automatically:
+            if [ -t 1 ]; then
+                command rg --pretty "$@" \
+                    | less --no-init --quit-if-one-screen --RAW-CONTROL-CHARS
+            else
+                command rg "$@"
+            fi
+        }
+      #+END_SRC
+
+***** 根据正则表达式生成随机值
+      #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/001-functions.zsh") :eval never :exports code :comments link
+        function regen(){
+            perl -e "use String::Random qw(random_regex random_string);print random_regex('$1');"
+        }
+      #+END_SRC
+
+***** cmake 编译
+      #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/002-alias.zsh") :eval never :exports code :comments link
+        #!/bin/zsh
+        mk() {
+            if [ -d build ]; then
+                cmake --build build --target ${1:-all} -j `nproc`
+            else
+                cmake --build cmake-build-debug --target ${1:-all} -j `nproc`
+            fi
+        }
+
+        mkt() {
+            if [ -d build ]; then
+                cmake --build build --target ${1:-test} -j `nproc`
+            else
+                cmake --build cmake-build-debug --target ${1:-test} -j `nproc`
+            fi
+        }
+        # Advanced Aliases.
+        # Use with caution
+        #
+
+        # ls, the common ones I use a lot shortened for rapid fire usage
+        alias ls='ls --color=auto'     #size,show type,human readable
+        alias l='ls --color=auto -lFh'     #size,show type,human readable
+        alias la='ls --color=auto -lAFh'   #long list,show almost all,show type,human readable
+        alias lr='lc --color=auto -tRFh'   #sorted by date,recursive,show type,human readable
+        alias lt='lc --color=auto -ltFh'   #long list,sorted by date,show type,human readable
+        alias ll='lc --color=auto -l'      #long list
+        alias ldot='lc --color=auto -ld .*'
+        alias lc='ls --color=auto -1FSsh'
+        alias lart='ls --color=auto -1Fcart'
+        alias lrt='ls --color=auto -1Fcrt'
+
+        alias zshrc='${=EDITOR} ${ZDOTDIR:-$HOME}/.zshrc' # Quick access to the .zshrc file
+
+        alias grep='grep --color'
+        alias sgrep='grep -R -n -H -C 5 --exclude-dir={.git,.svn,CVS} '
+
+        alias t='tail -f'
+
+        # Command line head / tail shortcuts
+        alias -g H='| head'
+        alias -g T='| tail'
+        alias -g G='| grep'
+        alias -g L="| less"
+        alias -g M="| most"
+        alias -g LL="2>&1 | less"
+        alias -g CA="2>&1 | cat -A"
+        alias -g NE="2> /dev/null"
+        alias -g NUL="> /dev/null 2>&1"
+        alias -g P="2>&1| pygmentize -l pytb"
+
+        alias dud='du -d 1 -h'
+        alias duf='du -sh *'
+        (( $+commands[fd] )) || alias fd='find . -type d -name'
+        alias ff='find . -type f -name'
+
+        alias h='history'
+        alias hgrep="fc -El 0 | grep"
+        alias help='man'
+        alias p='ps -f'
+        alias sortnr='sort -n -r'
+        alias unexport='unset'
+
+        alias rm='rm -i'
+        alias cp='cp -i'
+        alias mv='mv -i'
+
+
+        # Make zsh know about hosts already accessed by SSH
+        zstyle -e ':completion:*:(ssh|scp|sftp|rsh|rsync):hosts' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
+      #+END_SRC
+
+***** export http proxy
+      #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/002-alias.zsh") :eval never :exports code :comments link
+        pe() {
+            export http_proxy=http://127.0.0.1:8080 https_proxy=http://127.0.0.1:8080
+        }
+      #+END_SRC
+
+***** 同步 emacs repo
+      #+NAME: emacs_offline_home
+      #+BEGIN_SRC shell :var offline_home=(m/resolve "${m/xdg.conf.d}/emacs/offline")
+        realpath ${offline_home}
+      #+END_SRC
+    
+      #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/001-functions.zsh") :eval never :exports code :comments link :noweb yes
+        function rsync_emacs() {
+            rsync --progress -ravz rsync://mirrors.tuna.tsinghua.edu.cn/elpa/ <<emacs_offline_home()>>
+        }
+      #+END_SRC

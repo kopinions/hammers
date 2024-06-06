@@ -60,10 +60,6 @@
       }
     #+END_SRC
 *** tmux 配置
-    #+NAME: helper
-    #+BEGIN_SRC elisp :var helper=(m/resolve "${m/xdg.conf.d}/tmux/helpers.sh")
-      helper
-    #+END_SRC
     #+BEGIN_SRC conf :tangle (m/resolve "${m/xdg.conf.d}/tmux/tmux.conf") :results silent :comments link :noweb yes
       # use ctrl-a to as prefix
       set -g prefix C-x
@@ -106,9 +102,9 @@
       # copy in copy-mode
       set -g @copy_mode_yank "M-w"
       # paste clipboard normal mode
-      bind-key -T prefix C-y run-shell 'zsh -c "source <<helper()>>;eval \$(cpaste)" | tmux load-buffer - && tmux paste-buffer'
+      bind-key -T prefix C-y run-shell 'zsh -c "source ${XDG_CONFIG_HOME}/tmux/helpers.sh;eval \$(cpaste)" | tmux load-buffer - && tmux paste-buffer'
       # paste clipboard copy mode
-      bind-key -T copy-mode C-y run-shell 'zsh -c "source <<helper()>>;eval \$(cpaste)" | tmux load-buffer - && tmux paste-buffer && tmux send-keys Escape'
+      bind-key -T copy-mode C-y run-shell 'zsh -c "source ${XDG_CONFIG_HOME}/tmux/helpers.shz;eval \$(cpaste)" | tmux load-buffer - && tmux paste-buffer && tmux send-keys Escape'
       set -g @yank_with_mouse on
       set -g @yank_selection_mouse 'clipboard'
 

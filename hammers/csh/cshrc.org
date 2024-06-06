@@ -12,19 +12,61 @@
 *** cshrc
     #+BEGIN_SRC sh :tangle (m/resolve "${m/home.d}/.cshrc") :eval never :exports code :comments link
       setenv LANG en_US.UTF-8
-      setenv JAVA_HOME "/Library/Java/JavaVirtualMachines/openjdk-13.0.1.jdk/Contents/Home"
-      setenv EDITOR vim
       setenv DISABLE_AUTO_TITLE true
+      setenv EDITOR vi
 
       setenv XDG_CONFIG_HOME ${HOME}/.config
       setenv XDG_CACHE_HOME ${HOME}/.cache
       setenv XDG_DATA_HOME ${HOME}/.local/share
-      mkdir -p ${XDG_CACHE_HOME} ${XDG_DATA_HOME} ${XDG_CONFIG_HOME}
-      mkdir -p ${XDG_DATA_HOME}/{csh,less,git}
+      setenv XDG_STATE_HOME ${HOME}/.local/state
+      mkdir -p ${XDG_CACHE_HOME} ${XDG_DATA_HOME} ${XDG_CONFIG_HOME} ${XDG_STATE_HOME}
+
+      set path = ( /usr/bin /bin )
+
+      if ( -x /usr/bin/id ) then
+         if (! $?EUID ) then
+            set EUID=`/usr/bin/id -u`
+            set UID=`/usr/bin/id -ru`
+         endif
+         setenv USER "`/usr/bin/id -un`"
+         setenv LOGNAME $USER
+         setenv MAIL "/var/spool/mail/$USER"
+      endif
+
+      if ( "$EUID" == "0") then
+          set path = ( /usr/sbin $path )
+          set path = ( /usr/local/sbin $path )
+      else
+          set path = ( $path /usr/sbin )
+          set path = ( $path /usr/local/sbin )
+      endif
+
+      if ( $UID >= 199 && "`/usr/bin/id -gn`" == "`/usr/bin/id -un`" ) then
+          umask 002
+      else
+          umask 022
+      endif
+
+      foreach file (`find ${XDG_CONFIG_HOME}/csh/init -name "*.csh" | sort -Vr`)
+           source "${file}"
+      end
+
+      foreach file (`find ${XDG_CONFIG_HOME}/csh/post -name "*.csh" | sort -Vr`)
+           source "${file}"
+      end
+    #+END_SRC
+
+*** misc tools settings
+    #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/100-misctools.csh") :eval never :exports code :comments link
+      mkdir -p ${XDG_CONFIG_HOME}/csh
+      mkdir -p ${XDG_CONFIG_HOME}/less
+      mkdir -p ${XDG_CONFIG_HOME}/git
+      mkdir -p ${XDG_CONFIG_HOME}/ripgrep
+      mkdir -p ${XDG_CONFIG_HOME}/readline
+      mkdir -p ${XDG_CONFIG_HOME}/gnupg
+      mkdir -p ${XDG_CONFIG_HOME}/rubygems
 
       setenv RIPGREP_CONFIG_PATH ${XDG_CONFIG_HOME}/ripgrep/config
-      setenv VIMINIT 'source "$XDG_CONFIG_HOME/vim/vimrc"'
-      setenv VIMDOTDIR "$XDG_CONFIG_HOME/vim"
 
       setenv LESSHISTFILE "${XDG_DATA_HOME}/less/history"
       setenv LESSKEY "${XDG_CONFIG_HOME}/less/keys"
@@ -33,37 +75,29 @@
 
       setenv INPUTRC ${XDG_CONFIG_HOME}/readline/inputrc
       setenv GNUPGHOME ${XDG_CONFIG_HOME}/gnupg
-
-      umask 022
-
-      foreach file (`find ${XDG_CONFIG_HOME}/csh/init -name "*.csh"|sort`)
-           source "${file}"
-      end
-
-      foreach file (`find ${XDG_CONFIG_HOME}/csh/post -name "*.csh"`)
-         source "${file}"
-      end
     #+END_SRC
 
-*** csh completion & list
-    #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/completion.csh") :eval never :exports code :comments link
+*** csh vim related config
+    #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/000-vim.csh") :eval never :exports code :comments link
+      mkdir -p $XDG_CONFIG_HOME/vim
+      setenv EDITOR vim
+      setenv VIMINIT 'source "$XDG_CONFIG_HOME/vim/vimrc"'
+      setenv VIMDOTDIR "$XDG_CONFIG_HOME/vim"
+    #+END_SRC
+*** csh completion related config
+    #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/999-completion.csh") :eval never :exports code :comments link
       set autolist
     #+END_SRC
     
 *** csh alias
-     #+NAME: csh_conf_root
-     #+BEGIN_SRC sh :var csh_conf_root=(m/resolve "${m/xdg.conf.d}/csh") :results output
-       echo "set csh_conf_root=\"$csh_conf_root\""
-     #+END_SRC
-    #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/alias.csh") :eval never :exports code :comments link :noweb tangle
-      <<csh_conf_root()>>
-      foreach file (`find  $csh_conf_root/init/alias  -name "*.csh"`)
+    #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/999-alias.csh") :eval never :exports code :comments link :noweb tangle
+      foreach file (`find  $XDG_CONFIG_HOME/csh/init/alias  -name "*.csh"`)
          source "${file}"
       end
     #+END_SRC
 **** common
      #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/alias/common.csh") :eval never :exports code :comments link
-       alias ll 'ls-F -l '      #long list
+       alias ll 'ls-F -l '  #long list
        alias ls 'ls-F'      #long list
        alias lrt 'ls-F -ltrch'
      #+END_SRC
@@ -84,7 +118,7 @@
     #+END_SRC
 
 *** Keybindings related config
-    #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/keybinding.csh") :eval never :exports code :comments link
+    #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/000-keybinding.csh") :eval never :exports code :comments link
       if ( "$shell" =~ *tcsh ) then
           # csh does not know bindkey
           bindkey      i-search-back
@@ -113,11 +147,7 @@
 *** User Interface related config
     
 **** Status bar
-     #+NAME: statusbarrc
-     #+BEGIN_SRC sh :var statusbarrc_path=(m/resolve "${m/xdg.conf.d}/csh/init/statusbar.csh") :results output
-       echo "set statusbarrc=\"$statusbarrc_path\""
-     #+END_SRC
-     #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/statusbar.csh") :eval never :exports code :comments link
+     #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/000-statusbar.csh") :eval never :exports code :comments link
        set txtred = "%{\e[0;30;31m%}"
        set txtgrn = "%{\e[0;30;32m%}"
        set txtylw = "%{\e[0;30;33m%}"
@@ -146,7 +176,7 @@
      #+END_SRC
      
 **** Color related
-     #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/uicolor.csh") :eval never :exports code :comments link
+     #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/000-uicolor.csh") :eval never :exports code :comments link
        # Enable color display for the built-in ls-F and it passes --color=auto to ls.
        set color
 
@@ -214,7 +244,7 @@
      #+END_SRC
 
 *** History related config
-    #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/history.csh") :eval never :exports code :comments link
+    #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/000-history.csh") :eval never :exports code :comments link
       set histdup='prev'
 
       set history=1000000
@@ -227,55 +257,46 @@
     #+END_SRC
 
 *** Misc config
-    #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/misc.csh") :eval never :exports code :comments link
+    #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/init/000-misc.csh") :eval never :exports code :comments link
       # Do not ignore EOF (^D).
       unset ignoreeof
     #+END_SRC
 
 *** PATH related config
 **** home local related config 
-     #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/post/local.csh") :eval never :exports code :comments link
-       if ( -d "$HOME/.local" ) then
+     #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/post/999-local.csh") :eval never :exports code :comments link
+       if ( -d "$HOME/.local" && "$path:q" !~ *"${HOME}/.local/bin"* ) then
             set path = ( "$HOME/.local/bin" $path )
        endif
      #+END_SRC
 
 **** /usr/local/bin related config
-     #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/post/local.csh") :eval never :exports code :comments link
-       if ( -d "/usr/local/bin" ) then
+     #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/post/100-local.csh") :eval never :exports code :comments link
+       if ( -d "/usr/local/bin" && "$path:q" !~ *"/usr/local/bin"* ) then
             set path = ( "/usr/local/bin" $path )
        endif
      #+END_SRC
 
 *** autojump releated config
-    #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/post/autojump.csh") :eval never :exports code :comments link
-      # set user installation paths
-      if (-d ${HOME}/.autojump/bin) then
-          set path = (${HOME}/.autojump/bin $path)
-          set autojump = ${HOME}/.autojump/bin/autojump
-      else
-          set autojump = autojump
-      endif
-
+    #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/post/999-autojump.csh") :eval never :exports code :comments link
       # prepend autojump to cwdcmd (run after every change of working directory)
       if (`alias cwdcmd` !~ *autojump*) then
-          alias cwdcmd 'setenv AUTOJUMP_SOURCED 1;${autojump} --add $cwd >/dev/null;'
+          alias cwdcmd 'setenv AUTOJUMP_SOURCED 1;autojump --add $cwd >/dev/null;'
       endif
 
       #default autojump command
-      alias j 'setenv AUTOJUMP_SOURCED 1; cd `${autojump} -- \!:1`'
+      alias j 'setenv AUTOJUMP_SOURCED 1; cd `autojump -- \!:1`'
     #+END_SRC
 
 *** direnv related config
-    #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/post/direnv.csh") :eval never :exports code  :noweb tangle 
+    #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/post/999-direnv.csh") :eval never :exports code  :noweb tangle 
       if (`command -v direnv` != "") then
-          <<statusbarrc()>>
-          alias precmd 'eval `direnv export tcsh`; source "$statusbarrc" >& /dev/null' # what is this command do in tcsh
+          alias precmd 'eval `direnv export tcsh`; source "$XDG_CONFIG_PATH/csh/init/statusbar.csh" >& /dev/null' # what is this command do in tcsh
       endif
     #+END_SRC
 
 *** xdg workaround
-    #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/post/xdg.csh") :eval never :exports code :comments link
+    #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/post/000-xdg.csh") :eval never :exports code :comments link
       #!/bin/csh
       if ( -s "${XDG_CONFIG_HOME}/ssh/config" ) then
           set SSH_CONFIG="-F ${XDG_CONFIG_HOME}/ssh/config"
@@ -285,6 +306,8 @@
           set SSH_ID="-i ${XDG_CONFIG_HOME}/ssh/id_rsa"
       else if ( -s "${XDG_CONFIG_HOME}/ssh/id_dsa" ) then
           set SSH_ID="-i ${XDG_CONFIG_HOME}/ssh/id_dsa"
+      else
+          set SSH_ID=""
       endif
 
       set SSH_KNOWN_HOSTS="-o UserKnownHostsFile=${XDG_CONFIG_HOME}/ssh/known_hosts"

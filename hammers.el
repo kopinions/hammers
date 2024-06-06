@@ -195,10 +195,11 @@
 		        (file-name-directory load-file-name)
 		      (file-name-directory (buffer-file-name)))))
 
-(defvar m/xdg.conf.d (directory-file-name (expand-file-name "~/.config")))
-(defvar m/xdg.cache.d (directory-file-name (expand-file-name "~/.cache")))
-(defvar m/xdg.data.d (directory-file-name (expand-file-name "~/.local/share")))
 (defvar m/home.d (directory-file-name (expand-file-name "~")))
+(defvar m/xdg.conf.d (expand-file-name ".config" m/home.d))
+(defvar m/xdg.cached.d (expand-file-name ".cache" m/home.d))
+(defvar m/xdg.data.d (expand-file-name ".local/share" m/home.d))
+(defvar m/xdg.state.d (expand-file-name ".local/state" m/home.d))
 
 (defun tangle-if-absent (path)
   (let* ((filename (m/resolve path)))
@@ -235,10 +236,10 @@
       (m/tangles "${m/root.d}/hammers/gnupg/*.org")
       (m/tangles "${m/root.d}/hammers/gdb/*.org")))
 
- (if (or (eq m/os 'macos)
+(if (or (eq m/os 'macos)
 	(eq m/os 'linux))
     (progn
-     (m/copy "${m/root.d}/hammers/emacs/3rdparty/modes/" "${m/xdg.conf.d}/emacs/3rdparty/modes")))
+      (m/copy "${m/root.d}/hammers/emacs/3rdparty/modes/" "${m/xdg.conf.d}/emacs/3rdparty/modes")))
 
 ;; tangle brew and hammerspoon
 (if (eq m/os 'macos)
@@ -271,7 +272,7 @@
       ;; start copy config file
       (m/clone "${m/root.d}/hammers/emacs/3rdparty/systemrdl-mode" "${m/xdg.conf.d}/emacs/3rdparty/systemrdl-mode")
       (m/clone "${m/root.d}/hammers/tmux/plugins/tpm" "${m/xdg.conf.d}/tmux/tpm")
-      (m/clone "${m/root.d}/hammers/zsh/zplug" "${m/xdg.conf.d}/zsh/zplug")
+      (m/clone "${m/root.d}/hammers/zsh/zplug" "${m/xdg.conf.d}/zplug/src")
       (m/clone "${m/root.d}/hammers/gdb/plugins/dashboard" "${m/xdg.conf.d}/gdb/dashboard")
       (m/clone "${m/root.d}/hammers/vim/bundle/Vundle" "${m/xdg.conf.d}/vim/Vundle.vim")))
 
