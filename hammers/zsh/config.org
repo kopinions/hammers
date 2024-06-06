@@ -33,9 +33,18 @@
 
        mkdir -p ${XDG_CACHE_HOME} ${XDG_DATA_HOME} ${XDG_CONFIG_HOME} ${XDG_STATE_HOME}
 
-       path=( /usr/bin /bin )
-
-       typeset -U path
+       pathmunge() {
+           case ":${PATH}:" in
+               ,*:"$1":*)
+               ;;
+               ,*)
+                   if [ "$2" = "after" ]; then
+                       PATH=$PATH:$1
+                   else
+                       PATH=$1:$PATH
+                   fi
+           esac
+       }
 
        if [ -x /usr/bin/id ]; then
            if [ -z $EUID ]; then
@@ -48,11 +57,11 @@
        fi
 
        if [ "$EUID" = "0" ]; then
-           path=( /usr/sbin $path )
-           path=( /usr/local/sbin $path )
+           pathmunge /usr/sbin
+           pathmunge /usr/local/sbin
        else
-           path=( $path /usr/sbin )
-           path=( $path /usr/local/sbin )
+           pathmunge /usr/sbin after
+           pathmunge /usr/local/sbin after
        fi
 
        if [ $UID -gt 199 -a "`/usr/bin/id -gn`" = "`/usr/bin/id -un`" ]; then
@@ -65,34 +74,29 @@
        for file in $(find ${XDG_CONFIG_HOME}/zsh/profiles -name "*.zsh"|sort -Vr); do
            source "${file}"
        done
-
+       
        export PATH USER LOGNAME MAIL
      #+END_SRC
 
 **** profiles
 ****** sbin
        #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/profiles/100-sys.zsh") :eval never :exports code :comments link
-         path=('/sbin' '/usr/sbin' $path)
+         pathmunge "/sbin"
        #+END_SRC
       
 ****** brew related
        #+BEGIN_SRC shell :tangle (or (and (eq m/os 'macos) (m/resolve "${m/xdg.conf.d}/zsh/profiles/100-python.zsh")) "no")  :eval never :exports code :comments link
-         path=('/usr/local/opt/python/libexec/bin' $path)
+         pathmunge "/usr/local/opt/python/libexec/bin"
        #+END_SRC
 
        #+BEGIN_SRC shell :tangle (or (and (eq m/os 'macos) (m/resolve "${m/xdg.conf.d}/zsh/profiles/100-ruby.zsh")) "no") :eval never :exports code :comments link
-         path=('/usr/local/opt/ruby/bin' $path)
+         pathmunge "/usr/local/opt/ruby/bin"         
        #+END_SRC
 
-       #+BEGIN_SRC shell :tangle (or (and (eq m/os 'macos) (m/resolve "${m/xdg.conf.d}/zsh/profiles/100-brew.zsh")) "no") :eval never :exports code :comments link
-         if [ -d "/usr/local/Cellar" ]; then
-             eval $(/usr/local/bin/brew shellenv);
-         fi
-       #+END_SRC
 ****** //usr/local/bin/
        #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/profiles/100-usr_local_bin.zsh") :eval never :exports code :comments link
          if [ -d "/usr/local/bin" ]; then
-             path=('/usr/local/bin' $path)
+             pathmunge "/usr/local/bin"         
          fi
        #+END_SRC
 ****** xdg config related
@@ -166,12 +170,14 @@
 
      #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/profiles/000-home-local.zsh") :eval never :exports code :comments link
        if [ -d "$HOME/.local" ]; then
-           path=("$HOME/.local/bin" $path)
+           pathmunge $HOME/.local/bin         
        fi
      #+END_SRC
 ***** coreutils gnu tools path  
       #+BEGIN_SRC shell :tangle (or (and (eq m/os 'macos) (m/resolve "${m/xdg.conf.d}/zsh/profiles/004-brew-coreutils.zsh")) "no") :eval never :exports code :comments link
-        path=("$(find -L /usr/local/opt -maxdepth 3 -mindepth 3 -type d -name gnubin | paste -s -d: -)" $path)
+        while read line; do
+             pathmunge $line
+        done < <(find -L /usr/local/opt -maxdepth 3 -mindepth 3 -type d -name gnubin)
       #+END_SRC
 ***** zsh config file
       #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/000-config.zsh") :eval never :exports code :comments link
