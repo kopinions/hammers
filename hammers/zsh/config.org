@@ -74,8 +74,9 @@
        for file in $(find ${XDG_CONFIG_HOME}/zsh/profiles -name "*.zsh"|sort -Vr); do
            source "${file}"
        done
-       
+
        export PATH USER LOGNAME MAIL
+       unset pathmunge
      #+END_SRC
 
 **** profiles
@@ -138,12 +139,26 @@
        [[ $TERM == "tramp" ]] && unsetopt zle && PS1='$ '&& return
        source ${ZPLUG_HOME}/init.zsh
        zplug load
+
+       pathmunge() {
+           case ":${PATH}:" in
+               ,*:"$1":*)
+               ;;
+               ,*)
+                   if [ "$2" = "after" ]; then
+                       PATH=$PATH:$1
+                   else
+                       PATH=$1:$PATH
+                   fi
+           esac
+       }
        # enable load non owner complemention
        compinit -u
        for file in $(find ${XDG_CONFIG_HOME}/zsh/rcs -name "*.zsh"|sort -Vr); do
            source "${file}"
        done
        export PATH
+       unset pathmunge
      #+END_SRC
     
 **** zplug(package manager)
