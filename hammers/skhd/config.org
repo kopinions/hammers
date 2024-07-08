@@ -78,36 +78,43 @@
      #                                   an EOL character signifies the end of the bind.
 
      # focus window
-     alt - x : yabai -m window --focus recent
-     alt - h : yabai -m window --focus west
-     alt - j : yabai -m window --focus south
-     alt - k : yabai -m window --focus north
-     alt - l : yabai -m window --focus east
+     # alt - x : yabai -m window --focus recent
+     # alt - h : yabai -m window --focus west
+     # alt - j : yabai -m window --focus south
+     # alt - k : yabai -m window --focus north
+     # alt - l : yabai -m window --focus east
 
      # swap window
-     shift + alt - x : yabai -m window --swap recent
-     shift + alt - h : yabai -m window --swap west
-     shift + alt - j : yabai -m window --swap south
-     shift + alt - k : yabai -m window --swap north
-     shift + alt - l : yabai -m window --swap east
+     # shift + alt - x : yabai -m window --swap recent
+     # shift + alt - h : yabai -m window --swap west
+     # shift + alt - j : yabai -m window --swap south
+     # shift + alt - k : yabai -m window --swap north
+     # shift + alt - l : yabai -m window --swap east
 
      # move window
-     shift + cmd - h : yabai -m window --warp west
-     shift + cmd - j : yabai -m window --warp south
-     shift + cmd - k : yabai -m window --warp north
-     shift + cmd - l : yabai -m window --warp east
+     # shift + cmd - h : yabai -m window --warp west
+     # shift + cmd - j : yabai -m window --warp south
+     # shift + cmd - k : yabai -m window --warp north
+     # shift + cmd - l : yabai -m window --warp east
 
      # balance size of windows
-     shift + alt - 0 : yabai -m space --balance
+     shift + cmd - 0      : yabai -m window --grid 1:1:0:0:1:1
 
-     # make floating window fill screen
-     shift + alt - up     : yabai -m window --grid 1:1:0:0:1:1
+     # Floating windows can also be moved and resized at the same time by placing them on a grid.
+     # The grid format is <rows>:<cols>:<start-x>:<start-y>:<width>:<height>
+
+     # make floating window fill top-half of screen
+     shift + cmd - up     : yabai -m window --grid 2:1:0:0:1:1
+     # make floating window fill bottom-half of screen
+     shift + cmd - down   : yabai -m window --grid 2:1:0:1:1:1
 
      # make floating window fill left-half of screen
-     shift + alt - left   : yabai -m window --grid 1:2:0:0:1:1
+     shift + cmd - left   : yabai -m window --grid 1:2:0:0:1:1
 
      # make floating window fill right-half of screen
-     shift + alt - right  : yabai -m window --grid 1:2:1:0:1:1
+     shift + cmd - right  : yabai -m window --grid 1:2:1:0:1:1
+
+     shift + cmd - c  :     yabai -m window --grid 6:4:1:1:2:4
 
      # create desktop, move window and follow focus - uses jq for parsing json (brew install jq)
      # shift + cmd - n : yabai -m space --create && \
