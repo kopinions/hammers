@@ -10,6 +10,7 @@
 
 *** 界面配置
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-ui.el") :comments link
+      (setq frame-resize-pixelwise t)
       (setq use-file-dialog nil)
       (setq use-dialog-box nil)
       (setq inhibit-startup-screen t)

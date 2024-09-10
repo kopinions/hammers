@@ -14,6 +14,7 @@
      (setenv "LD_LIBRARY_PATH" "")
      (setq native-comp-driver-options "")
      (setq package-native-compile t)
+     (add-to-list 'default-frame-alist '(undecorated . t))
    #+END_SRC
 ** 使用代理进行访问
    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/init.el") :comments link
