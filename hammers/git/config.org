@@ -87,6 +87,7 @@
               syntax-theme = Dracula
               plus-style = syntax "#003800"
               minus-style = syntax "#3f0001"
+      	max-line-length = 0 # not truncate the diff content, default truncated at 512 char
 
       [delta "decorations"]
               commit-decoration-style = bold yellow box ul
