@@ -375,6 +375,40 @@
 		("NEXT"   . (:foreground "#f1fa8c" :weight bold))
 		("CARRY/O" . (:foreground "#6272a4" :background "#373844" :weight bold)))))
     #+END_SRC
+
+*** org-mode calendar 配置
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-literate.el") :comments link
+      (use-package org-caldav
+        :config
+        ;; URL of the caldav server
+        (setq org-caldav-url "https://calendar.dingtalk.com/dav/u_adagkv9q")
+        (setq org-caldav-debug-level 2)
+        ;; calendar ID on server
+        (setq org-caldav-calendar-id "primary")
+        (setq org-caldav-sync-direction 'org->cal)
+
+        ;; 这里把 URL 写成组装的日历地址，发现，其实是有日历内容，但是同步不下来。所以跟踪进去代码发现，原来 org-caldav 默认日历都是 .ics 结尾，但是钉钉里面的日历没有这个后缀名，因此全部过滤了，也好办
+        (setq org-caldav-uuid-extension "")
+
+        ;; Org filename where new entries from calendar stored
+        (setq org-caldav-inbox (expand-file-name "calendar.org" org-agenda-dir))
+         (add-to-list 'org-agenda-files org-caldav-inbox)
+
+        ;; Additional Org files to check for calendar events
+        (setq org-caldav-files `(
+                                  ,(expand-file-name "inbox.org" org-agenda-dir)
+                                  ,(expand-file-name "todos.org" org-agenda-dir)
+                                  ,(expand-file-name "mobile.org" org-agenda-dir)
+                                  ,(expand-file-name "routine.org" org-agenda-dir)
+                                  ,(expand-file-name "meeting.org" org-agenda-dir)
+                                  ,(expand-file-name "retrospect.org" org-agenda-dir)
+                                  ))
+
+        ;; Usually a good idea to set the timezone manually
+        (setq org-icalendar-timezone "Asia/Shanghai"))
+
+    #+END_SRC
+
 *** org-mode capture 配置
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-literate.el") :comments link
       (use-package org
