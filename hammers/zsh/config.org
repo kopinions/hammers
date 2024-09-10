@@ -120,10 +120,11 @@
 ******* misc xdg related
         #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/profiles/000-miscxdg.zsh") :eval never :exports code :comments link
           mkdir -p ${XDG_DATA_HOME}/{less,git}
+          mkdir -p ${XDG_STATE_HOME}/{less,git}
 
           export HOMEBREW_BUNDLE_FILE=${XDG_CONFIG_HOME}/homebrew-bundle/Brewfile
           export RIPGREP_CONFIG_PATH=${XDG_CONFIG_HOME}/ripgrep/config
-          export LESSHISTFILE="${XDG_DATA_HOME}/less/history"
+          export LESSHISTFILE="${XDG_STATE_HOME}/less/history"
           export LESSKEY="${XDG_CONFIG_HOME}/less/keys"
 
           export GEM_SPEC_CACHE=${XDG_CACHE_HOME}/rubygems/cache
@@ -224,7 +225,7 @@
         autoload history-search-end
         HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND="bg=cyan,fg=white,bold"
         HIST_STAMPS="dd.mm.yyyy" ## OH-MY-ZSH
-        HISTFILE=${XDG_DATA_HOME}/zsh/history
+        HISTFILE=${XDG_STATE_HOME}/zsh/history
 
         setopt extended_history        # write the history file in the ':start:elapsed;command' format
         setopt appendhistory           # append to history file
@@ -290,32 +291,38 @@
 **** xdg workaround
      #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/rcs/003-xdg.zsh") :eval never :exports code :comments link
        #!/bin/zsh
-       if [ -s "${XDG_CONFIG_HOME}/ssh/config" ]
-       then
-           SSH_CONFIG="-F ${XDG_CONFIG_HOME}/ssh/config"
+       SSH_COMMON_OPTS=()
+       SSH_OPTS=()
+       if [ -s "${XDG_CONFIG_HOME}/ssh/config" ]; then
+           SSH_OPTS+=( -F ${XDG_CONFIG_HOME}/ssh/config )
        fi
 
        if [ -s "${XDG_CONFIG_HOME}/ssh/id_rsa" ]; then
-           SSH_ID="-i ${XDG_CONFIG_HOME}/ssh/id_rsa"
+           SSH_COMMON_OPTS+=( -i ${XDG_DATA_HOME}/ssh/id_rsa )
        elif [ -s "${XDG_CONFIG_HOME}/ssh/id_dsa" ]; then
-           SSH_ID="-i ${XDG_CONFIG_HOME}/ssh/id_dsa"
+           SSH_COMMON_OPTS+=( -i ${XDG_DATA_HOME}/ssh/id_dsa )
        fi
 
-       SSH_KNOWN_HOSTS="-o UserKnownHostsFile=${XDG_CONFIG_HOME}/ssh/known_hosts"
+       SSH_COMMON_OPTS+=( -o UserKnownHostsFile=${XDG_STATE_HOME}/ssh/known_hosts )
+       SSH_OPTS+=( "${SSH_COMMON_OPTS[@]}" )
 
-       alias tmux='tmux -f ${XDG_CONFIG_HOME}/tmux/tmux.conf'
-       alias ssh="ssh ${SSH_CONFIG} ${SSH_ID} ${SSH_KNOWN_HOSTS}"
-       function sshci() {
-           USER_AT_HOST_REGEXP='([a-zA-Z0-9_.]+)@([a-zA-Z0-9_.]+)'
-           if [[ "$1" =~ ${USER_AT_HOST_REGEXP} ]]; then
-               eval "ssh-copy-id ${SSH_KNOWN_HOSTS} ${SSH_ID} $1"
-           else
-               user=$(ssh -G "$1" | awk '/^user /{print $2}')
-               hostname=$(ssh -G "$1"| awk '/^hostname /{print $2}')
-               eval "ssh-copy-id ${SSH_KNOWN_HOSTS} ${SSH_ID} ${user}@${hostname}" 
-           fi
+       function customized_ssh() {
+           command ssh "${SSH_OPTS[@]}" "$@"
        }
-       alias scp="scp ${SSH_CONFIG} ${SSH_ID} ${SSH_KNOWN_HOSTS}"
+
+       function customize_scp() {
+           command scp "${SSH_OPTS[@]}" "$@"
+       }
+
+       function sshci() {
+           user=$(command ssh "${SSH_OPTS[@]}" -G "$1" | awk '/^user /{print $2}')
+           hostname=$(command ssh "${SSH_OPTS[@]}" -G "$1"| awk '/^hostname /{print $2}')
+           command ssh-copy-id "${SSH_COMMON_OPTS[@]}" ${id}@${hostname} 
+       }
+       alias scp='customized_scp'
+       alias ssh='customized_ssh'
+       alias ssh-copy-id='sshci'
+       alias tmux='tmux -f ${XDG_CONFIG_HOME}/tmux/tmux.conf'
      #+END_SRC
 
 **** alias
