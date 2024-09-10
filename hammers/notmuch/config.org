@@ -193,6 +193,8 @@
       for i in $(notmuch search --exclude=false --output=files tag:delete); do
           rm -rf ${i}
       done
+
+      notmuch new --no-hooks
     #+END_SRC
 
 *** post insert hook
