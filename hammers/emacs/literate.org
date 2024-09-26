@@ -54,6 +54,8 @@
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-literate.el") :comments link
       (setq org-agenda-dir (expand-file-name "agendas" m/home.d))
       (use-package org
+        :init
+        (setq org-id-locations-file (expand-file-name "org-id-locations" m/emacs.state.d))
         :preface
         (defun org-toggle-emphasis ()
           "Toggle hiding/showing of org emphasize markers."
@@ -572,7 +574,7 @@
 
     #+END_SRC
 *** org-mode capture command line tool
-    #+BEGIN_SRC shell :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/bin/capture") :tangle-mode (identity #o755) :comments link :noweb yes
+    #+BEGIN_SRC shell :eval never :exports code :tangle (m/resolve "${m/xdg.data.d}/emacs/bin/capture") :tangle-mode (identity #o755) :comments link :noweb yes
       #!/usr/bin/env sh
 
       # Open an org-capture popup frame from the shell. This opens a temporary emacsp
@@ -739,8 +741,8 @@
     #+BEGIN_SRC elisp :exports code :eval never :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-literate.el") :comments link
       (use-package org
         :custom
-        (org-ditaa-jar-path (expand-file-name "emacs/bin/ditaa.jar" m/xdg.data.d))
-        (org-plantuml-jar-path (expand-file-name "emacs/bin/plantuml.jar" m/xdg.data.d))
+        (org-ditaa-jar-path (expand-file-name "bin/ditaa.jar" m/emacs.data.d))
+        (org-plantuml-jar-path (expand-file-name "bin/plantuml.jar" m/emacs.data.d))
         :config
         (unless (and (boundp 'org-ditaa-jar-path)
                      (file-exists-p org-ditaa-jar-path)

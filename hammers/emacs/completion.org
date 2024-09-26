@@ -73,7 +73,7 @@
 	     (append (if (consp backend) backend (list backend))
 		     '(:with company-yasnippet))))
 
-	 :custom (yas-snippet-dirs `(,(expand-file-name "emacs/snippets" m/xdg.conf.d) ,yasnippet-snippets-dir))
+	 :custom (yas-snippet-dirs `(,(expand-file-name "snippets" m/emacs.conf.d) ,yasnippet-snippets-dir))
 	 :config
 	 (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
 	 (yas-reload-all))

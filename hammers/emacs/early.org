@@ -51,19 +51,45 @@
    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/early-init.el") :comments link
      (defconst m/home.d (directory-file-name (expand-file-name "~")))
      (defconst m/xdg.conf.d (expand-file-name ".config" m/home.d))
-     (defconst m/xdg.cached.d (expand-file-name ".cache" m/home.d))
+     (defconst m/xdg.cache.d (expand-file-name ".cache" m/home.d))
      (defconst m/xdg.data.d (expand-file-name ".local/share" m/home.d))
      (defconst m/xdg.state.d (expand-file-name ".local/state" m/home.d))
      (defconst m/emacs.d (expand-file-name "emacs" m/xdg.conf.d))
+     (defconst m/emacs.conf.d (expand-file-name "emacs" m/xdg.conf.d))
+     (defconst m/emacs.data.d (expand-file-name "emacs" m/xdg.data.d))
+     (defconst m/emacs.state.d (expand-file-name "emacs" m/xdg.state.d))
+     (defconst m/emacs.cache.d (expand-file-name "emacs" m/xdg.cache.d))
      (defconst m/mail.d (expand-file-name "mails" m/home.d))
    #+END_SRC
+
 ** native compile 配置
    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/early-init.el") :comments link
      ;; (setenv "PATH" "")
      ;; (setenv "LIBRARY_PATH" "")
      ;; (setenv "LD_LIBRARY_PATH" "")
      ;; (setq native-comp-driver-options "")
-     (startup-redirect-eln-cache (expand-file-name "emacs/eln-cache" m/xdg.state.d))
+     (startup-redirect-eln-cache (expand-file-name "eln-cache" m/emacs.state.d))
      (setq package-native-compile t)
      (add-to-list 'default-frame-alist '(undecorated . t))
+
+     ;;; Install into separate package dirs for each Emacs version, to prevent bytecode incompatibility
+     (let ((versioned-package-dir
+            (expand-file-name (format "elpa-%s.%s" emacs-major-version emacs-minor-version)
+                              m/emacs.state.d)))
+       (setq package-user-dir versioned-package-dir))
    #+END_SRC
+** 加载机器相关配置文件
+   机器相关的配置可以放在 ${m/emacs.conf.d}/lisp/machine-local.el 中，示例代码如下
+   #+BEGIN_SRC elisp :eval never :exports code :noweb yes
+     (setq lsp-clangd-binary-path "/path/to/clangd")
+     (provide 'machine-local)
+   #+END_SRC
+
+   如果不存在这样的文件，则不会进行加载
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/early-init.el") :comments link
+     (let* ((context-file (expand-file-name "lisp/machine-local.el" m/emacs.conf.d))
+            (load-path (list (file-name-directory context-file))))
+       (if (and (file-exists-p context-file) (file-readable-p context-file))
+           (require 'machine-local)))
+   #+END_SRC
+

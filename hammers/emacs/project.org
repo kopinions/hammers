@@ -25,8 +25,10 @@
       (use-package projectile
         :diminish projectile-mode
         :after counsel
-        :custom
-        (projectile-sort-order 'recently-active)
+        :init
+        (setq projectile-sort-order 'recently-active)
+        (setq projectile-cache-file (expand-file-name "projectile.cache" m/emacs.state.d))
+        (setq projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld" m/emacs.state.d))
         :bind
         (
          ("C-c p b" . counsel-projectile-switch-to-buffer)

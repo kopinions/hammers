@@ -27,6 +27,17 @@
 	(magit-post-commit . git-gutter:update-all-windows)
 	(magit-refresh-buffer . git-gutter:update-all-windows))
     #+END_SRC
+
+*** transient
+    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-vcs.el") :comments link
+      (use-package transient
+        :custom
+        (transient-levels-file (expand-file-name "transient/levels.el" m/emacs.state.d))
+        (transient-values-file (expand-file-name "transient/values.el" m/emacs.state.d))
+        (transient-history-file (expand-file-name "transient/history.el" m/emacs.state.d)))
+    #+END_SRC
+
+
 *** magit
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-vcs.el") :comments link
       (define-derived-mode commit-msg-mode text-mode "Commit Msg")

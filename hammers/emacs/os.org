@@ -55,16 +55,28 @@
    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-os.el") :comments link
      (use-package recentf
        :custom
+       (recentf-save-file (expand-file-name "recentf" m/emacs.state.d))
        (recentf-max-menu-items 30)
        (recentf-max-saved-items 200)
        :config
        (recentf-mode 1))
 
      (use-package savehist
+       :custom
+       (savehist-file (expand-file-name "history" m/emacs.state.d))
        :config
        (savehist-mode 1))
    #+END_SRC
-   
+
+** 项目相关
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-os.el") :comments link
+     (use-package projectile
+       :init
+       (setq projectile-sort-order 'recently-active)
+       (setq projectile-cache-file (expand-file-name "projectile.cache" m/emacs.state.d))
+       (setq projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld" m/emacs.state.d)))
+   #+END_SRC
+
 ** emacs server
    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-os.el") :comments link
      (use-package server
@@ -74,8 +86,14 @@
 
 ** http
    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-os.el") :comments link
-     (use-package request)
+     (use-package request
+       :custom
+       (request-storage-directory (expand-file-name "request" m/emacs.state.d)))
+     (use-package url
+       :custom
+       (url-configuration-directory (expand-file-name "url" m/emacs.state.d)))
    #+END_SRC
+   
 ** 导出
    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-os.el") :comments link
      (provide 'init-os)

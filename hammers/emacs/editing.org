@@ -26,11 +26,11 @@
 **** 不生成 #filename# 临时文件
      #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
        (auto-save-visited-mode)
-       (make-directory (expand-file-name "emacs/backups" m/xdg.conf.d) t)
+       (make-directory (expand-file-name "backups" m/emacs.state.d) t)
        (setq auto-save-file-name-transforms
-	     `((".*" ,(expand-file-name "emacs/backups/" m/xdg.conf.d) t)))
+	     `((".*" ,(expand-file-name "backups/" m/emacs.state.d) t)))
        (setq auto-save-list-file-prefix
-	     (expand-file-name "emacs/backups/" m/xdg.conf.d))
+	     (expand-file-name "backups/" m/emacs.state.d))
      #+END_SRC
 **** 禁止备份文件
      #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
@@ -396,15 +396,17 @@
 
    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
      (use-package multiple-cursors
+       :init
+       (setq mc/list-file (expand-file-name "multiple-cursor-options.el" m/emacs.state.d))
        :bind (
-	      ("C-<" . mc/mark-previous-like-this)
-	      ("C->" . mc/mark-next-like-this)
-	      ("C-+" . mc/mark-next-like-this)
-	      ("C-c C-<" . mc/mark-all-like-this)
-	      ("C-c m r" . set-rectangular-region-anchor)
-	      ("C-c m c" . mc/edit-lines)
-	      ("C-c m e" . mc/edit-ends-of-lines)
-	      ("C-c m a" . mc/edit-beginnings-of-lines))
+              ("C-<" . mc/mark-previous-like-this)
+              ("C->" . mc/mark-next-like-this)
+              ("C-+" . mc/mark-next-like-this)
+              ("C-c C-<" . mc/mark-all-like-this)
+              ("C-c m r" . set-rectangular-region-anchor)
+              ("C-c m c" . mc/edit-lines)
+              ("C-c m e" . mc/edit-ends-of-lines)
+              ("C-c m a" . mc/edit-beginnings-of-lines))
        )
 
      (global-unset-key [M-left])
@@ -552,6 +554,12 @@
 		   ))))))
 
      (global-set-key (kbd "C-c +") 'm/increment-number-hexadecimal)
+   #+END_SRC
+** bookmark
+   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-editing.el") :comments link
+     (use-package bookmark
+       :custom
+       (bookmark-file (expand-file-name "bookmarks" m/emacs.state.d)))
    #+END_SRC
 
 ** 其他

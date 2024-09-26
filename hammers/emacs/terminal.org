@@ -118,7 +118,7 @@
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-terminal.el") :comments link
       (use-package eshell-autojump
 	:custom
-	(eshell-directory-name (expand-file-name "emacs/eshell" m/xdg.conf.d)))
+	(eshell-directory-name (expand-file-name "eshell" m/emacs.state.d)))
     #+END_SRC
 *** eshell toggle window
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-terminal.el") :comments link

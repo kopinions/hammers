@@ -14,6 +14,7 @@
      (use-package lsp-mode
        :ensure t
        :custom
+       (lsp-session-file (expand-file-name "lsp-session" m/emacs.state.d))
        ;; debug
        (lsp-log-io t)
        (lsp-trace nil)
@@ -27,77 +28,77 @@
        ;; go-client
        (lsp-clients-go-server-args '("--cache-style=always" "--diagnostics-style=onsave" "--format-style=goimports"))
        (lsp-clients-clangd-args '("-j=4"
-				  "--all-scopes-completion"
-				  "--pch-storage=memory"
-				  "-background-index"
-				  "-log=info"
-				  "--compile-commands-dir=build"
-				  "--clang-tidy"
-				  "--fallback-style=llvm"
-				  "--header-insertion=iwyu"
-				  "--limit-results=50"
-				  "--suggest-missing-includes"
-				  "--offset-encoding=utf-8"
-				  "--completion-style=detailed"
-				  "--pretty"))
+        			  "--all-scopes-completion"
+        			  "--pch-storage=memory"
+        			  "-background-index"
+        			  "-log=info"
+        			  "--compile-commands-dir=build"
+        			  "--clang-tidy"
+        			  "--fallback-style=llvm"
+        			  "--header-insertion=iwyu"
+        			  "--limit-results=50"
+        			  "--suggest-missing-includes"
+        			  "--offset-encoding=utf-8"
+        			  "--completion-style=detailed"
+        			  "--pretty"))
        :hook
        (c-mode-common . lsp)
        :bind
        (:map lsp-mode-map
-	     ("C-c r"   . lsp-rename))
+             ("C-c r"   . lsp-rename))
        :config
        (use-package lsp-treemacs
-	 :ensure t
-	 :commands lsp-treemacs-errors-list
-	 )
+         :ensure t
+         :commands lsp-treemacs-errors-list
+         )
        ;; LSP UI tools
        (use-package lsp-ui
-	 :ensure t
-	 :custom
-	 ;; lsp-ui-doc
-	 (lsp-ui-doc-enable nil)
-	 (lsp-ui-doc-header t)
-	 (lsp-ui-doc-include-signature t)
-	 (lsp-ui-doc-position 'at-point) ;; top, bottom, or at-point
-	 (lsp-ui-doc-max-width 120)
-	 (lsp-ui-doc-max-height 30)
-	 (lsp-ui-doc-use-childframe t)
-	 (lsp-ui-doc-use-webkit t)
-	 ;; lsp-ui-flycheck
-	 (lsp-ui-flycheck-enable t)
-	 ;; lsp-ui-sideline
-	 (lsp-ui-sideline-enable nil)
-	 (lsp-ui-sideline-ignore-duplicate t)
-	 (lsp-ui-sideline-show-symbol t)
-	 (lsp-ui-sideline-show-hover t)
-	 (lsp-ui-sideline-show-diagnostics nil)
-	 (lsp-ui-sideline-show-code-actions t)
-	 ;; lsp-ui-imenu
-	 (lsp-ui-imenu-enable t)
-	 (lsp-ui-imenu-kind-position 'left)
-	 ;; lsp-ui-peek
-	 (lsp-ui-peek-enable t)
-	 (lsp-ui-peek-peek-height 80)
-	 (lsp-ui-peek-list-width 150)
-	 (lsp-ui-peek-fontify 'on-demand) ;; never, on-demand, or always
-	 :preface
-	 (defun m/toggle-lsp-ui-doc ()
-	   (interactive)
-	   (if lsp-ui-doc-mode
-	       (progn
-		 (lsp-ui-doc-mode -1)
-		 (lsp-ui-doc--hide-frame))
-	     (lsp-ui-doc-mode 1)))
-	 :bind
-	 (:map lsp-mode-map
-	       ("M-?" . lsp-ui-peek-find-references)
-	       ("M-." . lsp-ui-peek-find-definitions)
-	       ("C-c C-i" . lsp-ui-peek-find-implementation)
-	       ("C-c m"   . lsp-ui-imenu)
-	       ("C-c s"   . lsp-ui-sideline-mode)
-	       ("C-c d"   . m/toggle-lsp-ui-doc))
-	 :hook
-	 (lsp-mode . lsp-ui-mode)))
+         :ensure t
+         :custom
+         ;; lsp-ui-doc
+         (lsp-ui-doc-enable nil)
+         (lsp-ui-doc-header t)
+         (lsp-ui-doc-include-signature t)
+         (lsp-ui-doc-position 'at-point) ;; top, bottom, or at-point
+         (lsp-ui-doc-max-width 120)
+         (lsp-ui-doc-max-height 30)
+         (lsp-ui-doc-use-childframe t)
+         (lsp-ui-doc-use-webkit t)
+         ;; lsp-ui-flycheck
+         (lsp-ui-flycheck-enable t)
+         ;; lsp-ui-sideline
+         (lsp-ui-sideline-enable nil)
+         (lsp-ui-sideline-ignore-duplicate t)
+         (lsp-ui-sideline-show-symbol t)
+         (lsp-ui-sideline-show-hover t)
+         (lsp-ui-sideline-show-diagnostics nil)
+         (lsp-ui-sideline-show-code-actions t)
+         ;; lsp-ui-imenu
+         (lsp-ui-imenu-enable t)
+         (lsp-ui-imenu-kind-position 'left)
+         ;; lsp-ui-peek
+         (lsp-ui-peek-enable t)
+         (lsp-ui-peek-peek-height 80)
+         (lsp-ui-peek-list-width 150)
+         (lsp-ui-peek-fontify 'on-demand) ;; never, on-demand, or always
+         :preface
+         (defun m/toggle-lsp-ui-doc ()
+           (interactive)
+           (if lsp-ui-doc-mode
+               (progn
+        	 (lsp-ui-doc-mode -1)
+        	 (lsp-ui-doc--hide-frame))
+             (lsp-ui-doc-mode 1)))
+         :bind
+         (:map lsp-mode-map
+               ("M-?" . lsp-ui-peek-find-references)
+               ("M-." . lsp-ui-peek-find-definitions)
+               ("C-c C-i" . lsp-ui-peek-find-implementation)
+               ("C-c m"   . lsp-ui-imenu)
+               ("C-c s"   . lsp-ui-sideline-mode)
+               ("C-c d"   . m/toggle-lsp-ui-doc))
+         :hook
+         (lsp-mode . lsp-ui-mode)))
    #+END_SRC
 
 ** emacs debug adaptor protocol
@@ -358,6 +359,7 @@
      (use-package dap-mode
        :custom
        (dap-lldb-debugged-program-function (lambda () (read-file-name "Select file to debug.")))
+       (dap-breakpoints-file (expand-file-name "dap-breakpoints" m/emacs.state.d))
        :after (lsp-mode posframe)
        :config
        (require 'dap-hydra)

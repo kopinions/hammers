@@ -50,22 +50,7 @@
      (global-unset-key (kbd "M-`"))
    #+END_SRC
 
-** 加载机器相关配置文件
-   机器相关的配置可以放在 ${m/emacs.d}/machine-local.el 中，示例代码如下
-   #+BEGIN_SRC elisp :eval never :exports code :noweb yes
-     (setq lsp-clangd-binary-path "/path/to/clangd")
-     (provide 'machine-local)
-   #+END_SRC
 
-
-   如果不存在这样的文件，则不会进行加载
-   
-   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/init.el") :comments link
-     (let* ((context-file (expand-file-name "machine-local.el" m/emacs.d))
-            (load-path (list (file-name-directory context-file))))
-       (if (and (file-exists-p context-file) (file-readable-p context-file))
-           (require 'machine-local)))
-   #+END_SRC
 
 ** 文件大小提醒
    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/init.el") :comments link
@@ -74,9 +59,9 @@
 ** 是否开启离线模式
    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/init.el") :comments link
      (defconst m/offline 
-       (file-directory-p (expand-file-name "emacs/packages" m/xdg.cached.d)))
+       (file-directory-p (expand-file-name "packages" m/emacs.cache.d)))
      (defconst m/offline-path 
-       (expand-file-name "emacs/packages" m/xdg.cached.d))
+       (expand-file-name "packages" m/emacs.cache.d))
    #+END_SRC
 
 ** 垃圾回收设置
@@ -92,12 +77,6 @@
 
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/init.el") :comments link
       (require 'package)
-      ;;; Install into separate package dirs for each Emacs version, to prevent bytecode incompatibility
-      (let ((versioned-package-dir
-             (expand-file-name (format "emacs/elpa-%s.%s" emacs-major-version emacs-minor-version)
-                               m/xdg.state.d)))
-        (setq package-user-dir versioned-package-dir))
-
       (if m/offline
           (setq package-archives `(("gnu" . ,(expand-file-name "gnu" m/offline-path))
                                    ("melpa" . ,(expand-file-name "melpa" m/offline-path))
@@ -142,6 +121,7 @@
 
       (use-package auto-package-update
         :config
+        (setq auto-package-update-last-update-day-path (expand-file-name "last-package-update-day" m/emacs.state.d))
         (setq auto-package-update-delete-old-versions t)
         (setq auto-package-update-hide-results t)
         (auto-package-update-maybe))
@@ -156,11 +136,11 @@
 *** 包加载路径配置
     所有的自定义的配置文件都在 emacs 配置文件夹下的 lisp 目录下。所以我们需要将 lisp 目录添加到加载路径中
     #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/init.el") :comments link
-      (add-to-list 'load-path (expand-file-name "emacs/lisp/" m/xdg.conf.d))
-      (add-to-list 'load-path (expand-file-name "systemrdl-mode/" (expand-file-name "emacs/3rdparty" m/xdg.conf.d)))
-      (add-to-list 'load-path (expand-file-name "liberime/" (expand-file-name "emacs/3rdparty" m/xdg.conf.d)))
-      (add-to-list 'load-path (expand-file-name "modes/" (expand-file-name "emacs/3rdparty" m/xdg.conf.d)))
-      (setq custom-file (expand-file-name "emacs/custom.el" m/xdg.conf.d))
+      (add-to-list 'load-path (expand-file-name "lisp/" m/emacs.conf.d))
+      (add-to-list 'load-path (expand-file-name "systemrdl-mode/" (expand-file-name "3rdparty" m/emacs.conf.d)))
+      (add-to-list 'load-path (expand-file-name "liberime/" (expand-file-name "3rdparty" m/emacs.conf.d)))
+      (add-to-list 'load-path (expand-file-name "modes/" (expand-file-name "3rdparty" m/emacs.conf.d)))
+      (setq custom-file (expand-file-name "custom.el" m/emacs.state.d))
     #+END_SRC
 
 ** 自定义配置聚合

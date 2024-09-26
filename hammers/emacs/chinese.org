@@ -12,6 +12,8 @@
    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-chinese.el") :comments link
      (use-package cnfonts
        :ensure t
+       :custom
+       (cnfonts-directory (expand-file-name "cnfonts" m/emacs.state.d))
        :if (display-graphic-p)
        :init (setq cnfonts-verbose nil)
        :config
@@ -31,9 +33,10 @@
          `(:name ,(file-name-nondirectory path)
                  :file ,path))
        (defun m/dicts()
-         (mapcar 'm/dict (m/files "${m/xdg.data.d}/emacs/pyim/dicts/*.pyim" t)))
+         (mapcar 'm/dict (m/files "${m/emacs.data.d}/pyim/dicts/*.pyim" t)))
        :custom
        (pyim-outcome-trigger nil)
+       (pyim-dcache-directory (expand-file-name "pyim/dcache" m/emacs.state.d))
        :config
        ;; 激活 basedict 拼音词库，五笔用户请继续阅读 README
        (setq pyim-dicts (m/dicts))
@@ -89,7 +92,7 @@
 
 *** 安装 librime
     #+HEADER: :var emacs_conf=(m/resolve "${m/xdg.conf.d}/emacs")
-    #+BEGIN_SRC shell :eval (or (and (eq m/os 'macos) "yes") "never") :shebang #!/bin/bash :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/bin/rimeable") :tangle-mode (identity #o755) :results output silent :noweb yes :comments link
+    #+BEGIN_SRC shell :eval (or (and (eq m/os 'macos) "yes") "never") :shebang #!/bin/bash :exports code :tangle (m/resolve "${m/xdg.data.d}/emacs/bin/rimeable") :tangle-mode (identity #o755) :results output silent :noweb yes :comments link
       cd ${emacs_conf}/3rdparty/librime
       git clean -fdx
       git submodule update --init --recursive
@@ -100,12 +103,12 @@
     #+END_SRC
 
 *** 安装 liberime
-
     #+BEGIN_SRC elisp :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-chinese.el")) "no") :comments link
       (use-package liberime
         :if (eq m/os 'macos)
         :after pyim
         :init
+        (setq liberime-user-data-dir (expand-file-name "rime" m/emacs.data.d))
         (setenv "RIME_PATH" (expand-file-name "librime" (expand-file-name "emacs/3rdparty" m/xdg.conf.d)))
         :config
         (liberime-load)
@@ -130,7 +133,7 @@
     #+HEADER: :var erime_path=(m/resolve "${m/xdg.conf.d}/emacs/3rdparty/liberime")
     #+HEADER: :var rime_path=(m/resolve "${m/xdg.conf.d}/emacs/3rdparty/librime")
     #+HEADER: :var emacs_major=(format "%d" emacs-major-version)
-    #+BEGIN_SRC shell :eval yes :shebang #!/bin/bash :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/bin/rimeable") :tangle-mode (identity #o755) :comments link :results output silent :noweb yes
+    #+BEGIN_SRC shell :eval yes :shebang #!/bin/bash :exports code :tangle (m/resolve "${m/xdg.data.d}/emacs/bin/rimeable") :tangle-mode (identity #o755) :comments link :results output silent :noweb yes
       export RIME_PATH=${rime_path}
       export EMACS_MAJOR_VERSION=${emacs_major}
       cd ${erime_path}

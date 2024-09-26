@@ -169,7 +169,9 @@
         (with-eval-after-load 'magit
           (setq magit-completing-read-function 'ivy-completing-read))
         (use-package flx)
-        (use-package amx)
+        (use-package amx
+          :custom
+          (amx-save-file (expand-file-name "amx-items" m/emacs.state.d)))
         (use-package counsel-projectile
           :config (counsel-projectile-mode 1))
         (use-package ivy-rich
