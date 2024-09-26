@@ -1,0 +1,20 @@
+#!/bin/bash
+FILEPATH=$(realpath $(dirname $0))
+
+cd ${FILEPATH}/librime
+git clean -fdx
+git submodule update --init --recursive
+./install-boost.sh
+export BOOST_ROOT="$(pwd)/deps/boost-1.84.0"
+prefix=${XDG_DATA_HOME}/emacs/librime make deps
+prefix=${XDG_DATA_HOME}/emacs/librime RIME_ROOT=${XDG_DATA_HOME}/emacs/librime make release
+prefix=${XDG_DATA_HOME}/emacs/librime RIME_ROOT=${XDG_DATA_HOME}/emacs/librime make install
+
+cd ${FILEPATH}/liberime
+export EMACS_MAJOR_VERSION=$(emacs --version|sed -E -n '/GNU Emacs [0-9.]+/{s/GNU Emacs //; p}')
+export MODULE_FILE_SUFFIX=".so" 
+export PREFIX="${XDG_DATA_HOME}/emacs/librime"
+export CFLAGS="-I${XDG_DATA_HOME}/emacs/librime/include" 
+export LDFLAGS="-L${XDG_DATA_HOME}/emacs/librime/lib  -Wl,-rpath -Wl,${XDG_DATA_HOME}/emacs/librime/lib"
+export PREFIX=${XDG_DATA_HOME}/emacs/librime
+make install

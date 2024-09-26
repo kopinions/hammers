@@ -89,19 +89,6 @@
    #+END_SRC
 
 ** rime 输入法配置
-
-*** 安装 librime
-    #+HEADER: :var emacs_conf=(m/resolve "${m/xdg.conf.d}/emacs")
-    #+BEGIN_SRC shell :eval (or (and (eq m/os 'macos) "yes") "never") :shebang #!/bin/bash :exports code :tangle (m/resolve "${m/xdg.data.d}/emacs/bin/rimeable") :tangle-mode (identity #o755) :results output silent :noweb yes :comments link
-      cd ${emacs_conf}/3rdparty/librime
-      git clean -fdx
-      git submodule update --init --recursive
-      ./install-boost.sh
-      export BOOST_ROOT="$(pwd)/deps/boost-1.84.0"
-      make deps
-      make
-    #+END_SRC
-
 *** 安装 liberime
     #+BEGIN_SRC elisp :eval never :exports code :tangle (or (and (eq m/os 'macos) (m/resolve "${m/xdg.conf.d}/emacs/lisp/init-chinese.el")) "no") :comments link
       (use-package liberime
@@ -109,7 +96,7 @@
         :after pyim
         :init
         (setq liberime-user-data-dir (expand-file-name "rime" m/emacs.data.d))
-        (setenv "RIME_PATH" (expand-file-name "librime" (expand-file-name "emacs/3rdparty" m/xdg.conf.d)))
+        (setenv "RIME_PATH" (expand-file-name "librime" m/emacs.data.d))
         :config
         (liberime-load)
         :hook
@@ -126,24 +113,6 @@
                                    (ignore-errors (lambda ()
                                                     (liberime-select-schema "luna_pinyin_simp")
                                                     (setq pyim-default-scheme 'rime)))))))
-    #+END_SRC
-
-*** 修复 liberime-core.so 的链接的问题（@rpath librime not found）
-
-    #+HEADER: :var erime_path=(m/resolve "${m/xdg.conf.d}/emacs/3rdparty/liberime")
-    #+HEADER: :var rime_path=(m/resolve "${m/xdg.conf.d}/emacs/3rdparty/librime")
-    #+HEADER: :var emacs_major=(format "%d" emacs-major-version)
-    #+BEGIN_SRC shell :eval yes :shebang #!/bin/bash :exports code :tangle (m/resolve "${m/xdg.data.d}/emacs/bin/rimeable") :tangle-mode (identity #o755) :comments link :results output silent :noweb yes
-      export RIME_PATH=${rime_path}
-      export EMACS_MAJOR_VERSION=${emacs_major}
-      cd ${erime_path}
-      make clean && make
-      otool -l ${erime_path}/src/liberime-core.so \
-          | grep "${rime_path}/build/lib" \
-          | sed -r 's#path ([a-zA-Z0-9./:]+)[[:space:]].*#\1#g' \
-          | xargs -I {} install_name_tool -delete_rpath {} ${erime_path}/src/liberime-core.so
-      install_name_tool -add_rpath "${rime_path}/build/lib" ${erime_path}/src/liberime-core.so
-      install_name_tool -add_rpath "${rime_path}/build/lib/Release" ${erime_path}/src/liberime-core.so
     #+END_SRC
 
 *** liberime 配置文件 

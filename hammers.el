@@ -196,8 +196,9 @@
 		      (file-name-directory (buffer-file-name)))))
 
 (defvar m/home.d (directory-file-name (expand-file-name "~")))
+(defvar m/mail.d (expand-file-name "mails" m/home.d))
 (defvar m/xdg.conf.d (expand-file-name ".config" m/home.d))
-(defvar m/xdg.cached.d (expand-file-name ".cache" m/home.d))
+(defvar m/xdg.cache.d (expand-file-name ".cache" m/home.d))
 (defvar m/xdg.data.d (expand-file-name ".local/share" m/home.d))
 (defvar m/xdg.state.d (expand-file-name ".local/state" m/home.d))
 
@@ -278,9 +279,8 @@
 
 ;; init chinese
 (if (eq m/os 'macos)
-    (progn (m/clone "${m/root.d}/hammers/emacs/3rdparty/librime" "${m/xdg.conf.d}/emacs/3rdparty/librime")
-	   (m/clone "${m/root.d}/hammers/emacs/3rdparty/liberime" "${m/xdg.conf.d}/emacs/3rdparty/liberime")
-	   (m/evaluate "${m/root.d}/hammers/emacs/chinese.org")))
+    (progn  (m/clone "${m/root.d}/hammers/emacs/3rdparty/liberime" "${m/xdg.conf.d}/emacs/3rdparty/liberime")
+            (shell-command (m/resolve "${m/root.d}/hammers/emacs/3rdparty/rimeable"))))
 
 (message "Finished building hammers. Please Restart Emacs.")
 
