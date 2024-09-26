@@ -214,7 +214,7 @@
 (m/tangles "${m/root.d}/hammers/emacs/*.org")
 (m/tangles "${m/root.d}/hammers/emacs/snippets/*.org")
 (m/tangles "${m/root.d}/hammers/git/*.org")
-(m/untar "${m/root.d}/hammers/emacs/3rdparty/pyim-bigdict.tar.xz" "${m/xdg.conf.d}/emacs/pyim/dicts")
+(m/untar "${m/root.d}/hammers/emacs/3rdparty/pyim-bigdict.tar.xz" "${m/xdg.data.d}/emacs/pyim/dicts")
 
 (if (or (eq m/os 'macos)
 	(eq m/os 'linux))

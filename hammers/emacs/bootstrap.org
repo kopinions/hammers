@@ -7,15 +7,7 @@
 #+OPTIONS:     num:nil toc:nil todo:nil tasks:nil tags:nil
 #+OPTIONS:     skip:nil author:nil email:nil creator:nil timestamp:nil
 #+INFOJS_OPT:  view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
-** native compile 配置
-   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/early-init.el") :comments link
-     (setenv "PATH" "")
-     (setenv "LIBRARY_PATH" "")
-     (setenv "LD_LIBRARY_PATH" "")
-     (setq native-comp-driver-options "")
-     (setq package-native-compile t)
-     (add-to-list 'default-frame-alist '(undecorated . t))
-   #+END_SRC
+
 ** 使用代理进行访问
    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/init.el") :comments link
      ;;(setq url-proxy-services '(("https" . "127.0.0.1:1089")
@@ -52,16 +44,7 @@
    #+END_SRC
 
 
-** 系统变量配置
-   #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/init.el") :comments link
-     (defconst m/home.d (directory-file-name (expand-file-name "~")))
-     (defconst m/xdg.conf.d (expand-file-name ".config" m/home.d))
-     (defconst m/xdg.cached.d (expand-file-name ".cache" m/home.d))
-     (defconst m/xdg.data.d (expand-file-name ".local/share" m/home.d))
-     (defconst m/xdg.state.d (expand-file-name ".local/state" m/home.d))
-     (defconst m/emacs.d (expand-file-name "emacs" m/xdg.conf.d))
-     (defconst m/mail.d (expand-file-name "mails" m/home.d))
-   #+END_SRC
+
 
    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/init.el") :comments link
      (global-unset-key (kbd "M-`"))
@@ -90,8 +73,10 @@
    #+END_SRC
 ** 是否开启离线模式
    #+BEGIN_SRC elisp :eval never :exports code :tangle (m/resolve "${m/xdg.conf.d}/emacs/init.el") :comments link
-     (defvar m/offline 
-       (file-directory-p (expand-file-name "emacs/offline" m/xdg.conf.d)))
+     (defconst m/offline 
+       (file-directory-p (expand-file-name "emacs/packages" m/xdg.cached.d)))
+     (defconst m/offline-path 
+       (expand-file-name "emacs/packages" m/xdg.cached.d))
    #+END_SRC
 
 ** 垃圾回收设置
@@ -110,13 +95,13 @@
       ;;; Install into separate package dirs for each Emacs version, to prevent bytecode incompatibility
       (let ((versioned-package-dir
              (expand-file-name (format "emacs/elpa-%s.%s" emacs-major-version emacs-minor-version)
-                               m/xdg.conf.d)))
+                               m/xdg.state.d)))
         (setq package-user-dir versioned-package-dir))
 
       (if m/offline
-          (setq package-archives `(("gnu" . ,(expand-file-name "emacs/offline/gnu" m/xdg.conf.d))
-                                   ("melpa" . ,(expand-file-name "emacs/offline/melpa" m/xdg.conf.d))
-                                   ("stable-melpa" . ,(expand-file-name "emacs/offline/stable-melpa" m/xdg.conf.d))))
+          (setq package-archives `(("gnu" . ,(expand-file-name "gnu" m/offline-path))
+                                   ("melpa" . ,(expand-file-name "melpa" m/offline-path))
+                                   ("stable-melpa" . ,(expand-file-name "stable-melpa" m/offline-path))))
         (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
                             (not (gnutls-available-p))))
                (proto (if no-ssl "http" "https")))

@@ -29,7 +29,9 @@
           (menu-bar-mode -1)))
 
       (let ((no-border '(internal-border-width . 0))
-            (fullscreen '(fullscreen . maximized)))
+            (dragable '(drag-internal-border . 1))
+            (fullscreen '(fullscreen . maximized))
+            )
         (add-to-list 'default-frame-alist no-border)
         (add-to-list 'initial-frame-alist no-border)
         (add-to-list 'initial-frame-alist fullscreen))

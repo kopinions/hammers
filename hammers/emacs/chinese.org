@@ -31,7 +31,7 @@
          `(:name ,(file-name-nondirectory path)
                  :file ,path))
        (defun m/dicts()
-         (mapcar 'm/dict (m/files "${m/xdg.conf.d}/emacs/pyim/dicts/*.pyim" t)))
+         (mapcar 'm/dict (m/files "${m/xdg.data.d}/emacs/pyim/dicts/*.pyim" t)))
        :custom
        (pyim-outcome-trigger nil)
        :config
