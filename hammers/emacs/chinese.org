@@ -96,7 +96,8 @@
         :after pyim
         :init
         (setq liberime-user-data-dir (expand-file-name "rime" m/emacs.data.d))
-        (setenv "RIME_PATH" (expand-file-name "librime" m/emacs.data.d))
+        (setq liberime-module-file (expand-file-name "librime/lib/liberime-core.so" m/emacs.data.d))
+        ;; (setenv "RIME_PATH" (expand-file-name "librime" m/emacs.data.d))
         :config
         (liberime-load)
         :hook

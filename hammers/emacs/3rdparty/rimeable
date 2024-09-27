@@ -2,10 +2,9 @@
 FILEPATH=$(realpath $(dirname $0))
 
 cd ${FILEPATH}/librime
-git clean -fdx
 git submodule update --init --recursive
 ./install-boost.sh
-export BOOST_ROOT="$(pwd)/deps/boost-1.84.0"
+export BOOST_ROOT="${FILEPATH}/librime/deps/boost-1.84.0"
 prefix=${XDG_DATA_HOME}/emacs/librime make deps
 prefix=${XDG_DATA_HOME}/emacs/librime RIME_ROOT=${XDG_DATA_HOME}/emacs/librime make release
 prefix=${XDG_DATA_HOME}/emacs/librime RIME_ROOT=${XDG_DATA_HOME}/emacs/librime make install
