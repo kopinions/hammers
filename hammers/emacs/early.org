@@ -70,7 +70,7 @@
      ;; (setq native-comp-driver-options "")
      (startup-redirect-eln-cache (expand-file-name "eln-cache" m/emacs.state.d))
      (setq package-native-compile t)
-     (add-to-list 'default-frame-alist '(undecorated . t))
+     (add-to-list 'default-frame-alist '(undecorated-round . t))
 
      ;;; Install into separate package dirs for each Emacs version, to prevent bytecode incompatibility
      (let ((versioned-package-dir
