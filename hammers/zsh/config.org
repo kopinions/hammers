@@ -442,7 +442,7 @@
 
 ***** 同步 emacs repo
       #+NAME: emacs_offline_home
-      #+BEGIN_SRC shell :var offline_home=(m/resolve "${m/xdg.conf.d}/emacs/offline")
+      #+BEGIN_SRC shell :var offline_home=(m/resolve "${m/xdg.cache.d}/emacs/packages")
         realpath ${offline_home}
       #+END_SRC
     

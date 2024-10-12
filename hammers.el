@@ -240,7 +240,8 @@
 (if (or (eq m/os 'macos)
 	(eq m/os 'linux))
     (progn
-      (m/copy "${m/root.d}/hammers/emacs/3rdparty/modes/" "${m/xdg.conf.d}/emacs/3rdparty/modes")))
+      (m/copy "${m/root.d}/hammers/emacs/3rdparty/modes/" "${m/xdg.conf.d}/emacs/3rdparty/modes")
+      (m/copy "${m/root.d}/hammers/emacs/3rdparty/bin/" "${m/xdg.share.d}/emacs/bin")))
 
 ;; tangle brew and hammerspoon
 (if (eq m/os 'macos)

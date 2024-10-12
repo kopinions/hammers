@@ -69,7 +69,6 @@
         :custom
         (org-src-fontify-natively t)
         (org-src-tab-acts-natively t)
-        (org-descriptive-links nil)
         (org-special-ctrl-a/e t)
         (org-use-sub-superscripts '{})
         (org-export-with-sub-superscripts '{})
@@ -83,6 +82,7 @@
         (org-fast-tag-selection-single-key 'expert)
         (org-image-actual-width nil)
         (org-adapt-indentation t)
+        (org-descriptive-links t)
         :custom-face
         (org-link ((t (:foreground "#ebe087" :underline t))))
         (org-list-dt ((t (:foreground "#bd93f9"))))
