@@ -297,9 +297,9 @@
            SSH_OPTS+=( -F ${XDG_CONFIG_HOME}/ssh/config )
        fi
 
-       if [ -s "${XDG_CONFIG_HOME}/ssh/id_rsa" ]; then
+       if [ -s "${XDG_DATA_HOME}/ssh/id_rsa" ]; then
            SSH_COMMON_OPTS+=( -i ${XDG_DATA_HOME}/ssh/id_rsa )
-       elif [ -s "${XDG_CONFIG_HOME}/ssh/id_dsa" ]; then
+       elif [ -s "${XDG_DATA_HOME}/ssh/id_dsa" ]; then
            SSH_COMMON_OPTS+=( -i ${XDG_DATA_HOME}/ssh/id_dsa )
        fi
 
