@@ -71,7 +71,7 @@
        fi
 
 
-       for file in $(find ${XDG_CONFIG_HOME}/zsh/profiles -name "*.zsh"|sort -Vr); do
+       for file in $(find ${XDG_CONFIG_HOME}/zsh/profiles -name "*.zsh"|sort -V); do
            source "${file}"
        done
 
@@ -155,7 +155,7 @@
        }
        # enable load non owner complemention
        compinit -u
-       for file in $(find ${XDG_CONFIG_HOME}/zsh/rcs -name "*.zsh"|sort -Vr); do
+       for file in $(find ${XDG_CONFIG_HOME}/zsh/rcs -name "*.zsh"|sort -V); do
            source "${file}"
        done
        export PATH
