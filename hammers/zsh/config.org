@@ -310,7 +310,7 @@
            command ssh "${SSH_OPTS[@]}" "$@"
        }
 
-       function customize_scp() {
+       function customized_scp() {
            command scp "${SSH_OPTS[@]}" "$@"
        }
 
