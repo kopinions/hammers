@@ -46,9 +46,7 @@
      call mkdir(&viewdir,   'p', 0700)
   endif
 
-  if !has('nvim') " Neovim has its own location which already complies with XDG specification
-  set viminfofile=$XDG_STATE_HOME/vim/viminfo
-  endif
+
 
   let mapleader=";"
   " ########## this section should put before vundle start ###########
@@ -58,6 +56,13 @@
   filetype off
   " ########## this section should put before vundle end ###########
 
+  " NOTE: this section must be set after set nocompatible
+  " Neovim has its own location which already complies with XDG specification
+  if !has('nvim') && v:version >= 900 
+  set viminfofile=$XDG_STATE_HOME/vim/viminfo
+  else
+  silent! exe 'set viminfo+=n' . expand('$XDG_STATE_HOME/vim/viminfo')
+  endif
 
   " #################vundel config start #####################
   set runtimepath+=$XDG_CONFIG_HOME/vim/plugins/Vundle.vim
