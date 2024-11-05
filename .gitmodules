@@ -30,3 +30,108 @@
 [submodule "hammers/emacs/3rdparty/systemrdl-mode"]
 	path = hammers/emacs/3rdparty/systemrdl-mode
 	url = https://github.com/luisgutz/emacs-system-rdl.git
+[submodule "hammers/tmux/plugins/extrakto"]
+	path = hammers/tmux/plugins/extrakto
+	url = https://github.com/laktak/extrakto
+[submodule "hammers/tmux/plugins/tmux-copycat"]
+	path = hammers/tmux/plugins/tmux-copycat
+	url = https://github.com/tmux-plugins/tmux-copycat
+[submodule "hammers/tmux/plugins/tmux-open"]
+	path = hammers/tmux/plugins/tmux-open
+	url = https://github.com/tmux-plugins/tmux-open
+[submodule "hammers/tmux/plugins/tmux-resurrect"]
+	path = hammers/tmux/plugins/tmux-resurrect
+	url = https://github.com/tmux-plugins/tmux-resurrect
+[submodule "hammers/tmux/plugins/tmux-sensible"]
+	path = hammers/tmux/plugins/tmux-sensible
+	url = https://github.com/tmux-plugins/tmux-sensible
+[submodule "hammers/tmux/plugins/tmux-urlview"]
+	path = hammers/tmux/plugins/tmux-urlview
+	url = https://github.com/tmux-plugins/tmux-urlview
+[submodule "hammers/tmux/plugins/tmux-yank"]
+	path = hammers/tmux/plugins/tmux-yank
+	url = https://github.com/tmux-plugins/tmux-yank
+[submodule "hammers/zsh/plugins/junegunn/fzf"]
+	path = hammers/zsh/plugins/junegunn/fzf
+	url = https://github.com/junegunn/fzf.git
+[submodule "hammers/zsh/plugins/robbyrussell/oh-my-zsh"]
+	path = hammers/zsh/plugins/robbyrussell/oh-my-zsh
+	url = https://github.com/robbyrussell/oh-my-zsh.git
+[submodule "hammers/zsh/plugins/zsh-users/zsh-autosuggestions"]
+	path = hammers/zsh/plugins/zsh-users/zsh-autosuggestions
+	url = https://github.com/zsh-users/zsh-autosuggestions.git
+[submodule "hammers/zsh/plugins/zsh-users/zsh-completions"]
+	path = hammers/zsh/plugins/zsh-users/zsh-completions
+	url = https://github.com/zsh-users/zsh-completions.git
+[submodule "hammers/zsh/plugins/zsh-users/zsh-history-substring-search"]
+	path = hammers/zsh/plugins/zsh-users/zsh-history-substring-search
+	url = https://github.com/zsh-users/zsh-history-substring-search.git
+[submodule "hammers/zsh/plugins/zsh-users/zsh-syntax-highlighting"]
+	path = hammers/zsh/plugins/zsh-users/zsh-syntax-highlighting
+	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
+[submodule "hammers/vim/plugins/ctrlsf.vim"]
+	path = hammers/vim/plugins/ctrlsf.vim
+	url = https://github.com/dyng/ctrlsf.vim.git
+[submodule "hammers/vim/plugins/delimitMate"]
+	path = hammers/vim/plugins/delimitMate
+	url = https://github.com/Raimondi/delimitMate.git
+[submodule "hammers/vim/plugins/incsearch-easymotion.vim"]
+	path = hammers/vim/plugins/incsearch-easymotion.vim
+	url = https://github.com/haya14busa/incsearch-easymotion.vim.git
+[submodule "hammers/vim/plugins/incsearch-fuzzy.vim"]
+	path = hammers/vim/plugins/incsearch-fuzzy.vim
+	url = https://github.com/haya14busa/incsearch-fuzzy.vim.git
+[submodule "hammers/vim/plugins/incsearch.vim"]
+	path = hammers/vim/plugins/incsearch.vim
+	url = https://github.com/haya14busa/incsearch.vim.git
+[submodule "hammers/vim/plugins/numbers.vim"]
+	path = hammers/vim/plugins/numbers.vim
+	url = https://github.com/myusuf3/numbers.vim.git
+[submodule "hammers/vim/plugins/surround.vim"]
+	path = hammers/vim/plugins/surround.vim
+	url = https://github.com/vim-scripts/surround.vim.git
+[submodule "hammers/vim/plugins/vim-airline"]
+	path = hammers/vim/plugins/vim-airline
+	url = https://github.com/vim-airline/vim-airline.git
+[submodule "hammers/vim/plugins/vim-airline-themes"]
+	path = hammers/vim/plugins/vim-airline-themes
+	url = https://github.com/vim-airline/vim-airline-themes.git
+[submodule "hammers/vim/plugins/vim-autoformat"]
+	path = hammers/vim/plugins/vim-autoformat
+	url = https://github.com/Chiel92/vim-autoformat.git
+[submodule "hammers/vim/plugins/vim-easy-align"]
+	path = hammers/vim/plugins/vim-easy-align
+	url = https://github.com/junegunn/vim-easy-align.git
+[submodule "hammers/vim/plugins/vim-easymotion"]
+	path = hammers/vim/plugins/vim-easymotion
+	url = https://github.com/easymotion/vim-easymotion.git
+[submodule "hammers/vim/plugins/vim-gitgutter"]
+	path = hammers/vim/plugins/vim-gitgutter
+	url = https://github.com/airblade/vim-gitgutter.git
+[submodule "hammers/vim/plugins/vim-go"]
+	path = hammers/vim/plugins/vim-go
+	url = https://github.com/fatih/vim-go.git
+[submodule "hammers/vim/plugins/vim-javascript"]
+	path = hammers/vim/plugins/vim-javascript
+	url = https://github.com/pangloss/vim-javascript.git
+[submodule "hammers/vim/plugins/vim-json-bundle"]
+	path = hammers/vim/plugins/vim-json-bundle
+	url = https://github.com/vim-scripts/vim-json-bundle.git
+[submodule "hammers/vim/plugins/vim-jsx"]
+	path = hammers/vim/plugins/vim-jsx
+	url = https://github.com/mxw/vim-jsx.git
+[submodule "hammers/vim/plugins/vim-multiple-cursors"]
+	path = hammers/vim/plugins/vim-multiple-cursors
+	url = https://github.com/terryma/vim-multiple-cursors.git
+[submodule "hammers/vim/plugins/vim-mustache-handlebars"]
+	path = hammers/vim/plugins/vim-mustache-handlebars
+	url = https://github.com/mustache/vim-mustache-handlebars.git
+[submodule "hammers/vim/plugins/vim-obsession"]
+	path = hammers/vim/plugins/vim-obsession
+	url = https://github.com/tpope/vim-obsession.git
+[submodule "hammers/vim/plugins/vim-tmux-navigator"]
+	path = hammers/vim/plugins/vim-tmux-navigator
+	url = https://github.com/christoomey/vim-tmux-navigator.git
+[submodule "hammers/vim/plugins/ctrlp.vim"]
+	path = hammers/vim/plugins/ctrlp.vim
+	url = https://github.com/ctrlpvim/ctrlp.vim.git

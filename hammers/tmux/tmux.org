@@ -94,7 +94,7 @@
       # copy to system clipboard in tmux
       set -g @plugin 'tmux-plugins/tmux-yank'
       set -g @plugin 'laktak/extrakto'
-      run '${XDG_CONFIG_HOME}/tmux/tpm/tpm'
+      run '${XDG_CONFIG_HOME}/tmux/plugins/tpm/tpm'
 
       # prefix, / to search
       set -g @copycat_search "/"

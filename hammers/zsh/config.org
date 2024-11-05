@@ -104,17 +104,17 @@
 ******* vim xdg related
         #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/profiles/000-vim.zsh") :eval never :exports code :comments link
           mkdir -p $XDG_CONFIG_HOME/vim
-          export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
+          export VIMINIT="set nocp | source ${XDG_CONFIG_HOME:-$HOME/.config}/vim/vimrc"
           export VIMDOTDIR="$XDG_CONFIG_HOME/vim"
           export EDITOR=vim
         #+END_SRC
 
 ******* zplug xdg related (zsh pkg manager)
         #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/profiles/000-zplug.zsh") :eval never :exports code :comments link
-          export ZPLUG_HOME=${XDG_CONFIG_HOME}/zplug/src
-          export ZPLUG_REPOS=${XDG_CONFIG_HOME}/zplug/repos
-          export ZPLUG_LOADFILE="${XDG_CONFIG_HOME}/zplug/zplugs.zsh"
-          export ZPLUG_CACHE_DIR=${XDG_CACHE_HOME}/zplug
+          export ZPLUG_HOME=${XDG_CONFIG_HOME}/zsh/zplug/src
+          export ZPLUG_REPOS=${XDG_CONFIG_HOME}/zsh/plugins
+          export ZPLUG_LOADFILE="${XDG_CONFIG_HOME}/zsh/zplugs.zsh"
+          export ZPLUG_CACHE_DIR=${XDG_CACHE_HOME}/zsh/zplug
         #+END_SRC
 
 ******* misc xdg related
@@ -163,7 +163,7 @@
      #+END_SRC
     
 **** zplug(package manager)
-     #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zplug/zplugs.zsh") :eval never :exports code :comments link
+     #+BEGIN_SRC shell :tangle (m/resolve "${m/xdg.conf.d}/zsh/zplugs.zsh") :eval never :exports code :comments link
        #!/usr/bin/env zsh
        # this allows zplug to update itself on `zplug update`
        zplug 'robbyrussell/oh-my-zsh', as:plugin, use:"lib/*.zsh"
