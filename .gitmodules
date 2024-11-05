@@ -6,10 +6,6 @@
 	path = hammers/zsh/zplug
 	url = https://github.com/zplug/zplug.git
 	ignore = dirty
-[submodule "hammers/vim/bundle/Vundle"]
-	path = hammers/vim/bundle/Vundle
-	url = https://github.com/VundleVim/Vundle.vim.git
-	ignore = dirty
 [submodule "hammers/emacs/3rdparty/librime"]
 	path = hammers/emacs/3rdparty/librime
 	url = https://github.com/rime/librime.git
@@ -135,3 +131,6 @@
 [submodule "hammers/vim/plugins/ctrlp.vim"]
 	path = hammers/vim/plugins/ctrlp.vim
 	url = https://github.com/ctrlpvim/ctrlp.vim.git
+[submodule "hammers/vim/plugins/Vundle.vim"]
+	path = hammers/vim/plugins/Vundle.vim
+	url = https://github.com/VundleVim/Vundle.vim.git

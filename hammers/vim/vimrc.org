@@ -44,7 +44,7 @@
 
 
   " #################vundel config start #####################
-  set runtimepath+=$XDG_CONFIG_HOME/vim/Vundle.vim
+  set runtimepath+=$XDG_CONFIG_HOME/vim/plugins/Vundle.vim
 
   call vundle#begin(expand('$XDG_CONFIG_HOME/vim/plugins'))
   Plugin 'ctrlp.vim'
@@ -62,7 +62,6 @@
   Plugin 'vim-airline/vim-airline-themes'
   Plugin 'Raimondi/delimitMate'
   Plugin 'myusuf3/numbers.vim'
-
   Plugin 'Chiel92/vim-autoformat'
   Plugin 'fatih/vim-go'
   Plugin 'skywind3000/asyncrun.vim'

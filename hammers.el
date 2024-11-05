@@ -289,7 +289,7 @@
       (m/clone "${m/root.d}/hammers/zsh/plugins/zsh-users/zsh-history-substring-search" "${m/xdg.conf.d}/zsh/plugins/zsh-users/zsh-history-substring-search")
       (m/clone "${m/root.d}/hammers/zsh/plugins/zsh-users/zsh-syntax-highlighting" "${m/xdg.conf.d}/zsh/plugins/zsh-users/zsh-syntax-highlighting")
       (m/clone "${m/root.d}/hammers/gdb/plugins/dashboard" "${m/xdg.conf.d}/gdb/dashboard")
-      (m/clone "${m/root.d}/hammers/vim/bundle/Vundle" "${m/xdg.conf.d}/vim/Vundle.vim")
+      (m/clone "${m/root.d}/hammers/vim/plugins/Vundle.vim" "${m/xdg.conf.d}/vim/plugins/Vundle.vim")
       (m/clone "${m/root.d}/hammers/vim/plugins/ctrlp.vim" "${m/xdg.conf.d}/vim/plugins/ctrlp.vim")
       (m/clone "${m/root.d}/hammers/vim/plugins/ctrlsf.vim" "${m/xdg.conf.d}/vim/plugins/ctrlsf.vim")
       (m/clone "${m/root.d}/hammers/vim/plugins/delimitMate" "${m/xdg.conf.d}/vim/plugins/delimitMate")
