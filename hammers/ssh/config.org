@@ -10,8 +10,10 @@
 *** X11 设置
     #+BEGIN_SRC conf :tangle (tangle-if-absent "${m/xdg.conf.d}/ssh/config") :exports code :eval never  :comments link
       Host *
+      ForwardX11Trusted
       ForwardX11 yes
-      RequestTTY yes      
+      RequestTTY yes
+      IdentityAgent none
     #+END_SRC
 *** SSH 连接保持
     #+BEGIN_SRC conf :tangle (tangle-if-absent "${m/xdg.conf.d}/ssh/config") :exports code :eval never  :comments link
