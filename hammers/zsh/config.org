@@ -317,7 +317,7 @@
        function sshci() {
            user=$(command ssh "${SSH_OPTS[@]}" -G "$1" | awk '/^user /{print $2}')
            hostname=$(command ssh "${SSH_OPTS[@]}" -G "$1"| awk '/^hostname /{print $2}')
-           command ssh-copy-id "${SSH_COMMON_OPTS[@]}" ${id}@${hostname} 
+           command ssh-copy-id "${SSH_COMMON_OPTS[@]}" ${user}@${hostname} 
        }
        alias scp='customized_scp'
        alias ssh='customized_ssh'
