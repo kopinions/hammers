@@ -314,6 +314,7 @@
       (m/clone "${m/root.d}/hammers/vim/plugins/vim-obsession" "${m/xdg.conf.d}/vim/plugins/vim-obsession")
       (m/clone "${m/root.d}/hammers/vim/plugins/vim-tmux-navigator" "${m/xdg.conf.d}/vim/plugins/vim-tmux-navigator")
       (m/clone "${m/root.d}/hammers/vim/plugins/gruvbox" "${m/xdg.conf.d}/vim/plugins/gruvbox")
+      (m/clone "${m/root.d}/hammers/vim/plugins/awesome-vim-colorschemes" "${m/xdg.conf.d}/vim/plugins/awesome-vim-colorschemes")
       (m/clone "${m/root.d}/hammers/vim/plugins/vim-colors-solarized" "${m/xdg.conf.d}/vim/plugins/vim-colors-solarized")))
 
 ;; init chinese

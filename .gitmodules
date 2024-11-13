@@ -143,3 +143,6 @@
 [submodule "hammers/tmux/plugins/tmux-colors-solarized"]
 	path = hammers/tmux/plugins/tmux-colors-solarized
 	url = https://github.com/seebi/tmux-colors-solarized.git
+[submodule "hammers/vim/plugins/awesome-vim-colorschemes"]
+	path = hammers/vim/plugins/awesome-vim-colorschemes
+	url = https://github.com/rafi/awesome-vim-colorschemes.git
