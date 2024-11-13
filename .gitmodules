@@ -146,3 +146,6 @@
 [submodule "hammers/vim/plugins/awesome-vim-colorschemes"]
 	path = hammers/vim/plugins/awesome-vim-colorschemes
 	url = https://github.com/rafi/awesome-vim-colorschemes.git
+[submodule "hammers/tmux/plugins/tmux-themepack"]
+	path = hammers/tmux/plugins/tmux-themepack
+	url = https://github.com/jimeh/tmux-themepack.git

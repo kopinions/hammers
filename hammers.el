@@ -282,6 +282,7 @@
       (m/clone "${m/root.d}/hammers/tmux/plugins/tmux-yank" "${m/xdg.conf.d}/tmux/plugins/tmux-yank")
       (m/clone "${m/root.d}/hammers/tmux/plugins/extrakto" "${m/xdg.conf.d}/tmux/plugins/extrakto")
       (m/clone "${m/root.d}/hammers/tmux/plugins/tmux-colors-solarized" "${m/xdg.conf.d}/tmux/plugins/tmux-colors-solarized")
+      (m/clone "${m/root.d}/hammers/tmux/plugins/tmux-themepack" "${m/xdg.conf.d}/tmux/plugins/tmux-themepack")
       (m/clone "${m/root.d}/hammers/zsh/zplug" "${m/xdg.conf.d}/zsh/zplug/src")
       (m/clone "${m/root.d}/hammers/zsh/plugins/junegunn/fzf" "${m/xdg.conf.d}/zsh/plugins/junegunn/fzf")
       (m/clone "${m/root.d}/hammers/zsh/plugins/robbyrussell/oh-my-zsh" "${m/xdg.conf.d}/zsh/plugins/robbyrussell/oh-my-zsh")

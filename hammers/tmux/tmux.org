@@ -95,9 +95,10 @@
       set -g @plugin 'tmux-plugins/tmux-yank'
       set -g @plugin 'laktak/extrakto'
       set -g @plugin 'seebi/tmux-colors-solarized'
+      set -g @plugin 'jimeh/tmux-themepack'
       run '${XDG_CONFIG_HOME}/tmux/plugins/tpm/tpm'
 
-      set -g @colors-solarized 'dark'
+     set -g @themepack 'powerline/default/gray'
 
       # prefix, / to search
       set -g @copycat_search "/"

@@ -98,6 +98,7 @@
   Plugin 'surround.vim'
   "Plugin 'morhetz/gruvbox'
   Plugin 'altercation/vim-colors-solarized'
+  Plugin 'rafi/awesome-vim-colorschemes'
   call vundle#end()
   " #################vundel config end #####################
 
@@ -424,9 +425,7 @@
   filetype plugin on
   " enable syntax highlight
   syntax on
-  " ################################ set vim-colors-solarized start ###################
-  syntax enable
-  set background=dark
-  colorscheme solarized
-  " ################################ set the vim-colors-solarized end ###################
+  " ################################ set colorsheme start ###################
+  colorscheme twilight256
+  " ################################ set colorsheme end ###################
 #+END_SRC
