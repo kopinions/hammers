@@ -96,7 +96,8 @@
   Plugin 'tpope/vim-obsession'
   Plugin 'mustache/vim-mustache-handlebars'
   Plugin 'surround.vim'
-  Plugin 'morhetz/gruvbox'
+  "Plugin 'morhetz/gruvbox'
+  Plugin 'altercation/vim-colors-solarized'
   call vundle#end()
   " #################vundel config end #####################
 
@@ -161,8 +162,6 @@
   set wildignore+=.DS_Store,.git,.hg,.svn
   set wildignore+=*~,*.swp,*.tmp,*.swo
 
-  colorscheme gruvbox
-
   hi CursorColumn ctermfg=White ctermbg=234 cterm=none guifg=white guibg=yellow gui=bold
 
   " To open a new empty buffer
@@ -195,6 +194,10 @@
   "let g:airline#extensions#syntastic#enabled = 1
   " ################################ set the airline end ###################
 
+  " ################################ set vim-colors-solarized start ###################
+  set background=dark
+  colorscheme solarized
+  " ################################ set the vim-colors-solarized end ###################
 
   " ################################ set the async run start ###################
   "let g:asyncrun_mode = 0

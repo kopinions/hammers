@@ -281,6 +281,7 @@
       (m/clone "${m/root.d}/hammers/tmux/plugins/tmux-urlview" "${m/xdg.conf.d}/tmux/plugins/tmux-urlview")
       (m/clone "${m/root.d}/hammers/tmux/plugins/tmux-yank" "${m/xdg.conf.d}/tmux/plugins/tmux-yank")
       (m/clone "${m/root.d}/hammers/tmux/plugins/extrakto" "${m/xdg.conf.d}/tmux/plugins/extrakto")
+      (m/clone "${m/root.d}/hammers/tmux/plugins/tmux-colors-solarized" "${m/xdg.conf.d}/tmux/plugins/tmux-colors-solarized")
       (m/clone "${m/root.d}/hammers/zsh/zplug" "${m/xdg.conf.d}/zsh/zplug/src")
       (m/clone "${m/root.d}/hammers/zsh/plugins/junegunn/fzf" "${m/xdg.conf.d}/zsh/plugins/junegunn/fzf")
       (m/clone "${m/root.d}/hammers/zsh/plugins/robbyrussell/oh-my-zsh" "${m/xdg.conf.d}/zsh/plugins/robbyrussell/oh-my-zsh")
@@ -312,7 +313,8 @@
       (m/clone "${m/root.d}/hammers/vim/plugins/vim-mustache-handlebars" "${m/xdg.conf.d}/vim/plugins/vim-mustache-handlebars")
       (m/clone "${m/root.d}/hammers/vim/plugins/vim-obsession" "${m/xdg.conf.d}/vim/plugins/vim-obsession")
       (m/clone "${m/root.d}/hammers/vim/plugins/vim-tmux-navigator" "${m/xdg.conf.d}/vim/plugins/vim-tmux-navigator")
-      (m/clone "${m/root.d}/hammers/vim/plugins/gruvbox" "${m/xdg.conf.d}/vim/plugins/gruvbox")))
+      (m/clone "${m/root.d}/hammers/vim/plugins/gruvbox" "${m/xdg.conf.d}/vim/plugins/gruvbox")
+      (m/clone "${m/root.d}/hammers/vim/plugins/vim-colors-solarized" "${m/xdg.conf.d}/vim/plugins/vim-colors-solarized")))
 
 ;; init chinese
 (if (eq m/os 'macos)

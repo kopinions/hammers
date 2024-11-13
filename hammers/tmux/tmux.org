@@ -94,7 +94,10 @@
       # copy to system clipboard in tmux
       set -g @plugin 'tmux-plugins/tmux-yank'
       set -g @plugin 'laktak/extrakto'
+      set -g @plugin 'seebi/tmux-colors-solarized'
       run '${XDG_CONFIG_HOME}/tmux/plugins/tpm/tpm'
+
+      set -g @colors-solarized 'dark'
 
       # prefix, / to search
       set -g @copycat_search "/"

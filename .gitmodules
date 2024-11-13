@@ -137,3 +137,9 @@
 [submodule "hammers/vim/plugins/gruvbox"]
 	path = hammers/vim/plugins/gruvbox
 	url = https://github.com/morhetz/gruvbox.git
+[submodule "hammers/vim/plugins/vim-colors-solarized"]
+	path = hammers/vim/plugins/vim-colors-solarized
+	url = https://github.com/altercation/vim-colors-solarized.git
+[submodule "hammers/tmux/plugins/tmux-colors-solarized"]
+	path = hammers/tmux/plugins/tmux-colors-solarized
+	url = https://github.com/seebi/tmux-colors-solarized.git
