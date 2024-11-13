@@ -311,7 +311,8 @@
       (m/clone "${m/root.d}/hammers/vim/plugins/vim-multiple-cursors" "${m/xdg.conf.d}/vim/plugins/vim-multiple-cursors")
       (m/clone "${m/root.d}/hammers/vim/plugins/vim-mustache-handlebars" "${m/xdg.conf.d}/vim/plugins/vim-mustache-handlebars")
       (m/clone "${m/root.d}/hammers/vim/plugins/vim-obsession" "${m/xdg.conf.d}/vim/plugins/vim-obsession")
-      (m/clone "${m/root.d}/hammers/vim/plugins/vim-tmux-navigator" "${m/xdg.conf.d}/vim/plugins/vim-tmux-navigator")))
+      (m/clone "${m/root.d}/hammers/vim/plugins/vim-tmux-navigator" "${m/xdg.conf.d}/vim/plugins/vim-tmux-navigator")
+      (m/clone "${m/root.d}/hammers/vim/plugins/gruvbox" "${m/xdg.conf.d}/vim/plugins/gruvbox")))
 
 ;; init chinese
 (if (eq m/os 'macos)

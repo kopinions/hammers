@@ -134,3 +134,6 @@
 [submodule "hammers/vim/plugins/Vundle.vim"]
 	path = hammers/vim/plugins/Vundle.vim
 	url = https://github.com/VundleVim/Vundle.vim.git
+[submodule "hammers/vim/plugins/gruvbox"]
+	path = hammers/vim/plugins/gruvbox
+	url = https://github.com/morhetz/gruvbox.git

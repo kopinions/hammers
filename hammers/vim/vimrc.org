@@ -96,6 +96,7 @@
   Plugin 'tpope/vim-obsession'
   Plugin 'mustache/vim-mustache-handlebars'
   Plugin 'surround.vim'
+  Plugin 'morhetz/gruvbox'
   call vundle#end()
   " #################vundel config end #####################
 
@@ -160,7 +161,7 @@
   set wildignore+=.DS_Store,.git,.hg,.svn
   set wildignore+=*~,*.swp,*.tmp,*.swo
 
-  colorscheme industry
+  colorscheme gruvbox
 
   hi CursorColumn ctermfg=White ctermbg=234 cterm=none guifg=white guibg=yellow gui=bold
 
