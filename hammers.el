@@ -323,6 +323,10 @@
     (progn  (m/clone "${m/root.d}/hammers/emacs/3rdparty/liberime" "${m/xdg.conf.d}/emacs/3rdparty/liberime")
             (shell-command (m/resolve "${m/root.d}/hammers/emacs/3rdparty/rimeable"))))
 
+(if (or (eq m/os 'macos)
+	(eq m/os 'linux))
+    (progn (shell-command (m/resolve "${m/root.d}/hammers/fonts/powerline/install.sh"))))
+
 (message "Finished building hammers. Please Restart Emacs.")
 
 (provide 'm/hammers)
