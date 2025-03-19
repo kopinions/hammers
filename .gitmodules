@@ -149,3 +149,9 @@
 [submodule "hammers/tmux/plugins/tmux-themepack"]
 	path = hammers/tmux/plugins/tmux-themepack
 	url = https://github.com/jimeh/tmux-themepack.git
+[submodule "hammers/fonts/powerline"]
+	path = hammers/fonts/powerline
+	url = https://github.com/powerline/fonts.git
+[submodule "hammers/tmux/plugins/tmux"]
+	path = hammers/tmux/plugins/tmux
+	url = https://github.com/catppuccin/tmux.git
