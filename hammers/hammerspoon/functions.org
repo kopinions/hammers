@@ -185,16 +185,16 @@
             focus = pomodoro.focus,
             unfocus = pomodoro.unfocus,
             timer = nil,
-            canvas =
-               (
-                  function ()
-                     local w,h = 500, 100;
-                     local frame = hs.screen.mainScreen():fullFrame()
-                     canvas = hs.drawing.text(hs.geometry.rect(frame.w - w, frame.h - h, w , h), "")
-                     canvas:setBehavior(hs.drawing.windowBehaviors["canJoinAllSpaces"])
-                     return canvas
-                  end
-               )()
+            canvas = (
+               function ()
+                  local w,h = 500, 100;
+                  local frame = hs.screen.primaryScreen():fullFrame()
+                  canvas = hs.drawing.text(hs.geometry.rect(frame.w - w, frame.h - h, w , h), "")
+                  canvas:setBehavior(hs.drawing.windowBehaviors["default"])
+                  return canvas
+               end
+            )()
+            
          }
          pomodoro.__index = mt
          return o
@@ -216,7 +216,7 @@
                }
             }
          )
-         local frame = hs.screen.mainScreen():fullFrame()
+         local frame = hs.screen.primaryScreen():fullFrame()
          local ts = hs.drawing.getTextDrawingSize(content)
          local padding = {
             right = 16,
