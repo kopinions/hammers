@@ -38,7 +38,7 @@
                  "type": "frontmost_application_unless",
                  "bundle_identifiers": [
                    "org.gnu.Emacs",
-                   "com.vmware.horizon"
+                   "com.omnissa.horizon.client.mac"
                  ]
                }
              ]
@@ -81,7 +81,7 @@
                  "type": "frontmost_application_unless",
                  "bundle_identifiers": [
                    "org.gnu.Emacs",
-                   "com.vmware.horizon",
+                   "com.omnissa.horizon.client.mac",
                    "com.parallels.desktop.console",
                    "com.youqu.todesk.mac",
                    "com.oray.sunlogin.macclient"
@@ -126,7 +126,7 @@
                    "type": "frontmost_application_unless",
                    "bundle_identifiers": [
                        "org.gnu.Emacs",
-                       "com.vmware.horizon",
+                       "com.omnissa.horizon.client.mac",
                        "com.parallels.desktop.console",
                        "com.youqu.todesk.mac",
                        "com.oray.sunlogin.macclient"
@@ -173,197 +173,207 @@
      #+NAME: map_option_to_command_under_apps
      #+BEGIN_SRC json :eval never :exports code :noweb yes
        {
-         "description": "Map Option to Command for some apps",
-         "manipulators": [
-           {
-             "type": "basic",
-             "from": {
-               "key_code": "left_option",
-               "modifiers": {
-                 "optional": [
-                   "any"
-                 ]
-               }
-             },
-             "to": [
+           "description": "Map Option to Command for some apps",
+           "manipulators": [
                {
-                 "key_code": "left_command"
-               }
-             ],
-             "conditions": [
-               {
-                 "type": "frontmost_application_if",
-                 "bundle_identifiers": [
-                   "com.vmware.horizon",
-                   "com.parallels.desktop.console",
-                   "com.youqu.todesk.mac",
-                   "com.oray.sunlogin.macclient",
-                   "com.microsoft.rdc.macos"
-                 ]
-               },
-               {
-                 "type": "device_if",
-                 "description": "Internal or Macos compatiable Keyboard",
-                 "identifiers": [
-                   {
-                     "is_keyboard": true,
-                     "vendor_id": 1452,
-                     "product_id": 591
+                   "type": "basic",
+                   "from": {
+                       "key_code": "left_option",
+                       "modifiers": {
+                           "optional": [
+                               "any"
+                           ]
+                       }
                    },
-                   {
-                     "is_built_in_keyboard": true
-                   }
-                 ]
+                   "to": [
+                       {
+                           "key_code": "left_command"
+                       }
+                   ],
+                   "conditions": [
+                       {
+                           "type": "frontmost_application_if",
+                           "bundle_identifiers": [
+                               "com.omnissa.horizon.client.mac",
+                               "com.parallels.desktop.console",
+                               "com.youqu.todesk.mac",
+                               "com.oray.sunlogin.macclient",
+                               "com.microsoft.rdc.macos"
+                           ]
+                       },
+                       {
+                           "type": "device_if",
+                           "description": "Internal or Macos compatiable Keyboard",
+                           "identifiers": [
+                               {
+                                   "is_keyboard": true,
+                                   "vendor_id": 1452,
+                                   "product_id": 591
+                               },
+                               {
+                                   "is_built_in_keyboard": true
+                               }
+                           ]
+                       }
+                   ]
                }
-             ]
-           }
-         ]
+           ]
        }
      #+END_SRC
      
      #+NAME: map_command_to_option_under_apps
      #+BEGIN_SRC json :eval never :exports code :noweb yes
        {
-         "description": "Map Command to Option for some apps",
-         "manipulators": [
-           {
-             "type": "basic",
-             "from": {
-               "key_code": "left_command",
-               "modifiers": {
-                 "optional": [
-                   "any"
-                 ]
-               }
-             },
-             "to": [
+           "description": "Map Command to Option for some apps",
+           "manipulators": [
                {
-                 "key_code": "left_option"
-               }
-             ],
-             "conditions": [
-               {
-                 "type": "frontmost_application_if",
-                 "bundle_identifiers": [
-                   "com.vmware.horizon",
-                   "com.parallels.desktop.console",
-                   "com.youqu.todesk.mac",
-                   "com.oray.sunlogin.macclient",
-                   "com.microsoft.rdc.macos"
-                 ]
-               },
-               {
-                 "type": "device_if",
-                 "description": "Internal or Macos compatiable Keyboard",
-                 "identifiers": [
-                   {
-                     "is_keyboard": true,
-                     "vendor_id": 1452,
-                     "product_id": 591
+                   "type": "basic",
+                   "from": {
+                       "key_code": "left_command",
+                       "modifiers": {
+                           "optional": [
+                               "any"
+                           ]
+                       }
                    },
-                   {
-                     "is_built_in_keyboard": true
-                   }
-                 ]
+                   "to": [
+                       {
+                           "key_code": "left_option"
+                       }
+                   ],
+                   "conditions": [
+                       {
+                           "type": "frontmost_application_if",
+                           "bundle_identifiers": [
+                               "com.omnissa.horizon.client.mac",
+                               "com.parallels.desktop.console",
+                               "com.youqu.todesk.mac",
+                               "com.oray.sunlogin.macclient",
+                               "com.microsoft.rdc.macos"
+                           ]
+                       },
+                       {
+                           "type": "device_if",
+                           "description": "Internal or Macos compatiable Keyboard",
+                           "identifiers": [
+                               {
+                                   "is_keyboard": true,
+                                   "vendor_id": 1452,
+                                   "product_id": 591
+                               },
+                               {
+                                   "is_built_in_keyboard": true
+                               }
+                           ]
+                       }
+                   ]
                }
-             ]
-           }
-         ]
+           ]
        }
      #+END_SRC
 **** maping Option to Command for External keyboard
      #+NAME: map_option_to_command_under_external_keyboard
      #+BEGIN_SRC json :eval never :exports code :noweb yes
        {
-         "description": "Map Option to Command for external keyboard",
-         "manipulators": [
-           {
-             "type": "basic",
-             "from": {
-               "key_code": "left_option",
-               "modifiers": {
-                 "optional": [
-                   "any"
-                 ]
-               }
-             },
-             "to": [
+           "description": "Map Option to Command for external keyboard",
+           "manipulators": [
                {
-                 "key_code": "left_command"
+                   "type": "basic",
+                   "from": {
+                       "key_code": "left_option",
+                       "modifiers": {
+                           "optional": [
+                               "any"
+                           ]
+                       }
+                   },
+                   "to": [
+                       {
+                           "key_code": "left_command"
+                       }
+                   ],
+                   "conditions": [
+                       {
+                           "type": "frontmost_application_if",
+                           "bundle_identifiers": [
+                               "com.omnissa.horizon.client.mac",
+                               "com.parallels.desktop.console",
+                               "com.youqu.todesk.mac",
+                               "com.oray.sunlogin.macclient",
+                               "com.microsoft.rdc.macos"
+                           ]
+                       },
+                       {
+                           "type": "device_if",
+                           "description": "May be all external keyboard",
+                           "identifiers": [
+                               {
+                                   "is_keyboard": true,
+                                   "vendor_id": 1204,
+                                   "product_id": 4621
+                               },
+                               {
+                                   "is_keyboard": true,
+                                   "product_id": 2688,
+                                   "vendor_id": 13364
+                               }
+                           ]
+                       }
+                   ]
                }
-             ],
-             "conditions": [
-               {
-                 "type": "frontmost_application_unless",
-                 "bundle_identifiers": [
-                   "com.vmware.horizon",
-                   "com.parallels.desktop.console",
-                   "com.youqu.todesk.mac",
-                   "com.oray.sunlogin.macclient",
-                   "com.microsoft.rdc.macos"
-                 ]
-               },
-               {
-                 "type": "device_if",
-                 "description": "May be all external keyboard",
-                 "identifiers": [
-                   {
-                     "is_keyboard": true,
-                     "vendor_id": 1204,
-                     "product_id": 4621
-                   }
-                 ]
-               }
-             ]
-           }
-         ]
+           ]
        }
      #+END_SRC
      #+NAME: map_command_to_option_under_external_keyboard
      #+BEGIN_SRC json :eval never :exports code :noweb yes
        {
-         "description": "Map Command to Option for external keyboard",
-         "manipulators": [
-           {
-             "type": "basic",
-             "from": {
-               "key_code": "left_command",
-               "modifiers": {
-                 "optional": [
-                   "any"
-                 ]
-               }
-             },
-             "to": [
+           "description": "Map Command to Option for external keyboard",
+           "manipulators": [
                {
-                 "key_code": "left_option"
+                   "type": "basic",
+                   "from": {
+                       "key_code": "left_command",
+                       "modifiers": {
+                           "optional": [
+                               "any"
+                           ]
+                       }
+                   },
+                   "to": [
+                       {
+                           "key_code": "left_option"
+                       }
+                   ],
+                   "conditions": [
+                       {
+                           "type": "frontmost_application_if",
+                           "bundle_identifiers": [
+                               "com.omnissa.horizon.client.mac",
+                               "com.parallels.desktop.console",
+                               "com.youqu.todesk.mac",
+                               "com.oray.sunlogin.macclient",
+                               "com.microsoft.rdc.macos"
+                           ]
+                       },
+                       {
+                           "type": "device_if",
+                           "description": "Maybe all external keyboard",
+                           "identifiers": [
+                               {
+                                   "is_keyboard": true,
+                                   "vendor_id": 1204,
+                                   "product_id": 4621
+                               },
+                               {
+                                   "is_keyboard": true,
+                                   "product_id": 2688,
+                                   "vendor_id": 13364
+                               }
+                           ]
+                       }
+                   ]
                }
-             ],
-             "conditions": [
-               {
-                 "type": "frontmost_application_unless",
-                 "bundle_identifiers": [
-                   "com.vmware.horizon",
-                   "com.parallels.desktop.console",
-                   "com.youqu.todesk.mac",
-                   "com.oray.sunlogin.macclient",
-                   "com.microsoft.rdc.macos"
-                 ]
-               },
-               {
-                 "type": "device_if",
-                 "description": "Maybe all external keyboard",
-                 "identifiers": [
-                   {
-                     "is_keyboard": true,
-                     "vendor_id": 1204,
-                     "product_id": 4621
-                   }
-                 ]
-               }
-             ]
-           }
-         ]
+           ]
        }
      #+END_SRC
 **** Swap Option-Space and Command-Space for some apps
@@ -399,7 +409,7 @@
                {
                  "type": "frontmost_application_unless",
                  "bundle_identifiers": [
-                   "com.vmware.horizon",
+                   "com.omnissa.horizon.client.mac",
                    "com.parallels.desktop.console",
                    "com.youqu.todesk.mac",
                    "com.oray.sunlogin.macclient",
@@ -444,7 +454,7 @@
                {
                  "type": "frontmost_application_if",
                  "bundle_identifiers": [
-                   "com.vmware.horizon",
+                   "com.omnissa.horizon.client.mac",
                    "com.parallels.desktop.console",
                    "com.youqu.todesk.mac",
                    "com.oray.sunlogin.macclient",
@@ -519,6 +529,41 @@
                     "to": [
                       {
                         "key_code": "left_gui"
+                      }
+                    ]
+                  }
+                ],
+                "treat_as_built_in_keyboard": false
+              },
+              {
+                "disable_built_in_keyboard_if_exists": false,
+                "fn_function_keys": [],
+                "identifiers": {
+                  "is_keyboard": true,
+                  "is_pointing_device": false,
+                  "product_id": 2688,
+                  "vendor_id": 13364
+                },
+                "ignore": false,
+                "manipulate_caps_lock_led": true,
+                "simple_modifications": [
+                  {
+                    "from": {
+                      "key_code": "left_command"
+                    },
+                    "to": [
+                      {
+                        "key_code": "left_option"
+                      }
+                    ]
+                  },
+                  {
+                    "from": {
+                      "key_code": "left_option"
+                    },
+                    "to": [
+                      {
+                        "key_code": "left_command"
                       }
                     ]
                   }
