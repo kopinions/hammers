@@ -291,7 +291,7 @@
 *** direnv related config
     #+BEGIN_SRC sh :tangle (m/resolve "${m/xdg.conf.d}/csh/post/999-direnv.csh") :eval never :exports code  :noweb tangle 
       if (`command -v direnv` != "") then
-          alias precmd 'eval `direnv export tcsh`; source "$XDG_CONFIG_PATH/csh/init/statusbar.csh" >& /dev/null' # what is this command do in tcsh
+          alias precmd 'eval `direnv export tcsh`; source "$XDG_CONFIG_HOME/csh/init/statusbar.csh" >& /dev/null' # what is this command do in tcsh
       endif
     #+END_SRC
 
